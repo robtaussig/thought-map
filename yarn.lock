@@ -85,9 +85,9 @@
     prop-types "^15.7.2"
     react-is "^16.8.0"
 
-"@robtaussig/local-store-js@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@robtaussig/local-store-js/-/local-store-js-0.5.0.tgz#b0d4b807c1456ddd6d131bdee086c1b21c9e100b"
+"@robtaussig/local-store-js@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@robtaussig/local-store-js/-/local-store-js-0.5.1.tgz#da8d7592ed92c35f30add87cf9eac52cb4dd5258"
 
 "@types/jest-diff@*":
   version "20.0.1"

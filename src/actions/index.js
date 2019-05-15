@@ -1,39 +1,27 @@
-import { db } from '../store/database';
-import uuidv4 from 'uuid/v4';
+import Thoughts from '../models/thoughts';
+import Connections from '../models/connections';
+import Plans from '../models/plans';
 
-export const getThoughts = async () => {
-  const dbResponse = await db.select({ table: 'thoughts' });
-
-  return dbResponse.result.sort((a, b) => a.id - b.id);
+export const thoughts = {
+  getThoughts: Thoughts.fetchAll,
+  getThought: Thoughts.fetch,
+  createThought: Thoughts.add,
+  deleteThought: Thoughts.delete,
+  editThought: Thoughts.update,
 };
 
-export const createThought = async thought => {
-  const timestamp = new Date() - 1;
-  const thoughtObject = {
-    ...thought,
-    createdAt: timestamp,
-    updatedAt: timestamp,
-  };
-
-  const response = await db.insert({ table: 'thoughts', object: thoughtObject });
-
-  return Object.assign({}, thoughtObject, { id: response.result });
+export const connections = {
+  getConnections: Connections.fetchAll,
+  getConnection: Connections.fetch,
+  createConnection: Connections.add,
+  deleteConnection: Connections.delete,
+  editConnection: Connections.update,
 };
 
-export const deleteThought = async id => {
-  const response = await db.delete({ table: 'thoughts', id });
-
-  console.log(response.result);
-
-  return response;
-};
-
-export const editThought = async thought => {
-  const response = await db.insert({ table: 'thoughts', object: Object.assign({}, thought, {
-    updatedAt: new Date() - 1,
-  })});
-
-  console.log(response.result);
-
-  return thought;
+export const plans = {
+  getPlans: Plans.fetchAll,
+  getPlan: Plans.fetch,
+  createPlan: Plans.add,
+  deletePlan: Plans.delete,
+  editPlan: Plans.update,
 };

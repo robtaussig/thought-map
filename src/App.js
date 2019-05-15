@@ -1,53 +1,58 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
-import { getThoughts, createThought, deleteThought, editThought } from './actions';
+import { appReducer, DEFAULT_STATE } from './reducers';
+import { Context } from './store';
+import { ACTION_TYPES } from './reducers';
+import { thoughts as thoughtActions, plans as planActions, connections as connectionActions } from './actions';
+import Thoughts from './components/Thoughts';
+import Plans from './components/Plans';
+import Connections from './components/Connections';
 
 const App = ({ classes }) => {
-  const [thoughts, setThoughts] = useState([]);
+  const [state, dispatch] = useReducer(appReducer, DEFAULT_STATE);
 
   useEffect(() => {
-    getThoughts()
-      .then(setThoughts);
+
+    const initializeApplication = async dispatch => {
+      dispatch({
+        type: ACTION_TYPES.PHASE_PENDING,
+        payload: ACTION_TYPES.INITIALIZE_APPLICATION,
+      });
+    
+      const [ thoughts, connections, plans ] = await Promise.all([
+        thoughtActions.getThoughts(),
+        connectionActions.getConnections(),
+        planActions.getPlans(),
+      ]);
+
+      dispatch({
+        type: ACTION_TYPES.INITIALIZE_APPLICATION,
+        payload: {
+          thoughts, connections, plans
+        },
+      });
+    };
+
+    initializeApplication(dispatch);
   }, []);
 
-  const handleClickButton = useCallback(async () => {
-    const thoughtObject = { text: 'Hellooooo' };
-  
-    const result = await createThought(thoughtObject);
-    setThoughts(prev => prev.concat(result));
-  }, []);
-
-  const handleDelete = useCallback(async ({ id }) => {
-    await deleteThought(id);
-    setThoughts(prev => prev.filter(prevThought => prevThought.id !== id ));
-  }, []);
-
-  const handleEdit = useCallback(async thought => {
-    const next = Object.assign({}, thought, {
-      text: thought.text + '!',
-    });
-  
-    await editThought(next);
-    setThoughts(prev => prev.map(prevThought => prevThought.id === thought.id ? next : prevThought ));
-  }, []);
+  console.log(state);
 
   return (
-    <div className={classes.root}>
-      <button onClick={handleClickButton}>
-        Add thought
-      </button>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {thoughts.map((thought, idx) => {
-          return (
-            <div key={`${idx}-thought`}>
-              <span onClick={() => handleDelete(thought)}>{thought.text}</span>
-              <button onClick={() => handleEdit(thought)}>Edit</button>
-            </div>
-          )
-        })}
+    <Context.Provider value={dispatch}>
+      <div className={classes.root}>
+        <Thoughts
+          thoughts={state.thoughts}
+        />
+        <Plans
+          plans={state.plans}
+        />
+        <Connections
+          connections={state.connections}
+        />
       </div>
-    </div>
+    </Context.Provider>
   );
 };
 
