@@ -76,13 +76,13 @@ export const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       top: 'unset',
       bottom: 0,
-      transition: 'unset',
       ...theme.defaults.castShadow.heavy,
       '&:hover': {
         transform: 'unset',
       },
-      '&:active': {
-        boxShadow: 'none',
+      '&.touched': {
+        boxShadow: 'none!important',
+        transform: 'scale(0.9)!important',
       },
     },
   },
