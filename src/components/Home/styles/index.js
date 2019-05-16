@@ -76,6 +76,13 @@ export const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       top: 'unset',
       bottom: 0,
+      '&:hover': {
+        transform: 'unset',
+      },
+      '&:active': {
+        transform: 'scale(0.9)',
+        boxShadow: 'none',
+      },
     },
   },
   settingsButton: {
