@@ -10,7 +10,13 @@ export const AddButton = React.memo(({ classes }) => {
   const handleMobileTouchEnd = () => buttonRef.current.classList.remove('touched');
 
   return (
-    <button ref={buttonRef} className={classes.addButton} onTouchStart={handleMobileTouch} onTouchEnd={handleMobileTouchEnd}>
+    <button
+      ref={buttonRef}
+      className={classes.addButton}
+      onTouchStart={handleMobileTouch}
+      onTouchEnd={handleMobileTouchEnd}
+      aria-label={'Add Thought'}
+    >
       <Add/>
     </button>
   );

@@ -1,14 +1,13 @@
 {
   "short_name" : "ThoughtMap",
   "name" : "ThoughtMap",
-  "start_url" : "https://thought-map.robtaussig.com/",
+  "start_url" : "/",
   "display" : "standalone",
   "theme_color" : "#000000",
   "background_color" : "#ffffff",
   "lang" : "",
   "orientation" : "portrait-primary",
   "description" : "A Progressive Web App to map your thoughts",
-  "generated" : "undefined",
   "icons" : [
       {
         "src": "personal-logo.png",

@@ -1,8 +1,8 @@
 //This is the service worker with the Advanced caching
-const VERSION = "v1";
+const VERSION = "v3";
 const CACHE = "sw-cache";
 const precacheFiles = [
-  '/static/js/bundle.js',
+  'index.html',
 ];
 
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";

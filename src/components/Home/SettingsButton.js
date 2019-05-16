@@ -5,7 +5,7 @@ export const SettingsButton = React.memo(({ classes }) => {
   const { history, dispatch } = useApp();
 
   return (
-    <button className={classes.settingsButton}>
+    <button className={classes.settingsButton} aria-label={'Settings'}>
       Settings
     </button>
   );

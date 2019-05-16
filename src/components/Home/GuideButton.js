@@ -5,7 +5,7 @@ export const GuideButton = React.memo(({ classes }) => {
   const { history, dispatch } = useApp();
 
   return (
-    <button className={classes.guideButton}>
+    <button className={classes.guideButton} aria-label={'Guide'}>
       Guide
     </button>
   );
