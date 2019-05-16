@@ -1,7 +1,7 @@
 {
   "short_name" : "ThoughtMap",
   "name" : "ThoughtMap",
-  "start_url" : "https://robtaussig.com/index.html",
+  "start_url" : "https://thought-map.robtaussig.com/",
   "display" : "standalone",
   "theme_color" : "#000000",
   "background_color" : "#ffffff",
@@ -11,8 +11,14 @@
   "generated" : "undefined",
   "icons" : [
       {
-          "src": "https://robtaussig.com/favicon.png",
-          "sizes": "64x64 32x32 24x24 16x16"
+        "src": "personal-logo.png",
+        "sizes": "89x89",
+        "type": "image/png"
+      },
+      {
+        "src": "large-icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
       }
   ]
 }
