@@ -1,16 +1,17 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useMemo, useRef } from 'react';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
 import { appReducer, DEFAULT_STATE } from './reducers';
 import { Context } from './store';
 import { ACTION_TYPES } from './reducers';
 import { thoughts as thoughtActions, plans as planActions, connections as connectionActions } from './actions';
-import Thoughts from './components/Thoughts';
-import Plans from './components/Plans';
-import Connections from './components/Connections';
+import Home from './components/Home';
+import Settings from './components/Settings';
 
-const App = ({ classes }) => {
+const App = ({ classes, history }) => {
   const [state, dispatch] = useReducer(appReducer, DEFAULT_STATE);
+  const rootRef = useRef(null);
 
   useEffect(() => {
 
@@ -37,23 +38,22 @@ const App = ({ classes }) => {
     initializeApplication(dispatch);
   }, []);
 
-  console.log(state);
+  const appContext = useMemo(() => ({ dispatch, history }), []);
 
   return (
-    <Context.Provider value={dispatch}>
-      <div className={classes.root}>
-        <Thoughts
-          thoughts={state.thoughts}
-        />
-        <Plans
-          plans={state.plans}
-        />
-        <Connections
-          connections={state.connections}
-        />
+    <Context.Provider value={appContext}>
+      <div id={'app'} ref={rootRef} className={classes.root}>
+        <Switch>
+          <Route exact path={'/'}>
+            <Home/>
+          </Route>
+          <Route path={'/settings'}>
+            <Settings/>
+          </Route>
+        </Switch>
       </div>
     </Context.Provider>
   );
 };
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(withRouter(App));

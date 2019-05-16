@@ -1,17 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import './index.css';
+import './store/database.js';
+import { BrowserRouter } from 'react-router-dom';
 import { theme } from './App.style';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import './store/database.js';
+import App from './App';
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline/>
-    <App />
-  </ThemeProvider>,
+  (
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+        <App/>
+      </ThemeProvider>
+    </BrowserRouter>
+  ),
   document.getElementById('root')
 );
 

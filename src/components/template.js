@@ -1,9 +1,14 @@
 import React, { useContext, Fragment } from 'react';
 import { Context } from '../store';
+import { withStyles } from '@material-ui/core/styles';
 
-export const Connections = React.memo(({ connections }) => {
+const styles = theme => ({
+
+});
+
+export const Template = React.memo(({ classes }) => {
   const dispatch = useContext(Context);
-  
+
   return (
     <Fragment>
       Hello!
@@ -11,4 +16,4 @@ export const Connections = React.memo(({ connections }) => {
   );
 });
 
-export default Connections;
+export default withStyles(styles)(Template);
