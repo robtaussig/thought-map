@@ -1,5 +1,5 @@
 const DATABASE_VERSION = 4;
-const LocalStore = require('@robtaussig/local-store-js')({ global: false }, DATABASE_VERSION);
+const LocalStore = require('../lib/local-store')({ global: false }, DATABASE_VERSION);
 
 // You can seed data here as well
 const DATABASE_SCHEMA = {
