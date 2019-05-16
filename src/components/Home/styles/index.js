@@ -76,11 +76,12 @@ export const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       top: 'unset',
       bottom: 0,
+      transition: 'all 0.1s linear',
       '&:hover': {
         transform: 'unset',
       },
-      '&:active, &:focus': {
-        transform: 'scale(0.9)',
+      '&:active': {
+        transform: 'scale(0.7)',
         boxShadow: 'none',
       },
     },
