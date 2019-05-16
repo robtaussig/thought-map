@@ -76,7 +76,7 @@ export const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       top: 'unset',
       bottom: 0,
-      transition: 'all 0.1s linear',
+      transition: 'unset',
       ...theme.defaults.castShadow.heavy,
       '&:hover': {
         transform: 'unset',
