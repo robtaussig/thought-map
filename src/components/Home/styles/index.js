@@ -77,11 +77,11 @@ export const styles = theme => ({
       top: 'unset',
       bottom: 0,
       transition: 'all 0.1s linear',
+      ...theme.defaults.castShadow.heavy,
       '&:hover': {
         transform: 'unset',
       },
       '&:active': {
-        transform: 'scale(0.7)',
         boxShadow: 'none',
       },
     },
