@@ -79,7 +79,7 @@ export const styles = theme => ({
       '&:hover': {
         transform: 'unset',
       },
-      '&:active': {
+      '&:active, &:focus': {
         transform: 'scale(0.9)',
         boxShadow: 'none',
       },
