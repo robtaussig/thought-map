@@ -36,8 +36,19 @@ export const styles = theme => ({
     position: 'relative',
     backgroundColor: 'white',
     ...theme.defaults.castShadow.light,
+    '& > *': {
+      display: 'flex',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+    },
+    '& > h3': {
+      fontWeight: 600,
+    }
   },
   thoughtNode: {
+
+  },
+  thoughtNodeHeaders: {
 
   },
   guideButton: {
