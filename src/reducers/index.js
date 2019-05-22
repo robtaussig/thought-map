@@ -3,6 +3,8 @@ export const DEFAULT_STATE = {
   connections: [],
   plans: [],
   phases: {},
+  notes: [],
+  tags: [],
 };
 
 export const ACTION_TYPES = {

@@ -7,6 +7,9 @@ export default class Connections extends Base {
     id: Number,
     to: Number,
     from: Number,
+    created: Number,
+    updated: Number,
+    deleted: Number,
   }
   static fetchAll = () => Base.fetchAll(TABLE_NAME)
   static fetch = id => Base.fetch(TABLE_NAME, id)

@@ -1,6 +1,8 @@
 import Thoughts from '../models/thoughts';
 import Connections from '../models/connections';
 import Plans from '../models/plans';
+import Notes from '../models/notes';
+import Tags from '../models/tags';
 
 export const thoughts = {
   getThoughts: Thoughts.fetchAll,
@@ -24,4 +26,20 @@ export const plans = {
   createPlan: Plans.add,
   deletePlan: Plans.delete,
   editPlan: Plans.update,
+};
+
+export const notes = {
+  getNotes: Notes.fetchAll,
+  getNote: Notes.fetch,
+  createNote: Notes.add,
+  deleteNote: Notes.delete,
+  editNote: Notes.update,
+};
+
+export const tags = {
+  getTags: Tags.fetchAll,
+  getTag: Tags.fetch,
+  createTag: Tags.add,
+  deleteTag: Tags.delete,
+  editTag: Tags.update,
 };

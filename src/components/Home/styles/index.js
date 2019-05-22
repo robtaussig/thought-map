@@ -33,8 +33,12 @@ export const styles = theme => ({
   content: {
     gridArea: 'content',
     border: '5px solid #1f719e',
+    position: 'relative',
     backgroundColor: 'white',
     ...theme.defaults.castShadow.light,
+  },
+  thoughtNode: {
+
   },
   guideButton: {
     gridArea: 'guide-button',

@@ -6,6 +6,9 @@ export default class Plans extends Base {
   static props = {
     id: Number,
     name: String,
+    created: Number,
+    updated: Number,
+    deleted: Number,
   }
   static fetchAll = () => Base.fetchAll(TABLE_NAME)
   static fetch = id => Base.fetch(TABLE_NAME, id)

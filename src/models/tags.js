@@ -1,15 +1,13 @@
 import Base from './base';
 
-const TABLE_NAME = 'thoughts';
+const TABLE_NAME = 'tags';
 
-export default class Thoughts extends Base {
+export default class Tags extends Base {
   static props = {
     id: Number,
-    planId: Number,
-    title: String,
-    type: String,
-    status: String,
-    description: String,
+    thoughtId: Number,
+    text: String,
+    index: Number,
     created: Number,
     updated: Number,
     deleted: Number,

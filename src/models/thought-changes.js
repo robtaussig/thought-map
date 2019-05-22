@@ -1,18 +1,15 @@
 import Base from './base';
 
-const TABLE_NAME = 'thoughts';
+const TABLE_NAME = 'thoughtChanges';
 
-export default class Thoughts extends Base {
+export default class ThoughtChanges extends Base {
   static props = {
     id: Number,
-    planId: Number,
-    title: String,
-    type: String,
-    status: String,
-    description: String,
+    thoughtId: Number,
+    fields: String,
+    froms: String,
+    tos: String,
     created: Number,
-    updated: Number,
-    deleted: Number,
   }
   static fetchAll = () => Base.fetchAll(TABLE_NAME)
   static fetch = id => Base.fetch(TABLE_NAME, id)
