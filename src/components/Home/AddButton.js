@@ -1,13 +1,16 @@
 import React, { useRef } from 'react';
 import Add from '@material-ui/icons/Add';
+import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 
 export const AddButton = React.memo(({ classes, onClick, label, disabled }) => {
   const buttonRef = useRef(null);
 
-  const handleMobileTouch = () => buttonRef.current.classList.add('touched');
+  const handleMobileTouch = () => !disabled && buttonRef.current.classList.add('touched');
   const handleMobileTouchEnd = () => {
-    buttonRef.current.classList.remove('touched');
-    onClick();
+    if (!disabled) {
+      buttonRef.current.classList.remove('touched');
+      onClick();
+    }
   };
 
   return (
@@ -19,7 +22,7 @@ export const AddButton = React.memo(({ classes, onClick, label, disabled }) => {
       aria-label={label}
       disabled={disabled}
     >
-      <Add/>
+      {disabled ? <SentimentDissatisfied/> : <Add/>}
     </button>
   );
 });

@@ -127,6 +127,7 @@ const DATABASE_SCHEMA = {
         title: 'Test Thought 1',
         planId: 1,
         type: 'task',
+        date: null,
         status: 'new',
         description: 'Test description',
         created: currentDate,

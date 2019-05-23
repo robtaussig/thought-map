@@ -14,12 +14,18 @@ export const CreateThought = ({ classes, state }) => {
   const [ ready, setReady ] = useState(false);
 
   const handleSubmit = () => {
-    
+
   };
 
   return (
     <div className={classes.root}>
-      <Phase1 classes={classes} onNext={() => setPhase(2)} isFocus={phase === 1} onReady={() => setReady(true)}/>
+      <Phase1
+        classes={classes}
+        onNext={() => setPhase(2)}
+        isFocus={phase === 1}
+        onReady={isReady => setReady(isReady)}
+        onFocus={() => setPhase(1)}
+      />
       {phase > 1 && <Phase2 classes={classes} onNext={() => setPhase(3)} isFocus={phase === 2}/>}
       {phase > 2 && <Phase3 classes={classes} onNext={() => setPhase(4)} isFocus={phase === 3}/>}
       {phase > 3 && <Phase4 classes={classes} onNext={handleSubmit} isFocus={phase === 4}/>}

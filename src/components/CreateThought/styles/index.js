@@ -50,19 +50,57 @@ export const styles = theme => ({
   phaseOption: {
     
   },
+  phaseDateLabel: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: '0 10px',
+    color: '#919191',
+    '&#date': {
+      gridArea: 'date-input',
+    },
+  },
+  phaseDateField: {
+    flex: '0 0 40px',
+    fontSize: 20,
+    border: '1px solid hsla(341, 97%, 59%, 0.2)',
+    borderRadius: '5px',
+    backgroundColor: 'rgb(248, 248, 248)',
+  },
+  phaseDescriptionLabel: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: '0 10px',
+    color: '#919191',
+    '&#description': {
+      gridArea: 'description-input',
+      marginBottom: 10,
+    },
+  },
+  phaseDescriptionField: {
+    flex: 1,
+    fontSize: 20,
+    border: '1px solid hsla(341, 97%, 59%, 0.2)',
+    borderRadius: '5px',
+  },
+  phaseNextButton: {
+    height: 80,
+    ...theme.defaults.bubbleButton,
+  },
   phase1: {
     display: 'grid',
     gridTemplateAreas: `"header header"
                         "title-input type-input"
+                        "date-input date-input"
                         "description-input description-input"`,
-    gridTemplateRows: '40px 60px 1fr',
+    gridTemplateRows: '40px 80px 80px 1fr',
     gridTemplateColumns: 'repeat(2, 1fr)',
     [theme.breakpoints.down('sm')]: {
       gridTemplateAreas: `"header header"
             "title-input title-input"
             "type-input type-input"
+            "date-input date-input"
             "description-input description-input"`,
-      gridTemplateRows: '40px 80px 80px 1fr',
+      gridTemplateRows: '40px 80px 80px 80px 1fr',
       gridTemplateColumns: 'repeat(2, 1fr)',
     }
   },
@@ -88,13 +126,17 @@ export const styles = theme => ({
     justifyContent: 'center',
     transition: 'all 0.2s linear',
     color: 'white',
-    '&:hover': {
-      transform: 'scale(1.1)',
-      ...theme.defaults.castShadow.heavy,
-    },
-    '&:active': {
-      transform: 'scale(1)',
-      boxShadow: 'none',
+    opacity: 0.5,
+    '&:not([disabled])': {
+      opacity: 1,
+      '&:hover': {
+        transform: 'scale(1.1)',
+        ...theme.defaults.castShadow.heavy,
+      },
+      '&:active': {
+        transform: 'scale(1)',
+        boxShadow: 'none',
+      },
     },
     /**
      * Small
@@ -103,13 +145,15 @@ export const styles = theme => ({
       top: 'unset',
       bottom: 0,
       transition: 'all 0.1s linear',
-      ...theme.defaults.castShadow.heavy,
-      '&:hover': {
-        transform: 'unset',
-      },
-      '&.touched': {
-        boxShadow: 'none!important',
-        transform: 'scale(0.9)!important',
+      '&:not([disabled])': {
+        ...theme.defaults.castShadow.heavy,
+        '&:hover': {
+          transform: 'unset',
+        },
+        '&.touched': {
+          boxShadow: 'none!important',
+          transform: 'scale(0.9)!important',
+        },
       },
     },
   }

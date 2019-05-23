@@ -49,6 +49,40 @@ export const theme = responsiveFontSizes(
           opacity: 1,
         },
       },
+      bubbleButton: {
+        zIndex: 1,
+        position: 'relative',
+        fontSize: 'inherit',
+        fontFamily: 'inherit',
+        color: 'white',
+        padding: '0.5em 1em',
+        outline: 'none',
+        border: 'none',
+        backgroundColor: 'hsl(236, 32%, 26%)',
+        overflow: 'hidden',
+        transition: 'color 0.4s ease-in-out',
+        '&::before': {
+          content: '""',
+          zIndex: -1,
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '1em',
+          height: '1em',
+          borderRadius: '50%',
+          backgroundColor: '#3cefff',
+          transformOrigin: 'center',
+          transform: 'translate(-50%, -50%) scale(0)',
+          transition: 'transform 0.45s ease-in-out',
+        },
+        '&:hover': {
+          cursor: 'pointer',
+          color: '#161616',
+        },
+        '&:hover::before': {
+          transform: 'translate(-50%, -50%) scale(15)',
+        },
+      }
     },
   })
 );
