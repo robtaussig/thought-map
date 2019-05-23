@@ -1,13 +1,14 @@
 import React, { useRef } from 'react';
-import useApp from '../../hooks/useApp';
 import Add from '@material-ui/icons/Add';
 
-export const AddButton = React.memo(({ classes }) => {
-  const { history, dispatch } = useApp();
+export const AddButton = React.memo(({ classes, onClick, label, disabled }) => {
   const buttonRef = useRef(null);
 
   const handleMobileTouch = () => buttonRef.current.classList.add('touched');
-  const handleMobileTouchEnd = () => buttonRef.current.classList.remove('touched');
+  const handleMobileTouchEnd = () => {
+    buttonRef.current.classList.remove('touched');
+    onClick();
+  };
 
   return (
     <button
@@ -15,7 +16,8 @@ export const AddButton = React.memo(({ classes }) => {
       className={classes.addButton}
       onTouchStart={handleMobileTouch}
       onTouchEnd={handleMobileTouchEnd}
-      aria-label={'Add Thought'}
+      aria-label={label}
+      disabled={disabled}
     >
       <Add/>
     </button>

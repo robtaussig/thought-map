@@ -14,6 +14,7 @@ import {
 } from './actions';
 import Home from './components/Home';
 import Settings from './components/Settings';
+import CreateThought from './components/CreateThought';
 
 const App = ({ classes, history }) => {
   const [state, dispatch] = useReducer(appReducer, DEFAULT_STATE);
@@ -68,6 +69,9 @@ const App = ({ classes, history }) => {
           </Route>
           <Route path={'/settings'}>
             <Settings/>
+          </Route>
+          <Route path={'/thought/new'}>
+            <CreateThought state={state}/>
           </Route>
         </Switch>
       </div>

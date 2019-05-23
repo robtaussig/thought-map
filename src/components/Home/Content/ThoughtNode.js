@@ -5,12 +5,12 @@ export const ThoughtNode = React.memo(({ classes, thought, position = {} }) => {
   const { history, dispatch } = useApp();
 
   return (
-    <Fragment>
+    <div className={classes.thoughtNode}>
       <span>{thought.title}</span>
       <span>{thought.description}</span>
       <span>{thought.type}</span>
       <span>{thought.status}</span>
-    </Fragment>
+    </div>
   );
 });
 

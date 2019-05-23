@@ -32,6 +32,7 @@ export const styles = theme => ({
   },
   content: {
     gridArea: 'content',
+    display: 'grid',
     border: '5px solid #1f719e',
     position: 'relative',
     backgroundColor: 'white',
@@ -43,13 +44,10 @@ export const styles = theme => ({
     },
     '& > h3': {
       fontWeight: 600,
-    }
+    },
   },
   thoughtNode: {
-
-  },
-  thoughtNodeHeaders: {
-
+    border: '1px solid black',
   },
   guideButton: {
     gridArea: 'guide-button',
