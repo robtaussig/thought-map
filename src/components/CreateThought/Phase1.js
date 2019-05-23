@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PhaseHeader from './PhaseHeader';
 import PhaseInput from './PhaseInput';
 import PhaseSelect from './PhaseSelect';
 
-export const Phase1 = React.memo(({ classes, onNext, isFocus }) => {
+export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady }) => {
   const [title, setTitle] = useState('');
   const [typeOptions, setTypeOptions] = useState(['Task', 'Todo', 'Reminder', 'Misc']);
   const [type, setType] = useState(typeOptions[0]);
+
+  useEffect(() => onReady(true),[]);
 
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
