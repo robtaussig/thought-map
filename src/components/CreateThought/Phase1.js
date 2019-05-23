@@ -11,7 +11,7 @@ export const Phase1 = React.memo(({ classes, onNext, isFocus }) => {
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
       <PhaseHeader classes={classes} value={'Thought'}/>
-      <PhaseInput id={'title'} classes={classes} value={title} onChange={e => setTitle(e.target.value)} label={'Title'} autoFocus/>
+      <PhaseInput id={'title'} classes={classes} value={title} onChange={e => setTitle(e.target.value)} label={'Title'}/>
       <PhaseSelect id={'type'} classes={classes} value={type} options={typeOptions} onChange={e => setType(e.target.value)} label={'Type'}/>
     </div>
   );

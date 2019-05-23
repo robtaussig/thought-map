@@ -41,18 +41,6 @@ export const styles = theme => ({
     '&#type': {
       gridArea: 'type-input',
     },
-    position: 'relative',
-    '&::before': {
-      content: '"▼"',
-      position: 'absolute',
-      top: 10,
-      right: 5,
-    },
-    '&:hover': {
-      '&::before': {
-        color: '#bada55',
-      },
-    }
   },
   phaseSelect: {
     flex: '0 0 40px',
