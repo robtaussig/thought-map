@@ -14,18 +14,17 @@ export const styles = theme => ({
   phase: {
     '& label': {
       textTransform: 'uppercase',
+      margin: 10,
     },
   },
-  phaseInputLabel: {
+  phaseInputLabel: {    
     display: 'flex',
     flexDirection: 'column',
-    margin: '0 10px',
     color: '#919191',
     '&#title': {
       gridArea: 'title-input',
     },
     '& > div': {
-      flex: '0 0 40px',
       ...theme.defaults.underlineInput,
     },
   },
@@ -35,8 +34,7 @@ export const styles = theme => ({
   },
   phaseSelectLabel: {
     display: 'flex',
-    flexDirection: 'column',
-    margin: '0 10px',
+    flexDirection: 'column',    
     color: '#919191',
     '&#type': {
       gridArea: 'type-input',
@@ -52,8 +50,7 @@ export const styles = theme => ({
   },
   phaseDateLabel: {
     display: 'flex',
-    flexDirection: 'column',
-    margin: '0 10px',
+    flexDirection: 'column',    
     color: '#919191',
     '&#date': {
       gridArea: 'date-input',
@@ -68,8 +65,7 @@ export const styles = theme => ({
   },
   phaseDescriptionLabel: {
     display: 'flex',
-    flexDirection: 'column',
-    margin: '0 10px',
+    flexDirection: 'column',    
     color: '#919191',
     '&#description': {
       gridArea: 'description-input',
@@ -87,22 +83,38 @@ export const styles = theme => ({
     ...theme.defaults.bubbleButton,
   },
   phase1: {
-    display: 'grid',
-    gridTemplateAreas: `"header header"
-                        "title-input type-input"
-                        "date-input date-input"
-                        "description-input description-input"`,
-    gridTemplateRows: '40px 80px 80px 1fr',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    [theme.breakpoints.down('sm')]: {
-      gridTemplateAreas: `"header header"
-            "title-input title-input"
-            "type-input type-input"
-            "date-input date-input"
-            "description-input description-input"`,
-      gridTemplateRows: '40px 80px 80px 80px 1fr',
-      gridTemplateColumns: 'repeat(2, 1fr)',
+    '&:not(.isFocus)': {
+      width: '100%',
+      display: 'grid',
+      gridTemplateAreas: `"header title-input"
+                        "type-input date-input"`,
+      gridTemplateRows: 'repeat(2, 1fr)',
+      backgroundColor: 'white',
+      borderBottom: '1px solid gainsboro',
+    },
+    '& #add-notes': {
+      right: 'unset',
+      left: 0,
     }
+  },
+  phase2: {
+    '&:not(.isFocus)': {
+      width: '100%',
+      backgroundColor: 'white',
+      borderBottom: '1px solid gainsboro',
+    },
+    '& #add-tags': {
+      right: 'unset',
+      left: 0,
+    }
+  },
+  addNoteButton: {
+    color: '#00b302',
+  },
+  deleteNoteButton: {
+    position: 'absolute',
+    left: 0,
+    color: '#b70000',
   },
   phaseHeader: {
     gridArea: 'header',

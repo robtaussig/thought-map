@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 
-export const AddButton = React.memo(({ classes, onClick, label, disabled }) => {
+export const AddButton = React.memo(({ classes, id = 'add-button', onClick, label, disabled, Icon = Add }) => {
   const buttonRef = useRef(null);
 
   const handleMobileTouch = () => !disabled && buttonRef.current.classList.add('touched');
@@ -15,6 +15,7 @@ export const AddButton = React.memo(({ classes, onClick, label, disabled }) => {
 
   return (
     <button
+      id={id}
       ref={buttonRef}
       className={classes.addButton}
       onTouchStart={handleMobileTouch}
@@ -22,7 +23,7 @@ export const AddButton = React.memo(({ classes, onClick, label, disabled }) => {
       aria-label={label}
       disabled={disabled}
     >
-      {disabled ? <SentimentDissatisfied/> : <Add/>}
+      {disabled ? <SentimentDissatisfied/> : <Icon/>}
     </button>
   );
 });

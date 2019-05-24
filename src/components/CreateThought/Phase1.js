@@ -5,6 +5,7 @@ import PhaseSelect from './PhaseSelect';
 import PhaseDate from './PhaseDate';
 import PhaseDescription from './PhaseDescription';
 import PhaseNext from './PhaseNext';
+import Notes from '@material-ui/icons/Notes';
 
 export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus }) => {
   const [title, setTitle] = useState('');
@@ -21,12 +22,12 @@ export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus }
 
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
-      <PhaseHeader classes={classes} value={'Thought'} onClick={onFocus}/>
+      {!isFocus && <PhaseHeader classes={classes} value={'Edit Basics'} onClick={onFocus}/>}
       <PhaseInput id={'title'} classes={classes} value={title} onChange={e => setTitle(e.target.value)} label={'Title'}/>
       <PhaseSelect id={'type'} classes={classes} value={type} options={typeOptions} onChange={e => setType(e.target.value)} label={'Type'}/>
       <PhaseDate id={'date'} classes={classes} value={date} onChange={e => setDate(e.target.value)} label={'Date'}/>
-      <PhaseDescription id={'description'} classes={classes} value={description} onChange={e => setDescription(e.target.value)} label={'Description'}/>
-      {isFocus && isReady && <PhaseNext classes={classes} onClick={onNext} value={'Add Notes'}/>}
+      {isFocus && <PhaseDescription id={'description'} classes={classes} value={description} onChange={e => setDescription(e.target.value)} label={'Description'}/>}
+      {isFocus && isReady && <PhaseNext classes={classes} onClick={onNext} label={'Add Notes'} id={'add-notes'} Icon={Notes}/>}
     </div>
   );
 });

@@ -1,11 +1,10 @@
 import React from 'react';
+import AddButton from '../Home/AddButton';
 
-export const PhaseNext = React.memo(({ classes, value, onClick }) => {
+export const PhaseNext = React.memo(({ classes, id, value, label, onClick, Icon }) => {
 
   return (
-    <button className={classes.phaseNextButton} onClick={onClick}>
-      {value}
-    </button>
+    <AddButton classes={classes} id={id} onClick={onClick} label={label} Icon={Icon}/>
   );
 });
 

@@ -7,6 +7,7 @@ import Phase2 from './Phase2';
 import Phase3 from './Phase3';
 import Phase4 from './Phase4';
 import AddButton from '../Home/AddButton';
+import Check from '@material-ui/icons/Check';
 
 export const CreateThought = ({ classes, state }) => {
   const { history, dispatch } = useApp();
@@ -26,10 +27,18 @@ export const CreateThought = ({ classes, state }) => {
         onReady={isReady => setReady(isReady)}
         onFocus={() => setPhase(1)}
       />
-      {phase > 1 && <Phase2 classes={classes} onNext={() => setPhase(3)} isFocus={phase === 2}/>}
+      {phase > 1 && (
+        <Phase2
+          classes={classes}
+          onNext={() => setPhase(3)}
+          isFocus={phase === 2}
+          onReady={isReady => setReady(isReady)}
+          onFocus={() => setPhase(2)}
+        />
+      )}
       {phase > 2 && <Phase3 classes={classes} onNext={() => setPhase(4)} isFocus={phase === 3}/>}
       {phase > 3 && <Phase4 classes={classes} onNext={handleSubmit} isFocus={phase === 4}/>}
-      <AddButton classes={classes} onClick={handleSubmit} label={'Create Thought'} disabled={!ready}/>
+      <AddButton classes={classes} onClick={handleSubmit} label={'Create Thought'} disabled={!ready} Icon={Check}/>
     </div>
   );
 };

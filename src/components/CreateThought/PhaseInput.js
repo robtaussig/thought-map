@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const PhaseInput = React.memo(({ classes, value, onChange, label, id, autoFocus }) => {
+export const PhaseInput = React.memo(({ classes, value, onChange, label, id, autoFocus, DeleteButton }) => {
 
   return (
     <label id={id} className={classes.phaseInputLabel}>
@@ -9,6 +9,7 @@ export const PhaseInput = React.memo(({ classes, value, onChange, label, id, aut
         <span/>
       </div>
       {label}
+      {DeleteButton}
     </label>
   );
 });
