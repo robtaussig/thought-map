@@ -116,7 +116,7 @@ export const styles = theme => ({
   },
   deleteNoteButton: {
     position: 'absolute',
-    left: 0,
+    left: 10,
     color: '#b70000',
   },
   phaseHeader: {
