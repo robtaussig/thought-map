@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 const keyToActionType = key => {
-  return `SET_${key}_DISPATCHED_ACTION`;
+  return `@SET_${key}_DISPATCHED_ACTION`;
 };
 
 export const useNestedReducer = (key, state, dispatch) => {

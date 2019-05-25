@@ -1,11 +1,11 @@
 import React from 'react';
 
-export const PhaseDescription = React.memo(({ id, classes, value, onChange, label }) => {
+export const PhaseDescription = React.memo(({ id, classes, value, onChange, onFocusChange, label }) => {
 
   return (
     <label id={id} className={classes.phaseDescriptionLabel}>
       {label}
-      <textarea className={classes.phaseDescriptionField} value={value} onChange={onChange}/>
+      <textarea className={classes.phaseDescriptionField} value={value} onChange={onChange} onBlur={_ => onFocusChange(false)} onFocus={_ => onFocusChange(true)}/>
     </label>
   );
 });
