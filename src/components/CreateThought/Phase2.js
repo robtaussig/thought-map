@@ -8,10 +8,10 @@ import PhaseNext from './PhaseNext';
 import Notes from '@material-ui/icons/Notes';
 import Add from '@material-ui/icons/Add';
 import Note from './Note';
-import { useNestedReducer } from '../../hooks/useNestedReducer';
+import { useNestedXReducer } from '../../hooks/useXReducer';
 
 export const Phase2 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, createdThought, dispatch }) => {
-  const [notes, setNotes] = useNestedReducer('notes', createdThought, dispatch);
+  const [notes, setNotes] = useNestedXReducer('notes', createdThought, dispatch);
   const isReady = validateInputs();
 
   useEffect(() => {

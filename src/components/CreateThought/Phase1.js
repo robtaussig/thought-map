@@ -6,18 +6,18 @@ import PhaseDate from './PhaseDate';
 import PhaseDescription from './PhaseDescription';
 import PhaseNext from './PhaseNext';
 import Notes from '@material-ui/icons/Notes';
-import { useNestedReducer } from '../../hooks/useNestedReducer';
+import { useNestedXReducer } from '../../hooks/useXReducer';
 
 export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, createdThought, dispatch }) => {
-  const [title, setTitle] = useNestedReducer('title', createdThought, dispatch);
-  const [typeOptions, setTypeOptions] = useNestedReducer('typeOptions', createdThought, dispatch);
-  const [type, setType] = useNestedReducer('type', createdThought, dispatch);
-  const [date, setDate] = useNestedReducer('date', createdThought, dispatch);
-  const [description, setDescription] = useNestedReducer('description', createdThought, dispatch);
+  const [title, setTitle] = useNestedXReducer('title', createdThought, dispatch);
+  const [typeOptions, setTypeOptions] = useNestedXReducer('typeOptions', createdThought, dispatch);
+  const [type, setType] = useNestedXReducer('type', createdThought, dispatch);
+  const [date, setDate] = useNestedXReducer('date', createdThought, dispatch);
+  const [description, setDescription] = useNestedXReducer('description', createdThought, dispatch);
   const [focusDescription, setFocusDescription] = useState(false);
 
   const isReady = validateInputs(title, type, date, description);
-  
+
   const handleNext = () => {
     setFocusDescription(false);
     onNext();
