@@ -12,6 +12,8 @@ export const styles = theme => ({
     }
   },
   phase: {
+    display: 'flex',
+    flexDirection: 'column',
     '& label': {
       textTransform: 'uppercase',
       margin: 10,
@@ -70,6 +72,7 @@ export const styles = theme => ({
     '&#description': {
       gridArea: 'description-input',
       marginBottom: 10,
+      flex: 1,
     },
   },
   phaseDescriptionField: {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PhaseHeader from './PhaseHeader';
 import PhaseInput from './PhaseInput';
 import PhaseSelect from './PhaseSelect';
@@ -6,13 +6,14 @@ import PhaseDate from './PhaseDate';
 import PhaseDescription from './PhaseDescription';
 import PhaseNext from './PhaseNext';
 import Notes from '@material-ui/icons/Notes';
+import { useNestedReducer } from '../../hooks/useNestedReducer';
 
-export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus }) => {
-  const [title, setTitle] = useState('');
-  const [typeOptions, setTypeOptions] = useState(['Task', 'Todo', 'Reminder', 'Misc']);
-  const [type, setType] = useState(typeOptions[0]);
-  const [date, setDate] = useState('');
-  const [description, setDescription] = useState('');
+export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, createdThought, dispatch }) => {
+  const [title, setTitle] = useNestedReducer('title', createdThought, dispatch);
+  const [typeOptions, setTypeOptions] = useNestedReducer('typeOptions', createdThought, dispatch);
+  const [type, setType] = useNestedReducer('type', createdThought, dispatch);
+  const [date, setDate] = useNestedReducer('date', createdThought, dispatch);
+  const [description, setDescription] = useNestedReducer('description', createdThought, dispatch);
 
   const isReady = validateInputs(title, type, date, description);
 
