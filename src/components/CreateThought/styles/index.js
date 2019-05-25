@@ -4,6 +4,7 @@ export const styles = theme => ({
     flexDirection: 'column',
     height: '100%',
     backgroundColor: '#51759578',
+    overflow: 'hidden',
     '& > .isFocus': {
       flex: 1,
       ...theme.defaults.castShadow.light,
@@ -14,6 +15,7 @@ export const styles = theme => ({
   phase: {
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'auto',
     '& label': {
       textTransform: 'uppercase',
       margin: 10,
@@ -23,8 +25,12 @@ export const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     color: '#919191',
+    position: 'relative',
     '&#title': {
       gridArea: 'title-input',
+    },
+    '&#note': {
+      marginRight: 30,
     },
     '& > div': {
       ...theme.defaults.underlineInput,
@@ -116,7 +122,7 @@ export const styles = theme => ({
   },
   deleteNoteButton: {
     position: 'absolute',
-    left: 10,
+    right: -25,
     color: '#b70000',
   },
   phaseHeader: {
