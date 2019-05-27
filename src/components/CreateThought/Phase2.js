@@ -22,7 +22,7 @@ export const Phase2 = React.memo(({ classes, onNext, isFocus, onFocus, createdTh
     <div className={`${classes.phase} ${classes.phase2} ${isFocus ? ' isFocus' : ''}`}>
       {isFocus && <PhaseHeader classes={classes} value={'Notes'} onClick={onFocus}/>}
       {notes.map((note, noteIdx) => {
-        return <Note key={`${noteIdx}-note`} classes={classes} isFocus={isFocus} value={note} onChange={handleSetNote(noteIdx)} onRemove={handleDeleteNote(noteIdx)}/>;
+        return <Note key={`${noteIdx}-note`} autoFocus={noteIdx === notes.length - 1} classes={classes} isFocus={isFocus} value={note} onChange={handleSetNote(noteIdx)} onRemove={handleDeleteNote(noteIdx)}/>;
       })}
       {isFocus && <button className={classes.addNoteButton} onClick={handleAddNote}><Add/></button>}
       {isFocus && isReady && <PhaseNext classes={classes} onClick={onNext} label={'Add Tags'} id={'add-tags'} Icon={FolderSpecial}/>}
