@@ -17,6 +17,7 @@ import {
 import Home from './components/Home';
 import Settings from './components/Settings';
 import CreateThought from './components/CreateThought';
+import Thought from './components/Thought';
 
 const App = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
@@ -67,6 +68,9 @@ const App = ({ classes, history }) => {
           </Route>
           <Route path={'/thought/new'}>
             <CreateThought state={state}/>
+          </Route>
+          <Route path={'/thought/:id'}>
+            <Thought state={state}/>
           </Route>
         </Switch>
       </div>
