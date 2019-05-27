@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import PhaseHeader from './PhaseHeader';
 import PhaseNext from './PhaseNext';
 import PhaseSelect from './PhaseSelect';
@@ -18,13 +18,14 @@ export const Phase3 = React.memo(({ classes, onBack, isFocus, onFocus, createdTh
     setTags(tags.map((value, prevIdx) => prevIdx === idx ? nextValue : value));
   };
 
+  const filteredTagOptions = useMemo(() => tagOptions.filter(tag => tags.indexOf(tag) === -1),[tags, tagOptions]);
   return (
     <div className={`${classes.phase} ${classes.phase3} ${isFocus ? ' isFocus' : ''}`}>
       {isFocus && <PhaseHeader classes={classes} value={'Tags'} onClick={onFocus}/>}
       <ul className={classes.tagGrid}>
         {tags.map((tag, idx) => {
           return <li key={`${idx}-tag`}>{tag === '' ? (
-            <PhaseSelect id={'tag'} classes={classes} value={''} options={tagOptions} onChange={handleCreateTag(idx)} label={null}/>
+            <PhaseSelect id={'tag'} classes={classes} value={''} options={filteredTagOptions} onChange={handleCreateTag(idx)} label={null}/>
           ): tag}{tag !== '' && <button className={classes.deleteTagButton} onClick={handleDeleteTag(idx)}><Close/></button>}</li>
         })}
         <button className={classes.addTagButton} onClick={handleAddTag}><Add/></button>
