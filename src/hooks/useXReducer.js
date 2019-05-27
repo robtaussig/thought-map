@@ -15,7 +15,7 @@ export const useNestedXReducer = (key, state, dispatch) => {
     });
   }, []);
   
-  stateRef.current = state[key];
+  stateRef.current = key === '*' ? state : state[key];
   return [stateRef.current, setter];
 };
 
@@ -30,15 +30,21 @@ export const actionTypeToKey = actionType => {
   }
 };
 
-export const createNestedReducer = mergedReducer => {
+const createNestedReducer = mergedReducer => {
   return (state, action) => {
     const key = actionTypeToKey(action.type);
-
     if (key) {
-      return {
-        ...state,
-        [key]: action.payload,
-      };
+      if (key === '*') {
+        return {
+          ...state,
+          ...action.payload,
+        };
+      } else {
+        return {
+          ...state,
+          [key]: action.payload,
+        };
+      }
     } else if (mergedReducer) {
       return mergedReducer(state, action);
     }

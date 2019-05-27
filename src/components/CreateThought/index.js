@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useReducer } from 'react';
 import useApp from '../../hooks/useApp';
-import useXReducer from '../../hooks/useXReducer';
+import useXReducer, { useNestedXReducer } from '../../hooks/useXReducer';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
 import Phase1 from './Phase1';
@@ -8,6 +8,9 @@ import Phase2 from './Phase2';
 import Phase3 from './Phase3';
 import AddButton from '../Home/AddButton';
 import Check from '@material-ui/icons/Check';
+import { createWholeThought } from '../../actions/complex';
+import { ACTION_TYPES } from '../../reducers';
+import { intoMap } from '../../lib/util';
 
 const DEFAULT_STATE = {
   title: '',
@@ -21,18 +24,28 @@ const DEFAULT_STATE = {
   tagOptions: ['Important', 'Lazy', 'Misc', 'Later'],
 };
 
-const mergedReducer = (state, action) => {
-  return state;
-};
-
 export const CreateThought = ({ classes, state }) => {
   const { history, dispatch } = useApp();
-  const [ createdThought, createdThoughtDispatch ] = useXReducer(DEFAULT_STATE, mergedReducer);
+  const [ createdThought, createdThoughtDispatch ] = useXReducer(DEFAULT_STATE);
+  const [ _, setEverything ] = useNestedXReducer('*', state, dispatch);
   const [ phase, setPhase ] = useState(1);
   const [ ready, setReady ] = useState(false);
 
-  const handleSubmit = () => {
-    console.log(createdThought);
+  const handleSubmit = async () => {
+    const response = await createWholeThought(createdThought);
+    const next = {
+      thoughts: state.thoughts.concat(response.thought),
+      notes: {
+        ...state.notes,
+        ...intoMap(response.notes),
+      },
+      tags: {
+        ...state.tags,
+        ...intoMap(response.tags),
+      },
+    }
+    setEverything(next);
+    history.push('/');
   };
 
   return (

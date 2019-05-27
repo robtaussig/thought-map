@@ -1,3 +1,5 @@
+import { intoMap } from '../lib/util';
+
 export const DEFAULT_STATE = {
   thoughts: [],
   connections: [],

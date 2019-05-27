@@ -1,10 +1,12 @@
-import React, { useReducer, useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
 import { appReducer, DEFAULT_STATE } from './reducers';
 import { Context } from './store';
 import { ACTION_TYPES } from './reducers';
+import { intoMap } from './lib/util';
+import useXReducer from './hooks/useXReducer';
 import {
   thoughts as thoughtActions,
   plans as planActions,
@@ -17,7 +19,7 @@ import Settings from './components/Settings';
 import CreateThought from './components/CreateThought';
 
 const App = ({ classes, history }) => {
-  const [state, dispatch] = useReducer(appReducer, DEFAULT_STATE);
+  const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
   const rootRef = useRef(null);
 
   useEffect(() => {
@@ -35,13 +37,6 @@ const App = ({ classes, history }) => {
         noteActions.getNotes(),
         tagActions.getTags(),
       ]);
-
-      const intoMap = items => {
-        return items.reduce((all, each) => {
-          all[each.id] = each;
-          return all;
-        }, {});
-      };
       
       dispatch({
         type: ACTION_TYPES.INITIALIZE_APPLICATION,

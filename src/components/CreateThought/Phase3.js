@@ -18,7 +18,7 @@ export const Phase3 = React.memo(({ classes, onBack, isFocus, onFocus, createdTh
     const nextValue = e.target.value;
     setTags(tags.map((value, prevIdx) => prevIdx === idx ? nextValue : value));
   };
-  
+
   return (
     <div className={`${classes.phase} ${classes.phase3} ${isFocus ? ' isFocus' : ''}`}>
       {isFocus && <PhaseHeader classes={classes} value={'Tags'} onClick={onFocus}/>}
@@ -28,7 +28,7 @@ export const Phase3 = React.memo(({ classes, onBack, isFocus, onFocus, createdTh
             <PhaseSelect id={'tag'} classes={classes} value={''} options={filteredTagOptions} onChange={handleCreateTag(idx)} label={null}/>
           ): tag}{tag !== '' && <button className={classes.deleteTagButton} onClick={handleDeleteTag(idx)}><Close/></button>}</li>
         })}
-        <button className={classes.addTagButton} onClick={handleAddTag}><Add/></button>
+        {filteredTagOptions.length > 0 && <button className={classes.addTagButton} onClick={handleAddTag}><Add/></button>}
       </ul>
       {isFocus && isReady && <PhaseNext classes={classes} onClick={onBack} label={'Add Notes'} id={'add-notes'} Icon={Notes}/>}
     </div>

@@ -13,7 +13,7 @@ export const Home = ({ classes, state }) => {
   const { history, dispatch } = useApp();
 
   const handleAddThought = useCallback(() => history.push('/thought/new'), []);
-
+  console.log(state);
   return (
     <div className={classes.root}>
       <Content classes={classes} thoughts={state.thoughts} connections={state.connections}/>
