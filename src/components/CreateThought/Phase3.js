@@ -12,13 +12,13 @@ export const Phase3 = React.memo(({ classes, onBack, isFocus, onFocus, createdTh
   const [tagOptions, setTagOptions] = useNestedXReducer('tagOptions', createdThought, dispatch);
   const isReady = validateInputs();
   const handleDeleteTag = idx => () => setTags(tags.filter((_, prevIdx) => prevIdx !== idx));
-  const handleAddTag = useCallback(() => setTags(prev => prev.concat('')), []);
+  const filteredTagOptions = useMemo(() => tagOptions.filter(tag => tags.indexOf(tag) === -1), [tags, tagOptions]);
+  const handleAddTag = useCallback(() => setTags(prev => prev.concat(filteredTagOptions.length === 1 ? filteredTagOptions[0] : '')), [filteredTagOptions]);
   const handleCreateTag = idx => e => {
     const nextValue = e.target.value;
     setTags(tags.map((value, prevIdx) => prevIdx === idx ? nextValue : value));
   };
-
-  const filteredTagOptions = useMemo(() => tagOptions.filter(tag => tags.indexOf(tag) === -1),[tags, tagOptions]);
+  
   return (
     <div className={`${classes.phase} ${classes.phase3} ${isFocus ? ' isFocus' : ''}`}>
       {isFocus && <PhaseHeader classes={classes} value={'Tags'} onClick={onFocus}/>}
