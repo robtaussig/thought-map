@@ -45,7 +45,7 @@ export const CreateThought = ({ classes, state }) => {
       },
     }
     setEverything(next);
-    history.push('/');
+    history.push(`/thought/${response.thought.id}`);
   };
 
   return (
