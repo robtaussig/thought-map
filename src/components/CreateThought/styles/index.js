@@ -47,6 +47,12 @@ export const styles = theme => ({
     '&#type': {
       gridArea: 'type-input',
     },
+    '&#tag': {
+      '& > select': {
+        backgroundColor: 'transparent',
+        color: 'white',
+      },
+    }
   },
   phaseSelect: {
     flex: '0 0 40px',
@@ -91,6 +97,9 @@ export const styles = theme => ({
     height: 80,
     ...theme.defaults.bubbleButton,
   },
+  hideDescriptionButton: {
+    marginTop: 10,
+  },
   phase1: {
     '&:not(.isFocus)': {
       width: '100%',
@@ -115,6 +124,46 @@ export const styles = theme => ({
     '& #add-tags': {
       right: 'unset',
       left: 0,
+    }
+  },
+  phase3: {
+    '& #add-notes': {
+      right: 'unset',
+      left: 0,
+    }
+  },
+  addTagButton: {
+    
+  },
+  deleteTagButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    color: 'white',
+    '& > svg': {
+      height: 15,
+      width: 15,
+    }
+  },
+  tagGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gridGap: '5px',
+    margin: 5,
+    '& > li': {
+      position: 'relative',
+      border: '1px solid black',
+      padding: '10px 0',
+      textAlign: 'center',
+      borderRadius: '5px',
+      backgroundColor: '#bada55',
+      color: 'white',
+    },
+    '& > *': {
+      height: 40,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     }
   },
   addNoteButton: {

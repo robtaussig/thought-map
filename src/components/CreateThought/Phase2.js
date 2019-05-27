@@ -1,22 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PhaseHeader from './PhaseHeader';
-import PhaseInput from './PhaseInput';
-import PhaseSelect from './PhaseSelect';
-import PhaseDate from './PhaseDate';
-import PhaseDescription from './PhaseDescription';
 import PhaseNext from './PhaseNext';
-import Notes from '@material-ui/icons/Notes';
+import FolderSpecial from '@material-ui/icons/FolderSpecial';
 import Add from '@material-ui/icons/Add';
 import Note from './Note';
 import { useNestedXReducer } from '../../hooks/useXReducer';
 
-export const Phase2 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, createdThought, dispatch }) => {
+export const Phase2 = React.memo(({ classes, onNext, isFocus, onFocus, createdThought, dispatch }) => {
   const [notes, setNotes] = useNestedXReducer('notes', createdThought, dispatch);
   const isReady = validateInputs();
-
-  useEffect(() => {
-    onReady(isReady);
-  }, [isReady]);
 
   const handleSetNote = idx => e => {
     const nextValue = e.target.value;
@@ -33,7 +25,7 @@ export const Phase2 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, 
         return <Note key={`${noteIdx}-note`} classes={classes} isFocus={isFocus} value={note} onChange={handleSetNote(noteIdx)} onRemove={handleDeleteNote(noteIdx)}/>;
       })}
       {isFocus && <button className={classes.addNoteButton} onClick={handleAddNote}><Add/></button>}
-      {isFocus && isReady && <PhaseNext classes={classes} onClick={onNext} label={'Add Tags'} id={'add-tags'} Icon={Notes}/>}
+      {isFocus && isReady && <PhaseNext classes={classes} onClick={onNext} label={'Add Tags'} id={'add-tags'} Icon={FolderSpecial}/>}
     </div>
   );
 });

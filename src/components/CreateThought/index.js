@@ -16,7 +16,9 @@ const DEFAULT_STATE = {
   type: 'Task',
   date: '',
   description: '',
-  notes: [''],
+  notes: [],
+  tags: ['Important', 'Lazy', 'Misc'],
+  tagOptions: ['Important', 'Lazy', 'Misc', 'Later'],
 };
 
 const mergedReducer = (state, action) => {
@@ -49,13 +51,19 @@ export const CreateThought = ({ classes, state }) => {
           classes={classes}
           onNext={() => setPhase(3)}
           isFocus={phase === 2}
-          onReady={isReady => setReady(isReady)}
           onFocus={() => setPhase(2)}
           createdThought={createdThought}
           dispatch={createdThoughtDispatch}
         />
       )}
-      {phase > 2 && <Phase3 classes={classes} onNext={() => setPhase(4)} isFocus={phase === 3} createdThought={createdThought} dispatch={createdThoughtDispatch}/>}
+      {phase > 2 && (
+        <Phase3
+          classes={classes}
+          onBack={() => setPhase(2)}
+          isFocus={phase === 3}
+          createdThought={createdThought}
+          dispatch={createdThoughtDispatch}/>
+      )}
       {phase > 3 && <Phase4 classes={classes} onNext={handleSubmit} isFocus={phase === 4} createdThought={createdThought} dispatch={createdThoughtDispatch}/>}
       <AddButton classes={classes} onClick={handleSubmit} label={'Create Thought'} disabled={!ready} Icon={Check}/>
     </div>

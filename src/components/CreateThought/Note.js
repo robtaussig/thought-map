@@ -8,7 +8,7 @@ export const Note = React.memo(({ classes, value, onChange, onRemove, isFocus })
 
   return (
     <Fragment>
-      <PhaseInput id={'note'} classes={classes} value={value} onChange={onChange} label={'Note'} DeleteButton={DeleteButton}/>
+      <PhaseInput id={'note'} classes={classes} value={value} onChange={onChange} label={'Note'} DeleteButton={DeleteButton} autoFocus/>
     </Fragment>
   );
 });
