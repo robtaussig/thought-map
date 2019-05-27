@@ -32,14 +32,14 @@ export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, 
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
       {!isFocus && 
-        <PhaseHeader classes={classes} value={'Basics'} onClick={onFocus}/>}
+        <PhaseHeader classes={classes} value={'Edit'} onClick={onFocus}/>}
       {(!focusDescription || !isFocus) &&
         <PhaseInput id={'title'} classes={classes} value={title} onChange={e => setTitle(e.target.value)} label={'Title'} autoFocus/>}
-      {(!focusDescription || !isFocus) &&
+      {!focusDescription && isFocus &&
         <PhaseSelect id={'type'} classes={classes} value={type} options={typeOptions} onChange={e => setType(e.target.value)} label={'Type'}/>}
-      {(!focusDescription || !isFocus) &&
+      {!focusDescription && isFocus &&
         <PhaseDate id={'date'} classes={classes} value={date} onChange={e => setDate(e.target.value)} label={'Date'}/>}
-      {(!focusDescription || !isFocus) &&
+      {!focusDescription && isFocus &&
         <PhaseDate id={'time'} time classes={classes} value={time} onChange={e => setTime(e.target.value)} label={'Time'}/>}
       {focusDescription &&
         <button className={classes.hideDescriptionButton} aria-label={'Hide Description'} onClick={() => setFocusDescription(false)}><ExpandLess/></button>}

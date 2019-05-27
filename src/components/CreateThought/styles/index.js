@@ -104,9 +104,8 @@ export const styles = theme => ({
     '&:not(.isFocus)': {
       width: '100%',
       display: 'grid',
-      gridTemplateAreas: `"header title-input"
-                        "type-input date-input"`,
-      gridTemplateRows: 'repeat(2, 1fr)',
+      gridTemplateAreas: `"header title-input"`,
+      gridTemplateRows: 'repeat(1, 1fr)',
       backgroundColor: 'white',
       borderBottom: '1px solid gainsboro',
     },

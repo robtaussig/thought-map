@@ -1,4 +1,4 @@
-const DATABASE_VERSION = 5;
+const DATABASE_VERSION = 6;
 const LocalStore = require('../lib/local-store')({ global: false }, DATABASE_VERSION);
 
 const currentDate = new Date() - 1;
@@ -114,7 +114,7 @@ const DATABASE_SCHEMA = {
       table: 'plans',
       object: {
         id: 1,
-        name: 'Test Plan',
+        name: 'Test Plan',        
         created: currentDate,
         updated: currentDate,
         deleted: null,
@@ -128,6 +128,7 @@ const DATABASE_SCHEMA = {
         planId: 1,
         type: 'task',
         date: null,
+        time: null,
         status: 'new',
         description: 'Test description',
         created: currentDate,
