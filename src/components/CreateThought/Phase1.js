@@ -9,7 +9,7 @@ import Notes from '@material-ui/icons/Notes';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import { useNestedXReducer } from '../../hooks/useXReducer';
 
-export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, createdThought, dispatch }) => {
+export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, createdThought, dispatch, focusTitleInput }) => {
   const [title, setTitle] = useNestedXReducer('title', createdThought, dispatch);
   const [typeOptions, setTypeOptions] = useNestedXReducer('typeOptions', createdThought, dispatch);
   const [type, setType] = useNestedXReducer('type', createdThought, dispatch);
@@ -34,7 +34,7 @@ export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, 
       {!isFocus && 
         <PhaseHeader classes={classes} value={'Edit'} onClick={onFocus}/>}
       {(!focusDescription || !isFocus) &&
-        <PhaseInput id={'title'} classes={classes} value={title} onChange={e => setTitle(e.target.value)} label={'Title'} autoFocus/>}
+        <PhaseInput id={'title'} classes={classes} value={title} onChange={e => setTitle(e.target.value)} label={'Title'} onFocus={focusTitleInput}/>}
       {!focusDescription && isFocus &&
         <PhaseSelect id={'type'} classes={classes} value={type} options={typeOptions} onChange={e => setType(e.target.value)} label={'Type'}/>}
       {!focusDescription && isFocus &&

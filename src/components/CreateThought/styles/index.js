@@ -3,13 +3,13 @@ export const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    backgroundColor: '#51759578',
+    backgroundColor: theme.palette.gray[500],
     overflow: 'hidden',
     '& > .isFocus': {
       flex: 1,
       ...theme.defaults.castShadow.light,
       margin: 50,
-      backgroundColor: 'white',
+      backgroundColor: theme.palette.gray[0],
     }
   },
   phase: {
@@ -24,7 +24,7 @@ export const styles = theme => ({
   phaseInputLabel: {    
     display: 'flex',
     flexDirection: 'column',
-    color: '#919191',
+    color: theme.palette.gray[700],
     position: 'relative',
     '&#title': {
       gridArea: 'title-input',
@@ -43,9 +43,12 @@ export const styles = theme => ({
   phaseSelectLabel: {
     display: 'flex',
     flexDirection: 'column',    
-    color: '#919191',
+    color: theme.palette.gray[700],
     '&#type': {
       gridArea: 'type-input',
+      '& > select': {
+        backgroundColor: 'white',
+      }
     },
     '&#tag': {
       '& > select': {
@@ -57,7 +60,7 @@ export const styles = theme => ({
   phaseSelect: {
     flex: '0 0 40px',
     fontSize: 20,
-    border: '1px solid hsla(341, 97%, 59%, 0.2)',
+    border: `1px solid ${theme.palette.gray[300]}`,
   },
   phaseOption: {
     
@@ -65,7 +68,7 @@ export const styles = theme => ({
   phaseDateLabel: {
     display: 'flex',
     flexDirection: 'column',    
-    color: '#919191',
+    color: theme.palette.gray[700],
     '&#date': {
       gridArea: 'date-input',
     },
@@ -73,14 +76,14 @@ export const styles = theme => ({
   phaseDateField: {
     flex: '0 0 40px',
     fontSize: 20,
-    border: '1px solid hsla(341, 97%, 59%, 0.2)',
+    border: `1px solid ${theme.palette.gray[300]}`,
     borderRadius: '5px',
-    backgroundColor: 'rgb(248, 248, 248)',
+    backgroundColor: 'white',
   },
   phaseDescriptionLabel: {
     display: 'flex',
     flexDirection: 'column',    
-    color: '#919191',
+    color: theme.palette.gray[700],
     '&#description': {
       gridArea: 'description-input',
       marginBottom: 10,
@@ -90,7 +93,7 @@ export const styles = theme => ({
   phaseDescriptionField: {
     flex: 1,
     fontSize: 20,
-    border: '1px solid hsla(341, 97%, 59%, 0.2)',
+    border: `1px solid ${theme.palette.gray[300]}`,
     borderRadius: '5px',
   },
   phaseNextButton: {
@@ -107,7 +110,7 @@ export const styles = theme => ({
       gridTemplateAreas: `"header title-input"`,
       gridTemplateRows: 'repeat(1, 1fr)',
       backgroundColor: 'white',
-      borderBottom: '1px solid gainsboro',
+      borderBottom: `1px solid ${theme.palette.gray[300]}`,
     },
     '& #add-notes': {
       right: 'unset',
@@ -118,7 +121,7 @@ export const styles = theme => ({
     '&:not(.isFocus)': {
       width: '100%',
       backgroundColor: 'white',
-      borderBottom: '1px solid gainsboro',
+      borderBottom: `1px solid ${theme.palette.gray[300]}`,
     },
     '& #add-tags': {
       right: 'unset',
@@ -132,7 +135,7 @@ export const styles = theme => ({
     }
   },
   addTagButton: {
-    
+    color: theme.palette.secondary[500],
   },
   deleteTagButton: {
     position: 'absolute',
@@ -155,7 +158,7 @@ export const styles = theme => ({
       padding: '10px 0',
       textAlign: 'center',
       borderRadius: '5px',
-      backgroundColor: '#bada55',
+      backgroundColor: theme.palette.primary[500],
       color: 'white',
     },
     '& > *': {
@@ -166,12 +169,12 @@ export const styles = theme => ({
     }
   },
   addNoteButton: {
-    color: '#00b302',
+    color: theme.palette.secondary[500],
   },
   deleteNoteButton: {
     position: 'absolute',
     right: -25,
-    color: '#b70000',
+    color: theme.palette.red[500],
   },
   phaseHeader: {
     gridArea: 'header',
@@ -182,14 +185,14 @@ export const styles = theme => ({
   },
   addButton: {
     position: 'fixed',
-    border: '2px solid #bada55',
+    border: `2px solid ${theme.palette.primary[500]}`,
     top: 0,
     right: 0,
     margin: 30,
     height: 70,
     width: 70,
     borderRadius: '50%',
-    backgroundColor: '#2f2f2f',
+    backgroundColor: theme.palette.gray[600],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

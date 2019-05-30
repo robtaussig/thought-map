@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useReducer } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import useApp from '../../hooks/useApp';
 import useXReducer, { useNestedXReducer } from '../../hooks/useXReducer';
 import { withStyles } from '@material-ui/core/styles';
@@ -30,6 +30,11 @@ export const CreateThought = ({ classes, state }) => {
   const [ _, setEverything ] = useNestedXReducer('*', state, dispatch);
   const [ phase, setPhase ] = useState(1);
   const [ ready, setReady ] = useState(false);
+  const focusInputRef = useRef(() => {});
+
+  useEffect(() => {
+    focusInputRef.current()
+  }, []);
 
   const handleSubmit = async () => {
     const response = await createWholeThought(createdThought);
@@ -48,6 +53,8 @@ export const CreateThought = ({ classes, state }) => {
     history.push(`/thought/${response.thought.id}`);
   };
 
+  const setFocusInput = useCallback(focusInput => focusInputRef.current = focusInput, []);
+
   return (
     <div className={classes.root}>
       <Phase1
@@ -58,6 +65,7 @@ export const CreateThought = ({ classes, state }) => {
         onFocus={() => setPhase(1)}
         createdThought={createdThought}
         dispatch={createdThoughtDispatch}
+        focusTitleInput={setFocusInput}
       />
       {phase > 1 && (
         <Phase2
