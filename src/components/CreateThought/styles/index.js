@@ -185,7 +185,7 @@ export const styles = theme => ({
   },
   addButton: {
     position: 'fixed',
-    border: `2px solid ${theme.palette.primary[500]}`,
+    border: `2px solid ${theme.palette.gray[200]}`,
     top: 0,
     right: 0,
     margin: 30,
@@ -199,8 +199,14 @@ export const styles = theme => ({
     transition: 'all 0.2s linear',
     color: 'white',
     opacity: 0.5,
+    '&#return-home': {
+      left: 0,
+      right: 'unset',
+      opacity: '0.5!important',
+    },
     '&:not([disabled])': {
       opacity: 1,
+      border: `2px solid ${theme.palette.primary[500]}`,
       '&:hover': {
         transform: 'scale(1.1)',
         ...theme.defaults.castShadow.heavy,
@@ -217,6 +223,12 @@ export const styles = theme => ({
       top: 'unset',
       bottom: 0,
       transition: 'all 0.1s linear',
+      '&#return-home': {
+        left: 'unset',
+        right: 0,
+        top: 0,
+        bottom: 'unset',
+      },
       '&:not([disabled])': {
         ...theme.defaults.castShadow.heavy,
         '&:hover': {

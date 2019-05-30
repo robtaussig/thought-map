@@ -8,7 +8,6 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
       <h1 className={classes.thoughtTitle}>{thought.title}</h1>
       <span className={classes.thoughtTime}>{thought.time}</span>
       <span className={classes.thoughtStatus}>New</span>
-      <button className={classes.changeStatus}>Change</button>
       <span className={classes.thoughtDate}>{thought.date}</span>
       <span className={classes.thoughtType}>{thought.type}</span>
       {notes.length > 0 && <ul className={classes.noteList}>

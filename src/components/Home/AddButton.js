@@ -6,10 +6,11 @@ export const AddButton = React.memo(({ classes, id = 'add-button', onClick, labe
   const buttonRef = useRef(null);
 
   const handleMobileTouch = () => !disabled && buttonRef.current.classList.add('touched');
-  const handleMobileTouchEnd = () => {
+  const handleMobileTouchEnd = e => {
     if (!disabled) {
       buttonRef.current.classList.remove('touched');
       onClick();
+      e.preventDefault();
     }
   };
 

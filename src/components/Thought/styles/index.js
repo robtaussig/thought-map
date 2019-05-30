@@ -16,7 +16,7 @@ export const styles = theme => ({
     gridGap: '10px',
     padding: 10,
     gridTemplateAreas: `"title title title"
-                        "time status change-status-button"
+                        "time status status"
                         "date type type"
                         "notes notes notes"
                         "tags tags tags"
@@ -38,7 +38,7 @@ export const styles = theme => ({
     gridArea: 'date',
   },
   thoughtStatus: {
-    color: theme.palette.secondary[300],
+    color: theme.palette.primary[500],
     gridArea: 'status',
   },
   changeStatus: {
@@ -85,6 +85,7 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    opacity: 0.5,
     transition: 'all 0.2s linear',
     color: 'white',
     '&:hover': {
@@ -99,8 +100,6 @@ export const styles = theme => ({
      * Small
      */
     [theme.breakpoints.down('sm')]: {
-      top: 'unset',
-      bottom: 0,
       transition: 'all 0.1s linear',
       ...theme.defaults.castShadow.heavy,
       '&:hover': {

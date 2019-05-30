@@ -8,6 +8,7 @@ import Phase2 from './Phase2';
 import Phase3 from './Phase3';
 import AddButton from '../Home/AddButton';
 import Check from '@material-ui/icons/Check';
+import Home from '@material-ui/icons/Home';
 import { createWholeThought } from '../../actions/complex';
 import { ACTION_TYPES } from '../../reducers';
 import { intoMap } from '../../lib/util';
@@ -55,6 +56,7 @@ export const CreateThought = ({ classes, state }) => {
   };
 
   const setFocusInput = useCallback(focusInput => focusInputRef.current = focusInput, []);
+  const handleClickHome = useCallback(() => history.push('/'),[]);
 
   return (
     <div className={classes.root}>
@@ -87,6 +89,7 @@ export const CreateThought = ({ classes, state }) => {
           dispatch={createdThoughtDispatch}/>
       )}
       <AddButton classes={classes} onClick={handleSubmit} label={'Create Thought'} disabled={!ready} Icon={Check}/>
+      <AddButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
     </div>
   );
 };
