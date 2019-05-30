@@ -33,7 +33,7 @@ export const CreateThought = ({ classes, state }) => {
   const focusInputRef = useRef(() => {});
 
   useEffect(() => {
-    const timeout = setTimeout(focusInputRef.current, 0);
+    const timeout = setTimeout(focusInputRef.current, 100);
     return () => clearTimeout(timeout);
   }, []);
 
