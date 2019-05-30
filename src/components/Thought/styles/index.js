@@ -16,8 +16,8 @@ export const styles = theme => ({
     gridGap: '10px',
     padding: 10,
     gridTemplateAreas: `"title title title"
-                        "time status status"
-                        "date type type"
+                        "time date date"
+                        "status status type"
                         "notes notes notes"
                         "tags tags tags"
                         "description description description"`,
