@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export const PhaseInput = React.memo(({ classes, value, onChange, label, id, onFocus, DeleteButton, scrollToOnMount }) => {
+export const PhaseInput = React.memo(({ classes, value, onChange, label, id, onFocus, DeleteButton, scrollToOnMount, autoFocus }) => {
   const rootRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -16,7 +16,7 @@ export const PhaseInput = React.memo(({ classes, value, onChange, label, id, onF
   return (
     <label key={`${id}-label`} ref={rootRef} id={id} className={classes.phaseInputLabel}>
       <div>
-        <input key={`${id}-input`} ref={inputRef} className={classes.phaseInputField} type={'text'} value={value} onChange={onChange}/>
+        <input key={`${id}-input`} ref={inputRef} className={classes.phaseInputField} type={'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
         <span/>
       </div>
       {label}

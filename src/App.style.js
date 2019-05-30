@@ -24,7 +24,7 @@ const secondaryColor = {
   100: '#BBDCCD',
   200: '#8FC5AC',
   300: '#629E8B',
-  400: '#35976M',
+  400: '#35976A',
   500: '#09814A',
   600: '#086A36',
   700: '#065330',
@@ -40,11 +40,11 @@ const grays = {
   300: '#A0A0A0',
   400: '#7A7A7A',
   500: '#545454',
-  600: '#2F2F2F',
+  600: '#2f2f2f',
   700: '#272727',
   800: '#161616',
   900: '#0D0D0D',
-  'A400': '#2F2F2F',
+  'A400': '#2f2f2f',
 };
 
 const reds = {
@@ -142,7 +142,7 @@ export const theme = responsiveFontSizes(
         '&:hover::before': {
           transform: 'translate(-50%, -50%) scale(15)',
         },
-      }
+      },
     },
   })
 );
