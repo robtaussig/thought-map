@@ -16,7 +16,7 @@ export const createWholeThought = async ({
   tags,
 }) => {
   const createdThought = await thoughtActions.createThought({
-    title, type, date, time, description,
+    title, type, date, time, description, status: 'new',
   });
   const thoughtId = createdThought.id;
   const [createdNotes, createdTags] = await Promise.all([

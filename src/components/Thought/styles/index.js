@@ -25,7 +25,7 @@ export const styles = theme => ({
     gridTemplateRows: 'max-content',
     gridTemplateColumns: 'max-content 1fr max-content',
   },
-  thoughtTitle: {
+  header: {
     color: theme.palette.secondary[400],
     fontSize: 30,
     gridArea: 'title',

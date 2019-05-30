@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import PhaseInput from './PhaseInput';
+import Input from '../General/Input';
 import Delete from '@material-ui/icons/Delete';
 
 export const Note = React.memo(({ classes, value, onChange, onRemove, isFocus, autoFocus }) => {
@@ -7,7 +7,7 @@ export const Note = React.memo(({ classes, value, onChange, onRemove, isFocus, a
 
   return (
     <Fragment>
-      <PhaseInput scrollToOnMount id={'note'} classes={classes} value={value} onChange={onChange} label={'Note'} DeleteButton={DeleteButton} autoFocus/>
+      <Input scrollToOnMount id={'note'} classes={classes} value={value} onChange={onChange} label={'Note'} DeleteButton={DeleteButton} autoFocus/>
     </Fragment>
   );
 });

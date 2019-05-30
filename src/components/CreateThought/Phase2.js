@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
-import PhaseHeader from './PhaseHeader';
+import React, { useCallback } from 'react';
+import Header from '../General/Header';
 import PhaseNext from './PhaseNext';
 import FolderSpecial from '@material-ui/icons/FolderSpecial';
 import Add from '@material-ui/icons/Add';
@@ -20,8 +20,8 @@ export const Phase2 = React.memo(({ classes, onNext, isFocus, onFocus, createdTh
 
   return (
     <div className={`${classes.phase} ${classes.phase2} ${isFocus ? ' isFocus' : ''}`}>
-      {!isFocus && <PhaseHeader classes={classes} value={`(${notes.length}) Notes`} onClick={onFocus}/>}
-      {isFocus && <PhaseHeader classes={classes} value={'Notes'} onClick={onFocus}/>}
+      {!isFocus && <Header classes={classes} value={`(${notes.length}) Notes`} onClick={onFocus}/>}
+      {isFocus && <Header classes={classes} value={'Notes'} onClick={onFocus}/>}
       {isFocus && notes.map((note, noteIdx) => {
         return <Note key={`${noteIdx}-note`} autoFocus={noteIdx === notes.length - 1} classes={classes} isFocus={isFocus} value={note} onChange={handleSetNote(noteIdx)} onRemove={handleDeleteNote(noteIdx)}/>;
       })}

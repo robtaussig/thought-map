@@ -1,11 +1,11 @@
 import React from 'react';
 import Note from '@material-ui/icons/Note';
-
+import Header from '../General/Header';
 export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [] }) => {
 
   return (
     <div className={classes.thoughtInformation}>
-      <h1 className={classes.thoughtTitle}>{thought.title}</h1>
+      <Header classes={classes} value={thought.title}/>
       <span className={classes.thoughtTime}>{thought.time}</span>
       <span className={classes.thoughtDate}>{thought.date}</span>
       <span className={classes.thoughtStatus}>New</span>

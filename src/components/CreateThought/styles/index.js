@@ -21,7 +21,7 @@ export const styles = theme => ({
       margin: 10,
     },
   },
-  phaseInputLabel: {    
+  inputLabel: {    
     display: 'flex',
     flexDirection: 'column',
     color: theme.palette.gray[700],
@@ -36,11 +36,11 @@ export const styles = theme => ({
       ...theme.defaults.underlineInput,
     },
   },
-  phaseInputField: {
+  inputField: {
     height: '100%',
     fontSize: 20,
   },
-  phaseSelectLabel: {
+  selectLabel: {
     display: 'flex',
     flexDirection: 'column',    
     color: theme.palette.gray[700],
@@ -57,15 +57,15 @@ export const styles = theme => ({
       },
     }
   },
-  phaseSelect: {
+  selectInput: {
     flex: '0 0 40px',
     fontSize: 20,
     border: `1px solid ${theme.palette.gray[300]}`,
   },
-  phaseOption: {
+  option: {
     
   },
-  phaseDateLabel: {
+  dateLabel: {
     display: 'flex',
     flexDirection: 'column',    
     color: theme.palette.gray[700],
@@ -73,14 +73,14 @@ export const styles = theme => ({
       gridArea: 'date-input',
     },
   },
-  phaseDateField: {
+  dateField: {
     flex: '0 0 40px',
     fontSize: 20,
     border: `1px solid ${theme.palette.gray[300]}`,
     borderRadius: '5px',
     backgroundColor: 'white',
   },
-  phaseDescriptionLabel: {
+  textAreaLabel: {
     display: 'flex',
     flexDirection: 'column',    
     color: theme.palette.gray[700],
@@ -90,7 +90,7 @@ export const styles = theme => ({
       flex: 1,
     },
   },
-  phaseDescriptionField: {
+  textAreaInput: {
     flex: 1,
     fontSize: 20,
     border: `1px solid ${theme.palette.gray[300]}`,
@@ -176,7 +176,7 @@ export const styles = theme => ({
     right: -25,
     color: theme.palette.red[500],
   },
-  phaseHeader: {
+  header: {
     gridArea: 'header',
     fontSize: '24px',
     display: 'flex',

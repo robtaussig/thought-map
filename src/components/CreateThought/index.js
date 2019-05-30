@@ -21,7 +21,7 @@ const DEFAULT_STATE = {
   time: '',
   description: '',
   notes: [],
-  tags: ['Important', 'Lazy', 'Misc'],
+  tags: [],
   tagOptions: ['Important', 'Lazy', 'Misc', 'Later'],
 };
 

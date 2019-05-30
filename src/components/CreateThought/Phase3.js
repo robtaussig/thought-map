@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
-import PhaseHeader from './PhaseHeader';
+import Header from '../General/Header';
 import PhaseNext from './PhaseNext';
-import PhaseSelect from './PhaseSelect';
+import Select from '../General/Select';
 import Notes from '@material-ui/icons/Notes';
 import Add from '@material-ui/icons/Add';
 import Close from '@material-ui/icons/Close';
@@ -21,11 +21,11 @@ export const Phase3 = React.memo(({ classes, onBack, isFocus, onFocus, createdTh
 
   return (
     <div className={`${classes.phase} ${classes.phase3} ${isFocus ? ' isFocus' : ''}`}>
-      {isFocus && <PhaseHeader classes={classes} value={'Tags'} onClick={onFocus}/>}
+      {isFocus && <Header classes={classes} value={'Tags'} onClick={onFocus}/>}
       <ul className={classes.tagGrid}>
         {tags.map((tag, idx) => {
           return <li key={`${idx}-tag`}>{tag === '' ? (
-            <PhaseSelect id={'tag'} classes={classes} value={''} options={filteredTagOptions} onChange={handleCreateTag(idx)} label={null}/>
+            <Select id={'tag'} classes={classes} value={''} options={filteredTagOptions} onChange={handleCreateTag(idx)} label={null}/>
           ): tag}{tag !== '' && <button className={classes.deleteTagButton} onClick={handleDeleteTag(idx)}><Close/></button>}</li>
         })}
         {filteredTagOptions.length > 0 && <button className={classes.addTagButton} onClick={handleAddTag}><Add/></button>}
