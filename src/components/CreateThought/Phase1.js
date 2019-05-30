@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PhaseHeader from './PhaseHeader';
 import PhaseInput from './PhaseInput';
 import PhaseSelect from './PhaseSelect';
@@ -29,22 +29,28 @@ export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, 
     onReady(isReady);
   }, [isReady]);
 
+  const handleTitleChange= useCallback(e => setTitle(e.target.value), []);
+  const handleTypeChange= useCallback(e => setType(e.target.value), []);
+  const handleDateChange= useCallback(e => setDate(e.target.value), []);
+  const handleTimeChange= useCallback(e => setTime(e.target.value), []);
+  const handleDescriptionChange= useCallback(e => setDescription(e.target.value), []);
+
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
       {!isFocus && 
         <PhaseHeader classes={classes} value={'Edit'} onClick={onFocus}/>}
       {(!focusDescription || !isFocus) &&
-        <PhaseInput id={'title'} classes={classes} value={title} onChange={e => setTitle(e.target.value)} label={'Title'} onFocus={focusTitleInput}/>}
+        <PhaseInput id={'title'} classes={classes} value={title} onChange={handleTitleChange} label={'Title'} onFocus={focusTitleInput}/>}
       {!focusDescription && isFocus &&
-        <PhaseSelect id={'type'} classes={classes} value={type} options={typeOptions} onChange={e => setType(e.target.value)} label={'Type'}/>}
+        <PhaseSelect id={'type'} classes={classes} value={type} options={typeOptions} onChange={handleTypeChange} label={'Type'}/>}
       {!focusDescription && isFocus &&
-        <PhaseDate id={'date'} classes={classes} value={date} onChange={e => setDate(e.target.value)} label={'Date'}/>}
+        <PhaseDate id={'date'} classes={classes} value={date} onChange={handleDateChange} label={'Date'}/>}
       {!focusDescription && isFocus &&
-        <PhaseDate id={'time'} time classes={classes} value={time} onChange={e => setTime(e.target.value)} label={'Time'}/>}
+        <PhaseDate id={'time'} time classes={classes} value={time} onChange={handleTimeChange} label={'Time'}/>}
       {focusDescription &&
         <button className={classes.hideDescriptionButton} aria-label={'Hide Description'} onClick={() => setFocusDescription(false)}><ExpandLess/></button>}
       {isFocus && 
-        <PhaseDescription id={'description'} classes={classes} value={description} onFocus={() => setFocusDescription(true)} onChange={e => setDescription(e.target.value)} label={'Description'}/>}
+        <PhaseDescription id={'description'} classes={classes} value={description} onFocus={() => setFocusDescription(true)} onChange={handleDescriptionChange} label={'Description'}/>}
       {isFocus && isReady && 
         <PhaseNext classes={classes} onClick={handleNext} label={'Add Notes'} id={'add-notes'} Icon={Notes}/>}
     </div>

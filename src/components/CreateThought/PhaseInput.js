@@ -14,9 +14,9 @@ export const PhaseInput = React.memo(({ classes, value, onChange, label, id, onF
     }
   }, []);
   return (
-    <label ref={rootRef} id={id} className={classes.phaseInputLabel}>
+    <label key={`${id}-label`} ref={rootRef} id={id} className={classes.phaseInputLabel}>
       <div>
-        <input ref={inputRef} className={classes.phaseInputField} type={'text'} value={value} onChange={onChange}/>
+        <input key={`${id}-input`} ref={inputRef} className={classes.phaseInputField} type={'text'} value={value} onChange={onChange}/>
         <span/>
       </div>
       {label}
