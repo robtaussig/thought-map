@@ -123,6 +123,8 @@ export const styles = theme => ({
     '&#delete': {
       bottom: 0,
       left: 0,
+      border: `2px solid ${theme.palette.red[300]}`,
+      backgroundColor: theme.palette.red[300],
     },
     margin: 30,
     height: 70,
