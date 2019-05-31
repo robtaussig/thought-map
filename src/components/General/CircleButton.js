@@ -22,7 +22,7 @@ export const CircleButton = React.memo(({ classes, id = 'add-button', onClick, l
     <button
       id={id}
       ref={buttonRef}
-      className={classes.CircleButton}
+      className={classes.circleButton}
       onTouchStart={handleMobileTouch}
       onTouchEnd={handleMobileTouchEnd}
       onMouseDown={handleMobileTouch}

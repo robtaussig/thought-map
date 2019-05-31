@@ -61,7 +61,7 @@ export const styles = theme => ({
     margin: 'auto',
     fontSize: 50,
   },
-  CircleButton: {
+  circleButton: {
     position: 'fixed',
     border: `2px solid ${theme.palette.primary[500]}`,
     top: 0,
