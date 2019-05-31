@@ -36,6 +36,7 @@ export const styles = theme => ({
     border: '5px solid #1f719e',
     position: 'relative',
     backgroundColor: 'white',
+    overflow: 'auto',
     ...theme.defaults.castShadow.light,
     '& > *': {
       display: 'flex',

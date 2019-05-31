@@ -36,7 +36,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
       ) : thought.time ? (
         <span className={classes.thoughtTime}>{thought.time}</span>
       ) : (
-        <button className={`${classes.thoughtTime} icon-button`} onClick={_ => setEdittingTime(true)}><AccessTime className={classes.timeIcon}/></button>
+        <button id={'time-button'} className={'icon-button'} onClick={_ => setEdittingTime(true)}><AccessTime className={classes.timeIcon}/></button>
       )}
       {edittingDate ? (
         <Date
@@ -49,7 +49,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
       ) : thought.date ? (
         <span className={classes.thoughtDate}>{thought.date}</span>
       ) : (
-        <button className={`${classes.thoughtDate} icon-button`} onClick={_ => setEdittingDate(true)}><CalendarToday className={classes.dateIcon}/></button>
+        <button id={'date-button'} className={'icon-button'} onClick={_ => setEdittingDate(true)}><CalendarToday className={classes.dateIcon}/></button>
       )}
       <Select
         id={'status'}

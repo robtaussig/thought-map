@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 import useApp from '../../hooks/useApp'
 import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home';
+import Delete from '@material-ui/icons/Delete';
 import { styles } from './styles';
 import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
@@ -14,7 +15,7 @@ const STATUS_OPTIONS = ['new', 'completed', 'in progress', 'almost done', 'pendi
 export const Thought = ({ classes, state }) => {
   const { history, dispatch } = useApp();
   const [_, setThoughts] = useNestedXReducer('thoughts', state, dispatch);
-  const thoughtId = useMemo(() => getThoughtIdFromPath(history.location.pathname), [history.location.pathname]);
+  const thoughtId = getThoughtIdFromPath(history.location.pathname);
   const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
   const relatedTags = useMemo(() => Object.values(state.tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, state.tags]);
   const relatedNotes = useMemo(() => Object.values(state.notes).filter(note => note.thoughtId === thoughtId), [thoughtId, state.notes]);
@@ -26,6 +27,11 @@ export const Thought = ({ classes, state }) => {
 
     setThoughts(prev => prev.map(prevThought => prevThought.id === updatedThought.id ? updatedThought : prevThought));
   }, []);
+  const handleDelete = useCallback(async () => {
+    await thoughtActions.deleteThought(thoughtId);
+    setThoughts(prev => prev.filter(prevThought => prevThought.id !== thoughtId));
+    history.push('/');
+  }, [thoughtId]);
 
   return (
     <div className={classes.root}>
@@ -41,6 +47,7 @@ export const Thought = ({ classes, state }) => {
           onUpdate={handleUpdate}
         />}
         <AddButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
+        <AddButton classes={classes} id={'delete'} onClick={handleDelete} label={'Delete'} Icon={Delete}/>
     </div>
   );
 };

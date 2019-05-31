@@ -10,11 +10,17 @@ export const styles = theme => ({
       transform: 'translate(-50%, -50%)',
     },
     '& .icon-button': {
-      ...theme.defaults.centered,
+      ...theme.defaults.centered,      
       color: theme.palette.primary[900],
       border: `1px solid ${theme.palette.primary[500]}`,
       backgroundColor: theme.palette.primary[100],
       borderRadius: '3px',
+      '&#time-button': {
+        gridArea: 'time',
+      },
+      '&#date-button': {
+        gridArea: 'date',
+      },
     },
     '& #time': {
       gridArea: 'time',
@@ -31,7 +37,8 @@ export const styles = theme => ({
   thoughtInformation: {
     display: 'grid',
     position: 'relative',
-    gridGap: '10px',
+    gridColumnGap: '10px',
+    gridRowGap: '20px',
     padding: 10,
     gridTemplateAreas: `"title title ."
                         "time date ."
@@ -45,13 +52,13 @@ export const styles = theme => ({
   },
   header: {
     color: theme.palette.secondary[300],
+    borderBottom: `1px solid ${theme.palette.secondary[100]}`,
     fontSize: 30,
     gridArea: 'title',
   },
   thoughtTime: {
     color: theme.palette.secondary[300],
     gridArea: 'time',
-    ...theme.defaults.centered,
   },
   timeIcon: {
 
@@ -62,7 +69,6 @@ export const styles = theme => ({
   thoughtDate: {
     color: theme.palette.secondary[300],
     gridArea: 'date',
-    ...theme.defaults.centered,
   },
   selectLabel: {
     color: theme.palette.primary[500],
@@ -88,7 +94,8 @@ export const styles = theme => ({
     gridArea: 'notes',
   },
   noteItem: {
-    ...theme.defaults.centered,
+    display: 'flex',
+    alignItems: 'center',
     color: theme.palette.secondary[300],
   },
   noteIcon: {
@@ -109,8 +116,14 @@ export const styles = theme => ({
   addButton: {
     position: 'fixed',
     border: `2px solid ${theme.palette.primary[500]}`,
-    top: 0,
-    right: 0,
+    '&#return-home': {
+      top: 0,
+      right: 0,
+    },
+    '&#delete': {
+      bottom: 0,
+      left: 0,
+    },
     margin: 30,
     height: 70,
     width: 70,
