@@ -88,6 +88,11 @@ export const theme = responsiveFontSizes(
       danger: 'orange',
     },
     defaults: {
+      centered: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
       castShadow: {
         heavy: {
           boxShadow: '0px 0px 20px -3px black',

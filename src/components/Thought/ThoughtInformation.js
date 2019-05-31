@@ -1,26 +1,53 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import Note from '@material-ui/icons/Note';
 import AccessTime from '@material-ui/icons/AccessTime';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Header from '../General/Header';
 import Select from '../General/Select';
+import Date from '../General/Date';
 
-export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], onStatusChange }) => {
-
-  const handleStatusChange = useCallback(event => onStatusChange(event.target.value), []);
+export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], onUpdate }) => {
+  const [edittingTime, setEdittingTime] = useState(false);
+  const [edittingDate, setEdittingDate] = useState(false);
+  const handleStatusChange = useCallback(event => onUpdate({ status: event.target.value }), []);
+  const handleSetTime = useCallback(event => {
+    setEdittingTime(false);
+    onUpdate({ time: event.target.value });
+  }, []);
+  const handleSetDate = useCallback(event => {
+    setEdittingDate(false);
+    onUpdate({ date: event.target.value });
+  }, []);
 
   return (
     <div className={classes.thoughtInformation}>
       <Header classes={classes} value={thought.title}/>
-      {thought.time ? (
+      {edittingTime ? (
+        <Date
+          id={'time'}
+          classes={classes}
+          value={''}
+          onChange={handleSetTime}
+          time
+          autoFocus={true}
+        />
+      ) : thought.time ? (
         <span className={classes.thoughtTime}>{thought.time}</span>
       ) : (
-        <button className={`${classes.thoughtTime} icon-button`}><AccessTime className={classes.timeIcon}/></button>
+        <button className={`${classes.thoughtTime} icon-button`} onClick={_ => setEdittingTime(true)}><AccessTime className={classes.timeIcon}/></button>
       )}
-      {thought.date ? (
+      {edittingDate ? (
+        <Date
+          id={'date'}
+          classes={classes}
+          value={''}
+          onChange={handleSetDate}
+          autoFocus={true}
+        />
+      ) : thought.date ? (
         <span className={classes.thoughtDate}>{thought.date}</span>
       ) : (
-        <button className={`${classes.thoughtDate} icon-button`}><CalendarToday className={classes.dateIcon}/></button>
+        <button className={`${classes.thoughtDate} icon-button`} onClick={_ => setEdittingDate(true)}><CalendarToday className={classes.dateIcon}/></button>
       )}
       <Select
         id={'status'}

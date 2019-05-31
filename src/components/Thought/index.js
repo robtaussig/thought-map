@@ -18,14 +18,13 @@ export const Thought = ({ classes, state }) => {
   const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
   const relatedTags = useMemo(() => Object.values(state.tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, state.tags]);
   const relatedNotes = useMemo(() => Object.values(state.notes).filter(note => note.thoughtId === thoughtId), [thoughtId, state.notes]);
-  console.log(state);
   const handleClickHome = () => {
     history.push('/');
   };
-  const handleStatusChange = useCallback(async value => {
+  const handleUpdate = useCallback(async toMerge => {
     const updatedThought = await thoughtActions.editThought({
       ...thought,
-      status: value,
+      ...toMerge,
     });
 
     setThoughts(prev => prev.map(prevThought => prevThought.id === updatedThought.id ? updatedThought : prevThought));
@@ -42,7 +41,7 @@ export const Thought = ({ classes, state }) => {
           tags={relatedTags}
           notes={relatedNotes}
           statusOptions={STATUS_OPTIONS}
-          onStatusChange={handleStatusChange}
+          onUpdate={handleUpdate}
         />}
         <AddButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
     </div>

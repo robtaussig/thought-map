@@ -10,13 +10,22 @@ export const styles = theme => ({
       transform: 'translate(-50%, -50%)',
     },
     '& .icon-button': {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: theme.palette.primary[600],
+      ...theme.defaults.centered,
+      color: theme.palette.primary[900],
       border: `1px solid ${theme.palette.primary[500]}`,
-      backgroundColor: theme.palette.primary[0],
+      backgroundColor: theme.palette.primary[100],
       borderRadius: '3px',
+    },
+    '& #time': {
+      gridArea: 'time',
+      display: 'flex',
+    },
+    '& #date': {
+      gridArea: 'date',
+      display: 'flex',
+      '& > input': {
+        width: '100%',
+      }
     },
   },
   thoughtInformation: {
@@ -42,6 +51,7 @@ export const styles = theme => ({
   thoughtTime: {
     color: theme.palette.secondary[300],
     gridArea: 'time',
+    ...theme.defaults.centered,
   },
   timeIcon: {
 
@@ -52,16 +62,17 @@ export const styles = theme => ({
   thoughtDate: {
     color: theme.palette.secondary[300],
     gridArea: 'date',
+    ...theme.defaults.centered,
   },
   selectLabel: {
     color: theme.palette.primary[500],
     gridArea: 'status',
-    border: `1px solid ${theme.palette.secondary[500]}`,
-    backgroundColor: theme.palette.secondary[100],
+    border: `1px solid ${theme.palette.primary[500]}`,
+    backgroundColor: theme.palette.primary[100],
     display: 'flex',
   },
   selectInput: {
-    color: theme.palette.secondary[900],
+    color: theme.palette.primary[900],
     width: '100%',
     fontSize: 24,
   },
@@ -77,8 +88,7 @@ export const styles = theme => ({
     gridArea: 'notes',
   },
   noteItem: {
-    display: 'flex',
-    alignItems: 'center',
+    ...theme.defaults.centered,
     color: theme.palette.secondary[300],
   },
   noteIcon: {
@@ -106,9 +116,7 @@ export const styles = theme => ({
     width: 70,
     borderRadius: '50%',
     backgroundColor: theme.palette.gray[600],
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    ...theme.defaults.centered,
     opacity: 0.5,
     transition: 'all 0.2s linear',
     color: 'white',
