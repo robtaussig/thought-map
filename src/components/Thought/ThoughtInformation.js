@@ -9,15 +9,17 @@ import Date from '../General/Date';
 export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], onUpdate }) => {
   const [edittingTime, setEdittingTime] = useState(false);
   const [edittingDate, setEdittingDate] = useState(false);
-  const handleStatusChange = useCallback(event => onUpdate({ status: event.target.value }), []);
+  const handleStatusChange = useCallback(event => {
+    onUpdate({ ...thought, status: event.target.value });
+  }, [thought]);
   const handleSetTime = useCallback(event => {
     setEdittingTime(false);
-    onUpdate({ time: event.target.value });
-  }, []);
+    onUpdate({ ...thought, time: event.target.value })
+  }, [thought]);
   const handleSetDate = useCallback(event => {
     setEdittingDate(false);
-    onUpdate({ date: event.target.value });
-  }, []);
+    onUpdate({ ...thought, date: event.target.value })
+  }, [thought]);
 
   return (
     <div className={classes.thoughtInformation}>

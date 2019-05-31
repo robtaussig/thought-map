@@ -21,14 +21,11 @@ export const Thought = ({ classes, state }) => {
   const handleClickHome = () => {
     history.push('/');
   };
-  const handleUpdate = useCallback(async toMerge => {
-    const updatedThought = await thoughtActions.editThought({
-      ...thought,
-      ...toMerge,
-    });
+  const handleUpdate = useCallback(async updatedThought => {
+    await thoughtActions.editThought(updatedThought);
 
     setThoughts(prev => prev.map(prevThought => prevThought.id === updatedThought.id ? updatedThought : prevThought));
-  }, [thought]);
+  }, []);
 
   return (
     <div className={classes.root}>
