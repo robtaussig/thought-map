@@ -8,15 +8,24 @@ export const styles = theme => ({
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-    }
+    },
+    '& .icon-button': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: theme.palette.primary[600],
+      border: `1px solid ${theme.palette.primary[500]}`,
+      backgroundColor: theme.palette.primary[0],
+      borderRadius: '3px',
+    },
   },
   thoughtInformation: {
     display: 'grid',
     position: 'relative',
     gridGap: '10px',
     padding: 10,
-    gridTemplateAreas: `"title title title"
-                        "time date date"
+    gridTemplateAreas: `"title title ."
+                        "time date ."
                         "status status ."
                         "type . ."
                         "notes notes notes"
@@ -26,7 +35,7 @@ export const styles = theme => ({
     gridTemplateColumns: 'max-content 1fr max-content',
   },
   header: {
-    color: theme.palette.secondary[400],
+    color: theme.palette.secondary[300],
     fontSize: 30,
     gridArea: 'title',
   },
@@ -34,13 +43,27 @@ export const styles = theme => ({
     color: theme.palette.secondary[300],
     gridArea: 'time',
   },
+  timeIcon: {
+
+  },
+  dateIcon: {
+
+  },
   thoughtDate: {
     color: theme.palette.secondary[300],
     gridArea: 'date',
   },
-  thoughtStatus: {
+  selectLabel: {
     color: theme.palette.primary[500],
     gridArea: 'status',
+    border: `1px solid ${theme.palette.secondary[500]}`,
+    backgroundColor: theme.palette.secondary[100],
+    display: 'flex',
+  },
+  selectInput: {
+    color: theme.palette.secondary[900],
+    width: '100%',
+    fontSize: 24,
   },
   changeStatus: {
     color: theme.palette.primary[500],
