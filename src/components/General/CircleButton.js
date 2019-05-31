@@ -6,16 +6,20 @@ export const CircleButton = React.memo(({ classes, id = 'add-button', onClick, l
   const buttonRef = useRef(null);
   const isCancelled = useRef(null);
 
-  const handleMobileTouch = () => {
+  const handleInteractionStart = () => {
     isCancelled.current = false;
     !disabled && buttonRef.current.classList.add('touched');
   };
-  const handleMobileTouchEnd = e => {
+  const handleInteractionEnd = e => {
     buttonRef.current.classList.remove('touched');
     e.preventDefault();
     if (!disabled && isCancelled.current === false) {
       onClick();
     }
+  };
+  const handleCancelInteraction = e => {
+    isCancelled.current = true;
+    buttonRef.current.classList.remove('touched');
   };
 
   return (
@@ -23,12 +27,12 @@ export const CircleButton = React.memo(({ classes, id = 'add-button', onClick, l
       id={id}
       ref={buttonRef}
       className={classes.circleButton}
-      onTouchStart={handleMobileTouch}
-      onTouchEnd={handleMobileTouchEnd}
-      onMouseDown={handleMobileTouch}
-      onMouseUp={handleMobileTouchEnd}
-      onMouseMove={e => isCancelled.current = true}
-      onTouchMove={e => isCancelled.current = true}
+      onTouchStart={handleInteractionStart}
+      onTouchEnd={handleInteractionEnd}
+      onMouseDown={handleInteractionStart}
+      onMouseUp={handleInteractionEnd}
+      onMouseMove={handleCancelInteraction}
+      onTouchMove={handleCancelInteraction}
       aria-label={label}
       disabled={disabled}
     >
