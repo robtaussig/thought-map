@@ -6,7 +6,7 @@ import Delete from '@material-ui/icons/Delete';
 import { styles } from './styles';
 import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
-import AddButton from '../Home/AddButton';
+import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions } from '../../actions';
 import { useNestedXReducer } from '../../hooks/useXReducer';
 
@@ -46,8 +46,8 @@ export const Thought = ({ classes, state }) => {
           statusOptions={STATUS_OPTIONS}
           onUpdate={handleUpdate}
         />}
-        <AddButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
-        <AddButton classes={classes} id={'delete'} onClick={handleDelete} label={'Delete'} Icon={Delete}/>
+        <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
+        <CircleButton classes={classes} id={'delete'} onClick={handleDelete} label={'Delete'} Icon={Delete}/>
     </div>
   );
 };

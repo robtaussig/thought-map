@@ -183,7 +183,7 @@ export const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  addButton: {
+  CircleButton: {
     position: 'fixed',
     border: `2px solid ${theme.palette.gray[200]}`,
     top: 0,

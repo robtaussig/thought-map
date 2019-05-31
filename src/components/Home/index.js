@@ -4,7 +4,7 @@ import Content from './Content/index';
 import GuideButton from './GuideButton';
 import SettingsButton from './SettingsButton';
 import Header from './Header';
-import AddButton from './AddButton';
+import CircleButton from '../General/CircleButton';
 import { styles } from './styles';
 import useApp from '../../hooks/useApp';
 
@@ -20,7 +20,7 @@ export const Home = ({ classes, state }) => {
       <GuideButton classes={classes}/>
       <SettingsButton classes={classes}/>
       <Header classes={classes}/>
-      <AddButton classes={classes} onClick={handleAddThought} label={'Add Thought'}/>
+      <CircleButton classes={classes} onClick={handleAddThought} label={'Add Thought'}/>
     </div>
   );
 };

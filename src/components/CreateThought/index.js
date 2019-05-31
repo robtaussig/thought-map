@@ -6,7 +6,7 @@ import { styles } from './styles';
 import Phase1 from './Phase1';
 import Phase2 from './Phase2';
 import Phase3 from './Phase3';
-import AddButton from '../Home/AddButton';
+import CircleButton from '../General/CircleButton';
 import Check from '@material-ui/icons/Check';
 import Home from '@material-ui/icons/Home';
 import { createWholeThought } from '../../actions/complex';
@@ -88,8 +88,8 @@ export const CreateThought = ({ classes, state }) => {
           createdThought={createdThought}
           dispatch={createdThoughtDispatch}/>
       )}
-      <AddButton classes={classes} onClick={handleSubmit} label={'Create Thought'} disabled={!ready} Icon={Check}/>
-      <AddButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
+      <CircleButton classes={classes} onClick={handleSubmit} label={'Create Thought'} disabled={!ready} Icon={Check}/>
+      <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
     </div>
   );
 };

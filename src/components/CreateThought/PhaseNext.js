@@ -1,10 +1,10 @@
 import React from 'react';
-import AddButton from '../Home/AddButton';
+import CircleButton from '../General/CircleButton';
 
 export const PhaseNext = React.memo(({ classes, id, value, label, onClick, Icon }) => {
 
   return (
-    <AddButton classes={classes} id={id} onClick={onClick} label={label} Icon={Icon}/>
+    <CircleButton classes={classes} id={id} onClick={onClick} label={label} Icon={Icon}/>
   );
 });
 

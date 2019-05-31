@@ -113,7 +113,7 @@ export const styles = theme => ({
     gridArea: 'description',
     color: theme.palette.secondary[300],
   },
-  addButton: {
+  CircleButton: {
     position: 'fixed',
     border: `2px solid ${theme.palette.primary[500]}`,
     '&#return-home': {
