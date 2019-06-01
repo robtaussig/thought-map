@@ -11,6 +11,7 @@ import { thoughts as thoughtActions } from '../../actions';
 import { useNestedXReducer } from '../../hooks/useXReducer';
 
 const STATUS_OPTIONS = ['new', 'completed', 'in progress', 'almost done', 'pending'];
+const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
 
 export const Thought = ({ classes, state }) => {
   const { history, dispatch } = useApp();
@@ -27,7 +28,7 @@ export const Thought = ({ classes, state }) => {
 
     setThoughts(prev => prev.map(prevThought => prevThought.id === updatedThought.id ? updatedThought : prevThought));
   }, []);
-  const handleDelete = useCallback(async () => {
+  const handleClickDelete = useCallback(async () => {
     await thoughtActions.deleteThought(thoughtId);
     setThoughts(prev => prev.filter(prevThought => prevThought.id !== thoughtId));
     history.push('/');
@@ -44,10 +45,11 @@ export const Thought = ({ classes, state }) => {
           tags={relatedTags}
           notes={relatedNotes}
           statusOptions={STATUS_OPTIONS}
+          typeOptions={TYPE_OPTIONS}
           onUpdate={handleUpdate}
         />}
         <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
-        <CircleButton classes={classes} id={'delete'} onClick={handleDelete} label={'Delete'} Icon={Delete}/>
+        <CircleButton classes={classes} id={'delete'} onClick={handleClickDelete} label={'Delete'} Icon={Delete}/>        
     </div>
   );
 };

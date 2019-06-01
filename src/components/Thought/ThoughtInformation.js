@@ -5,10 +5,15 @@ import CalendarToday from '@material-ui/icons/CalendarToday';
 import Header from '../General/Header';
 import Select from '../General/Select';
 import Date from '../General/Date';
+import CircleButton from '../General/CircleButton';
+import Edit from '@material-ui/icons/Edit';
+import Check from '@material-ui/icons/Check';
 
-export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], onUpdate }) => {
+export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], typeOptions = [], onUpdate }) => {
   const [edittingTime, setEdittingTime] = useState(false);
   const [edittingDate, setEdittingDate] = useState(false);
+  const [edittingType, setEdittingType] = useState(false);
+
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });
   }, [thought]);
@@ -20,6 +25,22 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
     setEdittingDate(false);
     onUpdate({ ...thought, date: event.target.value })
   }, [thought]);
+  const handleClickEdit = useCallback(() => {
+    setEdittingTime(true);
+    setEdittingDate(true);
+    setEdittingType(true);
+  }, [thought]);
+  const handleClickCancelEdit = useCallback(() => {
+    setEdittingTime(false);
+    setEdittingDate(false);
+    setEdittingType(false);
+  }, []);
+  const handleTypeChange = useCallback(event => {
+    setEdittingType(false);
+    onUpdate({ ...thought, type: event.target.value })
+  }, [thought]);
+
+  const anyEditting = Boolean(edittingTime || edittingDate || edittingType);
 
   return (
     <div className={classes.thoughtInformation}>
@@ -28,7 +49,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
         <Date
           id={'time'}
           classes={classes}
-          value={''}
+          value={thought.time}
           onChange={handleSetTime}
           time
           autoFocus={true}
@@ -42,7 +63,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
         <Date
           id={'date'}
           classes={classes}
-          value={''}
+          value={thought.date}
           onChange={handleSetDate}
           autoFocus={true}
         />
@@ -58,7 +79,17 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
         options={statusOptions}
         onChange={handleStatusChange}
       />
-      <span className={classes.thoughtType}>{thought.type}</span>
+      {edittingType ? (
+        <Select
+          id={'type'}
+          classes={classes}
+          value={thought.type}
+          options={typeOptions}
+          onChange={handleTypeChange}
+        />
+      ) : (
+        <span className={classes.thoughtType}>{thought.type}</span>
+      )}
       {notes.length > 0 && <ul className={classes.noteList}>
         {notes.map(({ text }, idx) => {
           return (
@@ -76,6 +107,11 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
       <span className={classes.thoughtDescription}>
         {thought.description}
       </span>
+      {anyEditting ? (
+        <CircleButton classes={classes} id={'edit'} onClick={handleClickCancelEdit} label={'Cancel'} Icon={Check}/>
+      ) : (
+        <CircleButton classes={classes} id={'edit'} onClick={handleClickEdit} label={'Edit'} Icon={Edit}/>
+      )}
     </div>
   );
 });

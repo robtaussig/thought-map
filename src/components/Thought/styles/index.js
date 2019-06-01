@@ -42,8 +42,7 @@ export const styles = theme => ({
     padding: 10,
     gridTemplateAreas: `"title title ."
                         "time date ."
-                        "status status ."
-                        "type . ."
+                        "type status status"
                         "notes notes notes"
                         "tags tags tags"
                         "description description description"`,
@@ -59,6 +58,7 @@ export const styles = theme => ({
   thoughtTime: {
     color: theme.palette.secondary[300],
     gridArea: 'time',
+    fontSize: 20,
   },
   timeIcon: {
 
@@ -69,13 +69,19 @@ export const styles = theme => ({
   thoughtDate: {
     color: theme.palette.secondary[300],
     gridArea: 'date',
+    fontSize: 20,
   },
   selectLabel: {
-    color: theme.palette.primary[500],
-    gridArea: 'status',
+    color: theme.palette.primary[500],    
     border: `1px solid ${theme.palette.primary[500]}`,
     backgroundColor: theme.palette.primary[100],
     display: 'flex',
+    '&#status': {
+      gridArea: 'status',
+    },
+    '&#type': {
+      gridArea: 'type',
+    },
   },
   selectInput: {
     color: theme.palette.primary[900],
@@ -89,6 +95,8 @@ export const styles = theme => ({
   thoughtType: {
     color: theme.palette.secondary[300],
     gridArea: 'type',
+    ...theme.defaults.centered,
+    fontSize: 20,
   },
   noteList: {
     gridArea: 'notes',
@@ -125,6 +133,11 @@ export const styles = theme => ({
       left: 0,
       border: `2px solid ${theme.palette.red[300]}`,
       backgroundColor: theme.palette.red[300],
+    },
+    '&#edit': {
+      bottom: 0,
+      right: 0,
+      border: `2px solid ${theme.palette.primary[500]}`,
     },
     margin: 30,
     height: 70,
