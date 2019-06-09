@@ -203,6 +203,7 @@ export const styles = theme => ({
       left: 0,
       right: 'unset',
       opacity: '0.5!important',
+      display: 'none',
     },
     '&:not([disabled])': {
       opacity: 1,
@@ -228,6 +229,7 @@ export const styles = theme => ({
         right: 0,
         top: 0,
         bottom: 'unset',
+        display: 'block',
       },
       '&:not([disabled])': {
         ...theme.defaults.castShadow.heavy,
