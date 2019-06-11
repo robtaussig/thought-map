@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
-import useApp from '../../hooks/useApp'
+import useApp from '../../hooks/useApp';
+import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home';
 import Delete from '@material-ui/icons/Delete';
@@ -14,6 +15,7 @@ const STATUS_OPTIONS = ['new', 'completed', 'in progress', 'almost done', 'pendi
 const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
 
 export const Thought = ({ classes, state }) => {
+  const db = useLoadedDB();
   const { history, dispatch } = useApp();
   const [_, setThoughts] = useNestedXReducer('thoughts', state, dispatch);
   const thoughtId = getThoughtIdFromPath(history.location.pathname);
@@ -24,12 +26,12 @@ export const Thought = ({ classes, state }) => {
     history.push('/');
   };
   const handleUpdate = useCallback(async updatedThought => {
-    await thoughtActions.editThought(updatedThought);
+    await thoughtActions.editThought(db, updatedThought);
 
     setThoughts(prev => prev.map(prevThought => prevThought.id === updatedThought.id ? updatedThought : prevThought));
   }, []);
   const handleClickDelete = useCallback(async () => {
-    await thoughtActions.deleteThought(thoughtId);
+    await thoughtActions.deleteThought(db, thoughtId);
     setThoughts(prev => prev.filter(prevThought => prevThought.id !== thoughtId));
     history.push('/');
   }, [thoughtId]);
@@ -57,5 +59,5 @@ export const Thought = ({ classes, state }) => {
 export default withStyles(styles)(Thought);
 
 const getThoughtIdFromPath = path => {
-  return Number(path.split('/')[2]);
+  return path.split('/')[2];
 };

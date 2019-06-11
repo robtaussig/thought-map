@@ -1,6 +1,6 @@
 import Base from './base';
 
-const TABLE_NAME = 'notes';
+const TABLE_NAME = 'note';
 
 export default class Notes extends Base {
   static props = {

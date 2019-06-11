@@ -1,48 +1,37 @@
 // import { db } from '../store/database';
 import { withTime } from './util';
+import uuidv4 from 'uuid/v4';
 
 export default class Base {
   static fetchAll = async (db, tableName) => {
-    console.log('fetchAll', db, tableName);
-    // const dbResponse = await db.select({ table: tableName });
-    // return dbResponse.result.sort((a, b) => a.id - b.id);
-    return [];
+    const query = db[tableName].find();
+    const results = await query.exec();
+    return results.map(result => result.toJSON());
   }
 
   static fetch = async (db, tableName, id) => {
-    console.log('fetch', db, tableName, id);
-    // const dbResponse = await db.select({ table: tableName }, id);
-
-    // return dbResponse.result[0];
-    return {};
+    const query = db[tableName].find({ id: { $eq: id } });
+    const result = await query.exec();
+    return result.toJSON();
   }
 
-  static add = async (db, tableName, connection) => {
-    console.log('add', db, tableName, connection);
-    // const connectionObject = withTime(connection);
-    // const response = await db.insert({ table: tableName, object: connectionObject });
-  
-    // return Object.assign({}, connectionObject, { id: response.result });
-    return {};
+  static add = async (db, tableName, object) => {
+    const result = await db[tableName].insert(Object.assign({}, object, {
+      id: uuidv4(),
+    }));
+    return result.toJSON();
   }
 
-  static update = async (db, tableName, connection) => {
-    console.log('update', db, tableName, connection);
-    // const connectionObject = Object.assign({}, connection, {
-    //   updatedAt: new Date() - 1,
-    // });
-
-    // await db.insert({ table: tableName, object: connectionObject });
-  
-    // return connectionObject;
-    return {};
+  static update = async (db, tableName, object) => {
+    const query = db[tableName].upsert(object);
+    const result = await query.exec();
+    return result.toJSON();
   }
 
   static delete = async (db, tableName, id) => {
-    console.log('delete', db, tableName, id);
-    // const response = await db.delete({ table: tableName, id });
-  
-    // return response;
-    return {};
+    const query = db[tableName].find({ id: { $eq: id } });
+    const response = await query.remove();
+
+    return response;
   }
 }
