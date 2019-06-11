@@ -6,7 +6,7 @@ import {
   tags as tagActions,
 } from './';
 
-export const createWholeThought = async ({
+export const createWholeThought = async (db, {
   title,
   type,
   date,
@@ -15,17 +15,17 @@ export const createWholeThought = async ({
   notes,
   tags,
 }) => {
-  const createdThought = await thoughtActions.createThought({
+  const createdThought = await thoughtActions.createThought(db, {
     title, type, date, time, description, status: 'new',
   });
   const thoughtId = createdThought.id;
   const [createdNotes, createdTags] = await Promise.all([
-    Promise.all(notes.map((note, idx) => noteActions.createNote({
+    Promise.all(notes.map((note, idx) => noteActions.createNote(db, {
       text: note,
       thoughtId,
       index: idx,
     }))),
-    Promise.all(tags.map((tag, idx) => tagActions.createTag({
+    Promise.all(tags.map((tag, idx) => tagActions.createTag(db, {
       text: tag,
       thoughtId,
       index: idx,

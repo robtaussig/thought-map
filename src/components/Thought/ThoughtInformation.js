@@ -17,24 +17,29 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });
   }, [thought]);
+
   const handleSetTime = useCallback(event => {
     setEdittingTime(false);
     onUpdate({ ...thought, time: event.target.value })
   }, [thought]);
+
   const handleSetDate = useCallback(event => {
     setEdittingDate(false);
     onUpdate({ ...thought, date: event.target.value })
   }, [thought]);
+
   const handleClickEdit = useCallback(() => {
     setEdittingTime(true);
     setEdittingDate(true);
     setEdittingType(true);
   }, [thought]);
+
   const handleClickCancelEdit = useCallback(() => {
     setEdittingTime(false);
     setEdittingDate(false);
     setEdittingType(false);
   }, []);
+  
   const handleTypeChange = useCallback(event => {
     setEdittingType(false);
     onUpdate({ ...thought, type: event.target.value })
