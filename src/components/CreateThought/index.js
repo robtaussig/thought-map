@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import useApp from '../../hooks/useApp';
+import { useLoadedDB } from '../../hooks/useDB';
 import useXReducer, { useNestedXReducer } from '../../hooks/useXReducer';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
@@ -27,6 +28,7 @@ const DEFAULT_STATE = {
 
 export const CreateThought = ({ classes, state }) => {
   const { history, dispatch } = useApp();
+  const db = useLoadedDB();
   const [ createdThought, createdThoughtDispatch ] = useXReducer(DEFAULT_STATE);
   const [ _, setEverything ] = useNestedXReducer('*', state, dispatch);
   const [ phase, setPhase ] = useState(1);
@@ -39,7 +41,7 @@ export const CreateThought = ({ classes, state }) => {
   }, []);
 
   const handleSubmit = async () => {
-    const response = await createWholeThought(createdThought);
+    const response = await createWholeThought(db, createdThought);
     const next = {
       thoughts: state.thoughts.concat(response.thought),
       notes: {

@@ -7,6 +7,7 @@ import { Context } from './store';
 import { ACTION_TYPES } from './reducers';
 import { intoMap } from './lib/util';
 import useXReducer from './hooks/useXReducer';
+import { useDB } from './hooks/useDB';
 import {
   thoughts as thoughtActions,
   plans as planActions,
@@ -21,6 +22,7 @@ import Thought from './components/Thought';
 
 const App = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
+  const [DBProvider, db, dbReadyState] = useDB();
   const rootRef = useRef(null);
 
   useEffect(() => {
@@ -32,11 +34,11 @@ const App = ({ classes, history }) => {
       });
     
       const [ thoughts, connections, plans, notes, tags ] = await Promise.all([
-        thoughtActions.getThoughts(),
-        connectionActions.getConnections(),
-        planActions.getPlans(),
-        noteActions.getNotes(),
-        tagActions.getTags(),
+        thoughtActions.getThoughts(db),
+        connectionActions.getConnections(db),
+        planActions.getPlans(db),
+        noteActions.getNotes(db),
+        tagActions.getTags(db),
       ]);
       
       dispatch({
@@ -51,29 +53,31 @@ const App = ({ classes, history }) => {
       });
     };
 
-    initializeApplication(dispatch);
-  }, []);
+    dbReadyState && initializeApplication(dispatch);
+  }, [db, dbReadyState]);
 
   const appContext = useMemo(() => ({ dispatch, history }), []);
 
   return (
     <Context.Provider value={appContext}>
-      <div id={'app'} ref={rootRef} className={classes.root}>
-        <Switch>
-          <Route exact path={'/'}>
-            <Home state={state}/>
-          </Route>
-          <Route path={'/settings'}>
-            <Settings/>
-          </Route>
-          <Route path={'/thought/new'}>
-            <CreateThought state={state}/>
-          </Route>
-          <Route path={'/thought/:id'}>
-            <Thought state={state}/>
-          </Route>
-        </Switch>
-      </div>
+      <DBProvider value={db}>
+        <div id={'app'} ref={rootRef} className={classes.root}>
+          <Switch>
+            <Route exact path={'/'}>
+              {dbReadyState && <Home state={state}/>}
+            </Route>
+            <Route path={'/settings'}>
+              {dbReadyState && <Settings/>}
+            </Route>
+            <Route path={'/thought/new'}>
+              {dbReadyState && <CreateThought state={state}/>}
+            </Route>
+            <Route path={'/thought/:id'}>
+              {dbReadyState && <Thought state={state}/>}
+            </Route>
+          </Switch>
+        </div>
+      </DBProvider>
     </Context.Provider>
   );
 };

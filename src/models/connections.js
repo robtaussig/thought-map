@@ -11,9 +11,9 @@ export default class Connections extends Base {
     updated: Number,
     deleted: Number,
   }
-  static fetchAll = () => Base.fetchAll(TABLE_NAME)
-  static fetch = id => Base.fetch(TABLE_NAME, id)
-  static add = object => Base.add(TABLE_NAME, object)
-  static update = object => Base.update(TABLE_NAME, object)
-  static delete = id => Base.delete(TABLE_NAME, id)
+  static fetchAll = db => Base.fetchAll(db, TABLE_NAME)
+  static fetch = (db, id) => Base.fetch(db, TABLE_NAME, id)
+  static add = (db, object) => Base.add(db, TABLE_NAME, object)
+  static update = (db, object) => Base.update(db, TABLE_NAME, object)
+  static delete = (db, id) => Base.delete(db, TABLE_NAME, id)
 }
