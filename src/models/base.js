@@ -23,8 +23,7 @@ export default class Base {
   }
 
   static update = async (db, tableName, object) => {
-    const query = db[tableName].upsert(object);
-    const result = await query.exec();
+    const result = await db[tableName].upsert(object);
     return result.toJSON();
   }
 
