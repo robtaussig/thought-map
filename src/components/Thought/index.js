@@ -9,7 +9,6 @@ import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
 import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions } from '../../actions';
-import { useNestedXReducer } from '../../hooks/useXReducer';
 
 const STATUS_OPTIONS = ['new', 'completed', 'in progress', 'almost done', 'pending'];
 const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
@@ -17,7 +16,6 @@ const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
 export const Thought = ({ classes, state }) => {
   const db = useLoadedDB();
   const { history, dispatch } = useApp();
-  const [_, setThoughts] = useNestedXReducer('thoughts', state, dispatch);
   const thoughtId = getThoughtIdFromPath(history.location.pathname);
   const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
   const relatedTags = useMemo(() => Object.values(state.tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, state.tags]);
@@ -27,12 +25,9 @@ export const Thought = ({ classes, state }) => {
   };
   const handleUpdate = useCallback(async updatedThought => {
     await thoughtActions.editThought(db, updatedThought);
-
-    setThoughts(prev => prev.map(prevThought => prevThought.id === updatedThought.id ? updatedThought : prevThought));
   }, []);
   const handleClickDelete = useCallback(async () => {
     await thoughtActions.deleteThought(db, thoughtId);
-    setThoughts(prev => prev.filter(prevThought => prevThought.id !== thoughtId));
     history.push('/');
   }, [thoughtId]);
 

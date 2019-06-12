@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
-import useXReducer, { useNestedXReducer } from '../../hooks/useXReducer';
+import useXReducer from '../../hooks/useXReducer';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
 import Phase1 from './Phase1';
@@ -11,8 +11,6 @@ import CircleButton from '../General/CircleButton';
 import Check from '@material-ui/icons/Check';
 import Home from '@material-ui/icons/Home';
 import { createWholeThought } from '../../actions/complex';
-import { ACTION_TYPES } from '../../reducers';
-import { intoMap } from '../../lib/util';
 
 const DEFAULT_STATE = {
   title: '',
@@ -30,7 +28,6 @@ export const CreateThought = ({ classes, state }) => {
   const { history, dispatch } = useApp();
   const db = useLoadedDB();
   const [ createdThought, createdThoughtDispatch ] = useXReducer(DEFAULT_STATE);
-  const [ _, setEverything ] = useNestedXReducer('*', state, dispatch);
   const [ phase, setPhase ] = useState(1);
   const [ ready, setReady ] = useState(false);
   const focusInputRef = useRef(() => {});
@@ -42,18 +39,6 @@ export const CreateThought = ({ classes, state }) => {
 
   const handleSubmit = async () => {
     const response = await createWholeThought(db, createdThought);
-    const next = {
-      thoughts: state.thoughts.concat(response.thought),
-      notes: {
-        ...state.notes,
-        ...intoMap(response.notes),
-      },
-      tags: {
-        ...state.tags,
-        ...intoMap(response.tags),
-      },
-    }
-    setEverything(next);
     history.push(`/thought/${response.thought.id}`);
   };
 
