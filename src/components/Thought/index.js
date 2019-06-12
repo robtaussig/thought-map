@@ -9,6 +9,7 @@ import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
 import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions } from '../../actions';
+import { openConfirmation } from '../../lib/util';
 
 const STATUS_OPTIONS = ['new', 'completed', 'in progress', 'almost done', 'pending'];
 const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
@@ -26,9 +27,13 @@ export const Thought = ({ classes, state }) => {
   const handleUpdate = useCallback(async updatedThought => {
     await thoughtActions.editThought(db, updatedThought);
   }, []);
-  const handleClickDelete = useCallback(async () => {
-    await thoughtActions.deleteThought(db, thoughtId);
-    history.push('/');
+  const handleClickDelete = useCallback(() => {
+    const onConfirm = async () => {
+      await thoughtActions.deleteThought(db, thoughtId);
+      history.push('/');
+    };
+
+    openConfirmation('Are you sure you want to delete this?', onConfirm);
   }, [thoughtId]);
 
   return (

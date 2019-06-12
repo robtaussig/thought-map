@@ -4,3 +4,11 @@ export const intoMap = items => {
     return all;
   }, {});
 };
+
+export const openConfirmation = (confirmationText, onConfirm, onReject = () => {}) => {
+  if (window.confirm(confirmationText)) {
+    onConfirm();
+  } else {
+    onReject();
+  }
+};
