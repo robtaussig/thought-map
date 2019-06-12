@@ -21,7 +21,7 @@ const DEFAULT_STATE = {
   description: '',
   notes: [],
   tags: [],
-  tagOptions: ['Important', 'Lazy', 'Misc', 'Later'],
+  tagOptions: ['Select', 'Important', 'Lazy', 'Misc', 'Later'],
 };
 
 export const CreateThought = ({ classes, state }) => {

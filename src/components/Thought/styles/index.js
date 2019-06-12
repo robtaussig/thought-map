@@ -2,6 +2,7 @@ export const styles = theme => ({
   root: {
     height: '100%',
     position: 'relative',
+    overflow: 'auto',
     backgroundColor: theme.palette.gray[700],
     '& #thought-loader': {
       position: 'absolute',
@@ -38,7 +39,7 @@ export const styles = theme => ({
     display: 'grid',
     position: 'relative',
     gridColumnGap: '10px',
-    gridRowGap: '20px',
+    gridRowGap: '30px',
     padding: 10,
     gridTemplateAreas: `"title title ."
                         "time date ."
@@ -105,6 +106,7 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     color: theme.palette.secondary[300],
+    margin: '10px 0',
   },
   noteIcon: {
     marginRight: 5,
@@ -112,10 +114,15 @@ export const styles = theme => ({
   tagList: {
     gridArea: 'tags',
     display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
   },
   tagItem: {
-    margin: '0 10px',
+    margin: '10px 5px',
     color: theme.palette.secondary[300],
+    border: `1px solid ${theme.palette.secondary[300]}`,
+    padding: '4px 10px',
+    borderRadius: '10px',
   },
   thoughtDescription: {
     gridArea: 'description',

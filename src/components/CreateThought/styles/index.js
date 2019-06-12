@@ -60,7 +60,7 @@ export const styles = theme => ({
   selectInput: {
     flex: '0 0 40px',
     fontSize: 20,
-    border: `1px solid ${theme.palette.gray[300]}`,
+    border: `none`,
   },
   option: {
     
