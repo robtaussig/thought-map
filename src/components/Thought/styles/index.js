@@ -12,9 +12,7 @@ export const styles = theme => ({
     },
     '& .icon-button': {
       ...theme.defaults.centered,      
-      color: theme.palette.primary[900],
-      border: `1px solid ${theme.palette.primary[500]}`,
-      backgroundColor: theme.palette.primary[100],
+      color: theme.palette.primary[500],
       borderRadius: '3px',
       '&#time-button': {
         gridArea: 'time',

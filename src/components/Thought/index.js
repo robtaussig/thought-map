@@ -11,7 +11,7 @@ import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions } from '../../actions';
 import { openConfirmation } from '../../lib/util';
 
-const STATUS_OPTIONS = ['new', 'completed', 'in progress', 'almost done', 'pending'];
+export const STATUS_OPTIONS = ['new', 'completed', 'in progress', 'almost done', 'pending'];
 const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
 
 export const Thought = ({ classes, state }) => {

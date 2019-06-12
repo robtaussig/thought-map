@@ -10,31 +10,24 @@ export const styles = theme => ({
     gap: '20px',
     gridTemplateAreas: `"content header"
                         "content header"
-                        "content guide-button"
                         "content settings-button"`,
-    gridTemplateRows: 'repeat(4, 1fr)',
+    gridTemplateRows: 'repeat(3, 1fr)',
     gridTemplateColumns: 'repeat(2, 1fr)',
     /**
      * Small
      */
     [theme.breakpoints.down('sm')]: {
       gridTemplateAreas: `"content content"
-                          "guide-button guide-button"
                           "settings-button settings-button"
                           "header header"`,
-      gridTemplateRows: '5fr minmax(50px, 1fr) minmax(50px, 1fr) minmax(50px, 1fr)',
+      gridTemplateRows: '7fr minmax(50px, 1fr) minmax(50px, 1fr)',
       gridTemplateColumns: 'repeat(2, 1fr)',
     },
-    //Dev
-    '& > *': {
-      // border: '1px solid black',
-    }
   },
   content: {
     gridArea: 'content',
     display: 'flex',
     flexDirection: 'column',
-    border: '5px solid #1f719e',
     position: 'relative',
     backgroundColor: 'white',
     overflow: 'auto',
@@ -59,27 +52,38 @@ export const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '20px 10px',
+    '& > #status-select': {
+      marginLeft: 20,
+      padding: '5px 0',
+      backgroundColor: '#8380ff',      
+      borderRadius: '10px',
+      '& > select': {
+        color: 'white',
+        display: 'flex',
+        textAlignLast: 'center',
+        paddingLeft: 13,
+        backgroundColor: 'transparent',
+        border: 'none',
+      },
+    },
   },
   thoughtNodeTitle: {
-
-  },
-  thoughtNodeStatus: {
-    marginLeft: 20,
-    padding: '5px 20px',
-    backgroundColor: '#8380ff',
-    color: 'white',
-    borderRadius: '10px',
+    color: theme.palette.gray[500],
   },
   guideButton: {
     gridArea: 'guide-button',
-    border: '5px solid #1f719e',
     fontSize: 20,
+    borderRadius: 20,
+    color: 'white',
+    backgroundColor: '#8380ff',
     ...theme.defaults.castShadow.light,
   },
   header: {
     gridArea: 'header',
     margin: 'auto',
     fontSize: 50,
+    fontFamily: 'avenir',
+    color: '#000072',
   },
   circleButton: {
     position: 'fixed',
@@ -123,8 +127,10 @@ export const styles = theme => ({
   },
   settingsButton: {
     gridArea: 'settings-button',
-    border: '5px solid #1f719e',
     fontSize: 20,
+    borderRadius: 20,
+    color: 'white',
+    backgroundColor: '#8380ff',
     ...theme.defaults.castShadow.light,
   }
 });
