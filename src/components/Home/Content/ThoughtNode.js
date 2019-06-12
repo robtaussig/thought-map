@@ -10,10 +10,8 @@ export const ThoughtNode = React.memo(({ classes, thought, position = {} }) => {
 
   return (
     <div className={classes.thoughtNode} onClick={handleClick}>
-      <span>{thought.title}</span>
-      <span>{thought.description}</span>
-      <span>{thought.type}</span>
-      <span>{thought.status}</span>
+      <span className={classes.thoughtNodeTitle}>{thought.title}</span>
+      <span className={classes.thoughtNodeStatus}>{thought.status}</span>
     </div>
   );
 });

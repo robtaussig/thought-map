@@ -32,23 +32,43 @@ export const styles = theme => ({
   },
   content: {
     gridArea: 'content',
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     border: '5px solid #1f719e',
     position: 'relative',
     backgroundColor: 'white',
     overflow: 'auto',
     ...theme.defaults.castShadow.light,
-    '& > *': {
-      display: 'flex',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-    },
     '& > h3': {
       fontWeight: 600,
     },
+    '& > :not(:last-child)': {
+      position: 'relative',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        borderBottom: '1px solid #0000003d',
+        left: '20%',
+        right: '20%',
+        bottom: 0,
+      },
+    },
   },
   thoughtNode: {
-    border: '1px solid black',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '20px 10px',
+  },
+  thoughtNodeTitle: {
+
+  },
+  thoughtNodeStatus: {
+    marginLeft: 20,
+    padding: '5px 20px',
+    backgroundColor: '#8380ff',
+    color: 'white',
+    borderRadius: '10px',
   },
   guideButton: {
     gridArea: 'guide-button',
