@@ -150,6 +150,16 @@ export const styles = theme => ({
       right: 0,
       border: `2px solid ${theme.palette.primary[500]}`,
     },
+    '&#from': {
+      bottom: 0,
+      left: 0,
+      border: `2px solid ${theme.palette.primary[500]}`,
+    },
+    '&#to': {
+      bottom: 0,
+      left: 'calc(50% - 65px)',
+      border: `2px solid ${theme.palette.primary[500]}`,
+    },
     margin: 30,
     height: 70,
     width: 70,
@@ -184,25 +194,5 @@ export const styles = theme => ({
   },
   noteEditInput: {
 
-  },
-  connectionFrom: {
-    position: 'absolute',
-    left: 10,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: 'white',
-    opacity: 0.5,
-    height: 50,
-    width: 50,
-  },
-  connectionTo: {
-    position: 'absolute',
-    right: 10,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: 'white',
-    opacity: 0.5,
-    height: 50,
-    width: 50,
   },
 });
