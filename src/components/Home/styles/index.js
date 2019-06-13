@@ -127,10 +127,16 @@ export const styles = theme => ({
   },
   settingsButton: {
     gridArea: 'settings-button',
+    fontFamily: 'avenir',
     fontSize: 20,
     borderRadius: 20,
     color: 'white',
-    backgroundColor: '#8380ff',
+    backgroundColor: '#0e466399',
+    transition: 'all 0.1s linear',
     ...theme.defaults.castShadow.light,
+    '&:active': {
+      transform: 'scale(0.99)',
+      boxShadow: 'none',
+    },
   }
 });

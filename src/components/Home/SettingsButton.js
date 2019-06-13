@@ -1,11 +1,9 @@
 import React from 'react';
-import useApp from '../../hooks/useApp'
 
-export const SettingsButton = React.memo(({ classes }) => {
-  const { history, dispatch } = useApp();
+export const SettingsButton = React.memo(({ classes, onClick }) => {
 
   return (
-    <button className={classes.settingsButton} aria-label={'Settings'}>
+    <button className={classes.settingsButton} aria-label={'Settings'} onClick={onClick}>
       Settings
     </button>
   );

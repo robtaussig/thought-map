@@ -12,11 +12,12 @@ export const Home = ({ classes, state }) => {
   const { history, dispatch } = useApp();
 
   const handleAddThought = useCallback(() => history.push('/thought/new'), []);
+  const handleClickSettings = useCallback(() => history.push('/settings'),[]);
   
   return (
     <div className={classes.root}>
       <Content classes={classes} thoughts={state.thoughts} connections={state.connections}/>
-      <SettingsButton classes={classes}/>
+      <SettingsButton classes={classes} onClick={handleClickSettings}/>
       <Header classes={classes}/>
       <CircleButton classes={classes} onClick={handleAddThought} label={'Add Thought'}/>
     </div>
