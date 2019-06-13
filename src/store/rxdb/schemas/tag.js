@@ -16,7 +16,7 @@ export default ['tag', {
       "type": "string",
     },
     "index": {
-      "type": "integer",
+      "type": "number",
     },
     "created": {
       "type": "number",

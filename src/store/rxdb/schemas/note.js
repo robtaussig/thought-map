@@ -16,7 +16,7 @@ export default ['note', {
       "type": "string",
     },
     "index": {
-      "type": "integer",
+      "type": "number",
     },
     "created": {
       "type": "number",

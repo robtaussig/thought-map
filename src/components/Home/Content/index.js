@@ -24,7 +24,7 @@ export const Content = React.memo(({ classes, thoughts, connections }) => {
         return (
           <ThoughtNode
             classes={classes}
-            key={`${thoughtIdx}-thought-node`}  
+            key={`thought-node-${thought.title}`}  
             thought={thought}
             position={thoughtPositions[thought.id]}
           />

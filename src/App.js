@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
 import { appReducer, DEFAULT_STATE } from './reducers';
 import { Context } from './store';
+import { sortByIndexThenDate } from './models/base';
 import { ACTION_TYPES } from './reducers';
 import { intoMap } from './lib/util';
 import useXReducer, { useNestedXReducer } from './hooks/useXReducer';
@@ -107,7 +108,7 @@ const handleThoughtChange = setter => ({ data }) => {
       break;
 
     case 'UPDATE':
-      setter(prev => prev.map(prevThought => prevThought.id === thought.id ? thought : prevThought));
+      setter(prev => prev.map(prevThought => prevThought.id === thought.id ? thought : prevThought).sort(sortByIndexThenDate));
       break;
   
     default:

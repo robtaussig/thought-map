@@ -30,6 +30,9 @@ export default ['thought', {
     "description": {
       "type": "string",
     },
+    "index": {
+      "type": "number",
+    },
     "created": {
       "type": "number",
     },
