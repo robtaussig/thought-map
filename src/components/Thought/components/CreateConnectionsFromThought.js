@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
 export const CreateConnectionsFromThought = ({ classes, thought }) => {
 
   return (
     <Fragment>
-      <ChevronRight className={classes.connectionFrom}/>
+      <ChevronLeft className={classes.connectionFrom}/>
       <ChevronRight className={classes.connectionTo}/>
     </Fragment>
   );
