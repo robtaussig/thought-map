@@ -5,3 +5,6 @@ allow editing of thought title
 finish editing notes
 allow deltion/creation of tags
 finish implementation of creating connections
+
+Settings:
+//Display completed thoughts

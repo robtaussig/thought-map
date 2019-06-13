@@ -18,7 +18,7 @@ export const Content = React.memo(({ classes, thoughts, connections }) => {
 
   return (
     <div className={classes.content} ref={rootRef}>
-      {thoughts.map(thought => {
+      {thoughts.filter(thought => thought.status !== 'completed').map(thought => {
         return (
           <ThoughtNode
             classes={classes}
