@@ -109,6 +109,12 @@ export const styles = theme => ({
   noteIcon: {
     marginRight: 5,
   },
+  deleteIcon: {
+    marginRight: 5,
+    color: theme.palette.red[500],
+    ...theme.defaults.centered,
+    cursor: 'pointer',
+  },
   tagList: {
     gridArea: 'tags',
     display: 'flex',
@@ -175,5 +181,28 @@ export const styles = theme => ({
         transform: 'scale(0.9)!important',
       },
     },
+  },
+  noteEditInput: {
+
+  },
+  connectionFrom: {
+    position: 'absolute',
+    left: 10,
+    top: '50%',
+    transform: 'translateY(-50%)',
+    color: 'white',
+    opacity: 0.5,
+    height: 50,
+    width: 50,
+  },
+  connectionTo: {
+    position: 'absolute',
+    right: 10,
+    top: '50%',
+    transform: 'translateY(-50%)',
+    color: 'white',
+    opacity: 0.5,
+    height: 50,
+    width: 50,
   },
 });

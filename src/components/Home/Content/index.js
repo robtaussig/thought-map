@@ -1,9 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import useApp from '../../../hooks/useApp'
 import ThoughtNode from './ThoughtNode';
 
 export const Content = React.memo(({ classes, thoughts, connections }) => {
-  const { history, dispatch } = useApp();
   const [ thoughtPositions, setThoughtPositions ] = useState({});
   const rootRef = useRef(null);
 
@@ -20,11 +18,11 @@ export const Content = React.memo(({ classes, thoughts, connections }) => {
 
   return (
     <div className={classes.content} ref={rootRef}>
-      {thoughts.map((thought, thoughtIdx) => {
+      {thoughts.map(thought => {
         return (
           <ThoughtNode
             classes={classes}
-            key={`thought-node-${thought.title}`}  
+            key={`thought-node-${thought.id}`}  
             thought={thought}
             position={thoughtPositions[thought.id]}
           />

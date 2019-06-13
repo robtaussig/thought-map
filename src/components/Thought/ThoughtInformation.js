@@ -8,11 +8,16 @@ import Date from '../General/Date';
 import CircleButton from '../General/CircleButton';
 import Edit from '@material-ui/icons/Edit';
 import Check from '@material-ui/icons/Check';
+import Delete from '@material-ui/icons/Delete';
+import { openConfirmation } from '../../lib/util';
+import { notes as noteActions } from '../../actions';
+import { useLoadedDB } from '../../hooks/useDB';
 
-export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], typeOptions = [], onUpdate }) => {
+export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], typeOptions = [], onUpdate, editState, onEditState }) => {
   const [edittingTime, setEdittingTime] = useState(false);
   const [edittingDate, setEdittingDate] = useState(false);
-  const [edittingType, setEdittingType] = useState(false);
+  const [edittedInputs, setEdittedInputs] = useState({});
+  const db = useLoadedDB();
 
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });
@@ -29,28 +34,41 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   }, [thought]);
 
   const handleClickEdit = useCallback(() => {
-    setEdittingTime(true);
-    setEdittingDate(true);
-    setEdittingType(true);
-  }, [thought]);
+    onEditState(true);
+  }, []);
 
   const handleClickCancelEdit = useCallback(() => {
-    setEdittingTime(false);
-    setEdittingDate(false);
-    setEdittingType(false);
+    onEditState(false);
   }, []);
   
   const handleTypeChange = useCallback(event => {
-    setEdittingType(false);
     onUpdate({ ...thought, type: event.target.value })
   }, [thought]);
 
-  const anyEditting = Boolean(edittingTime || edittingDate || edittingType);
+  const handleInput = useCallback(id => {
+    return e => {
+      const value = e.target.value;
+      setEdittedInputs(prev => ({
+        ...prev,
+        [id]: value,
+      }));
+    };
+  }, []);
+
+  const handleDelete = useCallback((id, type) => {
+    return () => {
+      const onConfirm = type === 'note' ?
+        () => noteActions.deleteNote(db, id) :
+        () => {};
+
+      openConfirmation('Are you sure?', onConfirm);
+    };
+  }, []);
 
   return (
     <div className={classes.thoughtInformation}>
       <Header classes={classes} value={thought.title}/>
-      {edittingTime ? (
+      {edittingTime || editState ? (
         <Date
           id={'time'}
           classes={classes}
@@ -64,7 +82,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
       ) : (
         <button id={'time-button'} className={'icon-button'} onClick={_ => setEdittingTime(true)}><AccessTime className={classes.timeIcon}/></button>
       )}
-      {edittingDate ? (
+      {edittingDate || editState ? (
         <Date
           id={'date'}
           classes={classes}
@@ -84,7 +102,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
         options={statusOptions}
         onChange={handleStatusChange}
       />
-      {edittingType ? (
+      {editState ? (
         <Select
           id={'type'}
           classes={classes}
@@ -96,8 +114,13 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
         <span className={classes.thoughtType}>{thought.type}</span>
       )}
       {notes.length > 0 && <ul className={classes.noteList}>
-        {notes.map(({ text }, idx) => {
-          return (
+        {notes.map(({ text, id }, idx) => {
+          return editState ? (
+            <li className={classes.noteItem} key={`${idx}-note`}>
+              <button className={classes.deleteIcon} onClick={handleDelete(id, 'note')}><Delete/></button>
+              <input className={classes.noteEditInput} onChange={handleInput(id)} value={edittedInputs[id] || text}/>
+            </li>
+          ) : (
             <li className={classes.noteItem} key={`${idx}-note`}><Note className={classes.noteIcon}/>{text}</li>
           );
         })}
@@ -112,7 +135,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
       <span className={classes.thoughtDescription}>
         {thought.description}
       </span>
-      {anyEditting ? (
+      {editState ? (
         <CircleButton classes={classes} id={'edit'} onClick={handleClickCancelEdit} label={'Cancel'} Icon={Check}/>
       ) : (
         <CircleButton classes={classes} id={'edit'} onClick={handleClickEdit} label={'Edit'} Icon={Edit}/>
