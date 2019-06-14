@@ -81,7 +81,7 @@ export const Connections = ({ classes, thought, from, to, revealed, connections,
       transform: `translateX(${positionOfCenter}%)`,
       alignItems: from ? 'flex-end' : 'flex-start',
     }}>
-      <h2 className={classes.header}>{from ? 'Connected From' : 'Connected To'}</h2>
+      <h2 className={classes.header}>{from ? 'Connect From' : 'Connect To'}</h2>
       <div className={classes.listWrapper}>
         <ul className={classes.list}>
           {thoughts.filter(({ id }) => id !== thought.id).map(targetThought => {
