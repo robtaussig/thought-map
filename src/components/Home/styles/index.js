@@ -6,7 +6,7 @@ export const styles = theme => ({
     width: '100%',
     display: 'grid',
     padding: 20,
-    backgroundColor: '#d2d2d2',
+    backgroundColor: theme.palette.gray[500],
     gap: '20px',
     gridTemplateAreas: `"content header"
                         "content header"
@@ -83,7 +83,7 @@ export const styles = theme => ({
     margin: 'auto',
     fontSize: 50,
     fontFamily: 'avenir',
-    color: '#000072',
+    color: '#c2c2ff',
   },
   circleButton: {
     position: 'fixed',
