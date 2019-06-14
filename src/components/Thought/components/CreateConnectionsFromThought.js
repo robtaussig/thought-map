@@ -37,7 +37,7 @@ export const CreateConnectionsFromThought = ({ classes, thought, thoughts, conne
         onClick={() => setSettingConnectionState(prev => prev === SETTING_CONNECTION_STATE.FROM ?
           SETTING_CONNECTION_STATE.NONE : SETTING_CONNECTION_STATE.FROM
         )}
-        label={'Connected From'}
+        label={'Connect From'}
         Icon={ChevronLeft}
       />
       <CircleButton
@@ -46,7 +46,7 @@ export const CreateConnectionsFromThought = ({ classes, thought, thoughts, conne
         onClick={() => setSettingConnectionState(prev => prev === SETTING_CONNECTION_STATE.TO ?
           SETTING_CONNECTION_STATE.NONE : SETTING_CONNECTION_STATE.TO
         )}
-        label={'Connected To'}
+        label={'Connect To'}
         Icon={ChevronRight}
       />
     </Fragment>
