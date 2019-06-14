@@ -193,6 +193,16 @@ export const styles = theme => ({
       },
     },
   },
+  addItem: {
+    border: `1px solid ${theme.palette.primary[500]}`,
+    color: theme.palette.primary[500],
+    borderRadius: '5px',
+    padding: '3px 5px',
+    transition: 'all 0.1s linear',
+    '&:active': {
+      transform: 'scale(0.96)',
+    },
+  },
   noteEditInput: {
 
   },

@@ -10,15 +10,16 @@ import Edit from '@material-ui/icons/Edit';
 import Check from '@material-ui/icons/Check';
 import Delete from '@material-ui/icons/Delete';
 import { openConfirmation } from '../../lib/util';
-import { notes as noteActions } from '../../actions';
+import { notes as noteActions, thoughts as thoughtActions, tags as tagActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 
 export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], typeOptions = [], onUpdate, editState, onEditState }) => {
   const [edittingTime, setEdittingTime] = useState(false);
   const [edittingDate, setEdittingDate] = useState(false);
   const [edittedInputs, setEdittedInputs] = useState({});
+  const [addedNotes, setAddedNotes] = useState([]);
+  const [addedTags, setAddedTags] = useState([]);
   const db = useLoadedDB();
-
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });
   }, [thought]);
@@ -37,9 +38,18 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
     onEditState(true);
   }, []);
 
-  const handleClickCancelEdit = useCallback(() => {
-    onEditState(false);
+  const reset = useCallback(() => {
+    setEdittingTime(false);
+    setEdittingDate(false);
+    setEdittedInputs({});
+    setAddedNotes([]);
+    setAddedTags([]);
   }, []);
+
+  const handleClickCancelEdit = () => {
+    handleUpdates(db, addedNotes, edittedInputs, thought, tags, notes, reset);
+    onEditState(false);
+  };
   
   const handleTypeChange = useCallback(event => {
     onUpdate({ ...thought, type: event.target.value })
@@ -113,7 +123,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
       ) : (
         <span className={classes.thoughtType}>{thought.type}</span>
       )}
-      {notes.length > 0 && <ul className={classes.noteList}>
+      <ul className={classes.noteList}>
         {notes.map(({ text, id }, idx) => {
           return editState ? (
             <li className={classes.noteItem} key={`${idx}-note`}>
@@ -123,15 +133,36 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
           ) : (
             <li className={classes.noteItem} key={`${idx}-note`}><Note className={classes.noteIcon}/>{text}</li>
           );
-        })}
-      </ul>}
-      {tags.length > 0 && <ul className={classes.tagList}>
+        }).concat(addedNotes.map((addedNote, idx) => {
+          return (
+            <li className={classes.noteItem} key={`${idx}-added-note`}>
+              <button className={classes.deleteIcon} onClick={() => setAddedNotes(prev => prev.filter((_, prevIdx) => prevIdx !== idx))}><Delete/></button>
+              <input className={classes.noteEditInput} onChange={e => {
+                const value = e.target.value;
+                setAddedNotes(prev => prev.map((prevNote, prevIdx) => {
+                  if (prevIdx === idx) {
+                    return value;
+                  }
+                  return prevNote;
+                }));
+              }} value={addedNote}/>
+            </li>
+          )
+        }))}
+        {editState && <button className={classes.addItem} onClick={() => setAddedNotes(prev => prev.concat(''))}>Add Note</button>}
+      </ul>
+      <ul className={classes.tagList}>
         {tags.map(({ text }, idx) => {
           return (
             <li className={classes.tagItem} key={`${idx}-note`}>{text}</li>
           );
-        })}
-      </ul>}
+        }).concat(addedTags.map((addedTag, idx) => {
+          return (
+            <li className={classes.tagItem} key={`${idx}-added-note`}>{addedTag}</li>
+          );
+        }))}
+        {editState && <button className={`${classes.addItem} ${classes.tagItem}`} onClick={() => setAddedTags(prev => prev.concat('SELECT'))}>Add Tag</button>}
+      </ul>    
       <span className={classes.thoughtDescription}>
         {thought.description}
       </span>
@@ -143,5 +174,41 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
     </div>
   );
 });
+
+const handleUpdates = async (db, addedNotes, edittedInputs, thought, tags, notes, reset) => {
+  const notesToAdd = [];
+  const tagsToAdd = [];
+  const notesToEdit = [];
+  const tagsToEdit = [];
+
+  addedNotes.forEach(addedNote => {
+    notesToAdd.push({
+      text: addedNote,
+      thoughtId: thought.id,
+    });
+  });
+
+  Object.keys(edittedInputs).forEach(id => {
+    const foundNote = notes.find(note => note.id === id);
+    const foundTag = tags.find(tag => tag.id === id);
+    if (foundNote) {
+      notesToEdit.push(Object.assign({}, foundNote, {
+        text: edittedInputs[id],
+      }));
+    } else if (foundTag) {
+      tagsToEdit.push(Object.assign({}, foundTag, {
+        text: edittedInputs[id],
+      }));
+    }
+  });
+
+  await Promise.all([
+    Promise.all(notesToAdd.map(note => noteActions.createNote(db, note))),
+    Promise.all(tagsToAdd.map(tag => tagActions.createTag(db, tag))),
+    Promise.all(notesToEdit.map(note => noteActions.editNote(db, note))),
+    Promise.all(tagsToEdit.map(tag => tagActions.editTag(db, tag))),
+  ]);
+  reset();
+};
 
 export default ThoughtInformation;
