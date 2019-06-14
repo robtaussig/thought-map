@@ -47,7 +47,8 @@ const styles = theme => ({
     backgroundColor: 'dodgerblue',
   },
   connectionButton: {
-    textAlign: 'left',    
+    textAlign: 'left',
+    width: '100%',
     '&:active, &:link': {
       backgroundColor: 'dodgerblue',
       color: 'white',
