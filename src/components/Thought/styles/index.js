@@ -3,6 +3,7 @@ export const styles = theme => ({
     height: '100%',
     position: 'relative',
     overflow: 'auto',
+    overflowX: 'hidden',
     backgroundColor: theme.palette.gray[700],
     '& #thought-loader': {
       position: 'absolute',
