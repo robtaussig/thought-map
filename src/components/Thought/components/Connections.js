@@ -39,12 +39,14 @@ const styles = theme => ({
   },
   listItem: {
     borderBottom: '1px solid gainsboro',
+    display: 'flex',
     '&.connected': {
       color: 'dodgerblue',
     }
   },
   connectedListItem: {
     backgroundColor: 'dodgerblue',
+    display: 'flex',
   },
   connectionButton: {
     textAlign: 'left',
@@ -53,6 +55,9 @@ const styles = theme => ({
       backgroundColor: 'dodgerblue',
       color: 'white',
     },
+  },
+  addConnectionIcon: {
+    ...theme.defaults.centered,
   },
 });
 
@@ -71,8 +76,6 @@ export const Connections = ({ classes, thought, from, to, revealed, connections,
       return () => setPositionOfCenter(INITIAL_STATE);
     }
   }, [revealed]);
-  
-
   return (
     <section className={classes.root} style={{
       transform: `translateX(${positionOfCenter}%)`,

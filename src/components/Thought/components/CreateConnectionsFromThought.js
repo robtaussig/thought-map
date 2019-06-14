@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useMemo } from 'react';
+import React, { Fragment, useState, useMemo, useEffect } from 'react';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import CircleButton from '../../General/CircleButton';
@@ -12,9 +12,8 @@ const SETTING_CONNECTION_STATE = {
 
 export const CreateConnectionsFromThought = ({ classes, thought, thoughts, connections }) => {
   const [settingConnectionState, setSettingConnectionState] = useState(SETTING_CONNECTION_STATE.NONE);
-
-  const fromConnections = useMemo(() => Object.values(connections).filter(({ to }) => to === thought.id).map(({ title, from, id }) => ({ title, thoughtId: from, id })),[thoughts, connections]);
-  const toConnections = useMemo(() => Object.values(connections).filter(({ from }) => from === thought.id).map(({ title, to, id }) => ({ title, thoughtId: to, id })),[thoughts, connections]);
+  const fromConnections = useMemo(() => Object.values(connections).filter(({ to }) => to === thought.id).map(({ title, from, id }) => ({ title, thoughtId: from, id })),[thoughts, connections, thought]);
+  const toConnections = useMemo(() => Object.values(connections).filter(({ from }) => from === thought.id).map(({ title, to, id }) => ({ title, thoughtId: to, id })),[thoughts, connections, thought]);
 
   return (
     <Fragment>
