@@ -1,10 +1,9 @@
-Change Settings button color
 Implement settings page
 Add button to destroy database
 allow editing of thought title
 finish editing notes
 allow deltion/creation of tags
-finish implementation of creating connections
+Generalize circle button styling so only position needs to be defined at component level
 
 Settings:
 //Display completed thoughts
