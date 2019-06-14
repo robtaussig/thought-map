@@ -31,8 +31,7 @@ const styles = theme => ({
   },
   list: {
     display: 'grid',
-    gridTemplateRows: 'max-content',
-    gridAutoFlow: 'row',
+    gridAutoRows: 'max-content',
     overflow: 'auto',
     padding: '0 40px',
     marginBottom: 40,
