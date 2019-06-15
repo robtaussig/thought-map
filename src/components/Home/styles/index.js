@@ -10,7 +10,7 @@ export const styles = theme => ({
     gap: '20px',
     gridTemplateAreas: `"content header"
                         "content header"
-                        "content settings-button"`,
+                        "content plans-list"`,
     gridTemplateRows: 'repeat(3, 1fr)',
     gridTemplateColumns: 'repeat(2, 1fr)',
     /**
@@ -18,10 +18,29 @@ export const styles = theme => ({
      */
     [theme.breakpoints.down('sm')]: {
       gridTemplateAreas: `"content content"
-                          "settings-button settings-button"
+                          "plans-list plans-list"
                           "header header"`,
       gridTemplateRows: '7fr minmax(50px, 1fr) minmax(50px, 1fr)',
       gridTemplateColumns: 'repeat(2, 1fr)',
+    },
+  },
+  selectLabel: {
+    '&#plans': {
+      gridArea: 'plans-list',
+      display: 'flex',
+      backgroundColor: '#8380ff',      
+      borderRadius: '10px',
+      position: 'relative',
+      '& > select': {
+        flex: 1,
+        color: 'white',
+        display: 'flex',
+        textAlignLast: 'center',
+        paddingLeft: 13,
+        backgroundColor: 'transparent',
+        border: 'none',
+        fontSize: 24,
+      }
     },
   },
   content: {

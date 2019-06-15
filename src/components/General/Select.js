@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Select = React.memo(({ id, classes, value, options, onChange, label }) => {
+export const Select = React.memo(({ id, classes, value, options, onChange, label, injectedComponent }) => {
 
   return (
     <label id={id} className={classes.selectLabel}>
@@ -10,6 +10,7 @@ export const Select = React.memo(({ id, classes, value, options, onChange, label
         })}
       </select>
       {label}
+      {injectedComponent}
     </label>
   );
 });

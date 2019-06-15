@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Content from './Content/index';
-import SettingsButton from './SettingsButton';
+import PlanSelect from './PlanSelect';
 import Header from './Header';
 import CircleButton from '../General/CircleButton';
 import { styles } from './styles';
@@ -17,7 +17,7 @@ export const Home = ({ classes, state }) => {
   return (
     <div className={classes.root}>
       <Content classes={classes} thoughts={state.thoughts} connections={state.connections}/>
-      <SettingsButton classes={classes} onClick={handleClickSettings}/>
+      <PlanSelect classes={classes} plans={state.plans}/>
       <Header classes={classes}/>
       <CircleButton classes={classes} onClick={handleAddThought} label={'Add Thought'}/>
     </div>
