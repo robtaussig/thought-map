@@ -119,6 +119,11 @@ export const styles = theme => ({
     justifyContent: 'center',
     transition: 'all 0.2s linear',
     color: 'white',
+    '&#create-plan': {
+      '&:disabled': {
+        opacity: 0.5,
+      },
+    },
     '&:hover': {
       transform: 'scale(1.1)',
       ...theme.defaults.castShadow.heavy,

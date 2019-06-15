@@ -7,6 +7,8 @@ export const DEFAULT_STATE = {
   phases: {},
   notes: [],
   tags: [],
+  creatingPlan: false,
+  inputtedPlan: '',
 };
 
 export const ACTION_TYPES = {
@@ -17,6 +19,7 @@ export const ACTION_TYPES = {
   CREATE_THOUGHT: 'CREATE_THOUGHT',
   DELETE_THOUGHT: 'DELETE_THOUGHT',
   UPDATE_THOUGHT: 'UPDATE_THOUGHT',
+  CREATING_PLAN: 'CREATING_PLAN',
 };
 
 const PHASE_TYPES = {
@@ -51,6 +54,13 @@ export const appReducer = (state, action) => {
       return {
         ...state,
         thoughts: action.payload,
+      };
+
+    case ACTION_TYPES.CREATING_PLAN:
+      return {
+        ...state,
+        creatingPlan: action.payload,
+        inputtedPlan: '',
       };
     case ACTION_TYPES.FETCH_THOUGHT:
     case ACTION_TYPES.CREATE_THOUGHT:
