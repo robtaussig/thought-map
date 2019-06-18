@@ -109,7 +109,7 @@ const handleThoughtChange = setter => ({ data }) => {
   const thought = data.v;
   switch (data.op) {
     case 'INSERT':
-      setter(prev => prev.concat(thought));
+      setter(prev => [thought].concat(prev));
       break;
     
     case 'REMOVE':
