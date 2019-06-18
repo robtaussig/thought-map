@@ -9,7 +9,6 @@ import Input from '../../../General/Input';
 import CheckBox from '../../../General/CheckBox';
 import Cancel from '@material-ui/icons/Cancel';
 import Check from '@material-ui/icons/Check';
-import ExpandLess from '@material-ui/icons/ExpandLess';
 import IncludeThoughts from './IncludeThoughts';
 import { styles, DEFAULT_STATE } from './style';
 
@@ -21,36 +20,20 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
   const [selectedThoughts, setSelectedThoughts] = useState([]);
   const [style, setStyle] = useState({});
   const rootRef = useRef(null);
-  const focusInput = useRef(() => {});
-
-  useEffect(() => {
-    const { x, y, height } = rootRef.current.getBoundingClientRect();
-    const distanceToBottom = window.innerHeight - y - height;
-
-    if (open) {
-      setStyle({
-        top: -y,
-        left: -x,
-        right: -x,
-        bottom: -distanceToBottom,
-        borderRadius: 0,
-        justifyContent: 'flex-start',
-        visibility: 'visible',
-      });
-
-      const timeout = setTimeout(focusInput.current, 100);
-
-      return () => clearTimeout(timeout);
-    } else {
-      setStyle(DEFAULT_STATE);
-    }
-  }, [open]);
+  const focusInput = useRef(() => {})
 
   const handleChange = useCallback(event => setPlanName(event.target.value), []);
   const focusTitleInput = useCallback(focus => focusInput.current = focus, []);
   const toggleWithThoughts = useCallback(event => setWithThoughts(event.target.checked),[]);
   const handleSelectThought = useCallback(thought => setSelectedThoughts(prev => prev.concat(thought)));
   const handleRemoveThought = useCallback(thought => setSelectedThoughts(prev => prev.filter(prevThought => prevThought !== thought)));
+
+  const resetState = () => {
+    setPlanName('');
+    setWithThoughts(false);
+    setSelectedThoughts([]);
+    setStyle(DEFAULT_STATE);
+  };
 
   const handleSubmit = useCallback(() => {
     const createPlan = async () => {
@@ -77,11 +60,39 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
       const plan = await createPlan();
       await attachThoughts(plan.id);
       history.push(`/plan/${plan.id}/`);
-      onClose();
+      onClose(plan.name);
     };
 
     createObjectsAndGoBack();
   }, [selectedThoughts, planName, withThoughts, history]);
+
+  useEffect(() => {
+    const { x, y, height } = rootRef.current.getBoundingClientRect();
+    const distanceToBottom = window.innerHeight - y - height;
+
+    if (open) {
+      setStyle({
+        top: -y,
+        left: -x,
+        right: -x,
+        bottom: -distanceToBottom,
+        borderRadius: 0,
+        justifyContent: 'flex-start',
+        visibility: 'visible',
+      });
+
+      const timeout = setTimeout(focusInput.current, 100);
+
+      const unlisten = history.listen((event, type) => type === 'POP' && onClose());
+
+      return () => {
+        clearTimeout(timeout);
+        unlisten();
+      }
+    } else {
+      resetState();
+    }
+  }, [open]);
 
   return (
     <div ref={rootRef} className={`${classes.root}${withThoughts ? ' with-thoughts' : ''}`} style={style}>

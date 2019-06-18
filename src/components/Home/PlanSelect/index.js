@@ -44,8 +44,13 @@ export const PlanSelect = ({ classes, plans, creatingPlan, thoughts, planId }) =
     }
   }, [plans, thoughts, currentPlan]);
 
-  const handleClose = useCallback(() => {
-    setCurrentPlan(lastPlan.current);
+  const handleClose = useCallback(planName => {
+    if (planName) {
+      setCurrentPlan(planName);
+      lastPlan.current = planName;
+    } else {
+      setCurrentPlan(lastPlan.current);
+    }
     setCreatingPlan(false);
   }, []);
 
