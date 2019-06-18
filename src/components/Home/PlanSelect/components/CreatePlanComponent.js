@@ -78,6 +78,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
         await attachThoughts(plan.id);
       }
       history.push(`/plan/${plan.id}`);
+      onClose();
     };
 
     createObjectsAndGoBack();
