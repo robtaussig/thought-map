@@ -40,7 +40,7 @@ export const CreateThought = ({ classes, state }) => {
 
   const handleSubmit = async () => {
     const response = await createWholeThought(db, createdThought, planId);
-    history.push(`/thought/${response.thought.id}`);
+    history.push(`${homeUrl(history)}thought/${response.thought.id}`);
   };
 
   const setFocusInput = useCallback(focusInput => focusInputRef.current = focusInput, []);
