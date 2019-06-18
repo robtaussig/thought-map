@@ -14,10 +14,13 @@ export const createWholeThought = async (db, {
   description,
   notes,
   tags,
-}) => {
-  const createdThought = await thoughtActions.createThought(db, {
-    title, type, date, time, description, status: 'new',
-  });
+}, planId) => {
+  const thought = {
+    title, type, date, time, description, status: 'new', planId,
+  };
+  if (planId) thought.planId = planId;
+
+  const createdThought = await thoughtActions.createThought(db, thought);
   const thoughtId = createdThought.id;
   const [createdNotes, createdTags] = await Promise.all([
     Promise.all(notes.map((note, idx) => noteActions.createNote(db, {

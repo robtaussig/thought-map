@@ -11,6 +11,7 @@ import CircleButton from '../General/CircleButton';
 import Check from '@material-ui/icons/Check';
 import Home from '@material-ui/icons/Home';
 import { createWholeThought } from '../../actions/complex';
+import { homeUrl, getIdFromUrl } from '../../lib/util';
 
 const DEFAULT_STATE = {
   title: '',
@@ -31,19 +32,19 @@ export const CreateThought = ({ classes, state }) => {
   const [ phase, setPhase ] = useState(1);
   const [ ready, setReady ] = useState(false);
   const focusInputRef = useRef(() => {});
-
+  const planId = getIdFromUrl(history, 'plan');
   useEffect(() => {
     const timeout = setTimeout(focusInputRef.current, 100);
     return () => clearTimeout(timeout);
   }, []);
 
   const handleSubmit = async () => {
-    const response = await createWholeThought(db, createdThought);
+    const response = await createWholeThought(db, createdThought, planId);
     history.push(`/thought/${response.thought.id}`);
   };
 
   const setFocusInput = useCallback(focusInput => focusInputRef.current = focusInput, []);
-  const handleClickHome = useCallback(() => history.push('/'),[]);
+  const handleClickHome = useCallback(() => history.push(homeUrl(history)),[]);
 
   return (
     <div className={classes.root}>

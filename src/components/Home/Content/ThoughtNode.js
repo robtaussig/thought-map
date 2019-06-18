@@ -4,13 +4,14 @@ import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
 import { STATUS_OPTIONS } from '../../Thought';
 import { thoughts as thoughtActions } from '../../../actions';
+import { homeUrl } from '../../../lib/util';
 
 export const ThoughtNode = React.memo(({ classes, thought, updateStatus }) => {
   const { history, dispatch } = useApp();
   const db = useLoadedDB();
 
   const handleClick = () => {
-    history.push(`/thought/${thought.id}`);
+    history.push(`${homeUrl(history)}thought/${thought.id}`);
   };
 
   const handleChangeStatus = useCallback(event => {

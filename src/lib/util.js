@@ -12,3 +12,25 @@ export const openConfirmation = (confirmationText, onConfirm, onReject = () => {
     onReject();
   }
 };
+
+export const homeUrl = history => {
+  const pathName = history.location.pathname;
+  const split = pathName.split('/');
+
+  if (split[1] === 'plan') {
+    return `/plan/${split[2]}/`;
+  } else {
+    return '/';
+  }
+};
+
+export const getIdFromUrl = (history, key) => {
+  const path = history.location.pathname;
+
+  return path.split('/').reduce((id, part) => {
+    if (id === true) return part;
+    if (id !== false) return id;
+    if (part === key) return true;
+    return false;
+  }, false);
+};

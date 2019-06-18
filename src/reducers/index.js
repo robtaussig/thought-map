@@ -8,7 +8,6 @@ export const DEFAULT_STATE = {
   notes: [],
   tags: [],
   creatingPlan: false,
-  inputtedPlan: '',
 };
 
 export const ACTION_TYPES = {
@@ -60,7 +59,6 @@ export const appReducer = (state, action) => {
       return {
         ...state,
         creatingPlan: action.payload,
-        inputtedPlan: '',
       };
     case ACTION_TYPES.FETCH_THOUGHT:
     case ACTION_TYPES.CREATE_THOUGHT:

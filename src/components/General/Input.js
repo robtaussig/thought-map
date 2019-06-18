@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export const Input = React.memo(({ classes, value, onChange, label, id, onFocus, DeleteButton, scrollToOnMount, autoFocus }) => {
+export const Input = React.memo(({ classes, value, onChange, label, id, onFocus, DeleteButton, scrollToOnMount, autoFocus, injectedComponent }) => {
   const rootRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -20,6 +20,7 @@ export const Input = React.memo(({ classes, value, onChange, label, id, onFocus,
         <span/>
       </div>
       {label}
+      {injectedComponent}
       {DeleteButton}
     </label>
   );

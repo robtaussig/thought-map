@@ -1,91 +1,30 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { CREATE_NEW_PLAN } from '../';
+import { plans as planActions, thoughts as thoughtActions } from '../../../../actions';
 import CircleButton from '../../../General/CircleButton';
+import useApp from '../../../../hooks/useApp';
+import { useLoadedDB } from '../../../../hooks/useDB';
+import Input from '../../../General/Input';
+import CheckBox from '../../../General/CheckBox';
 import Cancel from '@material-ui/icons/Cancel';
+import Check from '@material-ui/icons/Check';
+import IncludeThoughts from './IncludeThoughts';
+import { styles, DEFAULT_STATE } from './style';
 
-const styles = theme => ({
-  root: {
-    position: 'absolute',
-    ...DEFAULT_STATE,
-    display: 'flex',
-    flexDirection: 'column',
-    transition: 'all 0.4s ease-out',
-    backgroundColor: '#8380ff',
-    visibility: 'hidden',
-  },
-  header: {
-    color: 'white',
-    fontSize: 24,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: '0 0 50px',
-  },
-  circleButton: {
-    position: 'fixed',
-    border: `2px solid ${theme.palette.gray[200]}`,
-    margin: 30,
-    height: 70,
-    width: 70,
-    borderRadius: '50%',
-    backgroundColor: theme.palette.gray[600],
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'all 0.2s linear',
-    color: 'white',
-    '&#cancel': {
-      left: 0,
-      bottom: 0,
-    },
-    '&:not([disabled])': {
-      border: `2px solid ${theme.palette.primary[500]}`,
-      '&:hover': {
-        transform: 'scale(1.1)',
-        ...theme.defaults.castShadow.heavy,
-      },
-      '&:active': {
-        transform: 'scale(1)',
-        boxShadow: 'none',
-      },
-    },
-    /**
-     * Small
-     */
-    [theme.breakpoints.down('sm')]: {
-      top: 'unset',
-      bottom: 0,
-      transition: 'all 0.1s linear',
-      '&#return-home': {
-        left: 'unset',
-        right: 0,
-        top: 0,
-        bottom: 'unset',
-        display: 'block',
-      },
-      '&:not([disabled])': {
-        ...theme.defaults.castShadow.heavy,
-        '&:hover': {
-          transform: 'unset',
-        },
-        '&.touched': {
-          boxShadow: 'none!important',
-          transform: 'scale(0.9)!important',
-        },
-      },
-    },
-  },
-});
-
-export const CreatePlanComponent = ({ classes, open, onClose }) => {
+export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
+  const { history } = useApp();
+  const db = useLoadedDB();
+  const [planName, setPlanName] = useState('');
+  const [withThoughts, setWithThoughts] = useState(false);
+  const [selectedThoughts, setSelectedThoughts] = useState([]);
   const [style, setStyle] = useState({});
   const rootRef = useRef(null);
+  const focusInput = useRef(() => {});
 
   useEffect(() => {
     const { x, y, height } = rootRef.current.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    const distanceToBottom = windowHeight - y - height;
+    const distanceToBottom = window.innerHeight - y - height;
 
     if (open) {
       setStyle({
@@ -97,14 +36,82 @@ export const CreatePlanComponent = ({ classes, open, onClose }) => {
         justifyContent: 'flex-start',
         visibility: 'visible',
       });
+
+      const timeout = setTimeout(focusInput.current, 100);
+
+      return () => clearTimeout(timeout);
     } else {
       setStyle(DEFAULT_STATE);
     }
   }, [open]);
 
+  const handleChange = useCallback(event => setPlanName(event.target.value), []);
+  const focusTitleInput = useCallback(focus => focusInput.current = focus, []);
+  const toggleWithThoughts = useCallback(event => setWithThoughts(event.target.checked),[]);
+  const handleSelectThought = useCallback(thought => setSelectedThoughts(prev => prev.concat(thought)));
+  const handleRemoveThought = useCallback(thought => setSelectedThoughts(prev => prev.filter(prevThought => prevThought !== thought)));
+
+  const handleSubmit = useCallback(() => {
+    const createPlan = async () => {
+      const plan = await planActions.createPlan(db, {
+        name: planName,
+      });
+      return plan;
+    };
+
+    const attachThoughts = async planId => {
+      const updateThought = async thoughtId => {
+        const thought = thoughts.find(foundThought => foundThought.id === thoughtId);
+        const nextThought = Object.assign({}, thought, {
+          planId,
+        });
+
+        return thoughtActions.editThought(db, nextThought);
+      };
+
+      return Promise.all(selectedThoughts.map(updateThought));
+    };
+
+    const createObjectsAndGoBack = async () => {
+      const plan = await createPlan();
+      if (withThoughts) {
+        await attachThoughts(plan.id);
+      }
+      history.push(`/plan/${plan.id}`);
+    };
+
+    createObjectsAndGoBack();
+  }, [selectedThoughts, planName, withThoughts]);
+
   return (
-    <div ref={rootRef} className={classes.root} style={style}>
+    <div ref={rootRef} className={`${classes.root}${withThoughts ? ' with-thoughts' : ''}`} style={style}>
       <h2 className={classes.header}>{CREATE_NEW_PLAN}</h2>
+      {open &&
+        <Input
+          classes={classes}
+          value={planName}
+          onChange={handleChange}
+          id={'plan-name'}
+          onFocus={focusTitleInput}
+          injectedComponent={(<CheckBox
+            id={'with-thoughts'}
+            classes={classes}
+            isChecked={withThoughts}
+            value={'With thoughts'}
+            onChange={toggleWithThoughts}
+            label={'With thoughts'}
+          />)}
+        />
+      }
+      {open && withThoughts &&
+        <IncludeThoughts
+          classes={classes}
+          thoughts={thoughts}
+          selected={selectedThoughts}
+          onSelect={handleSelectThought}
+          onRemove={handleRemoveThought}
+        />
+      }
       <CircleButton
         classes={classes}
         id={'cancel'}
@@ -112,17 +119,18 @@ export const CreatePlanComponent = ({ classes, open, onClose }) => {
         label={'Cancel'}
         Icon={Cancel}
       />
+      <CircleButton
+        classes={classes}
+        id={'submit'}
+        onClick={handleSubmit}
+        label={'Submit'}
+        Icon={Check}
+        disabled={planName === ''}
+      />
     </div>
   );
 };
 
-const DEFAULT_STATE = {
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  borderRadius: '10px',
-  justifyContent: 'center',
-};
+
 
 export default withStyles(styles)(CreatePlanComponent);

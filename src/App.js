@@ -63,6 +63,15 @@ const App = ({ classes, history }) => {
             <Route path={'/thought/:id'}>
               {dbReadyState && <Thought state={state}/>}
             </Route>
+            <Route path={'/plan/:id/thought/new'}>
+              {dbReadyState && <CreateThought state={state}/>}
+            </Route>
+            <Route path={'/plan/:id/thought/:thoughtId'}>
+              {dbReadyState && <Thought state={state}/>}
+            </Route>
+            <Route path={'/plan/:id'}>
+              {dbReadyState && <Home state={state}/>}
+            </Route>
           </Switch>
         </div>
       </DBProvider>
