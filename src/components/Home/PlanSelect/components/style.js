@@ -97,6 +97,11 @@ export const styles = theme => ({
   selectableThoughtTitle: {
 
   },
+  cancelButton: {
+    padding: '10px 0',
+    backgroundColor: theme.palette.red[300],
+    color: 'white',
+  },
   circleButton: {
     position: 'fixed',
     border: `2px solid ${theme.palette.gray[200]}`,
@@ -118,6 +123,11 @@ export const styles = theme => ({
     '&#submit': {
       right: 0,
       bottom: 0,
+    },
+    '&#without-thoughts': {
+      bottom: 0,
+      left: 'calc(50% - 65px)',
+      border: `2px solid ${theme.palette.primary[500]}`,
     },
     '&:not([disabled])': {
       opacity: 1,

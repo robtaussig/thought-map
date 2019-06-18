@@ -9,6 +9,7 @@ import Input from '../../../General/Input';
 import CheckBox from '../../../General/CheckBox';
 import Cancel from '@material-ui/icons/Cancel';
 import Check from '@material-ui/icons/Check';
+import ExpandLess from '@material-ui/icons/ExpandLess';
 import IncludeThoughts from './IncludeThoughts';
 import { styles, DEFAULT_STATE } from './style';
 
@@ -74,9 +75,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
 
     const createObjectsAndGoBack = async () => {
       const plan = await createPlan();
-      if (withThoughts) {
-        await attachThoughts(plan.id);
-      }
+      await attachThoughts(plan.id);
       history.push(`/plan/${plan.id}/`);
       onClose();
     };
@@ -87,7 +86,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
   return (
     <div ref={rootRef} className={`${classes.root}${withThoughts ? ' with-thoughts' : ''}`} style={style}>
       <h2 className={classes.header}>{CREATE_NEW_PLAN}</h2>
-      {open &&
+      {open && !withThoughts &&
         <Input
           classes={classes}
           value={planName}
@@ -111,6 +110,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
           selected={selectedThoughts}
           onSelect={handleSelectThought}
           onRemove={handleRemoveThought}
+          onCancel={_ => setWithThoughts(false)}
         />
       }
       <CircleButton

@@ -1,7 +1,7 @@
 import React from 'react';
 import SelectableThought from './components/SelectableThought';
 
-export const IncludeThoughts = ({ classes, thoughts, selected, onSelect, onRemove }) => {
+export const IncludeThoughts = ({ classes, thoughts, selected, onSelect, onRemove, onCancel }) => {
 
   const handleSelect = id => () =>  onSelect(id);
   const handleRemove = id => () => onRemove(id);
@@ -25,6 +25,7 @@ export const IncludeThoughts = ({ classes, thoughts, selected, onSelect, onRemov
             );
           })}
       </ul>
+      <button className={classes.cancelButton} onClick={onCancel}>Cancel</button>
     </div>
   );
 };
