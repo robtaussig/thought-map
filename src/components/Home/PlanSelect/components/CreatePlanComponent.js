@@ -81,7 +81,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
     };
 
     createObjectsAndGoBack();
-  }, [selectedThoughts, planName, withThoughts]);
+  }, [selectedThoughts, planName, withThoughts, history]);
 
   return (
     <div ref={rootRef} className={`${classes.root}${withThoughts ? ' with-thoughts' : ''}`} style={style}>
