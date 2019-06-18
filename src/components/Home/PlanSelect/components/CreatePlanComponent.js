@@ -83,7 +83,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans })
         visibility: 'visible',
       });
 
-      const timeout = setTimeout(focusInput.current, 100);
+      const timeout = setTimeout(focusInput.current, 400);
 
       const unlisten = history.listen((event, type) => type === 'POP' && onClose());
 
