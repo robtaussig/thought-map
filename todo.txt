@@ -5,6 +5,7 @@ finish editing notes
 allow deltion/creation of tags
 Generalize circle button styling so only position needs to be defined at component level
 Delete associations when deleting object with foreign key
+Implement ability to move thoughts across plans
 
 Settings:
 //Display completed thoughts
