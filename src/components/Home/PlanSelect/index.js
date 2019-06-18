@@ -43,7 +43,6 @@ export const PlanSelect = ({ classes, plans, creatingPlan, thoughts, planId }) =
 
   const handleClose = useCallback(() => {
     setCreatingPlan(false);
-    setCurrentPlan(HOME_NAME);
   }, []);
 
   useEffect(() => {

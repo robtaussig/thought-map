@@ -66,6 +66,7 @@ export const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     margin: '100px 10vw',
+    overflow: 'hidden',
     marginTop: 0,
     backgroundColor: theme.palette.gray[100],
     ...theme.defaults.castShadow.light,
@@ -83,6 +84,7 @@ export const styles = theme => ({
     flexDirection: 'column',
     flex: 1,
     margin: '0 15px',
+    overflow: 'auto',
   },
   selectableThought: {
     textAlign: 'left',
