@@ -31,6 +31,7 @@ export const Thought = ({ classes, state }) => {
   }, []);
   const handleClickDelete = useCallback(() => {
     const onConfirm = async () => {
+      //Need to delete associations
       await thoughtActions.deleteThought(db, thoughtId);
       history.push(homeUrl(history));
     };

@@ -4,6 +4,7 @@ allow editing of thought title
 finish editing notes
 allow deltion/creation of tags
 Generalize circle button styling so only position needs to be defined at component level
+Delete associations when deleting object with foreign key
 
 Settings:
 //Display completed thoughts
