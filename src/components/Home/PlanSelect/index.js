@@ -73,6 +73,7 @@ export const PlanSelect = ({ classes, plans, creatingPlan, thoughts, planId }) =
           open={creatingPlan}
           onClose={handleClose}
           thoughts={thoughts}
+          plans={plans}
         />
       )}
     />

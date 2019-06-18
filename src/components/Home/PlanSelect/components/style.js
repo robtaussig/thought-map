@@ -97,6 +97,14 @@ export const styles = theme => ({
   selectableThoughtTitle: {
 
   },
+  errorText: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    textAlign: 'center',
+    marginBottom: '15px',
+    color: theme.palette.red[500],
+  },
   cancelButton: {
     padding: '10px 0',
     backgroundColor: theme.palette.red[300],

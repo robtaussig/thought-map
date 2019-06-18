@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { CREATE_NEW_PLAN } from '../';
 import { plans as planActions, thoughts as thoughtActions } from '../../../../actions';
@@ -12,15 +12,17 @@ import Check from '@material-ui/icons/Check';
 import IncludeThoughts from './IncludeThoughts';
 import { styles, DEFAULT_STATE } from './style';
 
-export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
+export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans }) => {
   const { history } = useApp();
   const db = useLoadedDB();
   const [planName, setPlanName] = useState('');
+  const [alreadyExists, setAlreadyExists] = useState(false);
   const [withThoughts, setWithThoughts] = useState(false);
   const [selectedThoughts, setSelectedThoughts] = useState([]);
   const [style, setStyle] = useState({});
   const rootRef = useRef(null);
-  const focusInput = useRef(() => {})
+  const focusInput = useRef(() => {});
+  const planNames = useMemo(() => new Set(Object.values(plans).map(({ name}) => name)), [plans]);
 
   const handleChange = useCallback(event => setPlanName(event.target.value), []);
   const focusTitleInput = useCallback(focus => focusInput.current = focus, []);
@@ -94,6 +96,14 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
     }
   }, [open]);
 
+  useEffect(() => {
+    if (planNames.has(planName)) {
+      setAlreadyExists(true);
+    } else {
+      setAlreadyExists(false);
+    }
+  }, [planName]);
+
   return (
     <div ref={rootRef} className={`${classes.root}${withThoughts ? ' with-thoughts' : ''}`} style={style}>
       <h2 className={classes.header}>{CREATE_NEW_PLAN}</h2>
@@ -124,6 +134,9 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
           onCancel={_ => setWithThoughts(false)}
         />
       }
+      {alreadyExists &&
+        <span className={classes.errorText}>A plan already exists by this name</span>
+      }
       <CircleButton
         classes={classes}
         id={'cancel'}
@@ -137,7 +150,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts }) => {
         onClick={handleSubmit}
         label={'Submit'}
         Icon={Check}
-        disabled={planName === ''}
+        disabled={planName === '' || alreadyExists}
       />
     </div>
   );
