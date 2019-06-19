@@ -13,7 +13,8 @@ import { thoughts as thoughtActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 
 export const STATUS_OPTIONS = ['new', 'completed', 'in progress', 'almost done', 'pending'];
-const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
+export const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
+export const TAG_OPTIONS = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
 
 export const Thought = ({ classes, state }) => {
   const db = useLoadedDB();
@@ -51,6 +52,7 @@ export const Thought = ({ classes, state }) => {
           notes={relatedNotes}
           statusOptions={STATUS_OPTIONS}
           typeOptions={TYPE_OPTIONS}
+          tagOptions={TAG_OPTIONS}
           onUpdate={handleUpdate}
           onEditState={setEditState}
           editState={editState}

@@ -33,6 +33,13 @@ export const styles = theme => ({
         width: '100%',
       }
     },
+    '& #thought-title': {
+      gridArea: 'title',
+      '& input': {
+        fontSize: 24,
+        width: '100%',
+      },
+    },
   },
   thoughtInformation: {
     display: 'grid',
@@ -121,9 +128,18 @@ export const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
+    '& #added-tag': {
+      margin: '10px 0',
+      marginRight: 10,
+      color: theme.palette.secondary[300],
+      border: `1px solid ${theme.palette.secondary[300]}`,
+      padding: '4px 10px',
+      borderRadius: '10px',
+    },
   },
   tagItem: {
-    margin: '10px 5px',
+    margin: '10px 0',
+    marginRight: 10,
     color: theme.palette.secondary[300],
     border: `1px solid ${theme.palette.secondary[300]}`,
     padding: '4px 10px',

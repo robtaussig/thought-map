@@ -12,17 +12,18 @@ import Check from '@material-ui/icons/Check';
 import Home from '@material-ui/icons/Home';
 import { createWholeThought } from '../../actions/complex';
 import { homeUrl, getIdFromUrl } from '../../lib/util';
+import { TYPE_OPTIONS, TAG_OPTIONS } from '../Thought';
 
 const DEFAULT_STATE = {
   title: '',
-  typeOptions: ['Task', 'Todo', 'Reminder', 'Misc'],
+  typeOptions: TYPE_OPTIONS,
   type: 'Task',
   date: '',
   time: '',
   description: '',
   notes: [],
   tags: [],
-  tagOptions: ['Select', 'Important', 'Lazy', 'Misc', 'Later'],
+  tagOptions: TAG_OPTIONS,
 };
 
 export const CreateThought = ({ classes, state }) => {

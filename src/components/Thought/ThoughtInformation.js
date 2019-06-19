@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import Note from '@material-ui/icons/Note';
 import AccessTime from '@material-ui/icons/AccessTime';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Header from '../General/Header';
 import Select from '../General/Select';
+import Input from '../General/Input';
 import Date from '../General/Date';
 import CircleButton from '../General/CircleButton';
 import Edit from '@material-ui/icons/Edit';
@@ -13,12 +14,14 @@ import { openConfirmation } from '../../lib/util';
 import { notes as noteActions, thoughts as thoughtActions, tags as tagActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 
-export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], typeOptions = [], onUpdate, editState, onEditState }) => {
+export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], typeOptions = [], tagOptions = [], onUpdate, editState, onEditState }) => {
   const [edittingTime, setEdittingTime] = useState(false);
   const [edittingDate, setEdittingDate] = useState(false);
-  const [edittedInputs, setEdittedInputs] = useState({});
+  const [edittedNotes, setEdittedNotes] = useState({});
+  const [edittedTitle, setEdittedTitle] = useState(thought.title);
   const [addedNotes, setAddedNotes] = useState([]);
   const [addedTags, setAddedTags] = useState([]);
+  const tagOptionsWithSelect = useMemo(() => tagOptions.concat('SELECT'), [tagOptions]);
   const db = useLoadedDB();
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });
@@ -41,13 +44,13 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   const reset = useCallback(() => {
     setEdittingTime(false);
     setEdittingDate(false);
-    setEdittedInputs({});
+    setEdittedNotes({});
     setAddedNotes([]);
     setAddedTags([]);
   }, []);
 
   const handleClickCancelEdit = () => {
-    handleUpdates(db, addedNotes, edittedInputs, thought, tags, notes, reset);
+    handleUpdates(db, addedNotes, edittedNotes, thought, tags, notes, edittedTitle, reset);
     onEditState(false);
   };
   
@@ -58,7 +61,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   const handleInput = useCallback(id => {
     return e => {
       const value = e.target.value;
-      setEdittedInputs(prev => ({
+      setEdittedNotes(prev => ({
         ...prev,
         [id]: value,
       }));
@@ -77,7 +80,16 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
 
   return (
     <div className={classes.thoughtInformation}>
-      <Header classes={classes} value={thought.title}/>
+      {editState ? (
+        <Input
+          classes={classes}
+          value={edittedTitle}
+          onChange={e => setEdittedTitle(e.target.value)}
+          id={'thought-title'}
+        />
+      ) : (
+        <Header classes={classes} value={thought.title}/>
+      )}
       {edittingTime || editState ? (
         <Date
           id={'time'}
@@ -128,7 +140,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
           return editState ? (
             <li className={classes.noteItem} key={`${idx}-note`}>
               <button className={classes.deleteIcon} onClick={handleDelete(id, 'note')}><Delete/></button>
-              <input className={classes.noteEditInput} onChange={handleInput(id)} value={edittedInputs[id] || text}/>
+              <input className={classes.noteEditInput} onChange={handleInput(id)} value={edittedNotes[id] || text}/>
             </li>
           ) : (
             <li className={classes.noteItem} key={`${idx}-note`}><Note className={classes.noteIcon}/>{text}</li>
@@ -158,7 +170,21 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
           );
         }).concat(addedTags.map((addedTag, idx) => {
           return (
-            <li className={classes.tagItem} key={`${idx}-added-note`}>{addedTag}</li>
+            <Select
+              classes={classes}
+              key={`${idx}-added-note`}
+              value={addedTag}
+              id={'added-tag'}
+              options={tagOptionsWithSelect.filter(option => {
+                return addedTag === option ||
+                  option === 'SELECT' ||
+                  tags.map(tag => tag.text).concat(addedTags).includes(option) === false;
+              })}
+              onChange={e => {
+                const value = e.target.value;
+                setAddedTags(prev => prev.map((prevValue, prevIdx) => prevIdx === idx ? value : prevValue));
+              }}
+            />
           );
         }))}
         {editState && <button className={`${classes.addItem} ${classes.tagItem}`} onClick={() => setAddedTags(prev => prev.concat('SELECT'))}>Add Tag</button>}
@@ -175,7 +201,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   );
 });
 
-const handleUpdates = async (db, addedNotes, edittedInputs, thought, tags, notes, reset) => {
+const handleUpdates = async (db, addedNotes, edittedNotes, thought, tags, notes, edittedTitle, reset) => {
   const notesToAdd = [];
   const tagsToAdd = [];
   const notesToEdit = [];
@@ -188,19 +214,25 @@ const handleUpdates = async (db, addedNotes, edittedInputs, thought, tags, notes
     });
   });
 
-  Object.keys(edittedInputs).forEach(id => {
+  Object.keys(edittedNotes).forEach(id => {
     const foundNote = notes.find(note => note.id === id);
     const foundTag = tags.find(tag => tag.id === id);
     if (foundNote) {
       notesToEdit.push(Object.assign({}, foundNote, {
-        text: edittedInputs[id],
+        text: edittedNotes[id],
       }));
     } else if (foundTag) {
       tagsToEdit.push(Object.assign({}, foundTag, {
-        text: edittedInputs[id],
+        text: edittedNotes[id],
       }));
     }
   });
+
+  if (edittedTitle !== thought.title) {
+    await thoughtActions.editThought(db, Object.assign({}, thought, {
+      title: edittedTitle,
+    }));
+  }
 
   await Promise.all([
     Promise.all(notesToAdd.map(note => noteActions.createNote(db, note))),
