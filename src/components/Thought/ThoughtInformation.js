@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo, useEffect } from 'react';
 import Note from '@material-ui/icons/Note';
 import AccessTime from '@material-ui/icons/AccessTime';
 import CalendarToday from '@material-ui/icons/CalendarToday';
@@ -47,7 +47,8 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
     setEdittedNotes({});
     setAddedNotes([]);
     setAddedTags([]);
-  }, []);
+    setEdittedTitle(thought.title);
+  }, [thought]);
 
   const handleClickCancelEdit = () => {
     handleUpdates(db, addedNotes, addedTags.filter(tag => tag !== 'SELECT'), edittedNotes, thought, tags, notes, edittedTitle, reset);
@@ -79,6 +80,8 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
       openConfirmation('Are you sure?', onConfirm);
     };
   }, []);
+
+  useEffect(reset,[thought]);
 
   return (
     <div className={classes.thoughtInformation}>
