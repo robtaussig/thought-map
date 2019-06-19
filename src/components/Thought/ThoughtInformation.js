@@ -50,7 +50,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   }, []);
 
   const handleClickCancelEdit = () => {
-    handleUpdates(db, addedNotes, edittedNotes, thought, tags, notes, edittedTitle, reset);
+    handleUpdates(db, addedNotes, addedTags.filter(tag => tag !== 'SELECT'), edittedNotes, thought, tags, notes, edittedTitle, reset);
     onEditState(false);
   };
   
@@ -72,6 +72,8 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
     return () => {
       const onConfirm = type === 'note' ?
         () => noteActions.deleteNote(db, id) :
+        type === 'tag' ?
+        () => tagActions.deleteTag(db, id) :
         () => {};
 
       openConfirmation('Are you sure?', onConfirm);
@@ -164,9 +166,11 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
         {editState && <button className={classes.addItem} onClick={() => setAddedNotes(prev => prev.concat(''))}>Add Note</button>}
       </ul>
       <ul className={classes.tagList}>
-        {tags.map(({ text }, idx) => {
+        {tags.map(({ text, id }, idx) => {
           return (
-            <li className={classes.tagItem} key={`${idx}-note`}>{text}</li>
+            <li className={classes.tagItem} key={`${idx}-note`}>{editState && (
+              <button className={classes.deleteTagButton} onClick={handleDelete(id, 'tag')}><Delete className={classes.deleteTagIcon}/></button>
+            )}{text}</li>
           );
         }).concat(addedTags.map((addedTag, idx) => {
           return (
@@ -201,7 +205,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   );
 });
 
-const handleUpdates = async (db, addedNotes, edittedNotes, thought, tags, notes, edittedTitle, reset) => {
+const handleUpdates = async (db, addedNotes, addedTags, edittedNotes, thought, tags, notes, edittedTitle, reset) => {
   const notesToAdd = [];
   const tagsToAdd = [];
   const notesToEdit = [];
@@ -210,6 +214,13 @@ const handleUpdates = async (db, addedNotes, edittedNotes, thought, tags, notes,
   addedNotes.forEach(addedNote => {
     notesToAdd.push({
       text: addedNote,
+      thoughtId: thought.id,
+    });
+  });
+
+  addedTags.forEach(addedTag => {
+    tagsToAdd.push({
+      text: addedTag,
       thoughtId: thought.id,
     });
   });

@@ -140,10 +140,18 @@ export const styles = theme => ({
   tagItem: {
     margin: '10px 0',
     marginRight: 10,
+    display: 'flex',
+    alignItems: 'center',
     color: theme.palette.secondary[300],
     border: `1px solid ${theme.palette.secondary[300]}`,
     padding: '4px 10px',
     borderRadius: '10px',
+  },
+  deleteTagIcon: {
+    color: theme.palette.red[500],
+  },
+  deleteTagButton: {
+    ...theme.defaults.centered,
   },
   thoughtDescription: {
     gridArea: 'description',
