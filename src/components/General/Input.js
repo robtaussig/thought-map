@@ -1,6 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 
-export const Input = React.memo(({ classes, value, onChange, label, id, onFocus, DeleteButton, scrollToOnMount, autoFocus, injectedComponent }) => {
+export const Input = React.memo(({
+  classes,
+  value,
+  onChange,
+  label,
+  id,
+  onFocus,
+  DeleteButton,
+  scrollToOnMount,
+  autoFocus,
+  injectedComponent,
+  focusOnLabelClick = true,
+}) => {
   const rootRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -14,7 +26,7 @@ export const Input = React.memo(({ classes, value, onChange, label, id, onFocus,
     }
   }, []);
   return (
-    <label key={`${id}-label`} ref={rootRef} id={id} className={classes.inputLabel}>
+    <label key={`${id}-label`} ref={rootRef} id={id} className={classes.inputLabel} onClick={focusOnLabelClick ? undefined : e => e.preventDefault()}>
       <div>
         <input key={`${id}-input`} ref={inputRef} className={classes.inputField} type={'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
         <span/>

@@ -114,6 +114,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans })
           onChange={handleChange}
           id={'plan-name'}
           onFocus={focusTitleInput}
+          focusOnLabelClick={false}
           injectedComponent={(<CheckBox
             id={'with-thoughts'}
             classes={classes}
