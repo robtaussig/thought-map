@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Content from './Content/index';
-import Check from '@material-ui/icons/Check';
+import Build from '@material-ui/icons/Build';
 import PlanSelect from './PlanSelect';
 import Header from './Header';
 import CircleButton from '../General/CircleButton';
@@ -15,6 +15,7 @@ export const Home = ({ classes, state }) => {
   const handleClickSettings = useCallback(() => history.push('/settings'),[]);
   const planId = getIdFromUrl(history, 'plan');
   const handleAddThought = useCallback(() => history.push(planId ? `/plan/${planId}/thought/new` :'/thought/new'), [planId]);
+  const handleEditPlan = useCallback(() => planId && history.push(`/plan/${planId}/edit`), [planId]);
   const thoughts = useMemo(() => {
     if (planId) {
       return state.thoughts.filter(thought => thought.planId === planId);
@@ -28,7 +29,8 @@ export const Home = ({ classes, state }) => {
       <Content classes={classes} thoughts={thoughts} connections={state.connections}/>
       <PlanSelect classes={classes} plans={state.plans} creatingPlan={state.creatingPlan} thoughts={thoughts} planId={planId}/>
       <Header classes={classes}/>
-      {!state.creatingPlan && <CircleButton classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
+      {!state.creatingPlan && <CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
+      {!state.creatingPlan && <CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
     </div>
   );
 };

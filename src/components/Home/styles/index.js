@@ -107,8 +107,15 @@ export const styles = theme => ({
   circleButton: {
     position: 'fixed',
     border: `2px solid ${theme.palette.primary[500]}`,
-    top: 0,
-    right: 0,
+    '&#add-thought, &#create-plan': {
+      top: 0,
+      right: 0,
+    },
+    '&#edit-plan': {
+      bottom: 0,
+      left: 0,
+      opacity: 0.5,
+    },
     margin: 30,
     height: 70,
     width: 70,
@@ -136,8 +143,10 @@ export const styles = theme => ({
      * Small
      */
     [theme.breakpoints.down('sm')]: {
-      top: 'unset',
-      bottom: 0,
+      '&#add-thought, &#create-plan': {
+        top: 'unset',
+        bottom: 0,
+      },
       transition: 'all 0.1s linear',
       ...theme.defaults.castShadow.heavy,
       '&:hover': {
