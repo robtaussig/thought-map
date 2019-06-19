@@ -21,7 +21,6 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   const [edittedTitle, setEdittedTitle] = useState(thought.title);
   const [addedNotes, setAddedNotes] = useState([]);
   const [addedTags, setAddedTags] = useState([]);
-  const tagOptionsWithSelect = useMemo(() => tagOptions.concat('SELECT'), [tagOptions]);
   const db = useLoadedDB();
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });
@@ -51,7 +50,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   }, [thought]);
 
   const handleClickCancelEdit = () => {
-    handleUpdates(db, addedNotes, addedTags.filter(tag => tag !== 'SELECT'), edittedNotes, thought, tags, notes, edittedTitle, reset);
+    handleUpdates(db, addedNotes, addedTags.filter(tag => tag !== 'Select'), edittedNotes, thought, tags, notes, edittedTitle, reset);
     onEditState(false);
   };
   
@@ -182,9 +181,9 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
               key={`${idx}-added-note`}
               value={addedTag}
               id={'added-tag'}
-              options={tagOptionsWithSelect.filter(option => {
+              options={tagOptions.filter(option => {
                 return addedTag === option ||
-                  option === 'SELECT' ||
+                  option === 'Select' ||
                   tags.map(tag => tag.text).concat(addedTags).includes(option) === false;
               })}
               onChange={e => {
@@ -194,7 +193,7 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
             />
           );
         }))}
-        {editState && <button className={`${classes.addItem} ${classes.tagItem}`} onClick={() => setAddedTags(prev => prev.concat('SELECT'))}>Add Tag</button>}
+        {editState && <button className={`${classes.addItem} ${classes.tagItem}`} onClick={() => setAddedTags(prev => prev.concat('Select'))}>Add Tag</button>}
       </ul>    
       <span className={classes.thoughtDescription}>
         {thought.description}
