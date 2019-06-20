@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import useApp from '../hooks/useApp';
+import useApp from '../../hooks/useApp';
 import EditPlan from '../EditPlan';
 
 const styles = theme => ({
