@@ -158,8 +158,10 @@ export const styles = theme => ({
     color: theme.palette.secondary[300],
   },
   circleButton: {
-    position: 'fixed',
+    ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
+    backgroundColor: theme.palette.gray[600],
+    opacity: 0.5,
     '&#return-home': {
       top: 0,
       right: 0,
@@ -184,37 +186,6 @@ export const styles = theme => ({
       bottom: 0,
       left: 'calc(50% - 65px)',
       border: `2px solid ${theme.palette.primary[500]}`,
-    },
-    margin: 30,
-    height: 70,
-    width: 70,
-    borderRadius: '50%',
-    backgroundColor: theme.palette.gray[600],
-    ...theme.defaults.centered,
-    opacity: 0.5,
-    transition: 'all 0.2s linear',
-    color: 'white',
-    '&:hover': {
-      transform: 'scale(1.1)',
-      ...theme.defaults.castShadow.heavy,
-    },
-    '&:active': {
-      transform: 'scale(1)',
-      boxShadow: 'none',
-    },
-    /**
-     * Small
-     */
-    [theme.breakpoints.down('sm')]: {
-      transition: 'all 0.1s linear',
-      ...theme.defaults.castShadow.heavy,
-      '&:hover': {
-        transform: 'unset',
-      },
-      '&.touched': {
-        boxShadow: 'none!important',
-        transform: 'scale(0.9)!important',
-      },
     },
   },
   addItem: {

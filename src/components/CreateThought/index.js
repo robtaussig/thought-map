@@ -77,7 +77,7 @@ export const CreateThought = ({ classes, state }) => {
           createdThought={createdThought}
           dispatch={createdThoughtDispatch}/>
       )}
-      <CircleButton classes={classes} onClick={handleSubmit} label={'Create Thought'} disabled={!ready} Icon={Check}/>
+      <CircleButton classes={classes} id={'create-thought'} onClick={handleSubmit} label={'Create Thought'} disabled={!ready} Icon={Check}/>
       <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
     </div>
   );

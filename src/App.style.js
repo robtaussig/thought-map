@@ -76,6 +76,14 @@ const reds = {
   'A400': '#A10B00',
 };
 
+const CAST_SHADOW_HEAVY = {
+  boxShadow: '0px 0px 20px -3px black',
+};
+
+const CAST_SHADOW_LIGHT = {
+  boxShadow: '0px 0px 5px -1px black',
+};
+
 export const theme = responsiveFontSizes(
   createMuiTheme({
     palette: {
@@ -94,12 +102,8 @@ export const theme = responsiveFontSizes(
         alignItems: 'center',
       },
       castShadow: {
-        heavy: {
-          boxShadow: '0px 0px 20px -3px black',
-        },
-        light: {
-          boxShadow: '0px 0px 5px -1px black',
-        },
+        heavy: CAST_SHADOW_HEAVY,
+        light: CAST_SHADOW_LIGHT,
       },
       underlineInput: {
         position: 'relative',
@@ -129,40 +133,33 @@ export const theme = responsiveFontSizes(
           opacity: 1,
         },
       },
-      bubbleButton: {
-        zIndex: 1,
-        position: 'relative',
-        fontSize: 'inherit',
-        fontFamily: 'inherit',
+      circleButton: {
+        position: 'fixed',
+        border: `2px solid ${primaryColor[500]}`,
+        margin: 30,
+        height: 70,
+        width: 70,
+        borderRadius: '50%',
+        backgroundColor: grays[600],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'all 0.1s linear',
         color: 'white',
-        padding: '0.5em 1em',
-        outline: 'none',
-        border: 'none',
-        backgroundColor: 'hsl(236, 32%, 26%)',
-        overflow: 'hidden',
-        transition: 'color 0.4s ease-in-out',
-        '&::before': {
-          content: '""',
-          zIndex: -1,
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '1em',
-          height: '1em',
-          borderRadius: '50%',
-          backgroundColor: '#3cefff',
-          transformOrigin: 'center',
-          transform: 'translate(-50%, -50%) scale(0)',
-          transition: 'transform 0.45s ease-in-out',
-        },
+        ...CAST_SHADOW_HEAVY,
         '&:hover': {
-          cursor: 'pointer',
-          color: '#161616',
+          transform: 'scale(1.1)',
+          ...CAST_SHADOW_HEAVY,
         },
-        '&:hover::before': {
-          transform: 'translate(-50%, -50%) scale(15)',
+        '&:active': {
+          transform: 'scale(1)',
+          boxShadow: 'none',
         },
-      },
+        '&.touched': {
+          boxShadow: 'none!important',
+          transform: 'scale(0.9)!important',
+        },
+      }      
     },
   })
 );

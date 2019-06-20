@@ -96,10 +96,6 @@ export const styles = theme => ({
     border: `1px solid ${theme.palette.gray[300]}`,
     borderRadius: '5px',
   },
-  phaseNextButton: {
-    height: 80,
-    ...theme.defaults.bubbleButton,
-  },
   hideDescriptionButton: {
     marginTop: 10,
   },
@@ -184,62 +180,39 @@ export const styles = theme => ({
     justifyContent: 'center',
   },
   circleButton: {
-    position: 'fixed',
-    border: `2px solid ${theme.palette.gray[200]}`,
-    top: 0,
-    right: 0,
-    margin: 30,
-    height: 70,
-    width: 70,
-    borderRadius: '50%',
-    backgroundColor: theme.palette.gray[600],
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'all 0.2s linear',
-    color: 'white',
-    opacity: 0.5,
+    ...theme.defaults.circleButton,
     '&#return-home': {
       left: 0,
-      right: 'unset',
+      top: 0,
       opacity: '0.5!important',
       display: 'none',
     },
-    '&:not([disabled])': {
-      opacity: 1,
-      border: `2px solid ${theme.palette.primary[500]}`,
-      '&:hover': {
-        transform: 'scale(1.1)',
-        ...theme.defaults.castShadow.heavy,
-      },
-      '&:active': {
-        transform: 'scale(1)',
-        boxShadow: 'none',
+    '&#create-thought': {
+      bottom: 0,
+      right: 0,
+      opacity: 0.5,
+      border: `2px solid ${theme.palette.gray[500]}`,
+      '&:not([disabled])': {
+        opacity: 1,
+        border: `2px solid ${theme.palette.primary[500]}`,
+        '&:hover': {
+          transform: 'scale(1.1)',
+          ...theme.defaults.castShadow.heavy,
+        },
+        '&:active': {
+          transform: 'scale(1)',
+          boxShadow: 'none',
+        },
       },
     },
-    /**
-     * Small
-     */
     [theme.breakpoints.down('sm')]: {
       top: 'unset',
       bottom: 0,
-      transition: 'all 0.1s linear',
       '&#return-home': {
         left: 'unset',
         right: 0,
-        top: 0,
         bottom: 'unset',
         display: 'block',
-      },
-      '&:not([disabled])': {
-        ...theme.defaults.castShadow.heavy,
-        '&:hover': {
-          transform: 'unset',
-        },
-        '&.touched': {
-          boxShadow: 'none!important',
-          transform: 'scale(0.9)!important',
-        },
       },
     },
   }

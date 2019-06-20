@@ -105,8 +105,9 @@ export const styles = theme => ({
     color: '#c2c2ff',
   },
   circleButton: {
-    position: 'fixed',
+    ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
+    backgroundColor: theme.palette.gray[600],
     '&#add-thought, &#create-plan': {
       top: 0,
       right: 0,
@@ -116,28 +117,10 @@ export const styles = theme => ({
       left: 0,
       opacity: 0.5,
     },
-    margin: 30,
-    height: 70,
-    width: 70,
-    borderRadius: '50%',
-    backgroundColor: theme.palette.gray[600],
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'all 0.2s linear',
-    color: 'white',
     '&#create-plan': {
       '&:disabled': {
         opacity: 0.5,
       },
-    },
-    '&:hover': {
-      transform: 'scale(1.1)',
-      ...theme.defaults.castShadow.heavy,
-    },
-    '&:active': {
-      transform: 'scale(1)',
-      boxShadow: 'none',
     },
     /**
      * Small
@@ -146,15 +129,6 @@ export const styles = theme => ({
       '&#add-thought, &#create-plan': {
         top: 'unset',
         bottom: 0,
-      },
-      transition: 'all 0.1s linear',
-      ...theme.defaults.castShadow.heavy,
-      '&:hover': {
-        transform: 'unset',
-      },
-      '&.touched': {
-        boxShadow: 'none!important',
-        transform: 'scale(0.9)!important',
       },
     },
   },
