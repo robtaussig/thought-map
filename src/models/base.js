@@ -50,4 +50,11 @@ export default class Base {
 
     return response;
   }
+
+  static deleteAssociations = async (db, deletions, id) => {
+    return Promise.all(deletions.map(({ tableName, key }) => {
+      const query = db[tableName].find({ [key]: { $eq: id } });
+      return query.remove();
+    }));
+  }
 }

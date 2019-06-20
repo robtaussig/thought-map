@@ -1,6 +1,6 @@
 import Base from './base';
 
-const TABLE_NAME = 'connection';
+export const TABLE_NAME = 'connection';
 
 export default class Connections extends Base {
   static props = {
