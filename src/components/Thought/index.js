@@ -12,7 +12,7 @@ import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 
-export const STATUS_OPTIONS = ['new', 'completed', 'in progress', 'almost done', 'pending'];
+export const STATUS_OPTIONS = ['new', 'pending', 'in progress', 'almost done', 'completed'];
 export const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
 export const TAG_OPTIONS = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
 
