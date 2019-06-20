@@ -15,7 +15,7 @@ export const Home = ({ classes, state }) => {
   const handleClickSettings = useCallback(() => history.push('/settings'),[]);
   const planId = getIdFromUrl(history, 'plan');
   const handleAddThought = useCallback(() => history.push(planId ? `/plan/${planId}/thought/new` :'/thought/new'), [planId]);
-  const handleEditPlan = useCallback(() => planId && history.push(`/plan/${planId}/edit`), [planId]);
+  const handleEditPlan = useCallback(() => planId ? history.push(`/plan/${planId}/settings`) : history.push(`/settings`), [planId]);
   const thoughts = useMemo(() => {
     if (planId) {
       return state.thoughts.filter(thought => thought.planId === planId);

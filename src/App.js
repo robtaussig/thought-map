@@ -20,7 +20,6 @@ import Home from './components/Home';
 import Settings from './components/Settings';
 import CreateThought from './components/CreateThought';
 import Thought from './components/Thought';
-import EditPlan from './components/EditPlan';
 
 const App = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
@@ -70,8 +69,8 @@ const App = ({ classes, history }) => {
             <Route path={'/plan/:id/thought/:thoughtId'}>
               {dbReadyState && <Thought state={state}/>}
             </Route>
-            <Route path={'/plan/:id/edit'}>
-              {dbReadyState && <EditPlan state={state}/>}
+            <Route path={'/plan/:id/settings'}>
+              {dbReadyState && <Settings/>}
             </Route>
             <Route path={'/plan/:id'}>
               {dbReadyState && <Home state={state}/>}
