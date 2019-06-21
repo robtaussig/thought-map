@@ -55,7 +55,7 @@ const App = ({ classes, history }) => {
               {dbReadyState && <Home state={state}/>}
             </Route>
             <Route path={'/settings'}>
-              {dbReadyState && <Settings/>}
+              {dbReadyState && <Settings state={state}/>}
             </Route>
             <Route path={'/thought/new'}>
               {dbReadyState && <CreateThought state={state}/>}
@@ -70,7 +70,7 @@ const App = ({ classes, history }) => {
               {dbReadyState && <Thought state={state}/>}
             </Route>
             <Route path={'/plan/:id/settings'}>
-              {dbReadyState && <Settings/>}
+              {dbReadyState && <Settings state={state}/>}
             </Route>
             <Route path={'/plan/:id'}>
               {dbReadyState && <Home state={state}/>}

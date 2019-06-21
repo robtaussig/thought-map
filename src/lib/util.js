@@ -34,3 +34,9 @@ export const getIdFromUrl = (history, key) => {
     return false;
   }, false);
 };
+
+export const getSearchParam = (history, key) => {
+  const { search } = history.location;
+  const searchParams = new URLSearchParams(search);
+  return searchParams.get(key);
+};
