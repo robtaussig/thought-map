@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 
-export const CircleButton = React.memo(({ classes, id = 'add-button', onClick, label, disabled, Icon = Add }) => {
+export const CircleButton = React.memo(({ classes, id = 'add-button', onClick, label, disabled, Icon = Add, title }) => {
   const buttonRef = useRef(null);
   const isCancelled = useRef(null);
 
@@ -26,6 +26,7 @@ export const CircleButton = React.memo(({ classes, id = 'add-button', onClick, l
     <button
       id={id}
       ref={buttonRef}
+      title={title} 
       className={classes.circleButton}
       onTouchStart={handleInteractionStart}
       onTouchEnd={handleInteractionEnd}

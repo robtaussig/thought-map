@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import useApp from '../../hooks/useApp';
-import EditPlan from '../EditPlan';
+import Loading from '../Loading';
 import { getIdFromUrl, getSearchParam } from '../../lib/util';
 import NavBar from './components/nav-bar';
 import PlanSettings from './components/plan-settings';
@@ -17,6 +17,7 @@ const styles = theme => ({
   nav: {
     display: 'flex',
     flex: '0 0 80px',
+    boxShadow: '0px 3px 7px 2px black',
   },
   navItem: {
     flex: 1,
@@ -24,11 +25,13 @@ const styles = theme => ({
     backgroundColor: theme.palette.gray[200],
     '&.current': {
       backgroundColor: theme.palette.primary[500],
+      boxShadow: '0px 0px 5px 0px black',
+      zIndex: 1,
     },
     '&[disabled]': {
       color: 'black',
     },
-  },
+  },  
 });
 
 export const Settings = ({ classes, state }) => {
@@ -36,7 +39,6 @@ export const Settings = ({ classes, state }) => {
   const planId = getIdFromUrl(history, 'plan');
   const type = getSearchParam(history, 'type');
   const plan = state.plans.find(({ id }) => id === planId);
-
   const handleClick = type => () => {
     history.push(`?type=${type}`);
   };
@@ -64,10 +66,12 @@ export const Settings = ({ classes, state }) => {
         items={items}
       />
       {type === 'plan' ? (
-        <PlanSettings
-          classes={classes}
-          plan={plan}
-        />
+        plan ? 
+          <PlanSettings
+            plan={plan}
+            thoughts={state.thoughts}
+          /> :
+          <Loading id={'thought-loader'}/>
       ) : (
         <AppSettings
           classes={classes}

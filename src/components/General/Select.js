@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const Select = React.memo(({ id, classes, value, options, onChange, label, injectedComponent }) => {
+export const Select = React.memo(({ id, classes, value, options, onChange, label, injectedComponent, title }) => {
 
   return (
-    <label id={id} className={classes.selectLabel}>
+    <label id={id} className={classes.selectLabel} title={title} >
       <select className={classes.selectInput} onChange={onChange} value={value}>
         {options.map((option, idx) => {
           return <option key={`${idx}-option`} className={classes.option} value={option}>{option}</option>;
