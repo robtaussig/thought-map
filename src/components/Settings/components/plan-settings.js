@@ -32,6 +32,7 @@ export const PlanSettings = ({ classes, plan, thoughts }) => {
   }, [thoughts, plan]);
 
   const handleClickReturnHome = () => history.push(`/plan/${plan.id}`);
+  const handleReturnHomeAfterDelete = () => history.push('/');
 
   const handleClickSubmitChanges = async () => {
     const editedPlan = Object.assign({}, plan, {
@@ -107,6 +108,8 @@ export const PlanSettings = ({ classes, plan, thoughts }) => {
       <DeletePlan
         classes={classes}
         plan={plan}
+        thoughts={thoughts}
+        afterDelete={handleReturnHomeAfterDelete}
       />
       <CircleButton
         classes={classes}
