@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import useApp from '../../hooks/useApp';
 import Loading from '../Loading';
@@ -6,42 +6,16 @@ import { getIdFromUrl, getSearchParam } from '../../lib/util';
 import NavBar from './components/nav-bar';
 import PlanSettings from './components/plan-settings';
 import AppSettings from './components/app-settings';
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    backgroundColor: theme.palette.gray[700],
-  },
-  nav: {
-    display: 'flex',
-    flex: '0 0 80px',
-    boxShadow: '0px 3px 7px 2px black',
-  },
-  navItem: {
-    flex: 1,
-    fontSize: 24,
-    backgroundColor: theme.palette.gray[200],
-    '&.current': {
-      backgroundColor: theme.palette.primary[500],
-      boxShadow: '0px 0px 5px 0px black',
-      zIndex: 1,
-    },
-    '&[disabled]': {
-      color: 'black',
-    },
-  },  
-});
+import { rootStyles } from './styles';
 
 export const Settings = ({ classes, state }) => {
   const { history } = useApp();
   const planId = getIdFromUrl(history, 'plan');
   const type = getSearchParam(history, 'type');
-  const plan = state.plans.find(({ id }) => id === planId);
-  const handleClick = type => () => {
+  const plan = useMemo(() => state.plans.find(({ id }) => id === planId), [state.plans, planId]);
+  const handleClick = useCallback(type => () => {
     history.push(`?type=${type}`);
-  };
+  }, []);
 
   const items = useMemo(() => {
     const returnValue = [{
@@ -81,4 +55,4 @@ export const Settings = ({ classes, state }) => {
   );
 };
 
-export default withStyles(styles)(Settings);
+export default withStyles(rootStyles)(Settings);
