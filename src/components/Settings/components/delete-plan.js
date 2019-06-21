@@ -15,7 +15,9 @@ export const DeletePlan = ({ classes, plan, thoughts, afterDelete }) => {
       'Are you sure you want to delete this plan?';
 
     const onDelete = async () => {
-      const thoughtsToDelete = withThoughts ? thoughts.filter(({ planId }) => planId === plan.id) : [];
+      const thoughtsToDelete = withThoughts ?
+        thoughts.filter(({ planId }) => planId === plan.id) :
+        [];
       const thoughtsToEdit = withThoughts ?
         [] :
         thoughts
