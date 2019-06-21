@@ -8,31 +8,71 @@ import Home from '@material-ui/icons/Home';
 import Check from '@material-ui/icons/Check';
 import DeletePlan from './delete-plan';
 import useApp from '../../../hooks/useApp';
+import { useLoadedDB } from '../../../hooks/useDB';
+import { plans as planActions, thoughts as thoughtActions } from '../../../actions';
 import { planSettingsStyles } from '../styles';
 
 export const PlanSettings = ({ classes, plan, thoughts }) => {
   const { history } = useApp();
+  const db = useLoadedDB();
   const [inputtedName, setInputtedName] = useState(plan.name);
   const [isDefault, setIsDefault] = useState(Boolean(plan.isDefault));
   const [hasChange, setHasChange] = useState(false);
   const canAddThoughts = useMemo(() => {
-    return ['Add Thought'].concat(thoughts.filter(thought => {
+    return [{ label: 'Add Thought' }].concat(thoughts.filter(thought => {
                             return thought.planId !== plan.id;
                           })
-                          .map((thought, idx) => `${idx + 1} - ${thought.title}`));
+                          .map((thought, idx) => ({id: thought.id, label: `${idx + 1} - ${thought.title}`})));
   }, [thoughts, plan]);
   const canRemoveThoughts = useMemo(() => {
-    return ['Remove Thought'].concat(thoughts.filter(thought => {
+    return [{ label: 'Remove Thought' }].concat(thoughts.filter(thought => {
                                 return thought.planId === plan.id;
                               })
-                              .map((thought, idx) => `${idx + 1} - ${thought.title}`));
+                              .map((thought, idx) => ({id: thought.id, label: `${idx + 1} - ${thought.title}`})));
   }, [thoughts, plan]);
 
   const handleClickReturnHome = () => history.push(`/plan/${plan.id}`);
-  const handleClickSubmitChanges = () => console.log('changes');
-  const handleCheckDefault = e => setIsDefault(e.target.checked);
-  const handleAddThought = e => console.log(e.target.value);
-  const handleRemoveThought = e => console.log(e.target.value);
+
+  const handleClickSubmitChanges = async () => {
+    const editedPlan = Object.assign({}, plan, {
+      name: inputtedName,
+      //Default status
+    });
+    await planActions.editPlan(db, editedPlan);
+    setHasChange(false);
+  };
+
+  const handleCheckDefault = e => {
+    setHasChange(true);
+    setIsDefault(e.target.checked);
+  };
+
+  const handleAddThought = e => {
+    const { value } = e.target;
+    const [oneIndex] = value.split(' - ');
+    const thoughtToAdd = canAddThoughts[Number(oneIndex)];
+    const thought = thoughts.find(foundThought => foundThought.id === thoughtToAdd.id);
+    const nextThought = Object.assign({}, thought, {
+      planId: plan.id,
+    });
+    thoughtActions.editThought(db, nextThought);
+  };
+
+  const handleRemoveThought = e => {
+    const { value } = e.target;
+    const [oneIndex] = value.split(' - ');
+    const thoughtToRemove = canRemoveThoughts[Number(oneIndex)];
+    const thought = thoughts.find(foundThought => foundThought.id === thoughtToRemove.id);
+    const nextThought = Object.assign({}, thought, {
+      planId: '',
+    });
+    thoughtActions.editThought(db, nextThought);
+  };
+
+  const handleInputName = e => {
+    setHasChange(true);
+    setInputtedName(e.target.value);
+  };
 
   return (
     <article className={classes.root}>
@@ -40,7 +80,7 @@ export const PlanSettings = ({ classes, plan, thoughts }) => {
         id={'plan-name'}
         classes={classes}
         value={inputtedName}
-        onChange={e => setInputtedName(e.target.value)}
+        onChange={handleInputName}
       />
       <CheckBox
         id={'default-plan'}
@@ -54,14 +94,14 @@ export const PlanSettings = ({ classes, plan, thoughts }) => {
         id={'add-thoughts'}
         classes={classes}
         value={'Add Thought'}
-        options={canAddThoughts}
+        options={canAddThoughts.map(({ label }) => label)}
         onChange={handleAddThought}
       />
       <Select
         id={'remove-thoughts'}
         classes={classes}
         value={'Remove Thought'}
-        options={canRemoveThoughts}
+        options={canRemoveThoughts.map(({ label }) => label)}
         onChange={handleRemoveThought}
       />
       <DeletePlan
