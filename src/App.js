@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
@@ -20,9 +20,11 @@ import Home from './components/Home';
 import Settings from './components/Settings';
 import CreateThought from './components/CreateThought';
 import Thought from './components/Thought';
+import Notifications from './components/Notifications';
 
 const App = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
+  const [lastNotification, setLastNotification] = useState(null);
   const [_thoughts, setThoughts] = useNestedXReducer('thoughts', state, dispatch);
   const [_connections, setConnections] = useNestedXReducer('connections', state, dispatch);
   const [_notes, setNotes] = useNestedXReducer('notes', state, dispatch);
@@ -40,7 +42,7 @@ const App = ({ classes, history }) => {
         note: setNotes,
         tag: setTags,
         plan: setPlans,
-      });
+      }, setLastNotification);
     }
   }, [db, dbReadyState]);
 
@@ -50,6 +52,7 @@ const App = ({ classes, history }) => {
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
         <div id={'app'} ref={rootRef} className={classes.root}>
+          <Notifications lastNotification={lastNotification}/>
           <Switch>
             <Route exact path={'/'}>
               {dbReadyState && <Home state={state}/>}
@@ -75,7 +78,7 @@ const App = ({ classes, history }) => {
             <Route path={'/plan/:id'}>
               {dbReadyState && <Home state={state}/>}
             </Route>
-          </Switch>
+          </Switch>          
         </div>
       </DBProvider>
     </Context.Provider>
@@ -108,34 +111,41 @@ const initializeApplication = async (db, dispatch) => {
   });
 };
 
-const handleThoughtChange = setter => ({ data }) => {
+const handleThoughtChange = (setter, setLastNotification) => ({ data }) => {
   const thought = data.v;
+  let notification;
   switch (data.op) {
     case 'INSERT':
       setter(prev => [thought].concat(prev));
+      notification = { message: 'Thought created' };
       break;
     
     case 'REMOVE':
       setter(prev => prev.filter(prevThought => prevThought.id !== thought.id));
+      notification = { message: 'Thought removed' };
       break;
 
     case 'UPDATE':
       setter(prev => prev.map(prevThought => prevThought.id === thought.id ? thought : prevThought).sort(sortByIndexThenDate));
+      notification = { message: 'Thought updated' };
       break;
   
     default:
       break;
   }
+  setLastNotification(notification);  
 };
 
-const handleConnectionChange = setter => ({ data }) => {
+const handleConnectionChange = (setter, setLastNotification) => ({ data }) => {
   const connection = data.v;
+  let notification;
   switch (data.op) {
     case 'INSERT':
       setter(prev => ({
         ...prev,
         [connection.id]: connection,
       }));
+      notification = { message: 'Connection created' };
       break;
     
     case 'REMOVE':
@@ -149,6 +159,7 @@ const handleConnectionChange = setter => ({ data }) => {
 
         return next;
       });
+      notification = { message: 'Connection removed' };
       break;
 
     case 'UPDATE':
@@ -156,21 +167,25 @@ const handleConnectionChange = setter => ({ data }) => {
           ...prev,
           [connection.id]: connection,
         }));
+        notification = { message: 'Connection updated' };
       break;
   
     default:
       break;
   }
+  setLastNotification(notification);  
 };
 
-const handleNoteChange = setter => ({ data }) => {
+const handleNoteChange = (setter, setLastNotification) => ({ data }) => {
   const note = data.v;
+  let notification;
   switch (data.op) {
     case 'INSERT':
       setter(prev => ({
         ...prev,
         [note.id]: note,
       }));
+      notification = { message: 'Note created' };
       break;
     
     case 'REMOVE':
@@ -184,6 +199,7 @@ const handleNoteChange = setter => ({ data }) => {
 
         return next;
       });
+      notification = { message: 'Note removed' };
       break;
 
     case 'UPDATE':
@@ -191,21 +207,25 @@ const handleNoteChange = setter => ({ data }) => {
           ...prev,
           [note.id]: note,
         }));
+        notification = { message: 'Note updated' };
       break;
   
     default:
       break;
   }
+  setLastNotification(notification);  
 };
 
-const handleTagChange = setter => ({ data }) => {
+const handleTagChange = (setter, setLastNotification) => ({ data }) => {
   const tag = data.v;
+  let notification;
   switch (data.op) {
     case 'INSERT':
       setter(prev => ({
         ...prev,
         [tag.id]: tag,
       }));
+      notification = { message: 'Tag created' };
       break;
     
     case 'REMOVE':
@@ -219,6 +239,7 @@ const handleTagChange = setter => ({ data }) => {
 
         return next;
       });
+      notification = { message: 'Tag removed' };
       break;
 
     case 'UPDATE':
@@ -226,39 +247,46 @@ const handleTagChange = setter => ({ data }) => {
           ...prev,
           [tag.id]: tag,
         }));
+        notification = { message: 'Tag updated' };
       break;
   
     default:
       break;
   }
+  setLastNotification(notification);  
 };
 
-const handlePlanChange = setter => ({ data }) => {
+const handlePlanChange = (setter, setLastNotification) => ({ data }) => {
   const plan = data.v;
+  let notification;
   switch (data.op) {
     case 'INSERT':
-      setter(prev => prev.concat(plan));
+      setter(prev => [plan].concat(prev));
+      notification = { message: 'Plan created' };
       break;
     
     case 'REMOVE':
       setter(prev => prev.filter(prevPlan => prevPlan.id !== plan.id));
+      notification = { message: 'Plan removed' };
       break;
 
     case 'UPDATE':
       setter(prev => prev.map(prevPlan => prevPlan.id === plan.id ? plan : prevPlan));
+      notification = { message: 'Plan updated' };
       break;
   
     default:
       break;
   }
+  setLastNotification(notification);  
 };
 
-const subscribeToChanges = async (db, setters) => {
-  db.thought.$.subscribe(handleThoughtChange(setters.thought));
-  db.connection.$.subscribe(handleConnectionChange(setters.connection));
-  db.note.$.subscribe(handleNoteChange(setters.note));
-  db.tag.$.subscribe(handleTagChange(setters.tag));
-  db.plan.$.subscribe(handlePlanChange(setters.plan));
+const subscribeToChanges = async (db, setters, setLastNotification) => {
+  db.thought.$.subscribe(handleThoughtChange(setters.thought, setLastNotification));
+  db.connection.$.subscribe(handleConnectionChange(setters.connection, setLastNotification));
+  db.note.$.subscribe(handleNoteChange(setters.note, setLastNotification));
+  db.tag.$.subscribe(handleTagChange(setters.tag, setLastNotification));
+  db.plan.$.subscribe(handlePlanChange(setters.plan, setLastNotification));
 };
 
 export default withStyles(styles)(withRouter(App));
