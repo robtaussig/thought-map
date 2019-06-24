@@ -163,12 +163,12 @@ export const styles = theme => ({
     backgroundColor: theme.palette.gray[600],
     opacity: 0.5,
     '&#return-home': {
-      bottom: 0,
-      left: 0,
-    },
-    '&#delete': {
       top: 0,
       right: 0,
+    },
+    '&#delete': {
+      bottom: 0,
+      left: 0,
       border: `2px solid ${theme.palette.red[300]}`,
       backgroundColor: theme.palette.red[300],
     },
