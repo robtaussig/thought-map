@@ -147,17 +147,19 @@ export const theme = responsiveFontSizes(
         transition: 'all 0.1s linear',
         color: 'white',
         ...CAST_SHADOW_HEAVY,
-        '&:hover': {
-          transform: 'scale(1.1)',
-          ...CAST_SHADOW_HEAVY,
-        },
-        '&:active': {
-          transform: 'scale(1)',
-          boxShadow: 'none',
-        },
-        '&.touched': {
-          boxShadow: 'none!important',
-          transform: 'scale(0.9)!important',
+        '&:not([disabled])': {
+          '&:hover': {
+            transform: 'scale(1.1)',
+            ...CAST_SHADOW_HEAVY,
+          },
+          '&:active': {
+            transform: 'scale(1)',
+            boxShadow: 'none',
+          },
+          '&.touched': {
+            boxShadow: 'none!important',
+            transform: 'scale(0.9)!important',
+          },
         },
       }      
     },
