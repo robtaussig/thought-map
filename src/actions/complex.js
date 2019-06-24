@@ -16,7 +16,7 @@ export const createWholeThought = async (db, {
   tags,
 }, planId) => {
   const thought = {
-    title, type, date, time, description, status: 'new',
+    title, type, date, time, description, status: 'new', priority: 5,
   };
   if (planId) thought.planId = planId;
 

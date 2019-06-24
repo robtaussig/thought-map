@@ -178,6 +178,7 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    margin: '15px 0',
   },
   circleButton: {
     ...theme.defaults.circleButton,
