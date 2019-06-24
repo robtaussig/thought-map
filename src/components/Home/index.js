@@ -16,6 +16,7 @@ export const Home = ({ classes, state }) => {
   const planId = getIdFromUrl(history, 'plan');
   const handleAddThought = useCallback(() => history.push(planId ? `/plan/${planId}/thought/new` :'/thought/new'), [planId]);
   const handleEditPlan = useCallback(() => planId ? history.push(`/plan/${planId}/settings?type=plan`) : history.push(`/settings`), [planId]);
+  const plan = state.plans.find(plan => plan.id === planId);
   const thoughts = useMemo(() => {
     if (planId) {
       return state.thoughts.filter(thought => thought.planId === planId);
@@ -26,7 +27,7 @@ export const Home = ({ classes, state }) => {
 
   return (
     <div className={classes.root}>
-      <Content classes={classes} thoughts={thoughts} connections={state.connections}/>
+      <Content classes={classes} thoughts={thoughts} connections={state.connections} plan={plan}/>
       <PlanSelect classes={classes} plans={state.plans} creatingPlan={state.creatingPlan} thoughts={thoughts} planId={planId}/>
       <Header classes={classes}/>
       {!state.creatingPlan && <CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}

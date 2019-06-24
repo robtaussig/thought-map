@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import ThoughtNode from './ThoughtNode';
 
-export const Content = React.memo(({ classes, thoughts, connections }) => {
+export const Content = React.memo(({ classes, thoughts, plan, connections }) => {
   const [ thoughtPositions, setThoughtPositions ] = useState({});
   const rootRef = useRef(null);
 
@@ -18,7 +18,7 @@ export const Content = React.memo(({ classes, thoughts, connections }) => {
 
   return (
     <div className={classes.content} ref={rootRef}>
-      {thoughts.filter(thought => thought.status !== 'completed').map(thought => {
+      {thoughts.filter(thought => plan.showCompleted || thought.status !== 'completed').map(thought => {
         return (
           <ThoughtNode
             classes={classes}

@@ -7,7 +7,7 @@ export const DB_SETTINGS = {
   queryChangeDetection: true // <- queryChangeDetection (optional, default: false)
 };
 
-const initializeCollection = (db, tableName, schema) => {
+const initializeCollection = (db, tableName, schema, rest) => {
   return db.collection({
     name: tableName,
     schema,
@@ -18,9 +18,10 @@ const initializeCollection = (db, tableName, schema) => {
     options: {}, // (optional) Custom paramters that might be used in plugins
     migrationStrategies: {}, // (optional)
     autoMigrate: true, // (optional)
+    ...rest,
   });
 };
 
 export const initializeCollections = async db => {
-  return Promise.all(schemas.map(([tableName, schema]) => initializeCollection(db, tableName, schema)))
+  return Promise.all(schemas.map(([tableName, schema, rest = {}]) => initializeCollection(db, tableName, schema, rest)))
 };

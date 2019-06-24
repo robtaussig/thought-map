@@ -32,7 +32,7 @@ export const planSettingsStyles = theme => ({
     paddingBottom: '80px',
     margin: 20,
     gridTemplateAreas: `"plan-name plan-name"
-                        "default-plan default-plan"
+                        "show-completed show-completed"
                         "add-thoughts add-thoughts"
                         "remove-thoughts remove-thoughts"
                         "delete-plan delete-plan"`,
@@ -78,8 +78,8 @@ export const planSettingsStyles = theme => ({
     ...theme.defaults.centered,
     justifyContent: 'flex-start',
     color: theme.palette.gray[300],
-    '&#default-plan': {
-      gridArea: 'default-plan',
+    '&#show-completed': {
+      gridArea: 'show-completed',
     },
     '&#with-thoughts': {
       
