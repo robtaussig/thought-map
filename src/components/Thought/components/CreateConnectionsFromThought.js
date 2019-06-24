@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useMemo, useEffect } from 'react';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
+import Timeline from '@material-ui/icons/Timeline';
 import CircleButton from '../../General/CircleButton';
 import Connections from './Connections.js';
 
@@ -38,7 +37,7 @@ export const CreateConnectionsFromThought = ({ classes, thought, thoughts, conne
           SETTING_CONNECTION_STATE.NONE : SETTING_CONNECTION_STATE.FROM
         )}
         label={'Connect From'}
-        Icon={ChevronLeft}
+        Icon={Timeline}
       />
       <CircleButton
         classes={classes} 
@@ -47,7 +46,7 @@ export const CreateConnectionsFromThought = ({ classes, thought, thoughts, conne
           SETTING_CONNECTION_STATE.NONE : SETTING_CONNECTION_STATE.TO
         )}
         label={'Connect To'}
-        Icon={ChevronRight}
+        Icon={Timeline}
       />
     </Fragment>
   );
