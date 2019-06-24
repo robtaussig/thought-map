@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, Fragment } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
@@ -51,35 +51,37 @@ const App = ({ classes, history }) => {
   return (
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
-        <div id={'app'} ref={rootRef} className={classes.root}>
+        <Fragment>
           <Notifications lastNotification={lastNotification}/>
-          <Switch>
-            <Route exact path={'/'}>
-              {dbReadyState && <Home state={state}/>}
-            </Route>
-            <Route path={'/settings'}>
-              {dbReadyState && <Settings state={state}/>}
-            </Route>
-            <Route path={'/thought/new'}>
-              {dbReadyState && <CreateThought state={state}/>}
-            </Route>
-            <Route path={'/thought/:id'}>
-              {dbReadyState && <Thought state={state}/>}
-            </Route>
-            <Route path={'/plan/:id/thought/new'}>
-              {dbReadyState && <CreateThought state={state}/>}
-            </Route>
-            <Route path={'/plan/:id/thought/:thoughtId'}>
-              {dbReadyState && <Thought state={state}/>}
-            </Route>
-            <Route path={'/plan/:id/settings'}>
-              {dbReadyState && <Settings state={state}/>}
-            </Route>
-            <Route path={'/plan/:id'}>
-              {dbReadyState && <Home state={state}/>}
-            </Route>
-          </Switch>          
-        </div>
+          <div id={'app'} ref={rootRef} className={classes.root}>
+            <Switch>
+              <Route exact path={'/'}>
+                {dbReadyState && <Home state={state}/>}
+              </Route>
+              <Route path={'/settings'}>
+                {dbReadyState && <Settings state={state}/>}
+              </Route>
+              <Route path={'/thought/new'}>
+                {dbReadyState && <CreateThought state={state}/>}
+              </Route>
+              <Route path={'/thought/:id'}>
+                {dbReadyState && <Thought state={state}/>}
+              </Route>
+              <Route path={'/plan/:id/thought/new'}>
+                {dbReadyState && <CreateThought state={state}/>}
+              </Route>
+              <Route path={'/plan/:id/thought/:thoughtId'}>
+                {dbReadyState && <Thought state={state}/>}
+              </Route>
+              <Route path={'/plan/:id/settings'}>
+                {dbReadyState && <Settings state={state}/>}
+              </Route>
+              <Route path={'/plan/:id'}>
+                {dbReadyState && <Home state={state}/>}
+              </Route>
+            </Switch>          
+          </div>
+        </Fragment>
       </DBProvider>
     </Context.Provider>
   );
