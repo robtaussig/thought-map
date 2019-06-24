@@ -2,7 +2,7 @@ import './styles.css';
 
 export const styles = theme => ({
   root: {
-    flex: 1,
+    height: '100%',
     width: '100%',
     display: 'grid',
     padding: 20,
