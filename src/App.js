@@ -52,7 +52,6 @@ const App = ({ classes, history }) => {
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
         <div id={'app'} ref={rootRef} className={classes.root}>
-          <Notifications lastNotification={lastNotification}/>
           <Switch>
             <Route exact path={'/'}>
               {dbReadyState && <Home state={state}/>}
