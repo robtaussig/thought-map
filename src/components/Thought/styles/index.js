@@ -50,11 +50,18 @@ export const styles = theme => ({
     gridTemplateAreas: `"title title ."
                         "time date ."
                         "type status status"
+                        "priority-header priority priority"
                         "notes notes notes"
                         "tags tags tags"
                         "description description description"`,
     gridTemplateRows: 'max-content',
     gridTemplateColumns: 'max-content 1fr max-content',
+  },
+  priorityHeader: {
+    gridArea: 'priority-header',
+    color: theme.palette.secondary[300],
+    ...theme.defaults.centered,
+    fontSize: 20,
   },
   header: {
     color: theme.palette.secondary[300],
@@ -88,6 +95,9 @@ export const styles = theme => ({
     },
     '&#type': {
       gridArea: 'type',
+    },
+    '&#priority': {
+      gridArea: 'priority',
     },
   },
   selectInput: {

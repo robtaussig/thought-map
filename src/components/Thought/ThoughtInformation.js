@@ -14,7 +14,19 @@ import { openConfirmation } from '../../lib/util';
 import { notes as noteActions, thoughts as thoughtActions, tags as tagActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 
-export const ThoughtInformation = React.memo(({ classes, thought, tags = [], notes = [], statusOptions = [], typeOptions = [], tagOptions = [], onUpdate, editState, onEditState }) => {
+export const ThoughtInformation = React.memo(({
+  classes,
+  thought,
+  tags = [],
+  notes = [],
+  statusOptions = [],
+  typeOptions = [],
+  tagOptions = [],
+  priorityOptions = [],
+  onUpdate,
+  editState,
+  onEditState,
+}) => {
   const [edittingTime, setEdittingTime] = useState(false);
   const [edittingDate, setEdittingDate] = useState(false);
   const [edittedNotes, setEdittedNotes] = useState({});
@@ -24,6 +36,11 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
   const db = useLoadedDB();
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });
+  }, [thought]);
+
+  const handlePriorityChange = useCallback(event => {
+    const value = priorityOptions.find(({ label }) => label === event.target.value).value;
+    onUpdate({ ...thought, priority: value });
   }, [thought]);
 
   const handleSetTime = useCallback(event => {
@@ -128,6 +145,16 @@ export const ThoughtInformation = React.memo(({ classes, thought, tags = [], not
         options={statusOptions}
         onChange={handleStatusChange}
       />
+      {(thought.priority !== 0 || editState) && <span className={classes.priorityHeader}>Priority</span>}
+      {(thought.priority !== 0 || editState) && (
+        <Select
+          id={'priority'}
+          classes={classes}
+          value={priorityOptions.find(({ value }) => value === thought.priority).label}
+          options={priorityOptions.map(option => option.label)}
+          onChange={handlePriorityChange}
+        />
+      )}
       {editState ? (
         <Select
           id={'type'}

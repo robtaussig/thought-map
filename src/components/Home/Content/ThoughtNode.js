@@ -14,7 +14,22 @@ const STATUS_TO_COLOR = {
   'completed': 'midnightblue',
 };
 
-export const ThoughtNode = React.memo(({ classes, thought, updateStatus }) => {
+const colorFromPriority = priority => {
+  if (priority === 10) return 'red';
+};
+
+const styleFromPriority = priority => {
+  if (priority === 10) {
+    return {
+      color: colorFromPriority(priority),
+      fontWeight: 600,
+    };
+  }
+
+  return {};
+};
+
+export const ThoughtNode = React.memo(({ classes, thought }) => {
   const { history, dispatch } = useApp();
   const db = useLoadedDB();
 
@@ -30,7 +45,7 @@ export const ThoughtNode = React.memo(({ classes, thought, updateStatus }) => {
 
   return (
     <div className={classes.thoughtNode}>
-      <span className={classes.thoughtNodeTitle} onClick={handleClick}>{thought.title}</span>
+      <span className={classes.thoughtNodeTitle} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
       <Select
         id={'status-select'}
         classes={classes}

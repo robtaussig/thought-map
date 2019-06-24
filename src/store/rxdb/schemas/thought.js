@@ -1,6 +1,6 @@
 export default ['thought', {
   "title": "Thought schema",
-  "version": 0,
+  "version": 1,
   "description": "A Thought",
   "type": "object",
   "properties": {
@@ -27,6 +27,9 @@ export default ['thought', {
     "status": {
       "type": "string",
     },
+    "priority": {
+      "type": "number",
+    },
     "description": {
       "type": "string",
     },
@@ -44,4 +47,11 @@ export default ['thought', {
   "attachments": {
 
   }
+}, {
+  "migrationStrategies": {
+    1: oldThought => {
+      oldThought.priority = 5;
+      return oldThought;
+    },
+  },
 }];

@@ -15,6 +15,12 @@ import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 export const STATUS_OPTIONS = ['new', 'pending', 'in progress', 'almost done', 'completed'];
 export const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
 export const TAG_OPTIONS = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
+export const PRIORITY_OPTIONS = [
+  { value: 0, label: 'NOT RELEVANT (HIDE)' },
+  { value: 1, label: 'LOW' },
+  { value: 5, label: 'MEDIUM' },
+  { value: 10, label: 'HIGH' },
+];
 
 export const Thought = ({ classes, state }) => {
   const db = useLoadedDB();
@@ -53,6 +59,7 @@ export const Thought = ({ classes, state }) => {
           statusOptions={STATUS_OPTIONS}
           typeOptions={TYPE_OPTIONS}
           tagOptions={TAG_OPTIONS}
+          priorityOptions={PRIORITY_OPTIONS}
           onUpdate={handleUpdate}
           onEditState={setEditState}
           editState={editState}
