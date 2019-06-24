@@ -6,6 +6,14 @@ import { STATUS_OPTIONS } from '../../Thought';
 import { thoughts as thoughtActions } from '../../../actions';
 import { homeUrl } from '../../../lib/util';
 
+const STATUS_TO_COLOR = {
+  'new': 'gold',
+  'pending': 'orange',
+  'in progress': 'lightgreen',
+  'almost done': 'green',
+  'completed': 'midnightblue',
+};
+
 export const ThoughtNode = React.memo(({ classes, thought, updateStatus }) => {
   const { history, dispatch } = useApp();
   const db = useLoadedDB();
@@ -29,6 +37,9 @@ export const ThoughtNode = React.memo(({ classes, thought, updateStatus }) => {
         value={thought.status}
         options={STATUS_OPTIONS}
         onChange={handleChangeStatus}
+        style={{
+          backgroundColor: STATUS_TO_COLOR[thought.status],
+        }}
       />
     </div>
   );
