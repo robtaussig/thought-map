@@ -3,7 +3,6 @@ import Select from '../../General/Select';
 import CreatePlanComponent from './components/CreatePlanComponent';
 import useApp from '../../../hooks/useApp'; 
 import { ACTION_TYPES } from '../../../reducers';
-import { homeUrl } from '../../../lib/util';
 
 const HOME_NAME = 'Home';
 export const CREATE_NEW_PLAN = 'Create Plan';
@@ -11,7 +10,7 @@ export const CREATE_NEW_PLAN = 'Create Plan';
 export const PlanSelect = ({ classes, plans, creatingPlan, thoughts, planId }) => {
   const [currentPlan, setCurrentPlan] = useState(HOME_NAME);
   const lastPlan = useRef(HOME_NAME);
-  const planOptions = [HOME_NAME, ...plans.map(toName), CREATE_NEW_PLAN];
+  const planOptions = [HOME_NAME, [...new Set(plans.map(toName))], CREATE_NEW_PLAN];
   const { history, dispatch } = useApp();
 
   const setCreatingPlan = useCallback(creating => dispatch({
