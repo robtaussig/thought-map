@@ -61,6 +61,7 @@ export const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '20px 10px',
+    backgroundColor: 'white',
     '& > #status-select': {
       marginLeft: 20,
       padding: '5px 0',
