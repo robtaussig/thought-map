@@ -8,21 +8,11 @@ export const styles = theme => ({
     padding: 20,
     backgroundColor: theme.palette.gray[500],
     gap: '20px',
-    gridTemplateAreas: `"content header"
-                        "content header"
-                        "content plans-list"`,
-    gridTemplateRows: 'repeat(3, 1fr)',
+    gridTemplateAreas: `"content content"
+                        "plans-list plans-list"
+                        "header header"`,
+    gridTemplateRows: '7fr minmax(50px, 1fr) minmax(50px, 1fr)',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    /**
-     * Small
-     */
-    [theme.breakpoints.down('sm')]: {
-      gridTemplateAreas: `"content content"
-                          "plans-list plans-list"
-                          "header header"`,
-      gridTemplateRows: '7fr minmax(50px, 1fr) minmax(50px, 1fr)',
-      gridTemplateColumns: 'repeat(2, 1fr)',
-    },
   },
   selectLabel: {
     '&#plans': {
@@ -109,26 +99,17 @@ export const styles = theme => ({
     border: `2px solid ${theme.palette.primary[500]}`,
     backgroundColor: theme.palette.gray[600],
     '&#add-thought, &#create-plan': {
-      top: 0,
-      right: 0,
+      bottom: 10,
+      right: 10,
     },
     '&#edit-plan': {
-      bottom: 0,
-      left: 0,
+      bottom: 10,
+      left: 10,
       opacity: 0.5,
     },
     '&#create-plan': {
       '&:disabled': {
         opacity: 0.5,
-      },
-    },
-    /**
-     * Small
-     */
-    [theme.breakpoints.down('sm')]: {
-      '&#add-thought, &#create-plan': {
-        top: 'unset',
-        bottom: 0,
       },
     },
   },

@@ -134,9 +134,9 @@ export const theme = responsiveFontSizes(
         },
       },
       circleButton: {
-        position: 'fixed',
+        position: 'absolute',
         border: `2px solid ${primaryColor[500]}`,
-        margin: 30,
+        margin: 20,
         height: 70,
         width: 70,
         borderRadius: '50%',

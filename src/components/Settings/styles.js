@@ -105,12 +105,12 @@ export const planSettingsStyles = theme => ({
       opacity: 0.5,
     },
     '&#return-home': {
-      bottom: 0,
-      left: 0,
+      bottom: 10,
+      left: 10,
     },
     '&#submit-changes': {
-      bottom: 0,
-      right: 0,
+      bottom: 10,
+      right: 10,
     },
   },
 });

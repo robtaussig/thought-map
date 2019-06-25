@@ -20,7 +20,7 @@ export const styles = theme => ({
       '& #plan-name': {
         alignItems: 'flex-start',
         flex: 0,
-        marginBottom: 80,
+        marginBottom: 80,        
       },
       '& #with-thoughts': {
         top: 62,
@@ -47,6 +47,9 @@ export const styles = theme => ({
       width: '80vw',
       fontSize: 24,
       padding: 5,
+      [theme.breakpoints.up('sm')]: {
+        width: 270,
+      },
     },
   },
   checkboxLabel: {
@@ -66,6 +69,9 @@ export const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     margin: '100px 10vw',
+    [theme.breakpoints.up('sm')]: {
+      margin: 50,
+    },
     overflow: 'hidden',
     marginTop: 0,
     backgroundColor: theme.palette.gray[100],
@@ -115,16 +121,21 @@ export const styles = theme => ({
     border: `2px solid ${theme.palette.gray[200]}`,
     backgroundColor: theme.palette.gray[600],
     opacity: 0.5,
+    transition: 'all 0.1s linear',
+    '&#return-home': {
+      right: 10,
+      top: 10,
+    },
     '&#cancel': {
-      left: 0,
-      bottom: 0,
+      left: 10,
+      bottom: 10,
     },
     '&#submit': {
-      right: 0,
-      bottom: 0,
+      right: 10,
+      bottom: 10,
     },
     '&#without-thoughts': {
-      bottom: 0,
+      bottom: 10,
       left: 'calc(50% - 65px)',
       border: `2px solid ${theme.palette.primary[500]}`,
     },
@@ -138,31 +149,6 @@ export const styles = theme => ({
       '&:active': {
         transform: 'scale(1)',
         boxShadow: 'none',
-      },
-    },
-    /**
-     * Small
-     */
-    [theme.breakpoints.down('sm')]: {
-      top: 'unset',
-      bottom: 0,
-      transition: 'all 0.1s linear',
-      '&#return-home': {
-        left: 'unset',
-        right: 0,
-        top: 0,
-        bottom: 'unset',
-        display: 'block',
-      },
-      '&:not([disabled])': {
-        ...theme.defaults.castShadow.heavy,
-        '&:hover': {
-          transform: 'unset',
-        },
-        '&.touched': {
-          boxShadow: 'none!important',
-          transform: 'scale(0.9)!important',
-        },
       },
     },
   },

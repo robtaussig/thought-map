@@ -12,6 +12,8 @@ import Check from '@material-ui/icons/Check';
 import IncludeThoughts from './IncludeThoughts';
 import { styles, DEFAULT_STATE } from './style';
 
+const isMobile = window.innerWidth < 960;
+
 export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans }) => {
   const { history } = useApp();
   const db = useLoadedDB();
@@ -69,19 +71,36 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans })
   }, [selectedThoughts, planName, withThoughts, history]);
 
   useEffect(() => {
-    const { x, y, height } = rootRef.current.getBoundingClientRect();
-    const distanceToBottom = window.innerHeight - y - height;
+    const { x, y, height } = rootRef.current.getBoundingClientRect();    
 
     if (open) {
-      setStyle({
-        top: -y,
-        left: -x,
-        right: -x,
-        bottom: -distanceToBottom,
-        borderRadius: 0,
-        justifyContent: 'flex-start',
-        visibility: 'visible',
-      });
+      if (isMobile) {
+        const distanceToBottom = window.innerHeight - y - height;
+
+        setStyle({
+          top: -y,
+          left: -x,
+          right: -x,
+          bottom: -distanceToBottom,
+          borderRadius: 0,
+          justifyContent: 'flex-start',
+          visibility: 'visible',
+        });
+      } else {
+        const root = document.querySelector('#app');
+        const rootBoundaries = root.getBoundingClientRect();
+        const distanceToBottom = rootBoundaries.y - (window.innerHeight - y - height);
+  
+        setStyle({
+          top: (rootBoundaries.y - y),
+          left: (rootBoundaries.x - x),
+          right: (rootBoundaries.x - x),
+          bottom: distanceToBottom,
+          borderRadius: 0,
+          justifyContent: 'flex-start',
+          visibility: 'visible',
+        });
+      }
 
       const timeout = setTimeout(focusInput.current, 400);
 
@@ -138,21 +157,25 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans })
       {alreadyExists &&
         <span className={classes.errorText}>A plan already exists by this name</span>
       }
-      <CircleButton
-        classes={classes}
-        id={'cancel'}
-        onClick={onClose}
-        label={'Cancel'}
-        Icon={Cancel}
-      />
-      <CircleButton
-        classes={classes}
-        id={'submit'}
-        onClick={handleSubmit}
-        label={'Submit'}
-        Icon={Check}
-        disabled={planName === '' || alreadyExists}
-      />
+      {open &&
+        <CircleButton
+          classes={classes}
+          id={'cancel'}
+          onClick={onClose}
+          label={'Cancel'}
+          Icon={Cancel}
+        />
+      }
+      {open &&
+        <CircleButton
+          classes={classes}
+          id={'submit'}
+          onClick={handleSubmit}
+          label={'Submit'}
+          Icon={Check}
+          disabled={planName === '' || alreadyExists}
+        />
+      }
     </div>
   );
 };

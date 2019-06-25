@@ -110,7 +110,8 @@ export const styles = theme => ({
     },
     '& #add-notes': {
       right: 'unset',
-      left: 0,
+      left: 10,
+      bottom: 10,
     }
   },
   phase2: {
@@ -121,13 +122,15 @@ export const styles = theme => ({
     },
     '& #add-tags': {
       right: 'unset',
-      left: 0,
+      left: 10,
+      bottom: 10,
     }
   },
   phase3: {
     '& #add-notes': {
       right: 'unset',
-      left: 0,
+      left: 10,
+      bottom: 10,
     }
   },
   addTagButton: {
@@ -183,14 +186,13 @@ export const styles = theme => ({
   circleButton: {
     ...theme.defaults.circleButton,
     '&#return-home': {
-      left: 0,
-      top: 0,
+      right: 10,
+      top: 10,
       opacity: '0.5!important',
-      display: 'none',
     },
     '&#create-thought': {
-      bottom: 0,
-      right: 0,
+      bottom: 10,
+      right: 10,
       opacity: 0.5,
       border: `2px solid ${theme.palette.gray[500]}`,
       '&:not([disabled])': {
@@ -204,16 +206,6 @@ export const styles = theme => ({
           transform: 'scale(1)',
           boxShadow: 'none',
         },
-      },
-    },
-    [theme.breakpoints.down('sm')]: {
-      top: 'unset',
-      bottom: 0,
-      '&#return-home': {
-        left: 'unset',
-        right: 0,
-        bottom: 'unset',
-        display: 'block',
       },
     },
   }

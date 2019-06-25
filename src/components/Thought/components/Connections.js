@@ -5,8 +5,8 @@ import Connection from './Connection';
 const styles = theme => ({
   root: {
     position: 'absolute',
-    top: '20vw',
-    bottom: '20vw',
+    top: '20%',
+    bottom: '20%',
     left: 0,
     right: 0,
     transition: 'all 0.1s ease-out',
