@@ -18,15 +18,12 @@ const styles = theme => ({
     height: '100%',
     width: '100%',
     position: 'relative',
-    display: 'grid',
-    gridTemplateAreas: `"template template"
-                        "color color"
-                        "background background"
-                        "fields fields"
-                        "recurring recurring"`,
-    gridTemplateRows: 'repeat(5, max-content)',
-    gridTemplateColums: 'max-content 1fr',
-    gridGap: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     '& > button:not(#delete-thought)': {
       width: 200,
       margin: 20,
@@ -36,19 +33,19 @@ const styles = theme => ({
     },
   },
   templateButton: {
-    gridArea: 'template',
+
   },
   color: {
-    gridArea: 'color',
+
   },
   background: {
-    gridArea: 'background',
+
   },
   fields: {
-    gridArea: 'fields',
+
   },
   recurring: {
-    gridArea: 'recurring',
+
   },
   circleButton: {
     ...theme.defaults.circleButton,
