@@ -1,12 +1,13 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState, useRef } from 'react';
 import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home';
-import Delete from '@material-ui/icons/Delete';
+import Settings from '@material-ui/icons/Settings';
 import { styles } from './styles';
 import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
+import ThoughtSettings from '../ThoughtSettings';
 import CreateConnectionsFromThought from './components/CreateConnectionsFromThought';
 import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions } from '../../actions';
@@ -25,7 +26,9 @@ export const PRIORITY_OPTIONS = [
 export const Thought = ({ classes, state }) => {
   const db = useLoadedDB();
   const { history, dispatch } = useApp();
+  const returnHomeSVGRef = useRef(null);
   const [editState, setEditState] = useState(false);
+  const [displaySettings, setDisplaySettings] = useState(false);
   const thoughtId = getIdFromUrl(history, 'thought');
   const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
   const relatedTags = useMemo(() => Object.values(state.tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, state.tags]);
@@ -44,6 +47,14 @@ export const Thought = ({ classes, state }) => {
 
     openConfirmation('Are you sure you want to delete this?', onConfirm);
   }, [thoughtId]);
+  const handleClickSettings = useCallback(() => {
+    setDisplaySettings(prev => !prev);
+    if (!displaySettings) {
+      gearOpening(returnHomeSVGRef.current);
+    } else {
+      gearClosing(returnHomeSVGRef.current);
+    }
+  }, [thoughtId, displaySettings]);
 
   return (
     <div className={classes.root}>
@@ -62,12 +73,22 @@ export const Thought = ({ classes, state }) => {
           onUpdate={handleUpdate}
           onEditState={setEditState}
           editState={editState}
-        />}
-        <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
-        {!editState && <CircleButton classes={classes} id={'delete'} onClick={handleClickDelete} label={'Delete'} Icon={Delete}/>}
-        {editState && <CreateConnectionsFromThought classes={classes} thought={thought} thoughts={state.thoughts} connections={state.connections}/>}
+        />
+      }
+      <ThoughtSettings display={displaySettings} thought={thought} onDelete={handleClickDelete}/>
+      <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
+      {!editState && <CircleButton svgRef={returnHomeSVGRef} classes={classes} id={'settings'} onClick={handleClickSettings} label={'Settings'} Icon={Settings}/>}
+      {editState && <CreateConnectionsFromThought classes={classes} thought={thought} thoughts={state.thoughts} connections={state.connections}/>}
     </div>
   );
 };
+
+const gearOpening = element => {
+  element.classList.add('gear-opening');
+};
+
+const gearClosing = element => {
+  element.classList.remove('gear-opening');
+}
 
 export default withStyles(styles)(Thought);

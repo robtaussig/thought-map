@@ -4,6 +4,8 @@ export const styles = theme => ({
     position: 'relative',
     overflow: 'auto',
     overflowX: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
     backgroundColor: theme.palette.gray[700],
     '& #thought-loader': {
       position: 'absolute',
@@ -176,11 +178,16 @@ export const styles = theme => ({
       top: 10,
       right: 10,
     },
-    '&#delete': {
+    '&#settings': {
       bottom: 10,
       left: 10,
-      border: `2px solid ${theme.palette.red[300]}`,
-      backgroundColor: theme.palette.red[300],
+      '& svg': {
+        transition: 'all 0.3s linear',
+        transform: 'rotate(-90deg)',
+        '&.gear-opening': {
+          transform: 'rotate(90deg) scale(2)',
+        },
+      },
     },
     '&#edit': {
       bottom: 10,

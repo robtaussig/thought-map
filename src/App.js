@@ -21,6 +21,7 @@ import Settings from './components/Settings';
 import CreateThought from './components/CreateThought';
 import Thought from './components/Thought';
 import Notifications from './components/Notifications';
+import { ModalProvider } from './hooks/useModal';
 
 const App = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
@@ -51,35 +52,37 @@ const App = ({ classes, history }) => {
   return (
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
-        <div id={'app'} ref={rootRef} className={classes.root}>
-          <Notifications lastNotification={lastNotification}/>
-          <Switch>
-            <Route exact path={'/'}>
-              {dbReadyState && <Home state={state}/>}
-            </Route>
-            <Route path={'/settings'}>
-              {dbReadyState && <Settings state={state}/>}
-            </Route>
-            <Route path={'/thought/new'}>
-              {dbReadyState && <CreateThought state={state}/>}
-            </Route>
-            <Route path={'/thought/:id'}>
-              {dbReadyState && <Thought state={state}/>}
-            </Route>
-            <Route path={'/plan/:id/thought/new'}>
-              {dbReadyState && <CreateThought state={state}/>}
-            </Route>
-            <Route path={'/plan/:id/thought/:thoughtId'}>
-              {dbReadyState && <Thought state={state}/>}
-            </Route>
-            <Route path={'/plan/:id/settings'}>
-              {dbReadyState && <Settings state={state}/>}
-            </Route>
-            <Route path={'/plan/:id'}>
-              {dbReadyState && <Home state={state}/>}
-            </Route>
-          </Switch>          
-        </div>
+        <ModalProvider>
+          <div id={'app'} ref={rootRef} className={classes.root}>
+            <Notifications lastNotification={lastNotification}/>
+            <Switch>
+              <Route exact path={'/'}>
+                {dbReadyState && <Home state={state}/>}
+              </Route>
+              <Route path={'/settings'}>
+                {dbReadyState && <Settings state={state}/>}
+              </Route>
+              <Route path={'/thought/new'}>
+                {dbReadyState && <CreateThought state={state}/>}
+              </Route>
+              <Route path={'/thought/:id'}>
+                {dbReadyState && <Thought state={state}/>}
+              </Route>
+              <Route path={'/plan/:id/thought/new'}>
+                {dbReadyState && <CreateThought state={state}/>}
+              </Route>
+              <Route path={'/plan/:id/thought/:thoughtId'}>
+                {dbReadyState && <Thought state={state}/>}
+              </Route>
+              <Route path={'/plan/:id/settings'}>
+                {dbReadyState && <Settings state={state}/>}
+              </Route>
+              <Route path={'/plan/:id'}>
+                {dbReadyState && <Home state={state}/>}
+              </Route>
+            </Switch> 
+          </div>
+        </ModalProvider>  
       </DBProvider>
     </Context.Provider>
   );
