@@ -4,12 +4,11 @@ import CircleButton from '../General/CircleButton';
 import Delete from '@material-ui/icons/Delete';
 import useModal from '../../hooks/useModal';
 
-const TITLE_HEIGHT = 52;
 
 const styles = theme => ({
   root: {
     position: 'fixed',
-    height: `calc(100vh - ${TITLE_HEIGHT}px)`,
+    height: '100vh',
     left: 0,
     right: 0,
     backgroundColor: '#545454f0',    
@@ -83,7 +82,7 @@ export const ThoughtSettings = ({ classes, display, thought, onDelete }) => {
 
   return (
     <div className={classes.root} style={{
-        top: display ? TITLE_HEIGHT : '100%',
+        top: display ? 0 : '100%',
         visibility: display ? 'visible' : 'hidden',
       }}>
       <div className={classes.settings}>
