@@ -8,7 +8,6 @@ import { homeUrl } from '../../../lib/util';
 
 const STATUS_TO_COLOR = {
   'new': 'gold',
-  'pending': 'orange',
   'in progress': 'lightgreen',
   'almost done': 'green',
   'completed': 'midnightblue',
