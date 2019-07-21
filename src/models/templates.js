@@ -26,15 +26,10 @@ export default class Templates extends Base {
     };
   }
   static add = async (db, { template, ...rest }) => {
-    const result = await Base.add(db, TABLE_NAME, {
+    return Base.add(db, TABLE_NAME, {
       template: JSON.stringify(template),
       ...rest,
     });
-
-    return {
-      ...result,
-      template: JSON.parse(result.template),
-    };
   }
   static update = async (db, { template, ...rest }) => {
     return Base.update(db, TABLE_NAME, {

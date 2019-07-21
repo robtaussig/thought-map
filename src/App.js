@@ -290,7 +290,10 @@ const handlePlanChange = (setter, setLastNotification) => ({ data }) => {
 };
 
 const handleTemplateChange = (setter, setLastNotification) => ({ data }) => {
-  const template = data.v;
+  const template = {
+    ...data.v,
+    template: JSON.parse(data.v.template),
+  };
   let notification;
   switch (data.op) {
     case 'INSERT':
