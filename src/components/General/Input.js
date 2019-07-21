@@ -12,6 +12,7 @@ export const Input = React.memo(({
   autoFocus,
   injectedComponent,
   focusOnLabelClick = true,
+  placeholder,
   ...rest,
 }) => {
   const rootRef = useRef(null);
@@ -29,7 +30,7 @@ export const Input = React.memo(({
   return (
     <label key={`${id}-label`} ref={rootRef} id={id} className={classes.inputLabel} onClick={focusOnLabelClick ? undefined : e => e.preventDefault()} {...rest}>
       <div>
-        <input key={`${id}-input`} ref={inputRef} className={classes.inputField} type={'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
+        <input key={`${id}-input`} ref={inputRef} className={classes.inputField} placeholder={placeholder} type={'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
         <span/>
       </div>
       {label}

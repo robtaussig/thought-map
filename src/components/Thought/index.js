@@ -75,7 +75,13 @@ export const Thought = ({ classes, state }) => {
           editState={editState}
         />
       }
-      <ThoughtSettings display={displaySettings} thought={thought} onDelete={handleClickDelete}/>
+      <ThoughtSettings
+        display={displaySettings}
+        thought={thought}
+        tags={relatedTags}
+        notes={relatedNotes}
+        onDelete={handleClickDelete}  
+      />
       <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
       {!editState && <CircleButton svgRef={returnHomeSVGRef} classes={classes} id={'settings'} onClick={handleClickSettings} label={'Settings'} Icon={Settings}/>}
       {editState && <CreateConnectionsFromThought classes={classes} thought={thought} thoughts={state.thoughts} connections={state.connections}/>}

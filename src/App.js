@@ -15,6 +15,7 @@ import {
   connections as connectionActions,
   notes as noteActions,
   tags as tagActions,
+  templates as templateActions,
 } from './actions';
 import Home from './components/Home';
 import Settings from './components/Settings';
@@ -31,6 +32,7 @@ const App = ({ classes, history }) => {
   const [_notes, setNotes] = useNestedXReducer('notes', state, dispatch);
   const [_tags, setTags] = useNestedXReducer('tags', state, dispatch);
   const [_plans, setPlans] = useNestedXReducer('plans', state, dispatch);
+  const [_templates, setTemplates] = useNestedXReducer('templates', state, dispatch);
   const [DBProvider, db, dbReadyState] = useDB();
   const rootRef = useRef(null);
 
@@ -43,6 +45,7 @@ const App = ({ classes, history }) => {
         note: setNotes,
         tag: setTags,
         plan: setPlans,
+        template: setTemplates,
       }, setLastNotification);
     }
   }, [db, dbReadyState]);
@@ -94,12 +97,13 @@ const initializeApplication = async (db, dispatch) => {
     payload: ACTION_TYPES.INITIALIZE_APPLICATION,
   });
 
-  const [ thoughts, connections, plans, notes, tags ] = await Promise.all([
+  const [ thoughts, connections, plans, notes, tags, templates ] = await Promise.all([
     thoughtActions.getThoughts(db),
     connectionActions.getConnections(db),
     planActions.getPlans(db),
     noteActions.getNotes(db),
     tagActions.getTags(db),
+    templateActions.getTemplates(db),
   ]);
   
   dispatch({
@@ -110,6 +114,7 @@ const initializeApplication = async (db, dispatch) => {
       plans,
       notes: intoMap(notes),
       tags: intoMap(tags),
+      templates,
     },
   });
 };
@@ -284,12 +289,38 @@ const handlePlanChange = (setter, setLastNotification) => ({ data }) => {
   setLastNotification(notification);  
 };
 
+const handleTemplateChange = (setter, setLastNotification) => ({ data }) => {
+  const template = data.v;
+  let notification;
+  switch (data.op) {
+    case 'INSERT':
+      setter(prev => [template].concat(prev));
+      notification = { message: 'Template created' };
+      break;
+    
+    case 'REMOVE':
+      setter(prev => prev.filter(prevTemplate => prevTemplate.id !== template.id));
+      notification = { message: 'Template removed' };
+      break;
+
+    case 'UPDATE':
+      setter(prev => prev.map(prevTemplate => prevTemplate.id === template.id ? template : prevTemplate));
+      notification = { message: 'Template updated' };
+      break;
+  
+    default:
+      break;
+  }
+  setLastNotification(notification);  
+};
+
 const subscribeToChanges = async (db, setters, setLastNotification) => {
   db.thought.$.subscribe(handleThoughtChange(setters.thought, setLastNotification));
   db.connection.$.subscribe(handleConnectionChange(setters.connection, setLastNotification));
   db.note.$.subscribe(handleNoteChange(setters.note, setLastNotification));
   db.tag.$.subscribe(handleTagChange(setters.tag, setLastNotification));
   db.plan.$.subscribe(handlePlanChange(setters.plan, setLastNotification));
+  db.template.$.subscribe(handleTemplateChange(setters.template, setLastNotification));
 };
 
 export default withStyles(styles)(withRouter(App));

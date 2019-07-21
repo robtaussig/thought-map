@@ -3,6 +3,7 @@ import Connections from '../models/connections';
 import Plans from '../models/plans';
 import Notes from '../models/notes';
 import Tags from '../models/tags';
+import Templates from '../models/templates';
 
 export const thoughts = {
   getThoughts: Thoughts.fetchAll,
@@ -42,4 +43,12 @@ export const tags = {
   createTag: Tags.add,
   deleteTag: Tags.delete,
   editTag: Tags.update,
+};
+
+export const templates = {
+  getTemplates: Templates.fetchAll,
+  getTemplate: Templates.fetch,
+  createTemplate: Templates.add,
+  deleteTemplate: Templates.delete,
+  editTemplate: Templates.update,
 };

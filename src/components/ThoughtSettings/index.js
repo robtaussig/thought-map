@@ -3,66 +3,14 @@ import { withStyles } from '@material-ui/core/styles';
 import CircleButton from '../General/CircleButton';
 import Delete from '@material-ui/icons/Delete';
 import useModal from '../../hooks/useModal';
+import Template from './components/template';
+import { styles } from './styles';
 
-
-const styles = theme => ({
-  root: {
-    position: 'fixed',
-    height: '100vh',
-    left: 0,
-    right: 0,
-    backgroundColor: '#545454f0',    
-    transition: 'all 0.3s linear',
-  },
-  settings: {
-    height: '100%',
-    width: '100%',
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    '& > button:not(#delete-thought)': {
-      width: 200,
-      margin: 20,
-      padding: '10px 20px',
-      borderRadius: 5,
-      backgroundColor: theme.palette.primary[500],
-    },
-  },
-  templateButton: {
-
-  },
-  color: {
-
-  },
-  background: {
-
-  },
-  fields: {
-
-  },
-  recurring: {
-
-  },
-  circleButton: {
-    ...theme.defaults.circleButton,
-    '&#delete-thought': {
-      bottom: 10,
-      right: 10,
-      border: `2px solid ${theme.palette.red[300]}`,
-      backgroundColor: theme.palette.red[300],
-    },
-  },
-});
-
-export const ThoughtSettings = ({ classes, display, thought, onDelete }) => {
+export const ThoughtSettings = ({ classes, display, thought, tags, notes, onDelete }) => {
   const [openModal, closeModal] = useModal();
 
   const handleClickUseAsTemplate = () => {
-    openModal(<div>Hello!!!!!!</div>, 'Test');
+    openModal(<Template classes={classes} onClose={closeModal} thought={thought} tags={tags} notes={notes}/>, 'Template');
   };
 
   const handleClickCustomColor = () => {
@@ -79,9 +27,9 @@ export const ThoughtSettings = ({ classes, display, thought, onDelete }) => {
 
   return (
     <div className={classes.root} style={{
-        top: display ? 0 : '100%',
-        visibility: display ? 'visible' : 'hidden',
-      }}>
+      top: display ? 0 : '100%',
+      visibility: display ? 'visible' : 'hidden',
+    }}>
       <div className={classes.settings}>
         <button className={classes.templateButton} onClick={handleClickUseAsTemplate}>Create Template</button>
         <button className={classes.color} onClick={handleClickCustomColor}>Custom Color</button>

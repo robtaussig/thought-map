@@ -190,6 +190,18 @@ export const styles = theme => ({
       top: 10,
       opacity: '0.5!important',
     },
+    '&#settings': {
+      top: 10,
+      left: 10,
+      opacity: '0.5!important',
+      '& svg': {
+        transition: 'all 0.3s linear',
+        transform: 'rotate(-90deg)',
+        '&.gear-opening': {
+          transform: 'rotate(90deg) scale(2)',
+        },
+      },
+    },
     '&#create-thought': {
       bottom: 10,
       right: 10,
