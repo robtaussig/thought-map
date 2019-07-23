@@ -22,16 +22,32 @@ export const styles = theme => ({
   priorityList: {
     display: 'grid',
     gridTemplateColumns: '[title] 1fr [date] 80px [status] 80px',
-    gridRowGap: '5px',
+    gridGap: '5px',
   },
   thoughtTitle: {
-
+    '&.highPriority': {
+      position: 'relative',
+      '&:before': {
+        content: '"!"',
+        position: 'absolute',
+        left: '-25px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        fontWeight: 600,
+        backgroundColor: 'white',
+        color: 'red',
+        borderRadius: '50%',
+        height: '20px',
+        width: '20px',
+        textAlign: 'center',
+      }
+    }
+  },
+  thoughtTitleButton: {
+    textAlign: 'left',
   },
   fieldHeader: {
     fontWeight: 600,
-  },
-  thoughtTitle: {
-
   },
   thoughtDate: {
 

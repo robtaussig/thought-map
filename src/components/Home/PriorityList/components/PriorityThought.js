@@ -1,6 +1,7 @@
 import React from 'react';
 import useApp from '../../../../hooks/useApp'
 import { homeUrl } from '../../../../lib/util';
+import classNames from 'classnames';
 
 export const PriorityThought = ({ classes, thought, onMinimize }) => {
   const { history, dispatch } = useApp();
@@ -12,8 +13,10 @@ export const PriorityThought = ({ classes, thought, onMinimize }) => {
 
   return (
     <React.Fragment>
-      <span className={classes.thoughtTitle}>
-        <button onClick={handleClick}>{thought.title}</button>
+      <span className={classNames(classes.thoughtTitle, {
+        highPriority: thought.priority === 10,
+      })}>
+        <button className={classes.thoughtTitleButton} onClick={handleClick}>{thought.title}</button>
       </span>
       <span className={classes.thoughtDate}>
         {thought.date}
