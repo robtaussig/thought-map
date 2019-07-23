@@ -74,12 +74,13 @@ const getStatusModifier = ({ status }) => {
 };
 
 const getTypeModifier = ({ type }) => {
+
   return {
     'reminder': 3,
     'todo': 2,
     'task': 1,
     'misc': 0,
-  }[type];
+  }[type.toLowerCase()];
 };
 
 export default PriorityListModal;
