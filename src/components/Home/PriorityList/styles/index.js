@@ -9,6 +9,7 @@ export const styles = theme => ({
   priorityList: {
     display: 'grid',
     gridTemplateColumns: '[title] 1fr [date] 80px [status] 80px',
+    gridRowGap: '5px',
   },
   thoughtTitle: {
 
