@@ -18,6 +18,7 @@ import {
   templates as templateActions,
 } from './actions';
 import Home from './components/Home';
+import PriorityList from './components/Home/PriorityList';
 import Settings from './components/Settings';
 import CreateThought from './components/CreateThought';
 import Thought from './components/Thought';
@@ -58,6 +59,7 @@ const App = ({ classes, history }) => {
         <ModalProvider>
           <div id={'app'} ref={rootRef} className={classes.root}>
             <Notifications lastNotification={lastNotification}/>
+            <PriorityList thoughts={state.thoughts}/>
             <Switch>
               <Route exact path={'/'}>
                 {dbReadyState && <Home state={state}/>}
