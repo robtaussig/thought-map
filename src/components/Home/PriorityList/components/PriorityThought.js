@@ -1,11 +1,19 @@
 import React from 'react';
+import useApp from '../../../../hooks/useApp'
+import { homeUrl } from '../../../../lib/util';
 
-export const PriorityThought = ({ classes, thought }) => {
+export const PriorityThought = ({ classes, thought, onMinimize }) => {
+  const { history, dispatch } = useApp();
+
+  const handleClick = e => {
+    history.push(`${homeUrl(history)}thought/${thought.id}`);
+    onMinimize();
+  };
 
   return (
     <React.Fragment>
       <span className={classes.thoughtTitle}>
-        {thought.title}
+        <button onClick={handleClick}>{thought.title}</button>
       </span>
       <span className={classes.thoughtDate}>
         {thought.date}

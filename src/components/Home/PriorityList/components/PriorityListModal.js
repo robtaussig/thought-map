@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import PriorityList from './PriorityList';
 import { differenceInDays, differenceInHours } from 'date-fns';
 
-export const PriorityListModal = ({ classes, thoughts, onClose }) => {
+export const PriorityListModal = ({ classes, thoughts, onMinimize }) => {
   const priorityThoughts = useMemo(() => {
     const thoughtsWithPriority = thoughts.map(assignThoughtPriority);
 
@@ -16,7 +16,7 @@ export const PriorityListModal = ({ classes, thoughts, onClose }) => {
     <div className={classes.root}>
       <h1 className={classes.header}>Priorities</h1>
       {priorityThoughts.length > 0 ?
-        (<PriorityList classes={classes} thoughts={priorityThoughts}/>) :
+        (<PriorityList classes={classes} thoughts={priorityThoughts} onMinimize={onMinimize}/>) :
         (<span>
           You are all caught up on priorities. Congratulations!
         </span>)

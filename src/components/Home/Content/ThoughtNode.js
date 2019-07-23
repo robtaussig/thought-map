@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import useApp from '../../../hooks/useApp'
+import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
 import { STATUS_OPTIONS } from '../../Thought';
