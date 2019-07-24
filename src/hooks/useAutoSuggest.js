@@ -1,34 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 export const useAutoSuggest = (inputValue, historicalEntries, limit) => {
-  const [wordMap, setWordMap] = useState([]);
-  const lastEntries = useRef(null);
-  const markovChain = useRef(null);
+  const [suggestionList, setSuggestionList] = useState([]);
+  const autoSuggest = useRef(null);
 
   const getAutoSuggest = () => {
-    if (markovChain.current === null) {
-      markovChain.current = new AutoSuggest();
+    if (autoSuggest.current === null) {
+      autoSuggest.current = new AutoSuggest();
     }
-    return markovChain.current;
+    return autoSuggest.current;
   };
 
   useEffect(() => {
-    let nextWordMap;
+    getAutoSuggest().process(historicalEntries);
+  }, [historicalEntries]);
 
-    if (lastEntries.current === historicalEntries) {
-      nextWordMap = getAutoSuggest().generateSuggestions(inputValue);
-    } else {
-      nextWordMap = getAutoSuggest()
-                      .process(historicalEntries)
-                      .generateSuggestions(inputValue);
+  useEffect(() => {
+    const nextSuggestionList = getAutoSuggest().generateSuggestions(inputValue)
 
-      lastEntries.current = historicalEntries;
-    }
+    setSuggestionList(limit ? nextSuggestionList.slice(0, limit) : nextSuggestionList);
+  }, [inputValue, limit]);
 
-    setWordMap(limit ? nextWordMap.slice(0, limit) : nextWordMap);
-  }, [inputValue, historicalEntries, limit]);
-
-  return wordMap;
+  return suggestionList;
 };
 
 const formatWord = word => word.trim().toLowerCase();
@@ -41,17 +34,18 @@ class AutoSuggest {
   }
 
   process(historicalEntries) {
-    historicalEntries.map(formatWord).forEach(entry => {
-      const splitEntryWithPunctuationRemoved =
-          entry.replace(/\s+/g, " ").split(' ');
-      if (this.visited[entry] !== true) {
-
-        this.trie.add(splitEntryWithPunctuationRemoved);
+    historicalEntries
+      .map(formatWord)
+      .filter(entry => this.visited[entry] !== true)
+      .forEach(entry => {
         this.visited[entry] = true;
-      }
-      this.markovChain.record(splitEntryWithPunctuationRemoved);
-    });
+        const doubleSpacesConsolidated = entry.replace(/\s+/g, " ").split(' ');
+        
+        this.trie.add(doubleSpacesConsolidated);
+        this.markovChain.record(doubleSpacesConsolidated);
+      });
 
+    //Return this so that process and generateSuggestions can be chained
     return this
   }
 
@@ -60,12 +54,13 @@ class AutoSuggest {
     const splitSentence = inputValue.trim().split(' ');
     const lastWord = formatWord(splitSentence[splitSentence.length - 1]);
     const results = this.markovChain.suggest(lastWord)
-                             .concat(this.trie.suggest(lastWord))
-                             .filter(result => result !== lastWord);
+                                    .concat(this.trie.suggest(lastWord))
+                                    .filter(result => result !== lastWord);
     return [...new Set(results)];
   }
 }
 
+//Because double spaces are stripped for a single space, the following string is an impossible valid entry, and thus can be relied on to be unique
 const COMPLETE_WORD = '*  *';
 
 class Trie {
@@ -73,10 +68,10 @@ class Trie {
     this.rootNode = {};
   }
 
-  add(values) {
-    for (let i = 0; i < values.length; i++) {
+  add(valuesArray) {
+    for (let i = 0; i < valuesArray.length; i++) {
       let currentNode = this.rootNode;
-      const word = values[i];
+      const word = valuesArray[i];
       for (let j = 0; j < word.length; j++) {
         const char = word[j];
         currentNode[char] = currentNode[char] || {};
@@ -97,8 +92,8 @@ class Trie {
     if (node[COMPLETE_WORD]) {
       suggestions.push(wordPrefix);
     }
+
     for (let char in node) {
-      
       if (typeof node[char] === 'object') suggestions.push(...this.findCompleteWordsAtDepth(wordPrefix + char, node[char], depth - 1));
     }
     return suggestions;
@@ -126,10 +121,10 @@ class MarkovChain {
     this.chain = {};
   }
 
-  record(values) {
-    let currentWord = values[0];
-    for (let i = 1; i < values.length; i++) {
-      const nextWord = values[i];
+  record(valuesArray) {
+    let currentWord = valuesArray[0];
+    for (let i = 1; i < valuesArray.length; i++) {
+      const nextWord = valuesArray[i];
       this.chain[currentWord] = this.chain[currentWord] || {};
       this.chain[currentWord][nextWord] = this.chain[currentWord][nextWord] || 0;
       this.chain[currentWord][nextWord]++;
@@ -141,7 +136,7 @@ class MarkovChain {
     if (this.chain[value]) {
       return Object.entries(this.chain[value])
         .sort(([aKey, aValue], [bKey, bValue]) => aValue > bValue ? -1 : 1)
-        .map(([key, value]) => ` ${key}`);
+        .map(([key, value]) => ` ${key}`); //Prepend space to indicate that suggestion is for the next word as opposed to replacing current last word
     }
     return [];
   }
