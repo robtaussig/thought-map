@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import Header from '../General/Header';
 import Input from '../General/Input';
 import Select from '../General/Select';
@@ -8,8 +8,19 @@ import PhaseNext from './PhaseNext';
 import Notes from '@material-ui/icons/Notes';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import { useNestedXReducer } from '../../hooks/useXReducer';
+import { useAutoSuggest } from '../../hooks/useAutoSuggest';
 
-export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, createdThought, dispatch, focusTitleInput }) => {
+export const Phase1 = React.memo(({
+  classes,
+  onNext,
+  isFocus,
+  onReady,
+  onFocus,
+  createdThought,
+  dispatch,
+  focusTitleInput,
+  thoughts,
+}) => {
   const [title, setTitle] = useNestedXReducer('title', createdThought, dispatch);
   const [typeOptions, setTypeOptions] = useNestedXReducer('typeOptions', createdThought, dispatch);
   const [type, setType] = useNestedXReducer('type', createdThought, dispatch);
@@ -17,6 +28,10 @@ export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, 
   const [time, setTime] = useNestedXReducer('time', createdThought, dispatch);
   const [description, setDescription] = useNestedXReducer('description', createdThought, dispatch);
   const [focusDescription, setFocusDescription] = useState(false);
+  const [displayTitleAutoCorrect, setDisplayTitleAutoCorrect] = useState(false);
+
+  const thoughtTitles = useMemo(() => thoughts.map(({ title }) => title), [thoughts]);
+  const titleSuggestions = useAutoSuggest(title.trim(), thoughtTitles);
 
   const isReady = validateInputs(title, type, date, description);
 
@@ -34,13 +49,20 @@ export const Phase1 = React.memo(({ classes, onNext, isFocus, onReady, onFocus, 
   const handleDateChange= useCallback(e => setDate(e.target.value), []);
   const handleTimeChange= useCallback(e => setTime(e.target.value), []);
   const handleDescriptionChange= useCallback(e => setDescription(e.target.value), []);
+  const handleTitleFocus = useCallback(e => {
+    focusTitleInput(e);
+    setDisplayTitleAutoCorrect(true);
+  }, []);
+  const handleTitleBlur= useCallback(e => {
+    setDisplayTitleAutoCorrect(false);
+  }, []);
 
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
       {!isFocus && 
         <Header classes={classes} value={'Edit'} onClick={onFocus}/>}
       {(!focusDescription || !isFocus) &&
-        <Input id={'title'} classes={classes} value={title} onChange={handleTitleChange} label={'Title'} onFocus={focusTitleInput}/>}
+        <Input id={'title'} classes={classes} value={title} onChange={handleTitleChange} label={'Title'} onInputFocus={handleTitleFocus} onBlur={handleTitleBlur} autoSuggest={true || displayTitleAutoCorrect ? titleSuggestions : null}/>}
       {!focusDescription && isFocus &&
         <Select id={'type'} classes={classes} value={type} options={typeOptions} onChange={handleTypeChange} label={'Type'}/>}
       {!focusDescription && isFocus &&

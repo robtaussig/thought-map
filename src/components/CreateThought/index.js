@@ -93,6 +93,7 @@ export const CreateThought = ({ classes, state }) => {
         createdThought={createdThought}
         dispatch={createdThoughtDispatch}
         focusTitleInput={setFocusInput}
+        thoughts={state.thoughts}
       />
       {phase > 1 && (
         <Phase2
@@ -102,6 +103,7 @@ export const CreateThought = ({ classes, state }) => {
           onFocus={() => setPhase(2)}
           createdThought={createdThought}
           dispatch={createdThoughtDispatch}
+          thoughts={state.thoughts}
         />
       )}
       {phase > 2 && (
@@ -110,7 +112,9 @@ export const CreateThought = ({ classes, state }) => {
           onBack={() => setPhase(2)}
           isFocus={phase === 3}
           createdThought={createdThought}
-          dispatch={createdThoughtDispatch}/>
+          dispatch={createdThoughtDispatch}
+          thoughts={state.thoughts}
+        />
       )}
       <CreateThoughtSettings
         display={displaySettings}
