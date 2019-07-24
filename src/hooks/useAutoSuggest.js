@@ -47,9 +47,9 @@ class AutoSuggest {
           entry.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ").split(' ');
 
         this.trie.add(splitEntryWithPunctuationRemoved);
-        this.markovChain.record(splitEntryWithPunctuationRemoved);
         this.visited[entry] = true;
       }
+      this.markovChain.record(splitEntryWithPunctuationRemoved);
     });
 
     return this
