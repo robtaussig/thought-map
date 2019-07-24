@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, useEffect, Fragment } from 'react';
+import React, { useCallback, useState, useMemo, useEffect, useRef, Fragment } from 'react';
 import Note from '@material-ui/icons/Note';
 import AccessTime from '@material-ui/icons/AccessTime';
 import CalendarToday from '@material-ui/icons/CalendarToday';
@@ -35,6 +35,7 @@ export const ThoughtInformation = React.memo(({
   const [edittedTitle, setEdittedTitle] = useState(thought.title);
   const [addedNotes, setAddedNotes] = useState([]);
   const [addedTags, setAddedTags] = useState([]);
+  const lastNoteRef = useRef(null);
   const db = useLoadedDB();
   const [lastNote, setLastNote] = useState([null, '']);
   const autoSuggestNotes = useMemo(() => {
@@ -71,6 +72,7 @@ export const ThoughtInformation = React.memo(({
     setAddedNotes([]);
     setAddedTags([]);
     setEdittedTitle(thought.title);
+    setLastNote([null, '']);
   }, [thought]);
 
   const handleClickCancelEdit = () => {
@@ -83,7 +85,7 @@ export const ThoughtInformation = React.memo(({
   }, [thought]);
 
   const handleInput = useCallback(id => {
-    return (e, isNew = false) => {
+    return (e, isNew = false) => {      
       const value = e.target.value;
       if (isNew) {
         setLastNote([id, value, true]);
@@ -123,7 +125,7 @@ export const ThoughtInformation = React.memo(({
       if (suggestionValue.startsWith(' ')) {
         handleInput(lastNote[0])({
           target: {
-            value: `${lastNote[1]}${suggestionValue} `
+            value: `${lastNote[1].trim()}${suggestionValue} `
           }
         }, lastNote[2])
       } else {
@@ -139,6 +141,7 @@ export const ThoughtInformation = React.memo(({
           }
         }, lastNote[2])
       }
+      if (lastNoteRef.current && lastNoteRef.current.focus) lastNoteRef.current.focus();
     };
 
     if (noteSuggestions && noteSuggestions.length > 0) {
@@ -256,7 +259,10 @@ export const ThoughtInformation = React.memo(({
             return editState ? (
               <li className={classes.noteItem} key={`${idx}-note`}>
                 <button className={classes.deleteIcon} onClick={handleDelete(id, 'note')}><Delete/></button>
-                <input className={classes.noteEditInput} onChange={handleInput(id)} value={edittedNotes[id] || text}/>
+                <input className={classes.noteEditInput} onChange={e => {
+                  handleInput(id)(e);
+                  lastNoteRef.current = e.target;
+                }} value={edittedNotes[id] || text}/>
               </li>
             ) : (
               <li className={classes.noteItem} key={`${idx}-note`}><Note className={classes.noteIcon}/>{text}</li>
@@ -266,12 +272,8 @@ export const ThoughtInformation = React.memo(({
               <li className={classes.noteItem} key={`${idx}-added-note`}>
                 <button className={classes.deleteIcon} onClick={() => setAddedNotes(prev => prev.filter((_, prevIdx) => prevIdx !== idx))}><Delete/></button>
                 <input className={classes.noteEditInput} onChange={e => {
-                  const value = e.target.value;
-                  handleInput(idx)({
-                    target: {
-                      value,
-                    }
-                  }, true);
+                  handleInput(idx)(e, true);
+                  lastNoteRef.current = e.target;
                 }} value={addedNote}/>
               </li>
             )

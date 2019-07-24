@@ -33,7 +33,7 @@ export const Input = React.memo(({
     if (suggestionValue.startsWith(' ')) {
       onChange({
         target: {
-          value: `${value}${suggestionValue} `
+          value: `${value.trim()}${suggestionValue} `
         }
       })
     } else {
