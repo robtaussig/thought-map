@@ -103,7 +103,7 @@ export const CreateThought = ({ classes, state }) => {
           onFocus={() => setPhase(2)}
           createdThought={createdThought}
           dispatch={createdThoughtDispatch}
-          thoughts={state.thoughts}
+          notes={state.notes}
         />
       )}
       {phase > 2 && (
