@@ -41,10 +41,10 @@ class AutoSuggest {
   }
 
   process(historicalEntries) {
-    historicalEntries.forEach(entry => {
+    historicalEntries.map(formatWord).forEach(entry => {
       if (this.visited[entry] !== true) {
         const splitEntryWithPunctuationRemoved =
-          entry.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ").split(' ').map(formatWord);
+          entry.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ").split(' ');
 
         this.trie.add(splitEntryWithPunctuationRemoved);
         this.markovChain.record(splitEntryWithPunctuationRemoved);
