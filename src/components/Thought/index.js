@@ -73,6 +73,7 @@ export const Thought = ({ classes, state }) => {
           onUpdate={handleUpdate}
           onEditState={setEditState}
           editState={editState}
+          stateNotes={state.notes}
         />
       }
       <ThoughtSettings

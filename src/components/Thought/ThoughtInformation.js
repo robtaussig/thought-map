@@ -13,6 +13,7 @@ import Delete from '@material-ui/icons/Delete';
 import { openConfirmation } from '../../lib/util';
 import { notes as noteActions, thoughts as thoughtActions, tags as tagActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
+import { useAutoSuggest } from '../../hooks/useAutoSuggest';
 
 export const ThoughtInformation = React.memo(({
   classes,
@@ -26,6 +27,7 @@ export const ThoughtInformation = React.memo(({
   onUpdate,
   editState,
   onEditState,
+  stateNotes,
 }) => {
   const [edittingTime, setEdittingTime] = useState(false);
   const [edittingDate, setEdittingDate] = useState(false);
@@ -34,6 +36,11 @@ export const ThoughtInformation = React.memo(({
   const [addedNotes, setAddedNotes] = useState([]);
   const [addedTags, setAddedTags] = useState([]);
   const db = useLoadedDB();
+  const [lastNote, setLastNote] = useState([null, '']);
+  const autoSuggestNotes = useMemo(() => {
+    return Object.values(stateNotes).map(({ text }) => text);
+  }, [stateNotes]);
+  const noteSuggestions = useAutoSuggest(lastNote[1].trim(), autoSuggestNotes, 4);
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });
   }, [thought]);
@@ -76,12 +83,23 @@ export const ThoughtInformation = React.memo(({
   }, [thought]);
 
   const handleInput = useCallback(id => {
-    return e => {
+    return (e, isNew = false) => {
       const value = e.target.value;
-      setEdittedNotes(prev => ({
-        ...prev,
-        [id]: value,
-      }));
+      if (isNew) {
+        setLastNote([id, value, true]);
+        setAddedNotes(prev => prev.map((prevNote, prevIdx) => {
+          if (prevIdx === id) {
+            return value;
+          }
+          return prevNote;
+        }));
+      } else {
+        setLastNote([id, value]);
+        setEdittedNotes(prev => ({
+          ...prev,
+          [id]: value,
+        }));
+      }
     };
   }, []);
 
@@ -98,6 +116,72 @@ export const ThoughtInformation = React.memo(({
   }, []);
 
   useEffect(reset,[thought]);
+
+  const _autoSuggestComponent = useMemo(() => {
+
+    const handleClickSuggestion = suggestionValue => {
+      if (suggestionValue.startsWith(' ')) {
+        handleInput(lastNote[0])({
+          target: {
+            value: `${lastNote[1]}${suggestionValue} `
+          }
+        }, lastNote[2])
+      } else {
+        handleInput(lastNote[0])({
+          target: {
+            value: lastNote[1].split(' ').map((word, idx) => {
+              if (idx === lastNote[1].split(' ').length - 1) {
+                return suggestionValue;
+              } else {
+                return word;
+              }
+            }).join(' ') + ' '
+          }
+        }, lastNote[2])
+      }
+    };
+
+    if (noteSuggestions && noteSuggestions.length > 0) {
+      return (
+        <ul style={{
+          position: 'fixed',
+          display: 'flex',
+          bottom: '110px',
+          left: '0px',
+          right: '0px',
+          height: '80px',
+          backgroundColor: 'black',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          opacity: 0.7,
+          overflow: 'auto',
+        }}>
+          {noteSuggestions.map((suggestion, idx) => {
+            return (
+              <li
+                key={`${suggestion}-${idx}`}
+                style={{
+                  margin: '0 15px',
+                }}
+              >
+                <button
+                  style={{
+                    color: 'white',
+                  }}
+                  onClick={() => {
+                    handleClickSuggestion(suggestion);
+                  }}
+                >
+                  {suggestion.replace(' ', '...')}
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      );
+    }
+    return null;
+  }, [noteSuggestions, lastNote]);
 
   return (
     <Fragment>
@@ -183,12 +267,11 @@ export const ThoughtInformation = React.memo(({
                 <button className={classes.deleteIcon} onClick={() => setAddedNotes(prev => prev.filter((_, prevIdx) => prevIdx !== idx))}><Delete/></button>
                 <input className={classes.noteEditInput} onChange={e => {
                   const value = e.target.value;
-                  setAddedNotes(prev => prev.map((prevNote, prevIdx) => {
-                    if (prevIdx === idx) {
-                      return value;
+                  handleInput(idx)({
+                    target: {
+                      value,
                     }
-                    return prevNote;
-                  }));
+                  }, true);
                 }} value={addedNote}/>
               </li>
             )
@@ -232,6 +315,7 @@ export const ThoughtInformation = React.memo(({
       ) : (
         <CircleButton classes={classes} id={'edit'} onClick={handleClickEdit} label={'Edit'} Icon={Edit}/>
       )}
+      {_autoSuggestComponent}
     </Fragment>
   );
 });
