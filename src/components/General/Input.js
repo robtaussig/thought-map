@@ -6,7 +6,7 @@ export const Input = React.memo(({
   onChange,
   label,
   id,
-  onFocus,
+  setFocus,
   DeleteButton,
   scrollToOnMount,
   autoFocus,
@@ -14,7 +14,6 @@ export const Input = React.memo(({
   focusOnLabelClick = true,
   placeholder,
   autoSuggest,
-  onInputFocus,
   ...rest,
 }) => {
   const rootRef = useRef(null);
@@ -24,9 +23,9 @@ export const Input = React.memo(({
     if (scrollToOnMount) {
       rootRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-    if (onFocus) {
+    if (setFocus) {
       const focus = () => inputRef.current.focus();
-      onFocus(focus);
+      setFocus(focus);
     }
   }, []);
 
@@ -98,7 +97,7 @@ export const Input = React.memo(({
   }, [autoSuggest]);
 
   return (
-    <label key={`${id}-label`} ref={rootRef} id={id} className={classes.inputLabel} onFocus={onInputFocus} onClick={focusOnLabelClick ? undefined : e => e.preventDefault()} {...rest}>
+    <label key={`${id}-label`} ref={rootRef} id={id} className={classes.inputLabel} onClick={focusOnLabelClick ? undefined : e => e.preventDefault()} {...rest}>
       <div>
         <input key={`${id}-input`} ref={inputRef} className={classes.inputField} placeholder={placeholder} type={'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
         <span/>

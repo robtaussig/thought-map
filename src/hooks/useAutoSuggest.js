@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-export const useAutoSuggest = (inputValue, historicalEntries) => {
+export const useAutoSuggest = (inputValue, historicalEntries, limit) => {
   const [wordMap, setWordMap] = useState([]);
   const lastEntries = useRef(null);
   const markovChain = useRef(null);
@@ -25,8 +25,8 @@ export const useAutoSuggest = (inputValue, historicalEntries) => {
       lastEntries.current = historicalEntries;
     }
 
-    setWordMap(nextWordMap);
-  }, [inputValue, historicalEntries]);
+    setWordMap(limit ? nextWordMap.slice(0, limit) : nextWordMap);
+  }, [inputValue, historicalEntries, limit]);
 
   return wordMap;
 };
@@ -59,7 +59,8 @@ class AutoSuggest {
     const splitSentence = inputValue.trim().split(' ');
     const lastWord = formatWord(splitSentence[splitSentence.length - 1]);
     const results = this.markovChain.suggest(lastWord)
-                             .concat(this.trie.suggest(lastWord));
+                             .concat(this.trie.suggest(lastWord))
+                             .filter(result => result !== lastWord);
     return [...new Set(results)];
   }
 }

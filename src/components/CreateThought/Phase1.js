@@ -28,10 +28,10 @@ export const Phase1 = React.memo(({
   const [time, setTime] = useNestedXReducer('time', createdThought, dispatch);
   const [description, setDescription] = useNestedXReducer('description', createdThought, dispatch);
   const [focusDescription, setFocusDescription] = useState(false);
-  const [displayTitleAutoCorrect, setDisplayTitleAutoCorrect] = useState(false);
+  const [currentAutoSuggest, setCurrentAutoSuggest] = useState('');
 
   const thoughtTitles = useMemo(() => thoughts.map(({ title }) => title), [thoughts]);
-  const titleSuggestions = useAutoSuggest(title.trim(), thoughtTitles);
+  const titleSuggestions = useAutoSuggest(title.trim(), thoughtTitles, 4);
 
   const isReady = validateInputs(title, type, date, description);
 
@@ -49,28 +49,68 @@ export const Phase1 = React.memo(({
   const handleDateChange= useCallback(e => setDate(e.target.value), []);
   const handleTimeChange= useCallback(e => setTime(e.target.value), []);
   const handleDescriptionChange= useCallback(e => setDescription(e.target.value), []);
-  const handleTitleFocus = useCallback(e => {
-    setDisplayTitleAutoCorrect(true);
-  }, []);
+  const handleFocusField = field => () => setCurrentAutoSuggest(field);
 
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
       {!isFocus && 
         <Header classes={classes} value={'Edit'} onClick={onFocus}/>}
       {(!focusDescription || !isFocus) &&
-        <Input id={'title'} classes={classes} value={title} onChange={handleTitleChange} label={'Title'} onInputFocus={handleTitleFocus} onFocus={focusTitleInput} autoSuggest={displayTitleAutoCorrect ? titleSuggestions : null}/>}
+        <Input
+          id={'title'}
+          classes={classes}
+          value={title}
+          onChange={handleTitleChange}
+          label={'Title'}
+          onFocus={handleFocusField('title')}
+          setFocus={focusTitleInput}
+          autoSuggest={currentAutoSuggest === 'title' ? titleSuggestions : null}
+        />
+      }
       {!focusDescription && isFocus &&
-        <Select id={'type'} classes={classes} value={type} options={typeOptions} onChange={handleTypeChange} label={'Type'}/>}
+        <Select
+          id={'type'}
+          classes={classes}
+          value={type}
+          options={typeOptions}
+          onChange={handleTypeChange}
+          onFocus={handleFocusField('type')}
+          label={'Type'}
+        />
+      }
       {!focusDescription && isFocus &&
-        <Date id={'date'} classes={classes} value={date} onChange={handleDateChange} label={'Date'}/>}
+        <Date
+          id={'date'}
+          classes={classes}
+          value={date}
+          onChange={handleDateChange}
+          onFocus={handleFocusField('date')}
+          label={'Date'}
+        />
+      }
       {!focusDescription && isFocus &&
-        <Date id={'time'} time classes={classes} value={time} onChange={handleTimeChange} label={'Time'}/>}
+        <Date
+          id={'time'}
+          time
+          classes={classes}
+          value={time}
+          onChange={handleTimeChange}
+          onFocus={handleFocusField('time')}
+          label={'Time'}
+        />
+      }
       {focusDescription &&
         <button className={classes.hideDescriptionButton} aria-label={'Hide Description'} onClick={() => setFocusDescription(false)}><ExpandLess/></button>}
       {isFocus && 
-        <TextArea id={'description'} classes={classes} value={description} onFocus={() => setFocusDescription(true)} onChange={handleDescriptionChange} label={'Description'}/>}
+        <TextArea id={'description'} classes={classes} value={description} onFocus={() => {
+          handleFocusField('description');
+          setFocusDescription(true);
+        }} onChange={handleDescriptionChange} label={'Description'}/>}
       {isFocus && isReady && 
-        <PhaseNext classes={classes} onClick={handleNext} label={'Add Notes'} id={'add-notes'} Icon={Notes}/>}
+        <PhaseNext classes={classes} onClick={() => {
+          handleFocusField('');
+          handleNext();
+        }} label={'Add Notes'} id={'add-notes'} Icon={Notes}/>}
     </div>
   );
 });
