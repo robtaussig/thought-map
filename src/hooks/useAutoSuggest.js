@@ -31,6 +31,8 @@ export const useAutoSuggest = (inputValue, historicalEntries) => {
   return wordMap;
 };
 
+const formatWord = word => word.trim().toLowerCase();
+
 class AutoSuggest {
   constructor() {
     this.visited = {};
@@ -42,7 +44,7 @@ class AutoSuggest {
     historicalEntries.forEach(entry => {
       if (this.visited[entry] !== true) {
         const splitEntryWithPunctuationRemoved =
-          entry.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ").split(' ');
+          entry.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ").split(' ').map(formatWord);
 
         this.trie.add(splitEntryWithPunctuationRemoved);
         this.markovChain.record(splitEntryWithPunctuationRemoved);
@@ -54,8 +56,10 @@ class AutoSuggest {
   }
 
   generateSuggestions(inputValue) {
-    const results = this.markovChain.suggest(inputValue)
-                             .concat(this.trie.suggest(inputValue));
+    const splitSentence = inputValue.trim().split(' ');
+    const lastWord = formatWord(splitSentence[splitSentence.length - 1]);
+    const results = this.markovChain.suggest(lastWord)
+                             .concat(this.trie.suggest(lastWord));
     return [...new Set(results)];
   }
 }
@@ -101,17 +105,15 @@ class Trie {
   suggest(value) {
     let currentNode = this.rootNode;
     const suggestions = [];
-    const splitWords = value.split(' ');
-    const lastWord = splitWords[splitWords.length - 1];
-    for (let i = 0; i < lastWord.length; i++) {
-      if (currentNode[lastWord[i]] === undefined) return [];
-      currentNode = currentNode[lastWord[i]];
+    for (let i = 0; i < value.length; i++) {
+      if (currentNode[value[i]] === undefined) return [];
+      currentNode = currentNode[value[i]];
     }
     if (currentNode[COMPLETE_WORD]) {
-      suggestions.push(lastWord);
+      suggestions.push(value);
     };
   
-    suggestions.push(...this.findCompleteWordsAtDepth(lastWord, currentNode, 4));
+    suggestions.push(...this.findCompleteWordsAtDepth(value, currentNode, 4));
 
     return suggestions;
   }

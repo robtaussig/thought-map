@@ -53,16 +53,13 @@ export const Phase1 = React.memo(({
     focusTitleInput(e);
     setDisplayTitleAutoCorrect(true);
   }, []);
-  const handleTitleBlur= useCallback(e => {
-    setDisplayTitleAutoCorrect(false);
-  }, []);
 
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
       {!isFocus && 
         <Header classes={classes} value={'Edit'} onClick={onFocus}/>}
       {(!focusDescription || !isFocus) &&
-        <Input id={'title'} classes={classes} value={title} onChange={handleTitleChange} label={'Title'} onInputFocus={handleTitleFocus} onBlur={handleTitleBlur} autoSuggest={displayTitleAutoCorrect ? titleSuggestions : null}/>}
+        <Input id={'title'} classes={classes} value={title} onChange={handleTitleChange} label={'Title'} onInputFocus={handleTitleFocus} autoSuggest={displayTitleAutoCorrect ? titleSuggestions : null}/>}
       {!focusDescription && isFocus &&
         <Select id={'type'} classes={classes} value={type} options={typeOptions} onChange={handleTypeChange} label={'Type'}/>}
       {!focusDescription && isFocus &&
