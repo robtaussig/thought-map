@@ -43,7 +43,7 @@ class AutoSuggest {
   process(historicalEntries) {
     historicalEntries.map(formatWord).forEach(entry => {
       const splitEntryWithPunctuationRemoved =
-          entry.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ").split(' ');
+          entry.replace(/[,.!]\s/g, " ").replace(/\s+/g, " ").split(' ');
       if (this.visited[entry] !== true) {
 
         this.trie.add(splitEntryWithPunctuationRemoved);
