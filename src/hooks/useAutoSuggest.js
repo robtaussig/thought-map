@@ -56,6 +56,7 @@ class AutoSuggest {
   }
 
   generateSuggestions(inputValue) {
+    if (!inputValue) return [];
     const splitSentence = inputValue.trim().split(' ');
     const lastWord = formatWord(splitSentence[splitSentence.length - 1]);
     const results = this.markovChain.suggest(lastWord)
