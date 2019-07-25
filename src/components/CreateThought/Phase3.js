@@ -7,7 +7,15 @@ import Add from '@material-ui/icons/Add';
 import Close from '@material-ui/icons/Close';
 import { useNestedXReducer } from '../../hooks/useXReducer';
 
-export const Phase3 = React.memo(({ classes, onBack, isFocus, onFocus, createdThought, dispatch }) => {
+export const Phase3 = React.memo(({
+  classes,
+  onBack,
+  isFocus,
+  onFocus,
+  createdThought,
+  dispatch,
+  thoughts,
+}) => {
   const [tags, setTags] = useNestedXReducer('tags', createdThought, dispatch);
   const [tagOptions, setTagOptions] = useNestedXReducer('tagOptions', createdThought, dispatch);
   const isReady = validateInputs();
