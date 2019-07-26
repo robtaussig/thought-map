@@ -8,17 +8,23 @@ import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
 
-ReactDOM.render(
-  (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline/>
-        <App/>
-      </ThemeProvider>
-    </BrowserRouter>
-  ),
-  document.getElementById('root')
-);
+try {
+  ReactDOM.render(
+    (
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <CssBaseline/>
+          <App/>
+        </ThemeProvider>
+      </BrowserRouter>
+    ),
+    document.getElementById('root')
+  );
+} catch (e) {
+  alert(`${e.message}, ${e.stack}`);
+}
+
+
 
 if ("serviceWorker" in navigator) {
   if (navigator.serviceWorker.controller) {
