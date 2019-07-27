@@ -13,7 +13,7 @@ import Delete from '@material-ui/icons/Delete';
 import { openConfirmation } from '../../lib/util';
 import { notes as noteActions, thoughts as thoughtActions, tags as tagActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
-import { useAutoSuggest } from '../../hooks/useAutoSuggest';
+import { useAutoSuggest } from 'react-use-autosuggest';
 
 export const ThoughtInformation = React.memo(({
   classes,

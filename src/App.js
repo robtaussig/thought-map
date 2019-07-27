@@ -24,6 +24,7 @@ import CreateThought from './components/CreateThought';
 import Thought from './components/Thought';
 import Notifications from './components/Notifications';
 import { ModalProvider } from './hooks/useModal';
+import { DraggableBoundaries } from 'react-use-draggable-window';
 
 const App = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
@@ -57,36 +58,38 @@ const App = ({ classes, history }) => {
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
         <ModalProvider>
-          <div id={'app'} ref={rootRef} className={classes.root}>
-            <Notifications lastNotification={lastNotification}/>
-            <PriorityList thoughts={state.thoughts}/>
-            <Switch>
-              <Route exact path={'/'}>
-                {dbReadyState && <Home state={state}/>}
-              </Route>
-              <Route path={'/settings'}>
-                {dbReadyState && <Settings state={state}/>}
-              </Route>
-              <Route path={'/thought/new'}>
-                {dbReadyState && <CreateThought state={state}/>}
-              </Route>
-              <Route path={'/thought/:id'}>
-                {dbReadyState && <Thought state={state}/>}
-              </Route>
-              <Route path={'/plan/:id/thought/new'}>
-                {dbReadyState && <CreateThought state={state}/>}
-              </Route>
-              <Route path={'/plan/:id/thought/:thoughtId'}>
-                {dbReadyState && <Thought state={state}/>}
-              </Route>
-              <Route path={'/plan/:id/settings'}>
-                {dbReadyState && <Settings state={state}/>}
-              </Route>
-              <Route path={'/plan/:id'}>
-                {dbReadyState && <Home state={state}/>}
-              </Route>
-            </Switch> 
-          </div>
+          <DraggableBoundaries>
+            <div id={'app'} ref={rootRef} className={classes.root}>
+              <Notifications lastNotification={lastNotification}/>
+              <PriorityList thoughts={state.thoughts}/>
+              <Switch>
+                <Route exact path={'/'}>
+                  {dbReadyState && <Home state={state}/>}
+                </Route>
+                <Route path={'/settings'}>
+                  {dbReadyState && <Settings state={state}/>}
+                </Route>
+                <Route path={'/thought/new'}>
+                  {dbReadyState && <CreateThought state={state}/>}
+                </Route>
+                <Route path={'/thought/:id'}>
+                  {dbReadyState && <Thought state={state}/>}
+                </Route>
+                <Route path={'/plan/:id/thought/new'}>
+                  {dbReadyState && <CreateThought state={state}/>}
+                </Route>
+                <Route path={'/plan/:id/thought/:thoughtId'}>
+                  {dbReadyState && <Thought state={state}/>}
+                </Route>
+                <Route path={'/plan/:id/settings'}>
+                  {dbReadyState && <Settings state={state}/>}
+                </Route>
+                <Route path={'/plan/:id'}>
+                  {dbReadyState && <Home state={state}/>}
+                </Route>
+              </Switch> 
+            </div>
+          </DraggableBoundaries>
         </ModalProvider>  
       </DBProvider>
     </Context.Provider>

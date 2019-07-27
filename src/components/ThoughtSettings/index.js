@@ -5,12 +5,15 @@ import Delete from '@material-ui/icons/Delete';
 import useModal from '../../hooks/useModal';
 import Template from './components/template';
 import { styles } from './styles';
+import useDraggableWindow from 'react-use-draggable-window';
 
 export const ThoughtSettings = ({ classes, display, thought, tags, notes, onDelete }) => {
   const [openModal, closeModal] = useModal();
+  const openWindow = useDraggableWindow();
 
   const handleClickUseAsTemplate = () => {
-    openModal(<Template classes={classes} onClose={closeModal} thought={thought} tags={tags} notes={notes}/>, 'Template');
+    // openModal(<Template classes={classes} onClose={closeModal} thought={thought} tags={tags} notes={notes}/>, 'Template');
+    openWindow(<Template classes={classes} onClose={closeModal} thought={thought} tags={tags} notes={notes}/>);
   };
 
   const handleClickCustomColor = () => {
