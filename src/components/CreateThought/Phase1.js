@@ -8,7 +8,7 @@ import PhaseNext from './PhaseNext';
 import Notes from '@material-ui/icons/Notes';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import { useNestedXReducer } from '../../hooks/useXReducer';
-import { useAutoSuggest } from 'react-use-autosuggest';
+import { useAutoSuggest } from '../../hooks/useAutoSuggest';
 
 export const Phase1 = React.memo(({
   classes,

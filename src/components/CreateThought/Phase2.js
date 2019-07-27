@@ -5,7 +5,7 @@ import FolderSpecial from '@material-ui/icons/FolderSpecial';
 import Add from '@material-ui/icons/Add';
 import Note from './Note';
 import { useNestedXReducer } from '../../hooks/useXReducer';
-import { useAutoSuggest } from 'react-use-autosuggest';
+import { useAutoSuggest } from '../../hooks/useAutoSuggest';
 
 export const Phase2 = React.memo(({
   classes,
