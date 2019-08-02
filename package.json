@@ -17,6 +17,7 @@
     "react-notifications-component": "^1.1.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "0.9.x",
+    "react-use-autosuggest": "^0.6.0",
     "react-use-draggable-window": "^0.2.3",
     "rxdb": "^8.2.0",
     "rxjs": "^6.5.2",
