@@ -24,7 +24,6 @@ import CreateThought from './components/CreateThought';
 import Thought from './components/Thought';
 import Notifications from './components/Notifications';
 import { ModalProvider } from './hooks/useModal';
-import { DraggableBoundaries } from 'react-use-draggable-window';
 
 const App = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
@@ -58,7 +57,6 @@ const App = ({ classes, history }) => {
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
         <ModalProvider>
-          <DraggableBoundaries>
             <div id={'app'} ref={rootRef} className={classes.root}>
               <Notifications lastNotification={lastNotification}/>
               <PriorityList thoughts={state.thoughts}/>
@@ -89,7 +87,6 @@ const App = ({ classes, history }) => {
                 </Route>
               </Switch> 
             </div>
-          </DraggableBoundaries>
         </ModalProvider>  
       </DBProvider>
     </Context.Provider>

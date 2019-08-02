@@ -10,7 +10,7 @@ export const styles = theme => ({
     gap: '20px',
     gridTemplateAreas: `"content content"
                         "plans-list plans-list"
-                        "header header"`,
+                        "search search"`,
     gridTemplateRows: '7fr minmax(50px, 1fr) minmax(50px, 1fr)',
     gridTemplateColumns: 'repeat(2, 1fr)',
   },
@@ -88,13 +88,6 @@ export const styles = theme => ({
     backgroundColor: '#8380ff',
     ...theme.defaults.castShadow.light,
   },
-  header: {
-    gridArea: 'header',
-    margin: 'auto',
-    fontSize: 50,
-    fontFamily: 'avenir',
-    color: '#c2c2ff',
-  },
   circleButton: {
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
@@ -112,6 +105,10 @@ export const styles = theme => ({
       '&:disabled': {
         opacity: 0.5,
       },
+    },'&#search': {
+      top: 10,
+      right: 10,
+      opacity: 0.5,      
     },
   },
   settingsButton: {
