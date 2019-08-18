@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useMemo, useRef, useState, Dispatch, SetStateAction } from 'react';
-import { Switch, Route, withRouter, RouteComponentProps } from 'react-router-dom';
-import { History } from 'history';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
 import { appReducer, DEFAULT_STATE } from './reducers';
@@ -34,56 +33,19 @@ import CreateThought from './components/CreateThought';
 import Thought from './components/Thought';
 import Notifications from './components/Notifications';
 import { ModalProvider } from './hooks/useModal';
+import {
+  AppProps,
+  Notification,
+  Setters,
+  RxChangeEvent,
+  ConnectionState,
+  ThoughtState,
+  PlanState,
+  NoteState,
+  TagState,
+  TemplateState,
+} from './types';
 
-interface Classes {
-  [className: string]: string,
-}
-
-interface AppProps extends RouteComponentProps {
-  classes: Classes,
-  history: History
-}
-
-interface Notification {
-  message: string,
-}
-
-interface Setters {
-  [key: string]: Setter<any>,
-}
-
-enum Operation {
-  INSERT = 'INSERT',
-  REMOVE = 'REMOVE',
-  UPDATE = 'UPDATE',
-}
-
-interface RxChangeEventData {
-  v: any,
-  op: Operation
-}
-
-interface RxChangeEvent {
-  data: RxChangeEventData,
-}
-
-type ConnectionState = {
-  [id: string]: ConnectionType
-};
-
-type ThoughtState = ThoughtType[];
-
-type PlanState = PlanType[];
-
-type NoteState = {
-  [id: string]: NoteType
-};
-
-type TagState = {
-  [id: string]: TagType
-};
-
-type TemplateState = TemplateType[];
 
 const App: FC<AppProps> = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
@@ -242,7 +204,7 @@ const handleConnectionChange = (setter: Setter<ConnectionState>, setLastNotifica
 };
 
 const handleNoteChange = (setter: Setter<NoteState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
-  const note = data.v;
+  const note: NoteType = data.v;
   let notification;
   switch (data.op) {
     case 'INSERT':
@@ -282,7 +244,7 @@ const handleNoteChange = (setter: Setter<NoteState>, setLastNotification: Dispat
 };
 
 const handleTagChange = (setter: Setter<TagState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
-  const tag = data.v;
+  const tag: TagType = data.v;
   let notification;
   switch (data.op) {
     case 'INSERT':
@@ -322,7 +284,7 @@ const handleTagChange = (setter: Setter<TagState>, setLastNotification: Dispatch
 };
 
 const handlePlanChange = (setter: Setter<PlanState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
-  const plan = data.v;
+  const plan: PlanType = data.v;
   let notification;
   switch (data.op) {
     case 'INSERT':
@@ -347,7 +309,7 @@ const handlePlanChange = (setter: Setter<PlanState>, setLastNotification: Dispat
 };
 
 const handleTemplateChange = (setter: Setter<TemplateState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
-  const template = {
+  const template: TemplateType = {
     ...data.v,
     template: JSON.parse(data.v.template),
   };
