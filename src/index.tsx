@@ -20,15 +20,13 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-
-
 if ("serviceWorker" in navigator) {
   if (navigator.serviceWorker.controller) {
     console.log("[PWA Builder] active service worker found, no need to register");
   } else {
     // Register the service worker
     navigator.serviceWorker
-      .register("sw.js", {
+      .register("public/sw.js", {
         scope: "./"
       })
       .then(function (reg) {
