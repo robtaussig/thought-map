@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useMemo, useEffect } from 'react';
 import Timeline from '@material-ui/icons/Timeline';
 import CircleButton from '../../General/CircleButton';
-import Connections from './Connections.js';
+import Connections from './Connections';
 
 const SETTING_CONNECTION_STATE = {
   NONE: 1,

@@ -1,3 +1,5 @@
+import { RxDatabase } from 'rxdb';
+import { Template } from 'store/rxdb/schemas/template';
 import Base from './base';
 
 export const TABLE_NAME = 'template';
@@ -11,31 +13,31 @@ export default class Templates extends Base {
     updated: Number,
     deleted: Number,
   }
-  static fetchAll = async db => {
+  static fetchAll = async (db: RxDatabase) => {
     const objects = await Base.fetchAll(db, TABLE_NAME);
     return objects.map(({ template, ...rest }) => ({
       template: JSON.parse(template),
       ...rest,
     }));
   }
-  static fetch = async (db, id) => {
-    const { template, ...rest } = await Base.fetch(db, TABLE_NAME, id);
+  static fetch = async (db: RxDatabase, id: string) => {
+    const { template, ...rest } = await Base.fetch(db, id, TABLE_NAME);
     return {
       template: JSON.parse(template),
       ...rest,
     };
   }
-  static add = async (db, { template, ...rest }) => {
-    return Base.add(db, TABLE_NAME, {
+  static add = async (db: RxDatabase, { template, ...rest }: Template) => {
+    return Base.add(db, {
       template: JSON.stringify(template),
       ...rest,
-    });
+    }, TABLE_NAME);
   }
-  static update = async (db, { template, ...rest }) => {
-    return Base.update(db, TABLE_NAME, {
+  static update = async (db: RxDatabase, { template, ...rest }: Template) => {
+    return Base.update(db, {
       template: JSON.stringify(template),
       ...rest,
-    });
+    }, TABLE_NAME);
   }
-  static delete = async (db, id) => Base.delete(db, TABLE_NAME, id)
+  static delete = async (db: RxDatabase, id: string) => Base.delete(db, id, TABLE_NAME)
 }

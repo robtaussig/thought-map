@@ -1,11 +1,21 @@
-export const intoMap = items => {
+import { History } from 'history';
+
+interface Mappable {
+  id: string,
+}
+
+interface MappedCollection {
+  [id: string]: Mappable,
+}
+
+export const intoMap = (items: Mappable[]) => {
   return items.reduce((all, each) => {
     all[each.id] = each;
     return all;
-  }, {});
+  }, {} as MappedCollection);
 };
 
-export const openConfirmation = (confirmationText, onConfirm, onReject = () => {}) => {
+export const openConfirmation = (confirmationText: string, onConfirm: () => void, onReject: () => void = () => {}) => {
   if (window.confirm(confirmationText)) {
     onConfirm();
   } else {
@@ -13,7 +23,7 @@ export const openConfirmation = (confirmationText, onConfirm, onReject = () => {
   }
 };
 
-export const homeUrl = history => {
+export const homeUrl = (history: History) => {
   const pathName = history.location.pathname;
   const split = pathName.split('/');
 
@@ -24,7 +34,7 @@ export const homeUrl = history => {
   }
 };
 
-export const getIdFromUrl = (history, key) => {
+export const getIdFromUrl = (history: History, key: string) => {
   const path = history.location.pathname;
 
   return path.split('/').reduce((id, part) => {
@@ -35,7 +45,7 @@ export const getIdFromUrl = (history, key) => {
   }, false);
 };
 
-export const getSearchParam = (history, key) => {
+export const getSearchParam = (history: History, key: string) => {
   const { search } = history.location;
   const searchParams = new URLSearchParams(search);
   return searchParams.get(key);

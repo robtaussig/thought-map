@@ -1,4 +1,5 @@
 import schemas from './schemas';
+import { RxDatabase, RxJsonSchema, RxCollectionCreator } from 'rxdb';
 
 export const DB_SETTINGS = {
   name: 'thoughtmap',           // <- name
@@ -7,7 +8,7 @@ export const DB_SETTINGS = {
   queryChangeDetection: true // <- queryChangeDetection (optional, default: false)
 };
 
-const initializeCollection = (db, tableName, schema, rest) => {
+const initializeCollection = (db: RxDatabase, tableName: string, schema: RxJsonSchema, rest: RxCollectionCreator) => {
   return db.collection({
     name: tableName,
     schema,
@@ -22,6 +23,6 @@ const initializeCollection = (db, tableName, schema, rest) => {
   });
 };
 
-export const initializeCollections = async db => {
-  return Promise.all(schemas.map(([tableName, schema, rest = {}]) => initializeCollection(db, tableName, schema, rest)))
+export const initializeCollections = async (db: RxDatabase) => {
+  return Promise.all(schemas.map(([tableName, schema, rest = {} as RxCollectionCreator]) => initializeCollection(db, tableName, schema, rest)))
 };

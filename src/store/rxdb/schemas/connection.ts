@@ -1,3 +1,13 @@
+import { RxJsonSchema } from 'rxdb';
+
+export interface Connection {
+  id: string,
+  from: string,
+  to: string,
+  created?: number,
+  updated?: number,
+}
+
 export default ['connection', {
   "title": "Connection schema",
   "version": 0,
@@ -27,4 +37,4 @@ export default ['connection', {
   "attachments": {
 
   }
-}];
+} as RxJsonSchema];

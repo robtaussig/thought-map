@@ -1,7 +1,5 @@
 import './App.css';
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
-import red from '@material-ui/core/colors/red';
+import { createMuiTheme, responsiveFontSizes, Theme } from '@material-ui/core/styles';
 
 /* LIGHT GREEN */
 const primaryColor = {
@@ -89,6 +87,7 @@ export const theme = responsiveFontSizes(
     palette: {
       primary: primaryColor,
       secondary: secondaryColor,
+      //@ts-ignore
       gray: grays,
       red: reds,
     },
@@ -166,7 +165,7 @@ export const theme = responsiveFontSizes(
   })
 );
 
-export const styles = theme => ({
+export const styles = (theme: Theme) => ({
   root: {
     height: '100%',
     width: '100%',

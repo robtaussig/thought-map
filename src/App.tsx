@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import React, { FC, useEffect, useMemo, useRef, useState, Dispatch, SetStateAction } from 'react';
+import { Switch, Route, withRouter, RouteComponentProps } from 'react-router-dom';
+import { History } from 'history';
 import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
 import { appReducer, DEFAULT_STATE } from './reducers';
@@ -7,8 +8,17 @@ import { Context } from './store';
 import { sortByIndexThenDate } from './models/base';
 import { ACTION_TYPES } from './reducers';
 import { intoMap } from './lib/util';
-import useXReducer, { useNestedXReducer } from './hooks/useXReducer';
+import {
+  Thought as ThoughtType,
+  Plan as PlanType,
+  Note as NoteType,
+  Tag as TagType,
+  Connection as ConnectionType,
+  Template as TemplateType ,
+} from './store/rxdb/schemas/types';
+import useXReducer, { useNestedXReducer, Action, Setter } from './hooks/useXReducer';
 import { useDB } from './hooks/useDB';
+import { RxDatabase } from 'rxdb';
 import {
   thoughts as thoughtActions,
   plans as planActions,
@@ -25,9 +35,59 @@ import Thought from './components/Thought';
 import Notifications from './components/Notifications';
 import { ModalProvider } from './hooks/useModal';
 
-const App = ({ classes, history }) => {
+interface Classes {
+  [className: string]: string,
+}
+
+interface AppProps extends RouteComponentProps {
+  classes: Classes,
+  history: History
+}
+
+interface Notification {
+  message: string,
+}
+
+interface Setters {
+  [key: string]: Setter<any>,
+}
+
+enum Operation {
+  INSERT = 'INSERT',
+  REMOVE = 'REMOVE',
+  UPDATE = 'UPDATE',
+}
+
+interface RxChangeEventData {
+  v: any,
+  op: Operation
+}
+
+interface RxChangeEvent {
+  data: RxChangeEventData,
+}
+
+type ConnectionState = {
+  [id: string]: ConnectionType
+};
+
+type ThoughtState = ThoughtType[];
+
+type PlanState = PlanType[];
+
+type NoteState = {
+  [id: string]: NoteType
+};
+
+type TagState = {
+  [id: string]: TagType
+};
+
+type TemplateState = TemplateType[];
+
+const App: FC<AppProps> = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
-  const [lastNotification, setLastNotification] = useState(null);
+  const [lastNotification, setLastNotification] = useState<Notification>(null);
   const [_thoughts, setThoughts] = useNestedXReducer('thoughts', state, dispatch);
   const [_connections, setConnections] = useNestedXReducer('connections', state, dispatch);
   const [_notes, setNotes] = useNestedXReducer('notes', state, dispatch);
@@ -93,12 +153,7 @@ const App = ({ classes, history }) => {
   );
 };
 
-const initializeApplication = async (db, dispatch) => {
-  dispatch({
-    type: ACTION_TYPES.PHASE_PENDING,
-    payload: ACTION_TYPES.INITIALIZE_APPLICATION,
-  });
-
+const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>) => {
   const [ thoughts, connections, plans, notes, tags, templates ] = await Promise.all([
     thoughtActions.getThoughts(db),
     connectionActions.getConnections(db),
@@ -121,8 +176,8 @@ const initializeApplication = async (db, dispatch) => {
   });
 };
 
-const handleThoughtChange = (setter, setLastNotification) => ({ data }) => {
-  const thought = data.v;
+const handleThoughtChange = (setter: Setter<ThoughtState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  const thought: ThoughtType = data.v;
   let notification;
   switch (data.op) {
     case 'INSERT':
@@ -131,12 +186,12 @@ const handleThoughtChange = (setter, setLastNotification) => ({ data }) => {
       break;
     
     case 'REMOVE':
-      setter(prev => prev.filter(prevThought => prevThought.id !== thought.id));
+      setter(prev => prev.filter((prevThought: ThoughtType) => prevThought.id !== thought.id));
       notification = { message: 'Thought removed' };
       break;
 
     case 'UPDATE':
-      setter(prev => prev.map(prevThought => prevThought.id === thought.id ? thought : prevThought).sort(sortByIndexThenDate));
+      setter(prev => prev.map((prevThought: ThoughtType) => prevThought.id === thought.id ? thought : prevThought).sort(sortByIndexThenDate));
       notification = { message: 'Thought updated' };
       break;
   
@@ -146,8 +201,8 @@ const handleThoughtChange = (setter, setLastNotification) => ({ data }) => {
   setLastNotification(notification);  
 };
 
-const handleConnectionChange = (setter, setLastNotification) => ({ data }) => {
-  const connection = data.v;
+const handleConnectionChange = (setter: Setter<ConnectionState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  const connection: ConnectionType = data.v;
   let notification;
   switch (data.op) {
     case 'INSERT':
@@ -165,7 +220,7 @@ const handleConnectionChange = (setter, setLastNotification) => ({ data }) => {
             nextState[key] = prev[key];
           }
           return nextState;
-        }, {});
+        }, {} as ConnectionState);
 
         return next;
       });
@@ -186,7 +241,7 @@ const handleConnectionChange = (setter, setLastNotification) => ({ data }) => {
   setLastNotification(notification);  
 };
 
-const handleNoteChange = (setter, setLastNotification) => ({ data }) => {
+const handleNoteChange = (setter: Setter<NoteState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
   const note = data.v;
   let notification;
   switch (data.op) {
@@ -205,7 +260,7 @@ const handleNoteChange = (setter, setLastNotification) => ({ data }) => {
             nextState[key] = prev[key];
           }
           return nextState;
-        }, {});
+        }, {} as NoteState);
 
         return next;
       });
@@ -226,7 +281,7 @@ const handleNoteChange = (setter, setLastNotification) => ({ data }) => {
   setLastNotification(notification);  
 };
 
-const handleTagChange = (setter, setLastNotification) => ({ data }) => {
+const handleTagChange = (setter: Setter<TagState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
   const tag = data.v;
   let notification;
   switch (data.op) {
@@ -245,7 +300,7 @@ const handleTagChange = (setter, setLastNotification) => ({ data }) => {
             nextState[key] = prev[key];
           }
           return nextState;
-        }, {});
+        }, {} as TagState);
 
         return next;
       });
@@ -266,7 +321,7 @@ const handleTagChange = (setter, setLastNotification) => ({ data }) => {
   setLastNotification(notification);  
 };
 
-const handlePlanChange = (setter, setLastNotification) => ({ data }) => {
+const handlePlanChange = (setter: Setter<PlanState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
   const plan = data.v;
   let notification;
   switch (data.op) {
@@ -291,7 +346,7 @@ const handlePlanChange = (setter, setLastNotification) => ({ data }) => {
   setLastNotification(notification);  
 };
 
-const handleTemplateChange = (setter, setLastNotification) => ({ data }) => {
+const handleTemplateChange = (setter: Setter<TemplateState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
   const template = {
     ...data.v,
     template: JSON.parse(data.v.template),
@@ -319,12 +374,18 @@ const handleTemplateChange = (setter, setLastNotification) => ({ data }) => {
   setLastNotification(notification);  
 };
 
-const subscribeToChanges = async (db, setters, setLastNotification) => {
+const subscribeToChanges = async (db: RxDatabase, setters: Setters, setLastNotification: Dispatch<SetStateAction<Notification>>) => {
+  //@ts-ignore
   db.thought.$.subscribe(handleThoughtChange(setters.thought, setLastNotification));
+  //@ts-ignore
   db.connection.$.subscribe(handleConnectionChange(setters.connection, setLastNotification));
+  //@ts-ignore
   db.note.$.subscribe(handleNoteChange(setters.note, setLastNotification));
+  //@ts-ignore
   db.tag.$.subscribe(handleTagChange(setters.tag, setLastNotification));
+  //@ts-ignore
   db.plan.$.subscribe(handlePlanChange(setters.plan, setLastNotification));
+  //@ts-ignore
   db.template.$.subscribe(handleTemplateChange(setters.template, setLastNotification));
 };
 

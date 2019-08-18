@@ -1,12 +1,25 @@
-import { useCallback, useRef, useReducer, useMemo } from 'react';
+import { useCallback, useRef, useReducer, useMemo, Dispatch, Reducer } from 'react';
 
-const keyToActionType = key => {
+export type Action = {
+  type: any,
+  payload: any,
+}
+
+type State = {
+  [key: string]: State
+} | any
+
+type SetterParam<T> = (prevState: T) => T | T
+
+export type Setter<T> = (setterParam: SetterParam<T>) => T;
+
+const keyToActionType = (key: string): string => {
   return `@SET_${key}_DISPATCHED_X_ACTION`;
 };
 
-export const useNestedXReducer = (key, state, dispatch) => {
-  const stateRef = useRef();
-  const setter = useCallback(valOrFn => {
+export const useNestedXReducer = (key: string, state: State, dispatch: Dispatch<Action>): [State, Setter<State>] => {
+  const stateRef = useRef<State>();
+  const setter: Setter<State> = useCallback(valOrFn => {
     const actionType = keyToActionType(key);
     const next = typeof valOrFn === 'function' ? valOrFn(stateRef.current) : valOrFn;
     dispatch({
@@ -19,18 +32,18 @@ export const useNestedXReducer = (key, state, dispatch) => {
   return [stateRef.current, setter];
 };
 
-export const useXReducer = (defaultState, mergedReducer) => {
+export const useXReducer = (defaultState: State, mergedReducer: Reducer<State, Action>): [State, Dispatch<Action>] => {
   const reducer = useMemo(() => createNestedReducer(mergedReducer), []);
   return useReducer(reducer, defaultState);
 };
 
-export const actionTypeToKey = actionType => {
+export const actionTypeToKey = (actionType: string): string => {
   if (/^@SET_/.test(actionType)) {
     return actionType.split('_')[1];
   }
 };
 
-const createNestedReducer = mergedReducer => {
+const createNestedReducer = (mergedReducer: Reducer<State, Action>): Reducer<State, Action> => {
   return (state, action) => {
     const key = actionTypeToKey(action.type);
     if (key) {

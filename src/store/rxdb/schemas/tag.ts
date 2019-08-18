@@ -1,7 +1,18 @@
-export default ['note', {
-  "title": "Note schema",
+import { RxJsonSchema } from 'rxdb';
+
+export interface Tag {
+  id: string,
+  thoughtId: string,
+  text: string,
+  index?: number,
+  created?: number,
+  updated?: number,
+}
+
+export default ['tag', {
+  "title": "Tag schema",
   "version": 0,
-  "description": "A Note",
+  "description": "A Tag",
   "type": "object",
   "properties": {
     "id": {
@@ -29,4 +40,4 @@ export default ['note', {
   "attachments": {
 
   }
-}];
+} as RxJsonSchema];

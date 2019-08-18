@@ -1,3 +1,20 @@
+import { RxJsonSchema, RxDocument } from 'rxdb';
+
+export interface Thought {
+  id: string,
+  title: string,
+  planId?: string,
+  date?: string,
+  time?: string,
+  type?: string,
+  status?: string,
+  priority?: number,
+  description?: string,
+  index?: number,
+  created?: number,
+  updated?: number,
+}
+
 export default ['thought', {
   "title": "Thought schema",
   "version": 1,
@@ -47,9 +64,9 @@ export default ['thought', {
   "attachments": {
 
   }
-}, {
+} as RxJsonSchema, {
   "migrationStrategies": {
-    1: oldThought => {
+    1: (oldThought: RxDocument<Thought>) => {
       oldThought.priority = 5;
       return oldThought;
     },

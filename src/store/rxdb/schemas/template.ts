@@ -1,3 +1,13 @@
+import { RxJsonSchema } from 'rxdb';
+
+export interface Template {
+  id: string,
+  name: string,
+  template: string,
+  created?: number,
+  updated?: number,
+}
+
 export default ['template', {
   "title": "Template schema",
   "version": 0,
@@ -25,4 +35,4 @@ export default ['template', {
   "attachments": {
 
   }
-}];
+} as RxJsonSchema];
