@@ -5,21 +5,19 @@ export type Action = {
   payload: any,
 }
 
-type State = {
-  [key: string]: State
-} | any
+type Key = string | number | symbol;
 
-type SetterParam<T> = (prevState: T) => T | T
+type SetterParam<T> = (prevState: T) => T | T;
 
-export type Setter<T> = (setterParam: SetterParam<T>) => T;
+export type Setter<T> = (setterParam: SetterParam<T>) => void;
 
-const keyToActionType = (key: string): string => {
-  return `@SET_${key}_DISPATCHED_X_ACTION`;
+const keyToActionType = (key: Key): string => {
+  return `@SET_${String(key)}_DISPATCHED_X_ACTION`;
 };
 
-export const useNestedXReducer = (key: string, state: State, dispatch: Dispatch<Action>): [State, Setter<State>] => {
-  const stateRef = useRef<State>();
-  const setter: Setter<State> = useCallback(valOrFn => {
+export const useNestedXReducer = <T extends { [key: string]: any }, K extends keyof T>(key: K, state: T, dispatch: Dispatch<Action>): [T[K], Setter<T[K]>] => {
+  const stateRef = useRef<T[K]>();
+  const setter: Setter<T[K]> = useCallback(valOrFn => {
     const actionType = keyToActionType(key);
     const next = typeof valOrFn === 'function' ? valOrFn(stateRef.current) : valOrFn;
     dispatch({
@@ -28,36 +26,29 @@ export const useNestedXReducer = (key: string, state: State, dispatch: Dispatch<
     });
   }, []);
   
-  stateRef.current = key === '*' ? state : state[key];
+  stateRef.current = state[key];
   return [stateRef.current, setter];
 };
 
-export const useXReducer = (defaultState: State, mergedReducer: Reducer<State, Action>): [State, Dispatch<Action>] => {
+export const useXReducer = <T>(defaultState: T, mergedReducer: Reducer<T, Action>): [T, Dispatch<Action>] => {
   const reducer = useMemo(() => createNestedReducer(mergedReducer), []);
   return useReducer(reducer, defaultState);
 };
 
-export const actionTypeToKey = (actionType: string): string => {
+export const actionTypeToKey = (actionType: string): (string | undefined) => {
   if (/^@SET_/.test(actionType)) {
     return actionType.split('_')[1];
   }
 };
 
-const createNestedReducer = (mergedReducer: Reducer<State, Action>): Reducer<State, Action> => {
+const createNestedReducer = <T>(mergedReducer: Reducer<T, Action>): Reducer<T, Action> => {
   return (state, action) => {
     const key = actionTypeToKey(action.type);
     if (key) {
-      if (key === '*') {
-        return {
-          ...state,
-          ...action.payload,
-        };
-      } else {
-        return {
-          ...state,
-          [key]: action.payload,
-        };
-      }
+      return {
+        ...state,
+        [key]: action.payload,
+      };
     } else if (mergedReducer) {
       return mergedReducer(state, action);
     }

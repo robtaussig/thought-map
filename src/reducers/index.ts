@@ -6,7 +6,7 @@ import { Plan } from '../store/rxdb/schemas/plan';
 import { Note } from '../store/rxdb/schemas/note';
 import { Tag } from '../store/rxdb/schemas/tag';
 
-interface AppState {
+export interface AppState {
   thoughts: Thought[],
   templates: Template[],
   connections: Connection[],
