@@ -1,7 +1,7 @@
 import { RxJsonSchema } from 'rxdb';
 
 export interface Tag {
-  id: string,
+  id?: string,
   thoughtId: string,
   text: string,
   index?: number,

@@ -1,7 +1,7 @@
 import { History } from 'history';
 
 interface Mappable {
-  id: string,
+  id?: string,
 }
 
 interface MappedCollection {

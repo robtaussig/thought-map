@@ -23,7 +23,7 @@ export const sortByIndexThenDate = (resLeft: Sortable, resRight: Sortable): numb
 };
 
 export default class Base {
-  static fetchAll = async (db: RxDatabase, tableName: string) => {
+  static fetchAll = async (db: RxDatabase, tableName: string): Promise<any[]> => {
     const query = db[tableName].find();
     const results = await query.exec();
     return results
@@ -31,13 +31,13 @@ export default class Base {
       .sort(sortByIndexThenDate);
   }
 
-  static fetch = async (db: RxDatabase, id: string, tableName: string) => {
+  static fetch = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
     const query = db[tableName].find({ id: { $eq: id } });
     const result: RxDocumentTypeWithRev<any> = await query.exec();
     return result.toJSON();
   }
 
-  static add = async (db: RxDatabase, object: RxDocumentTypeWithRev<any>, tableName: string) => {
+  static add = async (db: RxDatabase, object: RxDocumentTypeWithRev<any>, tableName: string): Promise<any> => {
     const timestamp = +new Date();
     const result = await db[tableName].insert(Object.assign({}, object, {
       id: uuidv4(),
@@ -47,7 +47,7 @@ export default class Base {
     return result.toJSON();
   }
 
-  static update = async (db: RxDatabase, object: RxDocumentTypeWithRev<any>, tableName: string) => {
+  static update = async (db: RxDatabase, object: RxDocumentTypeWithRev<any>, tableName: string): Promise<any> => {
     const timestamp = +new Date();
     const result = await db[tableName].upsert(Object.assign({}, object, {
       updated: timestamp,
@@ -55,14 +55,14 @@ export default class Base {
     return result.toJSON();
   }
 
-  static delete = async (db: RxDatabase, id: string, tableName: string) => {
+  static delete = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
     const query = db[tableName].find({ id: { $eq: id } });
     const response = await query.remove();
 
     return response;
   }
 
-  static deleteAssociations = async (db: RxDatabase, deletions: Deletion[], id: string) => {
+  static deleteAssociations = async (db: RxDatabase, deletions: Deletion[], id: string): Promise<any> => {
     return Promise.all(deletions.map(({ tableName, key }) => {
       const query = db[tableName].find({ [key]: { $eq: id } });
       return query.remove();

@@ -1,3 +1,5 @@
+import { RxDatabase, RxJsonSchema, RxCollectionCreator } from 'rxdb';
+import { Thought } from '../store/rxdb/schemas/thought';
 import { 
   thoughts as thoughtActions,
   connections as connectionActions,
@@ -6,7 +8,17 @@ import {
   tags as tagActions,
 } from './';
 
-export const createWholeThought = async (db, {
+interface WholeThought {
+  title: string,
+  type: string,
+  date: string,
+  time: string,
+  description: string,
+  notes: any[],
+  tags: any[],
+}
+
+export const createWholeThought = async (db: RxDatabase, {
   title,
   type,
   date,
@@ -14,8 +26,8 @@ export const createWholeThought = async (db, {
   description,
   notes,
   tags,
-}, planId) => {
-  const thought = {
+}:WholeThought, planId: string) => {
+  const thought: Thought = {
     title, type, date, time, description, status: 'new', priority: 5,
   };
   if (planId) thought.planId = planId;

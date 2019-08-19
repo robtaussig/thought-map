@@ -1,7 +1,7 @@
 import { RxJsonSchema } from 'rxdb';
 
 export interface Connection {
-  id: string,
+  id?: string,
   from: string,
   to: string,
   created?: number,

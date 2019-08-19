@@ -1,7 +1,7 @@
 import { RxJsonSchema, RxDocument } from 'rxdb';
 
 export interface Plan {
-  id: string,
+  id?: string,
   name: string,
   showCompleted?: boolean,
   created?: number,

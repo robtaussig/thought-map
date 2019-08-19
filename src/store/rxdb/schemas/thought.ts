@@ -1,7 +1,7 @@
 import { RxJsonSchema, RxDocument } from 'rxdb';
 
 export interface Thought {
-  id: string,
+  id?: string,
   title: string,
   planId?: string,
   date?: string,
