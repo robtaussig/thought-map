@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, FC } from 'react';
 import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
 import useXReducer from '../../hooks/useXReducer';
@@ -15,8 +15,23 @@ import Settings from '@material-ui/icons/Settings';
 import { createWholeThought } from '../../actions/complex';
 import { homeUrl, getIdFromUrl } from '../../lib/util';
 import { TYPE_OPTIONS, TAG_OPTIONS } from '../Thought';
+import { Note } from '../../store/rxdb/schemas/note';
+import { Tag } from '../../store/rxdb/schemas/tag';
+import { AppState } from '../../reducers';
 
-const DEFAULT_STATE = {
+interface CreatedThought {
+  title: string,
+  typeOptions: string[],
+  type: string,
+  date: string,
+  time: string,
+  description: string,
+  notes: Note[],
+  tags: Tag[],
+  tagOptions: string[],
+}
+
+const DEFAULT_STATE: CreatedThought = {
   title: '',
   typeOptions: TYPE_OPTIONS,
   type: 'Task',
@@ -28,18 +43,23 @@ const DEFAULT_STATE = {
   tagOptions: TAG_OPTIONS,
 };
 
-export const CreateThought = ({ classes, state }) => {
+interface CreateThoughtProps {
+  classes: any,
+  state: AppState,
+}
+
+export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
   const { history, dispatch } = useApp();
-  const settingsSVGRef = useRef(null);
+  const settingsSVGRef = useRef<HTMLElement>(null);
   const db = useLoadedDB();
   const [ createdThought, createdThoughtDispatch ] = useXReducer(DEFAULT_STATE, (state, action) => {
     if (action.type === 'CREATE_FROM_TEMPLATE') return action.payload;
     return state;
   });
-  const [ phase, setPhase ] = useState(1);
-  const [ ready, setReady ] = useState(false);
-  const [ displaySettings, setDisplaySettings ] = useState(false);
-  const focusInputRef = useRef(() => {});
+  const [ phase, setPhase ] = useState<number>(1);
+  const [ ready, setReady ] = useState<boolean>(false);
+  const [ displaySettings, setDisplaySettings ] = useState<boolean>(false);
+  const focusInputRef = useRef<() => void>(() => {});
   const planId = getIdFromUrl(history, 'plan');
   useEffect(() => {
     const timeout = setTimeout(focusInputRef.current, 100);
@@ -71,8 +91,8 @@ export const CreateThought = ({ classes, state }) => {
       date: thought.date,
       time: thought.time,
       description: thought.description,
-      notes: notes.map(note => note.text),
-      tags: tags.map(tag => tag.text),
+      notes: notes.map((note: Note) => note.text),
+      tags: tags.map((tag: Tag) => tag.text),
       tagOptions: TAG_OPTIONS,
     };
 
@@ -88,7 +108,7 @@ export const CreateThought = ({ classes, state }) => {
         classes={classes}
         onNext={() => setPhase(2)}
         isFocus={phase === 1}
-        onReady={isReady => setReady(isReady)}
+        onReady={(isReady: boolean) => setReady(isReady)}
         onFocus={() => setPhase(1)}
         createdThought={createdThought}
         dispatch={createdThoughtDispatch}
@@ -120,7 +140,7 @@ export const CreateThought = ({ classes, state }) => {
         display={displaySettings}
         templates={state.templates}
         onCreateFromTemplate={handleCreateFromTemplate}
-        onClose={_ => setDisplaySettings(false)}
+        onClose={() => setDisplaySettings(false)}
       />
       <CircleButton classes={classes} id={'create-thought'} onClick={handleSubmit} label={'Create Thought'} disabled={!ready} Icon={Check}/>
       <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
@@ -129,11 +149,11 @@ export const CreateThought = ({ classes, state }) => {
   );
 };
 
-const gearOpening = element => {
+const gearOpening = (element: HTMLElement): void => {
   element.classList.add('gear-opening');
 };
 
-const gearClosing = element => {
+const gearClosing = (element: HTMLElement): void => {
   element.classList.remove('gear-opening');
 }
 

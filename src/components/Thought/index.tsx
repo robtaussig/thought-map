@@ -14,8 +14,8 @@ import { thoughts as thoughtActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 
 export const STATUS_OPTIONS = ['new', 'in progress', 'almost done', 'completed'];
-export const TYPE_OPTIONS = ['Task', 'Todo', 'Reminder', 'Misc'];
-export const TAG_OPTIONS = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
+export const TYPE_OPTIONS: string[] = ['Task', 'Todo', 'Reminder', 'Misc'];
+export const TAG_OPTIONS: string[] = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
 export const PRIORITY_OPTIONS = [
   { value: 0, label: 'NOT RELEVANT (HIDE)' },
   { value: 1, label: 'LOW' },
