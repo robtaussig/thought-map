@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React, { useCallback, useMemo, FC } from 'react';
+import { withStyles, StyleRules } from '@material-ui/core/styles';
 import Select from '../General/Select';
+import { Template } from '../../store/rxdb/schemas/template';
 
-const styles = theme => ({
+const styles = (theme: any): StyleRules => ({
   root: {
     position: 'fixed',
     height: '100vh',
@@ -31,7 +32,15 @@ const styles = theme => ({
   },
 });
 
-export const CreateThoughtSettings = ({ classes, display, templates, onClose, onCreateFromTemplate }) => {
+interface CreateThoughtSettingsProps {
+  classes: any,
+  display: boolean,
+  templates: Template[],
+  onClose: () => void,
+  onCreateFromTemplate: (template: Template) => void,
+}
+
+export const CreateThoughtSettings: FC<CreateThoughtSettingsProps> = ({ classes, display, templates, onClose, onCreateFromTemplate }) => {
   const templateOptions = useMemo(() => {
     return ['', ...templates.map(template => template.name)];
   }, [templates]);

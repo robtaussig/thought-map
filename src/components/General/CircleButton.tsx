@@ -1,23 +1,35 @@
-import React, { useRef } from 'react';
+import React, { useRef, FC, ChangeEvent } from 'react';
 import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 
-export const CircleButton = React.memo(({ classes, id = 'add-button', onClick, label, disabled, Icon = Add, title, svgRef, ...rest }) => {
-  const buttonRef = useRef(null);
-  const isCancelled = useRef(null);
+interface CircleButtonProps {
+  classes?: any,
+  id?: string,
+  onClick: (event?: ChangeEvent) => void,
+  label?: string,
+  disabled?: boolean,
+  Icon: any,
+  title?: string,
+  svgRef?: React.Ref<HTMLElement>,
+  [rest: string]: any,
+}
 
-  const handleInteractionStart = () => {
+export const CircleButton: FC<CircleButtonProps> = React.memo(({ classes, id = 'add-button', onClick, label, disabled, Icon = Add, title, svgRef, ...rest }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const isCancelled = useRef<boolean>(null);
+
+  const handleInteractionStart = (): void => {
     isCancelled.current = false;
     !disabled && buttonRef.current.classList.add('touched');
   };
-  const handleInteractionEnd = e => {
+  const handleInteractionEnd = (e: (React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>)): void => {
     buttonRef.current.classList.remove('touched');
     e.preventDefault();
     if (!disabled && isCancelled.current === false) {
       onClick();
     }
   };
-  const handleCancelInteraction = e => {
+  const handleCancelInteraction = (): void => {
     isCancelled.current = true;
     buttonRef.current.classList.remove('touched');
   };

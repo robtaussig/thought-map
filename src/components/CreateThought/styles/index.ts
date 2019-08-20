@@ -1,4 +1,6 @@
-export const styles = theme => ({
+import { StyleRules } from '@material-ui/core/styles';
+
+export const styles = (theme: any): StyleRules => ({
   root: {
     display: 'flex',
     flexDirection: 'column',

@@ -1,6 +1,33 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, FC } from 'react';
 
-export const Input = React.memo(({
+type Callback = () => void;
+
+interface ChangeTarget {
+  value: string,
+}
+
+interface ChangeType {
+  target: ChangeTarget
+}
+
+interface InputProps {
+  classes?: any,
+  value: string,
+  onChange: (e: ChangeType) => void,
+  label?: string,
+  id?: string,
+  setFocus?: (cb: Callback) => void,
+  DeleteButton?: any,
+  scrollToOnMount?: boolean,
+  autoFocus?: boolean,
+  injectedComponent?: any,
+  focusOnLabelClick?: boolean,
+  placeholder?: string,
+  autoSuggest?: string[],
+  [rest: string]: any,
+}
+
+export const Input: FC<InputProps> = React.memo(({
   classes,
   value,
   onChange,
@@ -14,10 +41,10 @@ export const Input = React.memo(({
   focusOnLabelClick = true,
   placeholder,
   autoSuggest,
-  ...rest,
+  ...rest
 }) => {
-  const rootRef = useRef(null);
-  const inputRef = useRef(null);
+  const rootRef = useRef<HTMLLabelElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (scrollToOnMount) {
@@ -29,7 +56,7 @@ export const Input = React.memo(({
     }
   }, []);
 
-  const handleClickSuggestion = suggestionValue => {
+  const handleClickSuggestion = (suggestionValue: string): void => {
     if (suggestionValue.startsWith(' ')) {
       onChange({
         target: {

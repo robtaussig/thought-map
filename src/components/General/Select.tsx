@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { FC, ChangeEventHandler } from 'react';
 
-export const Select = React.memo(({ id, classes, value, options, onChange, label, injectedComponent, title, ...rest }) => {
+interface SelectProps {
+  id?: string,
+  classes?: any,
+  value: string,
+  options: string[],
+  onChange: ChangeEventHandler<HTMLSelectElement>,
+  label?: string,
+  injectedComponent?: any,
+  title?: string,
+  [rest: string]: any,
+}
+
+export const Select: FC<SelectProps> = React.memo(({ id, classes, value, options, onChange, label, injectedComponent, title, ...rest }) => {
 
   return (
     <label id={id} className={classes.selectLabel} title={title} {...rest}>
