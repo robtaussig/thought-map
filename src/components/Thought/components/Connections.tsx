@@ -1,8 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState, FC } from 'react';
+import { withStyles, StyleRules } from '@material-ui/core/styles';
 import Connection from './Connection';
+import { Thought } from 'store/rxdb/schemas/thought';
+import { ModifiedConnection } from './CreateConnectionsFromThought';
 
-const styles = theme => ({
+interface ConnectionsProps {
+  classes: any,
+  thought: Thought,
+  from?: boolean,
+  to?: boolean,
+  revealed: boolean,
+  connections: ModifiedConnection[],
+  thoughts: Thought[],
+}
+
+interface ConnectionMap {
+  [id: string]: string,
+}
+
+const styles = (theme: any): StyleRules => ({
   root: {
     position: 'absolute',
     top: '20%',
@@ -61,13 +77,13 @@ const styles = theme => ({
   },
 });
 
-export const Connections = ({ classes, thought, from, to, revealed, connections, thoughts }) => {
+export const Connections: FC<ConnectionsProps> = ({ classes, thought, from, to, revealed, connections, thoughts }) => {
   const INITIAL_STATE = from ? -100 : 100;
   const [positionOfCenter, setPositionOfCenter] = useState(INITIAL_STATE);
   const connectionsMap = connections.reduce((map, connection) => {
     map[connection.thoughtId] = connection.id;
     return map;
-  }, {})
+  }, {} as ConnectionMap)
 
   useEffect(() => {
     if (revealed) {

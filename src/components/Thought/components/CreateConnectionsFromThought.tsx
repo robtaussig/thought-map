@@ -1,7 +1,21 @@
-import React, { Fragment, useState, useMemo, useEffect } from 'react';
+import React, { Fragment, useState, useMemo, FC } from 'react';
 import Timeline from '@material-ui/icons/Timeline';
 import CircleButton from '../../General/CircleButton';
 import Connections from './Connections';
+import { Thought } from 'store/rxdb/schemas/thought';
+import { Connection } from 'store/rxdb/schemas/connection';
+
+interface CreateConnectionsFromThoughtProps {
+  classes: any,
+  thought: Thought,
+  thoughts: Thought[],
+  connections: Connection[],
+}
+
+export interface ModifiedConnection {
+  id: string,
+  thoughtId: string,
+}
 
 const SETTING_CONNECTION_STATE = {
   NONE: 1,
@@ -9,10 +23,10 @@ const SETTING_CONNECTION_STATE = {
   TO: 3,
 };
 
-export const CreateConnectionsFromThought = ({ classes, thought, thoughts, connections }) => {
+export const CreateConnectionsFromThought: FC<CreateConnectionsFromThoughtProps> = ({ classes, thought, thoughts, connections }) => {
   const [settingConnectionState, setSettingConnectionState] = useState(SETTING_CONNECTION_STATE.NONE);
-  const fromConnections = useMemo(() => Object.values(connections).filter(({ to }) => to === thought.id).map(({ title, from, id }) => ({ title, thoughtId: from, id })),[thoughts, connections, thought]);
-  const toConnections = useMemo(() => Object.values(connections).filter(({ from }) => from === thought.id).map(({ title, to, id }) => ({ title, thoughtId: to, id })),[thoughts, connections, thought]);
+  const fromConnections = useMemo(() => Object.values(connections).filter(({ to }) => to === thought.id).map<ModifiedConnection>(({ from, id }) => ({ thoughtId: from, id })),[thoughts, connections, thought]);
+  const toConnections = useMemo(() => Object.values(connections).filter(({ from }) => from === thought.id).map<ModifiedConnection>(({ to, id }) => ({ thoughtId: to, id })),[thoughts, connections, thought]);
 
   return (
     <Fragment>
