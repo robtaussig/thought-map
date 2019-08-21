@@ -1,4 +1,6 @@
-export const styles = theme => ({
+import { StyleRules } from '@material-ui/core/styles';
+
+export const styles = (theme: any): StyleRules => ({
   root: {
     height: '100%',
     position: 'relative',

@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useRef } from 'react';
+import React, { useMemo, useCallback, useState, useRef, FC } from 'react';
 import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,40 +12,53 @@ import CreateConnectionsFromThought from './components/CreateConnectionsFromThou
 import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
+import { AppState } from 'reducers';
 
-export const STATUS_OPTIONS = ['new', 'in progress', 'almost done', 'completed'];
+interface PriorityOption {
+  value: number,
+  label: string,
+}
+
+interface ThoughtProps {
+  classes: any,
+  state: AppState,
+}
+
+export const STATUS_OPTIONS: string[] = ['new', 'in progress', 'almost done', 'completed'];
 export const TYPE_OPTIONS: string[] = ['Task', 'Todo', 'Reminder', 'Misc'];
 export const TAG_OPTIONS: string[] = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
-export const PRIORITY_OPTIONS = [
+export const PRIORITY_OPTIONS: PriorityOption[] = [
   { value: 0, label: 'NOT RELEVANT (HIDE)' },
   { value: 1, label: 'LOW' },
   { value: 5, label: 'MEDIUM' },
   { value: 10, label: 'HIGH' },
 ];
 
-export const Thought = ({ classes, state }) => {
+export const Thought: FC<ThoughtProps> = ({ classes, state }) => {
   const db = useLoadedDB();
-  const { history, dispatch } = useApp();
-  const returnHomeSVGRef = useRef(null);
-  const [editState, setEditState] = useState(false);
-  const [displaySettings, setDisplaySettings] = useState(false);
+  const { history } = useApp();
+  const returnHomeSVGRef = useRef<HTMLElement>(null);
+  const [editState, setEditState] = useState<boolean>(false);
+  const [displaySettings, setDisplaySettings] = useState<boolean>(false);
   const thoughtId = getIdFromUrl(history, 'thought');
   const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
   const relatedTags = useMemo(() => Object.values(state.tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, state.tags]);
   const relatedNotes = useMemo(() => Object.values(state.notes).filter(note => note.thoughtId === thoughtId), [thoughtId, state.notes]);
-  const handleClickHome = () => {
+  const handleClickHome = (): void => {
     history.push(homeUrl(history));
   };
   const handleUpdate = useCallback(async updatedThought => {
     await thoughtActions.editThought(db, updatedThought);
   }, []);
   const handleClickDelete = useCallback(() => {
-    const onConfirm = async () => {
-      await thoughtActions.deleteThought(db, thoughtId);
-      history.push(homeUrl(history));
-    };
-
-    openConfirmation('Are you sure you want to delete this?', onConfirm);
+    if (typeof thoughtId === 'string') {
+      const onConfirm = async () => {
+        await thoughtActions.deleteThought(db, thoughtId);
+        history.push(homeUrl(history));
+      };
+  
+      openConfirmation('Are you sure you want to delete this?', onConfirm);
+    }
   }, [thoughtId]);
   const handleClickSettings = useCallback(() => {
     setDisplaySettings(prev => !prev);
@@ -90,11 +103,11 @@ export const Thought = ({ classes, state }) => {
   );
 };
 
-const gearOpening = element => {
+const gearOpening = (element: HTMLElement): void => {
   element.classList.add('gear-opening');
 };
 
-const gearClosing = element => {
+const gearClosing = (element: HTMLElement): void => {
   element.classList.remove('gear-opening');
 }
 

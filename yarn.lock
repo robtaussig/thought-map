@@ -7536,9 +7536,9 @@ react-transition-group@^4.0.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-use-autosuggest@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/react-use-autosuggest/-/react-use-autosuggest-0.6.0.tgz#77c982b21a09539bea1791493cb4b747a782e555"
+react-use-autosuggest@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/react-use-autosuggest/-/react-use-autosuggest-0.6.2.tgz#5e3406c3fe334dc0ba45de343c445e2b9d53f432"
 
 react@^16.4.2, react@^16.8.6:
   version "16.9.0"

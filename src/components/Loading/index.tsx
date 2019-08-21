@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './style.css';
 
-export const Loading = ({ id }) => {
+interface LoadingProps {
+  id?: string,
+}
+
+export const Loading: FC<LoadingProps> = ({ id }) => {
 
   return (
     <div id={id} className="loader">
