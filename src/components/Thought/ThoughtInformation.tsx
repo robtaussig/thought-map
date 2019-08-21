@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, useEffect, useRef, Fragment } from 'react';
+import React, { useCallback, useState, useMemo, useEffect, useRef, Fragment, FC } from 'react';
 import Note from '@material-ui/icons/Note';
 import AccessTime from '@material-ui/icons/AccessTime';
 import CalendarToday from '@material-ui/icons/CalendarToday';
@@ -14,8 +14,45 @@ import { openConfirmation } from '../../lib/util';
 import { notes as noteActions, thoughts as thoughtActions, tags as tagActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 import useAutoSuggest from 'react-use-autosuggest';
+import { Thought } from 'store/rxdb/schemas/thought';
+import { Tag } from 'store/rxdb/schemas/tag';
+import { Note as NoteType } from 'store/rxdb/schemas/note';
+import { PriorityOption } from './'
+import { RxDatabase } from 'rxdb';
 
-export const ThoughtInformation = React.memo(({
+interface ThoughtInformationProps {
+  classes: any,
+  thought: Thought,
+  tags: Tag[],
+  notes: NoteType[],
+  statusOptions: string[],
+  typeOptions: string[],
+  tagOptions: string[],
+  priorityOptions: PriorityOption[],
+  onUpdate: (thought: Thought) => void,
+  editState: boolean,
+  onEditState: (edit: boolean) => void,
+  stateNotes: NoteType[],
+}
+
+interface EditedMap {
+  [id: string]: string
+}
+
+interface EditedObject {
+  thoughtId: string,
+  text: string,
+}
+
+interface ChangeValue {
+  value: any,
+}
+
+interface ChangeType {
+  target: ChangeValue,
+}
+
+export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   classes,
   thought,
   tags = [],
@@ -29,15 +66,15 @@ export const ThoughtInformation = React.memo(({
   onEditState,
   stateNotes,
 }) => {
-  const [edittingTime, setEdittingTime] = useState(false);
-  const [edittingDate, setEdittingDate] = useState(false);
-  const [edittedNotes, setEdittedNotes] = useState({});
-  const [edittedTitle, setEdittedTitle] = useState(thought.title);
-  const [addedNotes, setAddedNotes] = useState([]);
-  const [addedTags, setAddedTags] = useState([]);
-  const lastNoteRef = useRef(null);
+  const [edittingTime, setEdittingTime] = useState<boolean>(false);
+  const [edittingDate, setEdittingDate] = useState<boolean>(false);
+  const [edittedNotes, setEdittedNotes] = useState<EditedMap>({});
+  const [edittedTitle, setEdittedTitle] = useState<string>(thought.title);
+  const [addedNotes, setAddedNotes] = useState<string[]>([]);
+  const [addedTags, setAddedTags] = useState<string[]>([]);
+  const lastNoteRef = useRef<HTMLInputElement>(null);
   const db = useLoadedDB();
-  const [lastNote, setLastNote] = useState([null, '']);
+  const [lastNote, setLastNote] = useState<[number, string, boolean?]>([null, '']);
   const autoSuggestNotes = useMemo(() => {
     return Object.values(stateNotes).map(({ text }) => text);
   }, [stateNotes]);
@@ -84,8 +121,8 @@ export const ThoughtInformation = React.memo(({
     onUpdate({ ...thought, type: event.target.value })
   }, [thought]);
 
-  const handleInput = useCallback(id => {
-    return (e, isNew = false) => {      
+  const handleInput = useCallback((id: any) => {
+    return (e: ChangeType, isNew: boolean = false) => {      
       const value = e.target.value;
       if (isNew) {
         setLastNote([id, value, true]);
@@ -105,7 +142,7 @@ export const ThoughtInformation = React.memo(({
     };
   }, []);
 
-  const handleDelete = useCallback((id, type) => {
+  const handleDelete = useCallback((id: string, type: string): () => void => {
     return () => {
       const onConfirm = type === 'note' ?
         () => noteActions.deleteNote(db, id) :
@@ -121,7 +158,7 @@ export const ThoughtInformation = React.memo(({
 
   const _autoSuggestComponent = useMemo(() => {
 
-    const handleClickSuggestion = suggestionValue => {
+    const handleClickSuggestion = (suggestionValue: string) => {
       if (suggestionValue.startsWith(' ')) {
         handleInput(lastNote[0])({
           target: {
@@ -322,11 +359,21 @@ export const ThoughtInformation = React.memo(({
   );
 });
 
-const handleUpdates = async (db, addedNotes, addedTags, edittedNotes, thought, tags, notes, edittedTitle, reset) => {
-  const notesToAdd = [];
-  const tagsToAdd = [];
-  const notesToEdit = [];
-  const tagsToEdit = [];
+const handleUpdates = async (
+  db: RxDatabase,
+  addedNotes: string[],
+  addedTags: string[],
+  edittedNotes: EditedMap,
+  thought: Thought,
+  tags: Tag[],
+  notes: NoteType[],
+  edittedTitle: string,
+  reset: () => void
+) => {
+  const notesToAdd: EditedObject[] = [];
+  const tagsToAdd: EditedObject[] = [];
+  const notesToEdit: EditedObject[] = [];
+  const tagsToEdit: EditedObject[] = [];
 
   addedNotes.forEach(addedNote => {
     notesToAdd.push({

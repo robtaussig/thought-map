@@ -14,7 +14,7 @@ import { thoughts as thoughtActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 import { AppState } from 'reducers';
 
-interface PriorityOption {
+export interface PriorityOption {
   value: number,
   label: string,
 }
