@@ -1,9 +1,17 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, FC } from 'react';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
-export const Notifications = React.memo(({ lastNotification }) => {
-  const notificationRef = useRef(null);
+interface NotificationsProps {
+  lastNotification: Notification,
+}
+
+interface Notification {
+  message: string,
+}
+
+export const Notifications: FC<NotificationsProps> = React.memo(({ lastNotification }) => {
+  const notificationRef = useRef<any>(null);
 
   useEffect(() => {
     if (lastNotification) {
