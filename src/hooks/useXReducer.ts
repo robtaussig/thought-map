@@ -7,7 +7,7 @@ export type Action = {
 
 type Key = string | number | symbol;
 
-type SetterParam<T> = (prevState: T) => T | T;
+type SetterParam<T> = ((prevState: T) => T) | T;
 
 export type Setter<T> = (setterParam: SetterParam<T>) => void;
 
@@ -19,7 +19,7 @@ export const useNestedXReducer = <T extends { [key: string]: any }, K extends ke
   const stateRef = useRef<T[K]>();
   const setter: Setter<T[K]> = useCallback(valOrFn => {
     const actionType = keyToActionType(key);
-    const next = typeof valOrFn === 'function' ? valOrFn(stateRef.current) : valOrFn;
+    const next = valOrFn instanceof Function ? valOrFn(stateRef.current) : valOrFn;
     dispatch({
       type: actionType,
       payload: next,

@@ -10,10 +10,12 @@ interface ChangeType {
   target: ChangeTarget
 }
 
+export type InputChangeHandler = (e: ChangeType) => void;
+
 interface InputProps {
   classes?: any,
   value: string,
-  onChange: (e: ChangeType) => void,
+  onChange: InputChangeHandler,
   label?: string,
   id?: string,
   setFocus?: (cb: Callback) => void,

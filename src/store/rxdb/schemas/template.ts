@@ -3,7 +3,7 @@ import { RxJsonSchema } from 'rxdb';
 export interface Template {
   id?: string,
   name: string,
-  template: string,
+  template: any,
   created?: number,
   updated?: number,
 }

@@ -3,7 +3,7 @@ import React, { FC, MouseEvent } from 'react';
 interface HeaderProps {
   classes: any,
   value: string,
-  onClick: (event: MouseEvent<HTMLHeadingElement>) => void,
+  onClick?: (event: MouseEvent<HTMLHeadingElement>) => void,
   [rest: string]: any,
 }
 

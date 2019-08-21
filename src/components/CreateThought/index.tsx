@@ -17,17 +17,18 @@ import { homeUrl, getIdFromUrl } from '../../lib/util';
 import { TYPE_OPTIONS, TAG_OPTIONS } from '../Thought';
 import { Note } from '../../store/rxdb/schemas/note';
 import { Tag } from '../../store/rxdb/schemas/tag';
+import { Template } from '../../store/rxdb/schemas/template';
 import { AppState } from '../../reducers';
 
-interface CreatedThought {
+export interface CreatedThought {
   title: string,
   typeOptions: string[],
   type: string,
   date: string,
   time: string,
   description: string,
-  notes: Note[],
-  tags: Tag[],
+  notes: string[],
+  tags: string[],
   tagOptions: string[],
 }
 
@@ -49,7 +50,7 @@ interface CreateThoughtProps {
 }
 
 export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
-  const { history, dispatch } = useApp();
+  const { history } = useApp();
   const settingsSVGRef = useRef<HTMLElement>(null);
   const db = useLoadedDB();
   const [ createdThought, createdThoughtDispatch ] = useXReducer(DEFAULT_STATE, (state, action) => {
@@ -81,7 +82,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
       gearClosing(settingsSVGRef.current);
     }
   }, [displaySettings]);
-  const handleCreateFromTemplate = useCallback(({ template }) => {
+  const handleCreateFromTemplate = useCallback(({ template }: Template) => {
     const { thought, notes, tags } = template;
 
     const thoughtFromTemplate = {
@@ -133,7 +134,6 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
           isFocus={phase === 3}
           createdThought={createdThought}
           dispatch={createdThoughtDispatch}
-          thoughts={state.thoughts}
         />
       )}
       <CreateThoughtSettings

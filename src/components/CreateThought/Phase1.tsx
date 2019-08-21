@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, FC, Dispatch, ReducerAction } from 'react';
 import Header from '../General/Header';
 import Input from '../General/Input';
 import Select from '../General/Select';
@@ -7,10 +7,24 @@ import TextArea from '../General/TextArea';
 import PhaseNext from './PhaseNext';
 import Notes from '@material-ui/icons/Notes';
 import ExpandLess from '@material-ui/icons/ExpandLess';
-import { useNestedXReducer } from '../../hooks/useXReducer';
+import { useNestedXReducer, Action } from '../../hooks/useXReducer';
 import useAutoSuggest from 'react-use-autosuggest';
+import { CreatedThought } from './';
+import { Thought } from '../../store/rxdb/schemas/thought';
 
-export const Phase1 = React.memo(({
+interface Phase1Props {
+  classes: any,
+  onNext: () => void,
+  isFocus: boolean,
+  onReady: (isReady: boolean) => void,
+  onFocus: () => void,
+  createdThought: CreatedThought,
+  dispatch: Dispatch<Action>,
+  focusTitleInput: (cb: () => void) => void,
+  thoughts: Thought[],
+}
+
+export const Phase1: FC<Phase1Props> = React.memo(({
   classes,
   onNext,
   isFocus,
@@ -33,9 +47,9 @@ export const Phase1 = React.memo(({
   const thoughtTitles = useMemo(() => thoughts.map(({ title }) => title), [thoughts]);
   const titleSuggestions = useAutoSuggest(title.trim(), thoughtTitles, 4);
 
-  const isReady = validateInputs(title, type, date, description);
+  const isReady = validateInputs(title);
 
-  const handleNext = () => {
+  const handleNext = (): void => {
     setFocusDescription(false);
     onNext();
   };
@@ -49,7 +63,7 @@ export const Phase1 = React.memo(({
   const handleDateChange= useCallback(e => setDate(e.target.value), []);
   const handleTimeChange= useCallback(e => setTime(e.target.value), []);
   const handleDescriptionChange= useCallback(e => setDescription(e.target.value), []);
-  const handleFocusField = field => () => setCurrentAutoSuggest(field);
+  const handleFocusField = (field: string) => () => setCurrentAutoSuggest(field);
 
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
@@ -117,6 +131,6 @@ export const Phase1 = React.memo(({
 
 export default Phase1;
 
-const validateInputs = (title, type, date, description) => {
+const validateInputs = (title: string): boolean => {
   return title !== '';
 };

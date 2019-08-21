@@ -1,13 +1,26 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo, FC, Dispatch, ChangeEvent } from 'react';
 import Header from '../General/Header';
 import PhaseNext from './PhaseNext';
 import FolderSpecial from '@material-ui/icons/FolderSpecial';
 import Add from '@material-ui/icons/Add';
 import Note from './Note';
-import { useNestedXReducer } from '../../hooks/useXReducer';
+import { useNestedXReducer, Action } from '../../hooks/useXReducer';
 import useAutoSuggest from 'react-use-autosuggest';
+import { CreatedThought } from './';
+import { InputChangeHandler } from '~components/General/Input';
+import { Note as NoteType } from 'store/rxdb/schemas/note';
 
-export const Phase2 = React.memo(({
+interface Phase2Props {
+  classes: any,
+  onNext: () => void,
+  isFocus: boolean,
+  onFocus: () => void,
+  createdThought: CreatedThought,
+  dispatch: Dispatch<Action>,
+  notes: NoteType[],
+}
+
+export const Phase2: FC<Phase2Props> = React.memo(({
   classes,
   onNext,
   isFocus,
@@ -18,20 +31,21 @@ export const Phase2 = React.memo(({
 }) => {
   const [notes, setNotes] = useNestedXReducer('notes', createdThought, dispatch);
   const isReady = validateInputs();
-  const [lastNote, setLastNote] = useState([-1, '']);
+  const [lastNote, setLastNote] = useState<[number, string]>([-1, '']);
   
-  const handleSetNote = idx => e => {
+  const handleSetNote = (idx: number): InputChangeHandler => e => {
     const nextValue = e.target.value;
     setLastNote([idx, nextValue]);
     setNotes(notes.map((value, prevIdx) => prevIdx === idx ? nextValue : value));
   };
 
-  const handleDeleteNote = idx => () => setNotes(notes.filter((_, prevIdx) => prevIdx !== idx));
+  const handleDeleteNote = (idx: number) => () => setNotes(notes.filter((_, prevIdx) => prevIdx !== idx));
   const handleAddNote = useCallback(() => setNotes(prev => prev.concat('')), []);
   const autoSuggestNotes = useMemo(() => {
     return Object.values(stateNotes).map(({ text }) => text);
   }, [stateNotes]);
-  const noteSuggestions = useAutoSuggest(lastNote[1].trim(), autoSuggestNotes, 4);
+  const noteSuggestions: string[] = useAutoSuggest(lastNote[1].trim(), autoSuggestNotes, 4);
+
   return (
     <div className={`${classes.phase} ${classes.phase2} ${isFocus ? ' isFocus' : ''}`}>
       {!isFocus && <Header classes={classes} value={`(${notes.length}) Notes`} onClick={onFocus}/>}
@@ -57,6 +71,6 @@ export const Phase2 = React.memo(({
 
 export default Phase2;
 
-const validateInputs = () => {
+const validateInputs = (): boolean => {
   return true;
 };

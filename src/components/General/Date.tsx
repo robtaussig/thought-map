@@ -6,7 +6,7 @@ interface DateProps {
   value: string | string[] | number,
   onChange: ChangeEventHandler,
   label?: string,
-  time?: string,
+  time?: boolean,
   autoFocus?: boolean,
   [rest: string]: any,
 }
