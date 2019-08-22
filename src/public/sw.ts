@@ -8,21 +8,21 @@ const precacheFiles = [
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = "index.html";
 
-const networkFirstPaths = [
+const networkFirstPaths: any[] = [
   /* Add an array of regex of paths that should go network first */
   // Example: /\/api\/.*/
 ];
 
-const avoidCachingPaths = [
+const avoidCachingPaths: any[] = [
   /* Add an array of regex of paths that shouldn't be cached */
   // Example: /\/api\/.*/
 ];
 
-function pathComparer(requestUrl, pathRegEx) {
+function pathComparer(requestUrl: string, pathRegEx:RegExp) {
   return requestUrl.match(new RegExp(pathRegEx));
 }
 
-function comparePaths(requestUrl, pathsArray) {
+function comparePaths(requestUrl: string, pathsArray: RegExp[]) {
   if (requestUrl) {
     for (let index = 0; index < pathsArray.length; index++) {
       const pathRegEx = pathsArray[index];
@@ -35,21 +35,17 @@ function comparePaths(requestUrl, pathsArray) {
   return false;
 }
 
-self.addEventListener("install", function (event) {
+self.addEventListener("install", function (event: any) {
   console.log("[PWA Builder] Install Event processing");
 
   console.log("[PWA Builder] Skip waiting on install");
-  self.skipWaiting();
+  (self as any).skipWaiting();
 
   event.waitUntil(
     caches.open(CACHE).then(function (cache) {
       console.log("[PWA Builder] Caching pages during install");
 
       return cache.addAll(precacheFiles).then(function () {
-        if (offlineFallbackPage === "ToDo-replace-this-name.html") {
-          return cache.add(new Response("TODO: Update the value of the offlineFallbackPage constant in the serviceworker."));
-        }
-
         return cache.add(offlineFallbackPage);
       });
     })
@@ -57,13 +53,13 @@ self.addEventListener("install", function (event) {
 });
 
 // Allow sw to control of current page
-self.addEventListener("activate", function (event) {
+self.addEventListener("activate", function (event: any) {
   console.log("[PWA Builder] Claiming clients for current page");
-  event.waitUntil(self.clients.claim());
+  event.waitUntil((self as any).clients.claim());
 });
 
 // If any fetch fails, it will look for the request in the cache and serve it from there first
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", function (event: any) {
   if (event.request.method !== "GET") return;
 
   if (comparePaths(event.request.url, networkFirstPaths)) {
@@ -73,7 +69,7 @@ self.addEventListener("fetch", function (event) {
   }
 });
 
-function cacheFirstFetch(event) {
+function cacheFirstFetch(event: any) {
   event.respondWith(
     fromCache(event.request).then(
       function (response) {
@@ -115,7 +111,7 @@ function cacheFirstFetch(event) {
   );
 }
 
-function networkFirstFetch(event) {
+function networkFirstFetch(event: any) {
   event.respondWith(
     fetch(event.request)
       .then(function (response) {
@@ -130,12 +126,12 @@ function networkFirstFetch(event) {
   );
 }
 
-function fromCache(request) {
+function fromCache(request: any) {
   // Check to see if you have it in the cache
   // Return response
   // If not in the cache, then return error page
   return caches.open(CACHE).then(function (cache) {
-    return cache.match(request).then(function (matching) {
+    return cache.match(request).then(async function (matching) {
       if (!matching || matching.status === 404) {
         return Promise.reject("no-match");
       }
@@ -145,7 +141,7 @@ function fromCache(request) {
   });
 }
 
-function updateCache(request, response) {
+function updateCache(request: any, response: Response) {
   if (!comparePaths(request.url, avoidCachingPaths)) {
     return caches.open(CACHE).then(function (cache) {
       return cache.put(request, response);
