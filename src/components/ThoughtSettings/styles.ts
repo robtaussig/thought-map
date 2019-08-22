@@ -1,4 +1,6 @@
-export const styles = theme => ({
+import { StyleRules } from '@material-ui/core/styles';
+
+export const styles = (theme: any): StyleRules => ({
   root: {
     position: 'fixed',
     height: '100vh',
@@ -11,8 +13,6 @@ export const styles = theme => ({
     height: '100%',
     width: '100%',
     position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

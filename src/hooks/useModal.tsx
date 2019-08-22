@@ -7,9 +7,12 @@ interface Options {
   style?: CSSProperties
 }
 
+type OpenModal = (component: any, label?: string, options?: Options) => void;
+type CloseModal = () => void;
+
 interface ModalContextValue {
-  openModal: (component: Component, label: string, options: Options) => void,
-  closeModal: () => void
+  openModal: OpenModal,
+  closeModal: CloseModal,
 }
 
 interface ModalState {
@@ -75,7 +78,7 @@ export const ModalProvider: FC<ModalProps> = ({ children }) => {
   );
 };
 
-export const useModal = () => {
+export const useModal = (): [OpenModal, CloseModal] => {
   const { openModal, closeModal } = useContext(ModalContext);
 
   return [openModal, closeModal];

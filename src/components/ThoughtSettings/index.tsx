@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import CircleButton from '../General/CircleButton';
 import Delete from '@material-ui/icons/Delete';
 import useModal from '../../hooks/useModal';
 import Template from './components/template';
+import { Thought } from 'store/rxdb/schemas/thought';
+import { Tag } from 'store/rxdb/schemas/tag';
+import { Note } from 'store/rxdb/schemas/note';
 import { styles } from './styles';
 
-export const ThoughtSettings = ({ classes, display, thought, tags, notes, onDelete }) => {
+interface ThoughtSettingsProps {
+  classes: any,
+  display: boolean,
+  thought: Thought,
+  tags: Tag[],
+  notes: Note[],
+  onDelete: () => void,
+}
+
+export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, thought, tags, notes, onDelete }) => {
   const [openModal, closeModal] = useModal();
 
   const handleClickUseAsTemplate = () => {
