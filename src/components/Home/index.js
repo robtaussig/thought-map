@@ -31,7 +31,7 @@ export const Home = ({ classes, state }) => {
 
   return (
     <div className={classes.root}>
-      <Content classes={classes} thoughts={thoughts} connections={state.connections} plan={plan}/>
+      <Content classes={classes} thoughts={thoughts} plan={plan}/>
       <PlanSelect classes={classes} plans={state.plans} creatingPlan={state.creatingPlan} thoughts={thoughts} planId={planId}/>
       {!state.creatingPlan && <CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
       {!state.creatingPlan && <CircleButton id={'search'} classes={classes} onClick={handleSearch} label={'Search'} Icon={Search}/>}
