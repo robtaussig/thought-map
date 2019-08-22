@@ -8,7 +8,7 @@ interface CircleButtonProps {
   onClick: (event?: ChangeEvent) => void,
   label?: string,
   disabled?: boolean,
-  Icon: any,
+  Icon?: any,
   title?: string,
   svgRef?: React.Ref<HTMLElement>,
   [rest: string]: any,

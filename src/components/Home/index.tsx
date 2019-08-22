@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Content from './Content/index';
 import Build from '@material-ui/icons/Build';
@@ -10,9 +10,15 @@ import { styles } from './styles';
 import useApp from '../../hooks/useApp';
 import { getIdFromUrl } from '../../lib/util';
 import useModal from '../../hooks/useModal';
+import { AppState } from '../../reducers';
 
-export const Home = ({ classes, state }) => {
-  const { history, dispatch } = useApp();
+interface HomeProps {
+  classes: any,
+  state: AppState,
+}
+
+export const Home: FC<HomeProps> = ({ classes, state }) => {
+  const { history } = useApp();
   const [openModal, closeModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
   const handleAddThought = useCallback(() => history.push(planId ? `/plan/${planId}/thought/new` :'/thought/new'), [planId]);
