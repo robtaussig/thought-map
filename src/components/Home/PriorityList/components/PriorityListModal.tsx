@@ -1,8 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, FC } from 'react';
 import PriorityList from './PriorityList';
 import { differenceInDays, differenceInHours } from 'date-fns';
+import { Thought } from 'store/rxdb/schemas/thought';
 
-export const PriorityListModal = ({ classes, thoughts, onMinimize }) => {
+interface PriorityListModalProps {
+  classes: any,
+  thoughts: Thought[],
+  onMinimize: () => void,
+}
+
+export const PriorityListModal: FC<PriorityListModalProps> = ({ classes, thoughts, onMinimize }) => {
   const priorityThoughts = useMemo(() => {
     const thoughtsWithPriority = thoughts.map(assignThoughtPriority);
 
@@ -25,7 +32,7 @@ export const PriorityListModal = ({ classes, thoughts, onMinimize }) => {
   );
 };
 
-const assignThoughtPriority = thought => {
+const assignThoughtPriority = (thought: Thought): { thought: Thought, priority: number} => {
   const dateModifier = getDateModifier(thought);
   const priorityModifier = getPriorityModifier(thought);
   const lastUpdatedModifier = getLastUpdatedModifier(thought);
@@ -38,7 +45,7 @@ const assignThoughtPriority = thought => {
   };
 };
 
-const getDateModifier = ({ date, time }) => {
+const getDateModifier = ({ date }: { date?: string }) => {
   if (!date) return 0;
 
   const daysDiff = differenceInDays(new Date(date), new Date());
@@ -50,11 +57,11 @@ const getDateModifier = ({ date, time }) => {
   return 1;
 };
 
-const getPriorityModifier = ({ priority }) => {
+const getPriorityModifier = ({ priority }: { priority?: number }) => {
   return priority || 0;
 };
 
-const getLastUpdatedModifier = ({ updated }) => {
+const getLastUpdatedModifier = ({ updated }: { updated?: number }) => {
   const hoursDiff = differenceInHours(new Date(), new Date(updated));
 
   if (hoursDiff < 1) return 3;
@@ -63,24 +70,32 @@ const getLastUpdatedModifier = ({ updated }) => {
   return 0;
 };
 
-const getStatusModifier = ({ status }) => {
-
-  return {
-    'new': 1,
-    'in progress': 2,
-    'almost done': 3,
-    'completed': -1000,
-  }[status];
+const getStatusModifier = ({ status }: { status?: string }): number => {
+  switch (status) {
+    case 'new':
+      return 1;
+    case 'in progress':
+      return 2;
+    case 'almost done':
+      return 3;
+    case 'completed':
+      return -1000;
+    default:
+      return 0;
+  }
 };
 
-const getTypeModifier = ({ type }) => {
-
-  return {
-    'reminder': 3,
-    'todo': 2,
-    'task': 1,
-    'misc': 0,
-  }[type.toLowerCase()];
+const getTypeModifier = ({ type }: { type?: string }) => {
+  switch (type.toLowerCase()) {
+    case 'reminder':
+      return 3;
+    case 'todo':
+      return 2;
+    case 'task':
+      return 1;
+    default:
+      return 0;
+  }
 };
 
 export default PriorityListModal;

@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-export const PriorityFields = ({ classes }) => {
+interface PriorityFieldsProps {
+  classes: any,
+}
+
+export const PriorityFields: FC<PriorityFieldsProps> = ({ classes }) => {
 
   return (
     <React.Fragment>

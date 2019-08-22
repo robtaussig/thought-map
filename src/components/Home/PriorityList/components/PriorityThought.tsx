@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { FC } from 'react';
 import useApp from '../../../../hooks/useApp'
 import { homeUrl } from '../../../../lib/util';
 import classNames from 'classnames';
+import { Thought } from 'store/rxdb/schemas/thought';
 
-export const PriorityThought = ({ classes, thought, onMinimize }) => {
-  const { history, dispatch } = useApp();
+interface PriorityThoughtProps {
+  classes: any,
+  thought: Thought,
+  onMinimize: () => void,
+}
 
-  const handleClick = e => {
+export const PriorityThought: FC<PriorityThoughtProps> = ({ classes, thought, onMinimize }) => {
+  const { history } = useApp();
+
+  const handleClick = () => {
     history.push(`${homeUrl(history)}thought/${thought.id}`);
     onMinimize();
   };

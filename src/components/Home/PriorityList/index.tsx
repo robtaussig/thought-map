@@ -1,13 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
 import useModal from '../../../hooks/useModal';
 import PriorityListModal from './components/PriorityListModal';
+import { Thought } from 'store/rxdb/schemas/thought';
 
-export const PriorityList = ({ classes, thoughts = [] }) => {
+interface PriorityListProps {
+  classes: any,
+  thoughts: Thought[],
+}
+export const PriorityList: FC<PriorityListProps> = ({ classes, thoughts = [] }) => {
   const [openModal, closeModal] = useModal();
-  const [isMinimized, setIsMinimized] = useState(false);
-  const hasInitialized = useRef(false);
+  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const hasInitialized = useRef<boolean>(false);
 
   const handleMinimize = () => {
     setIsMinimized(true);

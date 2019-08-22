@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PriorityThought from './PriorityThought';
 import PriorityFields from './PriorityFields';
+import { Thought } from 'store/rxdb/schemas/thought';
 
-export const PriorityList = ({ classes, thoughts, onMinimize }) => {
+interface PriorityListProps {
+  classes: any,
+  thoughts: Thought[],
+  onMinimize: () => void,
+}
+
+export const PriorityList: FC<PriorityListProps> = ({ classes, thoughts, onMinimize }) => {
 
   return (
     <div className={classes.priorityList}>
