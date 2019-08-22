@@ -3,6 +3,7 @@
     "baseUrl": "./src",
     "esModuleInterop": true,
     "noImplicitAny": true,
+    "downlevelIteration": true,
     "jsx": "react",
     "paths": {
       "~*": ["./*"]

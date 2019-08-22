@@ -1,15 +1,25 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, FC } from 'react';
 import Select from '../../General/Select';
 import CreatePlanComponent from './components/CreatePlanComponent';
 import useApp from '../../../hooks/useApp'; 
 import { ACTION_TYPES } from '../../../reducers';
+import { Thought } from 'store/rxdb/schemas/thought';
+import { Plan } from 'store/rxdb/schemas/plan';
+
+interface PlanSelectProps {
+  classes: any,
+  plans: Plan[],
+  creatingPlan: boolean,
+  thoughts: Thought[],
+  planId: string | boolean,
+}
 
 const HOME_NAME = 'Home';
 export const CREATE_NEW_PLAN = 'Create Plan';
 
-export const PlanSelect = ({ classes, plans, creatingPlan, thoughts, planId }) => {
-  const [currentPlan, setCurrentPlan] = useState(HOME_NAME);
-  const lastPlan = useRef(HOME_NAME);
+export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, creatingPlan, thoughts, planId }) => {
+  const [currentPlan, setCurrentPlan] = useState<string>(HOME_NAME);
+  const lastPlan = useRef<string>(HOME_NAME);
   const planOptions = [HOME_NAME, ...[...new Set(plans.map(toName))], CREATE_NEW_PLAN];
   const { history, dispatch } = useApp();
 
@@ -79,6 +89,6 @@ export const PlanSelect = ({ classes, plans, creatingPlan, thoughts, planId }) =
   );
 };
 
-const toName = plan => plan.name;
+const toName = (plan: Plan) => plan.name;
 
 export default PlanSelect;

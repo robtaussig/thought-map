@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo, FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { CREATE_NEW_PLAN } from '../';
 import { plans as planActions, thoughts as thoughtActions } from '../../../../actions';
@@ -11,26 +11,36 @@ import Cancel from '@material-ui/icons/Cancel';
 import Check from '@material-ui/icons/Check';
 import IncludeThoughts from './IncludeThoughts';
 import { styles, DEFAULT_STATE } from './style';
+import { Thought } from 'store/rxdb/schemas/thought';
+import { Plan } from 'store/rxdb/schemas/plan';
 
 const isMobile = window.innerWidth < 960;
 
-export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans }) => {
+interface CreatePlanComponentProps {
+  classes: any,
+  open: boolean,
+  onClose: (param?: any) => void,
+  thoughts: Thought[],
+  plans: Plan[],
+}
+
+export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, open, onClose, thoughts, plans }) => {
   const { history } = useApp();
   const db = useLoadedDB();
-  const [planName, setPlanName] = useState('');
-  const [alreadyExists, setAlreadyExists] = useState(false);
-  const [withThoughts, setWithThoughts] = useState(false);
-  const [selectedThoughts, setSelectedThoughts] = useState([]);
-  const [style, setStyle] = useState({});
-  const rootRef = useRef(null);
-  const focusInput = useRef(() => {});
+  const [planName, setPlanName] = useState<string>('');
+  const [alreadyExists, setAlreadyExists] = useState<boolean>(false);
+  const [withThoughts, setWithThoughts] = useState<boolean>(false);
+  const [selectedThoughts, setSelectedThoughts] = useState<string[]>([]);
+  const [style, setStyle] = useState<any>({});
+  const rootRef = useRef<HTMLDivElement>(null);
+  const focusInput = useRef<() => void>(() => {});
   const planNames = useMemo(() => new Set(Object.values(plans).map(({ name}) => name)), [plans]);
 
   const handleChange = useCallback(event => setPlanName(event.target.value), []);
   const focusTitleInput = useCallback(focus => focusInput.current = focus, []);
   const toggleWithThoughts = useCallback(event => setWithThoughts(event.target.checked),[]);
-  const handleSelectThought = useCallback(thought => setSelectedThoughts(prev => prev.concat(thought)));
-  const handleRemoveThought = useCallback(thought => setSelectedThoughts(prev => prev.filter(prevThought => prevThought !== thought)));
+  const handleSelectThought = useCallback(thought => setSelectedThoughts(prev => prev.concat(thought)), []);
+  const handleRemoveThought = useCallback(thought => setSelectedThoughts(prev => prev.filter(prevThought => prevThought !== thought)), []);
 
   const resetState = () => {
     setPlanName('');
@@ -47,8 +57,8 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans })
       return plan;
     };
 
-    const attachThoughts = async planId => {
-      const updateThought = async thoughtId => {
+    const attachThoughts = async (planId: string) => {
+      const updateThought = async (thoughtId: string) => {
         const thought = thoughts.find(foundThought => foundThought.id === thoughtId);
         const nextThought = Object.assign({}, thought, {
           planId,
@@ -71,7 +81,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans })
   }, [selectedThoughts, planName, withThoughts, history]);
 
   useEffect(() => {
-    const { x, y, height } = rootRef.current.getBoundingClientRect();    
+    const { x, y, height }: any = rootRef.current.getBoundingClientRect();    
 
     if (open) {
       if (isMobile) {
@@ -88,7 +98,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans })
         });
       } else {
         const root = document.querySelector('#app');
-        const rootBoundaries = root.getBoundingClientRect();
+        const rootBoundaries: any = root.getBoundingClientRect();
         const distanceToBottom = rootBoundaries.y - (window.innerHeight - y - height);
   
         setStyle({
@@ -151,7 +161,7 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans })
           selected={selectedThoughts}
           onSelect={handleSelectThought}
           onRemove={handleRemoveThought}
-          onCancel={_ => setWithThoughts(false)}
+          onCancel={() => setWithThoughts(false)}
         />
       }
       {alreadyExists &&
@@ -179,7 +189,5 @@ export const CreatePlanComponent = ({ classes, open, onClose, thoughts, plans })
     </div>
   );
 };
-
-
 
 export default withStyles(styles)(CreatePlanComponent);

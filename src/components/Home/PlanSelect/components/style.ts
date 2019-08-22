@@ -1,4 +1,15 @@
-export const DEFAULT_STATE = {
+import { StyleRules } from '@material-ui/core/styles';
+
+export interface DefaultState {
+  top: number,
+  left: number,
+  right: number,
+  bottom: number,
+  borderRadius: string,
+  justifyContent: string,
+}
+
+export const DEFAULT_STATE: DefaultState = {
   top: 0,
   left: 0,
   right: 0,
@@ -7,7 +18,7 @@ export const DEFAULT_STATE = {
   justifyContent: 'center',
 };
 
-export const styles = theme => ({
+export const styles = (theme: any): StyleRules => ({
   root: {
     position: 'absolute',
     ...DEFAULT_STATE,

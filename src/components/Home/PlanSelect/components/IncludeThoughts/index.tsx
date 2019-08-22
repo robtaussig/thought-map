@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { FC } from 'react';
 import SelectableThought from './components/SelectableThought';
+import { Thought } from '~store/rxdb/schemas/thought';
 
-export const IncludeThoughts = ({ classes, thoughts, selected, onSelect, onRemove, onCancel }) => {
+interface IncludeThoughts {
+  classes: any,
+  thoughts: Thought[],
+  selected: string[],
+  onSelect: (id: string) => void,
+  onRemove: (id: string) => void,
+  onCancel: () => void,
+}
 
-  const handleSelect = id => () =>  onSelect(id);
-  const handleRemove = id => () => onRemove(id);
+export const IncludeThoughts: FC<IncludeThoughts> = ({ classes, thoughts, selected, onSelect, onRemove, onCancel }) => {
+
+  const handleSelect = (id: string) => () =>  onSelect(id);
+  const handleRemove = (id: string) => () => onRemove(id);
 
   return (
     <div className={classes.includeThoughts}>
