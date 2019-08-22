@@ -5,7 +5,7 @@ interface CheckBoxProps {
   classes?: any,
   isChecked: boolean,
   value: string,
-  onChange: (event: ChangeEvent) => void,
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void,
   label?: string,
   title?: string,
   [rest: string]: any,

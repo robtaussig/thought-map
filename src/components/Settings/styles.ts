@@ -1,4 +1,6 @@
-export const rootStyles = theme => ({
+import { StyleRules } from '@material-ui/core/styles';
+
+export const rootStyles = (theme: any): StyleRules => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -25,7 +27,7 @@ export const rootStyles = theme => ({
   },  
 });
 
-export const planSettingsStyles = theme => ({
+export const planSettingsStyles = (theme: any): StyleRules => ({
   root: {
     flex: 1,
     display: 'grid',

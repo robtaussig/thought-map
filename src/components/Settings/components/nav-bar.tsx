@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
 
-export const NavBar = ({ classes, items }) => {
+interface NavBarProps {
+  classes: any,
+  items: any[],
+}
+
+export const NavBar: FC<NavBarProps> = ({ classes, items }) => {
 
   return (
     <nav className={classes.nav}>

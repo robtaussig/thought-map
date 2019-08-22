@@ -1,12 +1,20 @@
-import React, { Fragment, useState } from 'react';
+import React, { FC, useState } from 'react';
 import CheckBox from '../../General/CheckBox';
 import { openConfirmation } from '../../../lib/util';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { plans as planActions, thoughts as thoughtActions } from '../../../actions';
+import { Plan } from 'store/rxdb/schemas/plan';
+import { Thought } from 'store/rxdb/schemas/thought';
 
+interface DeletePlanProps {
+  classes: any,
+  plan: Plan,
+  thoughts: Thought[],
+  afterDelete: () => void,
+}
 
-export const DeletePlan = ({ classes, plan, thoughts, afterDelete }) => {
-  const [withThoughts, setWithThoughts] = useState(false);
+export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, afterDelete }) => {
+  const [withThoughts, setWithThoughts] = useState<boolean>(false);
   const db = useLoadedDB();
 
   const handleClickDelete = async () => {

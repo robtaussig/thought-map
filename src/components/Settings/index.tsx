@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import useApp from '../../hooks/useApp';
 import Loading from '../Loading';
@@ -7,8 +7,21 @@ import NavBar from './components/nav-bar';
 import PlanSettings from './components/plan-settings';
 import AppSettings from './components/app-settings';
 import { rootStyles } from './styles';
+import { AppState } from '../../reducers';
 
-export const Settings = ({ classes, state }) => {
+interface SettingsProps {
+  classes: any,
+  state: AppState,
+}
+
+interface NavBarItem {
+  value: string,
+  current: boolean,
+  onClick: () => void,
+  disabled?: boolean,
+}
+
+export const Settings: FC<SettingsProps> = ({ classes, state }) => {
   const { history } = useApp();
   const planId = getIdFromUrl(history, 'plan');
   const type = getSearchParam(history, 'type');
@@ -18,7 +31,7 @@ export const Settings = ({ classes, state }) => {
   }, []);
 
   const items = useMemo(() => {
-    const returnValue = [{
+    const returnValue: NavBarItem[] = [{
       value: 'App',
       current: type !== 'plan',
       onClick: handleClick('app'),

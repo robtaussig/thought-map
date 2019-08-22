@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, FC, ChangeEventHandler } from 'react';
 import { withStyles } from '@material-ui/core/styles'; 
 import CircleButton from '../../General/CircleButton';
 import Input from '../../General/Input';
@@ -11,20 +11,33 @@ import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { plans as planActions, thoughts as thoughtActions } from '../../../actions';
 import { planSettingsStyles } from '../styles';
+import { Plan } from 'store/rxdb/schemas/plan';
+import { Thought } from 'store/rxdb/schemas/thought';
 
-export const PlanSettings = ({ classes, plan, thoughts }) => {
+interface PlanSettingsProps {
+  classes: any,
+  plan: Plan,
+  thoughts: Thought[],
+}
+
+interface AddOrRemovableThoughts {
+  id?: string,
+  label: string,
+}
+
+export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts }) => {
   const { history } = useApp();
   const db = useLoadedDB();
-  const [inputtedName, setInputtedName] = useState(plan.name);
-  const [showCompleted, setShowCompleted] = useState(Boolean(plan.showCompleted));
-  const [hasChange, setHasChange] = useState(false);
-  const canAddThoughts = useMemo(() => {
+  const [inputtedName, setInputtedName] = useState<string>(plan.name);
+  const [showCompleted, setShowCompleted] = useState<boolean>(Boolean(plan.showCompleted));
+  const [hasChange, setHasChange] = useState<boolean>(false);
+  const canAddThoughts: AddOrRemovableThoughts[] = useMemo(() => {
     return [{ label: 'Add Thought' }].concat(thoughts.filter(thought => {
                             return thought.planId !== plan.id;
                           })
                           .map((thought, idx) => ({id: thought.id, label: `${idx + 1} - ${thought.title}`})));
   }, [thoughts, plan]);
-  const canRemoveThoughts = useMemo(() => {
+  const canRemoveThoughts: AddOrRemovableThoughts[] = useMemo(() => {
     return [{ label: 'Remove Thought' }].concat(thoughts.filter(thought => {
                                 return thought.planId === plan.id;
                               })
@@ -43,12 +56,12 @@ export const PlanSettings = ({ classes, plan, thoughts }) => {
     setHasChange(false);
   };
 
-  const handleCheckShowCompleted = e => {
+  const handleCheckShowCompleted: ChangeEventHandler<HTMLInputElement> = e => {
     setHasChange(true);
     setShowCompleted(e.target.checked);
   };
 
-  const handleAddThought = e => {
+  const handleAddThought: ChangeEventHandler<HTMLSelectElement> = e => {
     const { value } = e.target;
     const [oneIndex] = value.split(' - ');
     const thoughtToAdd = canAddThoughts[Number(oneIndex)];
@@ -59,7 +72,7 @@ export const PlanSettings = ({ classes, plan, thoughts }) => {
     thoughtActions.editThought(db, nextThought);
   };
 
-  const handleRemoveThought = e => {
+  const handleRemoveThought: ChangeEventHandler<HTMLSelectElement> = e => {
     const { value } = e.target;
     const [oneIndex] = value.split(' - ');
     const thoughtToRemove = canRemoveThoughts[Number(oneIndex)];
@@ -70,7 +83,7 @@ export const PlanSettings = ({ classes, plan, thoughts }) => {
     thoughtActions.editThought(db, nextThought);
   };
 
-  const handleInputName = e => {
+  const handleInputName: ChangeEventHandler<HTMLInputElement> = e => {
     setHasChange(true);
     setInputtedName(e.target.value);
   };
