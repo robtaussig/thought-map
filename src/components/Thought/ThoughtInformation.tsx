@@ -223,6 +223,39 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     return null;
   }, [noteSuggestions, lastNote]);
 
+  const noteList = useMemo(() => {
+    return (
+      <ul className={classes.noteList}>
+          {notes
+            .sort((a, b) => a.created - b.created)
+            .map(({ text, id }, idx) => {
+            return editState ? (
+              <li className={classes.noteItem} key={`${idx}-note`}>
+                <button className={classes.deleteIcon} onClick={handleDelete(id, 'note')}><Delete/></button>
+                <input className={classes.noteEditInput} onChange={e => {
+                  handleInput(id)(e);
+                  lastNoteRef.current = e.target;
+                }} value={edittedNotes[id] || text}/>
+              </li>
+            ) : (
+              <li className={classes.noteItem} key={`${idx}-note`}><Note className={classes.noteIcon}/>{text}</li>
+            );
+          }).concat(addedNotes.map((addedNote, idx) => {
+            return (
+              <li className={classes.noteItem} key={`${idx}-added-note`}>
+                <button className={classes.deleteIcon} onClick={() => setAddedNotes(prev => prev.filter((_, prevIdx) => prevIdx !== idx))}><Delete/></button>
+                <input className={classes.noteEditInput} onChange={e => {
+                  handleInput(idx)(e, true);
+                  lastNoteRef.current = e.target;
+                }} value={addedNote}/>
+              </li>
+            )
+          }))}
+          {editState && <button className={classes.addItem} onClick={() => setAddedNotes(prev => prev.concat(''))}>Add Note</button>}
+        </ul>
+    );
+  }, [classes, notes, edittedNotes, editState, addedNotes]);
+
   return (
     <Fragment>
       <div className={classes.thoughtInformation}>
@@ -291,32 +324,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
         ) : (
           <span className={classes.thoughtType}>{thought.type}</span>
         )}
-        <ul className={classes.noteList}>
-          {notes.map(({ text, id }, idx) => {
-            return editState ? (
-              <li className={classes.noteItem} key={`${idx}-note`}>
-                <button className={classes.deleteIcon} onClick={handleDelete(id, 'note')}><Delete/></button>
-                <input className={classes.noteEditInput} onChange={e => {
-                  handleInput(id)(e);
-                  lastNoteRef.current = e.target;
-                }} value={edittedNotes[id] || text}/>
-              </li>
-            ) : (
-              <li className={classes.noteItem} key={`${idx}-note`}><Note className={classes.noteIcon}/>{text}</li>
-            );
-          }).concat(addedNotes.map((addedNote, idx) => {
-            return (
-              <li className={classes.noteItem} key={`${idx}-added-note`}>
-                <button className={classes.deleteIcon} onClick={() => setAddedNotes(prev => prev.filter((_, prevIdx) => prevIdx !== idx))}><Delete/></button>
-                <input className={classes.noteEditInput} onChange={e => {
-                  handleInput(idx)(e, true);
-                  lastNoteRef.current = e.target;
-                }} value={addedNote}/>
-              </li>
-            )
-          }))}
-          {editState && <button className={classes.addItem} onClick={() => setAddedNotes(prev => prev.concat(''))}>Add Note</button>}
-        </ul>
+        {noteList}
         <ul className={classes.tagList}>
           {tags.map(({ text, id }, idx) => {
             return (

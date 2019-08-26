@@ -31,6 +31,6 @@ export default class Thoughts extends Base {
       { tableName: connectionTableName, key: 'to' },
     ], id);
 
-    return Base.delete(db, TABLE_NAME, id);
+    return Base.delete(db, id, TABLE_NAME);
   }
 }

@@ -77,6 +77,7 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, creatingPlan, 
       value={currentPlan}
       options={planOptions}
       onChange={handleChange}
+      ariaLabel={'Select Plan'}
       injectedComponent={(
         <CreatePlanComponent
           open={creatingPlan}

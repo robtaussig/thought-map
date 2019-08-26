@@ -9,14 +9,15 @@ interface SelectProps {
   label?: string,
   injectedComponent?: any,
   title?: string,
+  ariaLabel?: string,
   [rest: string]: any,
 }
 
-export const Select: FC<SelectProps> = React.memo(({ id, classes, value, options, onChange, label, injectedComponent, title, ...rest }) => {
+export const Select: FC<SelectProps> = React.memo(({ id, classes, value, options, onChange, label, injectedComponent, title, ariaLabel, ...rest }) => {
 
   return (
     <label id={id} className={classes.selectLabel} title={title} {...rest}>
-      <select className={classes.selectInput} onChange={onChange} value={value}>
+      <select className={classes.selectInput} onChange={onChange} value={value} aria-label={ariaLabel || label}>
         {options.map((option, idx) => {
           return <option key={`${idx}-option`} className={classes.option} value={option}>{option}</option>;
         })}
