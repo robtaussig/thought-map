@@ -2,6 +2,7 @@ import React, { useMemo, FC } from 'react';
 import PriorityList from './PriorityList';
 import { differenceInDays, differenceInHours } from 'date-fns';
 import { Thought } from 'store/rxdb/schemas/thought';
+import useApp from '../../../../hooks/useApp';
 
 interface PriorityListModalProps {
   classes: any,
@@ -10,6 +11,7 @@ interface PriorityListModalProps {
 }
 
 export const PriorityListModal: FC<PriorityListModalProps> = ({ classes, thoughts, onMinimize }) => {
+  const { history } = useApp();
   const priorityThoughts = useMemo(() => {
     const thoughtsWithPriority = thoughts.map(assignThoughtPriority);
 
@@ -19,9 +21,17 @@ export const PriorityListModal: FC<PriorityListModalProps> = ({ classes, thought
       .map(({ thought }) => thought);
   }, [thoughts]);
 
+  const onClickCreateThought = () => {
+    history.push('/thought/new');
+    onMinimize();
+  };
+
   return (
     <div className={classes.root}>
-      <h1 className={classes.header}>Priorities</h1>
+      <div className={classes.headerContainer}>
+        <h1 className={classes.header}>Priorities</h1>
+        <button className={classes.createThoughtButton} onClick={onClickCreateThought}>Create Thought</button>
+      </div>
       {priorityThoughts.length > 0 ?
         (<PriorityList classes={classes} thoughts={priorityThoughts} onMinimize={onMinimize}/>) :
         (<span>
