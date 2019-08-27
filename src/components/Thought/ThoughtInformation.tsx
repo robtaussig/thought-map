@@ -112,7 +112,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     setAddedNotes([]);
     setAddedTags([]);
     setEdittedTitle(thought.title);
-    setEdittedTitle(thought.description);
+    setEdittedDescription(thought.description);
     setLastNote([null, '']);
   }, [thought]);
 
