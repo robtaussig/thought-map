@@ -60,7 +60,7 @@ class Searchable {
     this.roots[thoughtId] = this.roots[thoughtId] || {};
     let node = this.roots[thoughtId];
     values.forEach(value => {      
-      String(value).split(' ').forEach(word => {
+      String(value).toLowerCase().split(' ').forEach(word => {
         node = this.roots[thoughtId];
         word.split('').forEach(char => {
           node[char] = node[char] || {};
@@ -82,7 +82,7 @@ class Searchable {
 
   findMatches = (input: string): ThoughtMatch[] => {
     if (input === '') return [];
-    const matches: ThoughtMatch[] = Object.entries(this.roots).filter(this.hasMatch(input)).map(([key]) => {
+    const matches: ThoughtMatch[] = Object.entries(this.roots).filter(this.hasMatch(input.toLowerCase())).map(([key]) => {
       return {
         id: key,
       }
@@ -106,14 +106,17 @@ export const ThoughtSearch: FC<ThoughtSearchProps> = ({ classes, thoughts, notes
   useEffect(() => {
     try {
       const matches = searchTree.current.findMatches(searchInput);
-      const withTitles = matches.map(({ id }) => {
+      const filteredAndWithTitles = matches.reduce((next, { id }) => {
         const thought = thoughts.find(thought => thought.id === id);
-        return {
-          id, title: thought ? thought.title : 'NO THOUGHT',
-        };
-      });
+        if (thought) {
+          next.push({
+            id, title: thought.title,
+          });
+        }
+        return next;
+      }, []);
       
-      setMatchingThoughts(withTitles);
+      setMatchingThoughts(filteredAndWithTitles);
     } catch(e) {
       openModal(<div>{e}</div>)
     }
