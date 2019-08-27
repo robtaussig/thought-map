@@ -102,15 +102,20 @@ export const ThoughtSearch: FC<ThoughtSearchProps> = ({ classes, thoughts, notes
   }, [thoughts, notes, tags]);
 
   useEffect(() => {
-    const matches = searchTree.current.findMatches(searchInput);
-    const withTitles = matches.map(({ id }) => {
-      const thought = thoughts.find(thought => thought.id === id);
-      return {
-        id, title: thought.title,
-      };
-    });
+    try {
+      const matches = searchTree.current.findMatches(searchInput);
+      const withTitles = matches.map(({ id }) => {
+        const thought = thoughts.find(thought => thought.id === id);
+        return {
+          id, title: thought.title,
+        };
+      });
+      
+      setMatchingThoughts(withTitles);
+    } catch(e) {
+      alert(JSON.stringify(e));
+    }
     
-    setMatchingThoughts(withTitles);
   }, [searchInput]);
 
   const handleOpenThought = (id: string) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
