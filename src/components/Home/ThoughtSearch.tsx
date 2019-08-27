@@ -113,7 +113,7 @@ export const ThoughtSearch: FC<ThoughtSearchProps> = ({ classes, thoughts, notes
       
       setMatchingThoughts(withTitles);
     } catch(e) {
-      alert(JSON.stringify(e));
+      alert(e.message);
     }
     
   }, [searchInput]);
