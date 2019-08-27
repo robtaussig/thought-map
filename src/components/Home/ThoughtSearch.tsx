@@ -107,9 +107,9 @@ export const ThoughtSearch: FC<ThoughtSearchProps> = ({ classes, thoughts, notes
     try {
       const matches = searchTree.current.findMatches(searchInput);
       const withTitles = matches.map(({ id }) => {
-        // const thought = thoughts.find(thought => thought.id === id);
+        const thought = thoughts.find(thought => thought.id === id);
         return {
-          id, title: 'test',
+          id, title: thought ? thought.title : 'NO THOUGHT',
         };
       });
       
