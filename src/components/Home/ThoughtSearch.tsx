@@ -107,16 +107,15 @@ export const ThoughtSearch: FC<ThoughtSearchProps> = ({ classes, thoughts, notes
     try {
       const matches = searchTree.current.findMatches(searchInput);
       const withTitles = matches.map(({ id }) => {
-        const thought = thoughts.find(thought => thought.id === id);
+        // const thought = thoughts.find(thought => thought.id === id);
         return {
-          id, title: thought.title,
+          id, title: 'test',
         };
       });
       
       setMatchingThoughts(withTitles);
     } catch(e) {
-      const text = JSON.stringify(e);
-      openModal(<div>{text}</div>)
+      openModal(<div>{e}</div>)
     }
     
   }, [searchInput]);
