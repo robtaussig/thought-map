@@ -5,6 +5,7 @@ import CalendarToday from '@material-ui/icons/CalendarToday';
 import Header from '../General/Header';
 import Select from '../General/Select';
 import Input from '../General/Input';
+import TextArea from '../General/TextArea';
 import Date from '../General/Date';
 import CircleButton from '../General/CircleButton';
 import Edit from '@material-ui/icons/Edit';
@@ -71,6 +72,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const [edittingDate, setEdittingDate] = useState<boolean>(false);
   const [edittedNotes, setEdittedNotes] = useState<EditedMap>({});
   const [edittedTitle, setEdittedTitle] = useState<string>(thought.title);
+  const [edittedDescription, setEdittedDescription] = useState<string>(thought.description);
   const [addedNotes, setAddedNotes] = useState<string[]>([]);
   const [addedTags, setAddedTags] = useState<string[]>([]);
   const lastNoteRef = useRef<HTMLInputElement>(null);
@@ -110,11 +112,12 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     setAddedNotes([]);
     setAddedTags([]);
     setEdittedTitle(thought.title);
+    setEdittedTitle(thought.description);
     setLastNote([null, '']);
   }, [thought]);
 
   const handleClickCancelEdit = () => {
-    handleUpdates(db, addedNotes, addedTags.filter(tag => tag !== 'Select'), edittedNotes, thought, tags, notes, edittedTitle, reset);
+    handleUpdates(db, addedNotes, addedTags.filter(tag => tag !== 'Select'), edittedNotes, thought, tags, notes, edittedTitle, edittedDescription, reset);
     onEditState(false);
   };
   
@@ -354,9 +357,19 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           }))}
           {editState && <button className={`${classes.addItem} ${classes.tagItem}`} onClick={() => setAddedTags(prev => prev.concat('Select'))}>Add Tag</button>}
         </ul>    
-        <span className={classes.thoughtDescription}>
-          {thought.description}
-        </span>
+        {editState ? (
+          <TextArea
+            id={'description'}
+            classes={classes}
+            value={edittedDescription}
+            onChange={e => setEdittedDescription(e.target.value)}
+            label={'Description'}
+          />
+        ) : (
+          <span className={classes.thoughtDescription}>
+            {thought.description}
+          </span>
+        )}
       </div>
       {editState ? (
         <CircleButton classes={classes} id={'edit'} onClick={handleClickCancelEdit} label={'Cancel'} Icon={Check}/>
@@ -377,6 +390,7 @@ const handleUpdates = async (
   tags: Tag[],
   notes: NoteType[],
   edittedTitle: string,
+  edittedDescription: string,
   reset: () => void
 ) => {
   const notesToAdd: EditedObject[] = [];
@@ -412,9 +426,10 @@ const handleUpdates = async (
     }
   });
 
-  if (edittedTitle !== thought.title) {
+  if (edittedTitle !== thought.title || edittedDescription !== thought.description) {
     await thoughtActions.editThought(db, Object.assign({}, thought, {
-      title: edittedTitle,
+      title: edittedTitle !== '' ? edittedTitle : thought.title,
+      description: edittedDescription !== '' ? edittedDescription : thought.description,
     }));
   }
 

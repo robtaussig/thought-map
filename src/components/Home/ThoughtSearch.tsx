@@ -58,7 +58,7 @@ class Searchable {
   buildNode = (thoughtId: string, values: (string|number)[]): void => {
     this.roots[thoughtId] = this.roots[thoughtId] || {};
     let node = this.roots[thoughtId];
-    values.forEach(value => {      
+    values.forEach(value => {
       String(value).toLowerCase().split(' ').forEach(word => {
         node = this.roots[thoughtId];
         word.split('').forEach(char => {
@@ -76,6 +76,7 @@ class Searchable {
       if (!node[input[i]]) return false;
       node = node[input[i]];
     }
+
     return true;
   }
 

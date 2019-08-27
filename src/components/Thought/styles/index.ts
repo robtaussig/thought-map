@@ -44,6 +44,12 @@ export const styles = (theme: any): StyleRules => ({
         width: '100%',
       },
     },
+    '& #description': {
+      gridArea: 'description',
+      display: 'flex',
+      flexDirection: 'column',
+      color: 'white',
+    },
   },
   thoughtInformation: {
     display: 'grid',
