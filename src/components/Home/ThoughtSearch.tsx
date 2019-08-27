@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, FC, useRef } from 'react';
 import useApp from '../../hooks/useApp';
+import useModal from '../../hooks/useModal';
 import { withStyles, StyleRules } from '@material-ui/core/styles';
 import Input from '../General/Input';
 import Search from '@material-ui/icons/Search';
@@ -95,6 +96,7 @@ export const ThoughtSearch: FC<ThoughtSearchProps> = ({ classes, thoughts, notes
   const [searchInput, setSearchInput] = useState<string>('');
   const { history } = useApp();
   const [matchingThoughts, setMatchingThoughts] = useState<ThoughtMatch[]>([]);
+  const [openModal] = useModal();
   const searchTree = useRef<Searchable>(new Searchable());
 
   useEffect(() => {
@@ -113,7 +115,8 @@ export const ThoughtSearch: FC<ThoughtSearchProps> = ({ classes, thoughts, notes
       
       setMatchingThoughts(withTitles);
     } catch(e) {
-      alert(e.message);
+      const text = JSON.stringify(e);
+      openModal(<div>{text}</div>)
     }
     
   }, [searchInput]);
