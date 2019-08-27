@@ -152,6 +152,8 @@ const styles = (theme: any): StyleRules => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'hidden',
+    height: '100%',
   },
   inputLabel: {
     display: 'flex',
@@ -180,6 +182,8 @@ const styles = (theme: any): StyleRules => ({
   matchingThoughts: {
     display: 'flex',
     flexDirection: 'column',
+    flex: 1,
+    overflow: 'scroll',
   },
   matchingThought: {
     '& > button': {
