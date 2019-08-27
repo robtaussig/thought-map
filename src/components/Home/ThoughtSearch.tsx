@@ -159,6 +159,7 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     width: '100%',
     backgroundColor: 'white',
+    flex: '0 0 64px',
     overflow: 'hidden',
     borderRadius: 12,
     marginBottom: 30,
