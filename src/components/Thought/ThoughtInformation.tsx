@@ -19,6 +19,7 @@ import { Tag } from 'store/rxdb/schemas/tag';
 import { Note as NoteType } from 'store/rxdb/schemas/note';
 import { PriorityOption } from './'
 import { RxDatabase } from 'rxdb';
+import { Notes } from 'reducers';
 
 interface ThoughtInformationProps {
   classes: any,
@@ -32,7 +33,7 @@ interface ThoughtInformationProps {
   onUpdate: (thought: Thought) => void,
   editState: boolean,
   onEditState: (edit: boolean) => void,
-  stateNotes: NoteType[],
+  stateNotes: Notes,
 }
 
 interface EditedMap {

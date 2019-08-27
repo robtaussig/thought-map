@@ -6,13 +6,21 @@ import { Plan } from '../store/rxdb/schemas/plan';
 import { Note } from '../store/rxdb/schemas/note';
 import { Tag } from '../store/rxdb/schemas/tag';
 
+export interface Notes {
+  [noteId: string]: Note,
+}
+
+export interface Tags {
+  [tagId: string]: Tag,
+}
+
 export interface AppState {
   thoughts: Thought[],
   templates: Template[],
   connections: Connection[],
   plans: Plan[],
-  notes: Note[],
-  tags: Tag[],
+  notes: Notes,
+  tags: Tags,
   creatingPlan: boolean,
 }
 
@@ -36,8 +44,8 @@ export const DEFAULT_STATE: AppState = {
   templates: [],
   connections: [],
   plans: [],
-  notes: [],
-  tags: [],
+  notes: {},
+  tags: {},
   creatingPlan: false,
 };
 

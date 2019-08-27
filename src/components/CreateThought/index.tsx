@@ -102,7 +102,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
       payload: thoughtFromTemplate,
     });
   }, []);
-
+  
   return (
     <div className={classes.root}>
       <Phase1

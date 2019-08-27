@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useEffect, FC } from 'react';
+import React, { useState, useMemo, useEffect, FC, useRef } from 'react';
+import useApp from '../../hooks/useApp';
 import { withStyles, StyleRules } from '@material-ui/core/styles';
 import Input from '../General/Input';
 import Search from '@material-ui/icons/Search';
@@ -10,53 +11,110 @@ import { Tag } from 'store/rxdb/schemas/tag';
 interface ThoughtSearchProps {
   classes: any,
   thoughts: Thought[],
-  notes: Note[],
-  tags: Tag[],
+  notes: Notes,
+  tags: Tags,
   close: () => void,
 }
 
-class Searchable {
-  constructor(thoughts: Thought[], notes: Note[], tags: Tag[]) {
+interface ThoughtMatch {
+  id: string,
+  title?: string,
+}
 
+interface TrieNode {
+  [char: string]: TrieNode
+}
+
+interface TrieNodes {
+  [thoughtId: string]: TrieNode
+}
+
+interface Notes {
+  [noteId: string]: Note,
+}
+
+interface Tags {
+  [tagId: string]: Tag,
+}
+
+class Searchable {
+  roots: TrieNodes = {};
+
+  buildTree = (thoughts: Thought[], notes: Notes, tags: Tags): void => {
+
+    thoughts.forEach(({ id, date, description, status, time, title, type }) => {
+      this.buildNode(id, [date, description, status, time, title, type]);
+    });
+
+    Object.values(notes).forEach(({ thoughtId, text }) => {
+      this.buildNode(thoughtId, [text]);
+    });
+
+    Object.values(tags).forEach(({ thoughtId,  text }) => {
+      this.buildNode(thoughtId, [text]);
+    });
   }
 
-  findMatches(input: string) {
-    if (input === '') return [];
+  buildNode = (thoughtId: string, values: (string|number)[]): void => {
+    this.roots[thoughtId] = this.roots[thoughtId] || {};
+    let node = this.roots[thoughtId];
+    values.forEach(value => {      
+      String(value).split(' ').forEach(word => {
+        node = this.roots[thoughtId];
+        word.split('').forEach(char => {
+          node[char] = node[char] || {};
+          node = node[char];
+        });
+      });
+    });
+  }
+
+  hasMatch = (input: string) => ([thoughtId, rootNode]: [string, TrieNode]): boolean => {
+    let node = rootNode;
     
-    return [
-      {
-        id: '3434234',
-        title: 'Test thought 1',
-      },
-      {
-        id: '34342343',
-        title: 'Test thought 2',
-      },
-      {
-        id: '34347234',
-        title: 'Test thought 3',
-      },
-      {
-        id: '34342354',
-        title: 'Test thought 4',
-      },
-    ];
+    for (let i = 0; i < input.length; i++) {
+      if (!node[input[i]]) return false;
+      node = node[input[i]];
+    }
+    return true;
+  }
+
+  findMatches = (input: string): ThoughtMatch[] => {
+    if (input === '') return [];
+    const matches: ThoughtMatch[] = Object.entries(this.roots).filter(this.hasMatch(input)).map(([key]) => {
+      return {
+        id: key,
+      }
+    });
+
+    return matches;
   }
 }
 
 export const ThoughtSearch: FC<ThoughtSearchProps> = ({ classes, thoughts, notes, tags, close }) => {
   const [searchInput, setSearchInput] = useState<string>('');
-  const [matchingThoughts, setMatchingThoughts] = useState<Thought[]>([]);
+  const { history } = useApp();
+  const [matchingThoughts, setMatchingThoughts] = useState<ThoughtMatch[]>([]);
+  const searchTree = useRef<Searchable>(new Searchable());
 
-  const searchable = useMemo(() => {
-    return new Searchable(thoughts, notes, tags);
+  useEffect(() => {
+    searchTree.current.buildTree(thoughts, notes, tags);
   }, [thoughts, notes, tags]);
 
   useEffect(() => {
-    setMatchingThoughts(searchable.findMatches(searchInput));
-  }, [searchInput, searchable]);
+    const matches = searchTree.current.findMatches(searchInput);
+    const withTitles = matches.map(({ id }) => {
+      const thought = thoughts.find(thought => thought.id === id);
+      return {
+        id, title: thought.title,
+      };
+    });
+    
+    setMatchingThoughts(withTitles);
+  }, [searchInput]);
 
   const handleOpenThought = (id: string) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    history.push(`/thought/${id}`);
     e.preventDefault();
   };
 

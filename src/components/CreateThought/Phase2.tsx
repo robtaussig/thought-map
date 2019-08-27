@@ -8,7 +8,7 @@ import { useNestedXReducer, Action } from '../../hooks/useXReducer';
 import useAutoSuggest from 'react-use-autosuggest';
 import { CreatedThought } from './';
 import { InputChangeHandler } from '~components/General/Input';
-import { Note as NoteType } from 'store/rxdb/schemas/note';
+import { Notes } from 'reducers';
 
 interface Phase2Props {
   classes: any,
@@ -17,7 +17,7 @@ interface Phase2Props {
   onFocus: () => void,
   createdThought: CreatedThought,
   dispatch: Dispatch<Action>,
-  notes: NoteType[],
+  notes: Notes,
 }
 
 export const Phase2: FC<Phase2Props> = React.memo(({
