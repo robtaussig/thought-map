@@ -87,7 +87,7 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
 
   useEffect(() => {
     const handleChange: EventListener = e => {
-      setTempImages(prev => prev.concat(...Array.from(e.target.files).map<any>(URL.createObjectURL)));
+      setTempImages(prev => prev.concat(...Array.from((e.target as any).files).map<any>(URL.createObjectURL)));
     };
   
     uploadPictureRef.current.addEventListener('change', handleChange);
