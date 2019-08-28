@@ -4,6 +4,7 @@ import CircleButton from '../General/CircleButton';
 import Delete from '@material-ui/icons/Delete';
 import useModal from '../../hooks/useModal';
 import Template from './components/template';
+import ThoughtPicture from './components/thought-picture';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Tag } from 'store/rxdb/schemas/tag';
 import { Note } from 'store/rxdb/schemas/note';
@@ -25,8 +26,8 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     openModal(<Template classes={classes} onClose={closeModal} thought={thought} tags={tags} notes={notes}/>, 'Template');
   };
 
-  const handleClickCustomColor = () => {
-    openModal(<div>Custom Color</div>, 'Pick a custom color');
+  const handleClickThoughtPicture = () => {
+    openModal(<ThoughtPicture onClose={closeModal} thought={thought}/>, 'Pick a custom color');
   };
 
   const handleClickCustomBackground = () => {
@@ -44,7 +45,7 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     }}>
       <div className={classes.settings}>
         <button className={classes.templateButton} onClick={handleClickUseAsTemplate}>Create Template</button>
-        <button className={classes.color} onClick={handleClickCustomColor}>Custom Color</button>
+        <button className={classes.color} onClick={handleClickThoughtPicture}>Pictures</button>
         <button className={classes.background} onClick={handleClickCustomBackground}>Custom Background</button>
         <button className={classes.fields} onClick={handleClickHideFields}>Hide Fields</button>
         <div className={classes.recurring}>Recurring</div>
