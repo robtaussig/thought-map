@@ -4,6 +4,7 @@ import Plans from '../models/plans';
 import Notes from '../models/notes';
 import Tags from '../models/tags';
 import Templates from '../models/templates';
+import Pictures from '../models/pictures';
 
 export const thoughts = {
   getThoughts: Thoughts.fetchAll,
@@ -51,4 +52,12 @@ export const templates = {
   createTemplate: Templates.add,
   deleteTemplate: Templates.delete,
   editTemplate: Templates.update,
+};
+
+export const pictures = {
+  getPictures: Pictures.fetchAll,
+  getPicture: Pictures.fetch,
+  createPicture: Pictures.add,
+  deletePicture: Pictures.delete,
+  editPicture: Pictures.update,
 };

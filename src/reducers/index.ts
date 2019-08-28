@@ -5,9 +5,14 @@ import { Connection } from '../store/rxdb/schemas/connection';
 import { Plan } from '../store/rxdb/schemas/plan';
 import { Note } from '../store/rxdb/schemas/note';
 import { Tag } from '../store/rxdb/schemas/tag';
+import { Picture } from '../store/rxdb/schemas/picture';
 
 export interface Notes {
   [noteId: string]: Note,
+}
+
+export interface Pictures {
+  [pictureId: string]: Picture,
 }
 
 export interface Tags {
@@ -18,6 +23,7 @@ export interface AppState {
   thoughts: Thought[],
   templates: Template[],
   connections: Connection[],
+  pictures: Pictures,
   plans: Plan[],
   notes: Notes,
   tags: Tags,
@@ -44,6 +50,7 @@ export const DEFAULT_STATE: AppState = {
   templates: [],
   connections: [],
   plans: [],
+  pictures: {},
   notes: {},
   tags: {},
   creatingPlan: false,

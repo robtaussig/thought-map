@@ -35,6 +35,7 @@ export const PRIORITY_OPTIONS: PriorityOption[] = [
 ];
 
 export const Thought: FC<ThoughtProps> = ({ classes, state }) => {
+  
   const db = useLoadedDB();
   const { history } = useApp();
   const returnHomeSVGRef = useRef<HTMLElement>(null);

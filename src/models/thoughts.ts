@@ -3,6 +3,7 @@ import { Thought } from 'store/rxdb/schemas/thought';
 import Base from './base';
 import { TABLE_NAME as noteTableName } from './notes';
 import { TABLE_NAME as tagTableName } from './tags';
+import { TABLE_NAME as pictureName } from './pictures';
 import { TABLE_NAME as connectionTableName } from './connections';
 
 const TABLE_NAME = 'thought';
@@ -29,6 +30,7 @@ export default class Thoughts extends Base {
       { tableName: tagTableName, key: 'thoughtId' },
       { tableName: connectionTableName, key: 'from' },
       { tableName: connectionTableName, key: 'to' },
+      { tableName: pictureName, key: 'thoughtId' },
     ], id);
 
     return Base.delete(db, id, TABLE_NAME);

@@ -13,6 +13,7 @@ type CloseModal = () => void;
 interface ModalContextValue {
   openModal: OpenModal,
   closeModal: CloseModal,
+  dynamicState?: any,
 }
 
 interface ModalState {
@@ -23,6 +24,7 @@ interface ModalState {
 
 interface ModalProps {
   children: any,
+  dynamicState?: any,
 }
 
 const ModalContext = createContext<ModalContextValue>(null);
@@ -50,14 +52,14 @@ const CLOSE_BUTTON_STYLE: CSSProperties = {
   color: 'white',
 };
 
-export const ModalProvider: FC<ModalProps> = ({ children }) => {
+export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) => {
   const [modal, setModal] = useState<ModalState>(INITIAL_STATE);
 
   const handleClose = useCallback(() => setModal(INITIAL_STATE),[]);
   const handleOpen = useCallback((component, label = 'Modal', options = {}) => {
     setModal({ component, label, options });
   },[]);
-  const contextValue = useMemo(() => ({ openModal: handleOpen, closeModal: handleClose }), []);
+  const contextValue = useMemo(() => ({ openModal: handleOpen, closeModal: handleClose, dynamicState }), [dynamicState]);
 
   return (
     <ModalContext.Provider value={contextValue}>
@@ -83,5 +85,11 @@ export const useModal = (): [OpenModal, CloseModal] => {
 
   return [openModal, closeModal];
 };
+
+export const useModalDynamicState = (): any => {
+  const { dynamicState } = useContext(ModalContext);
+
+  return dynamicState;
+}
 
 export default useModal;

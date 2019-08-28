@@ -13,7 +13,8 @@ import {
   Note as NoteType,
   Tag as TagType,
   Connection as ConnectionType,
-  Template as TemplateType ,
+  Template as TemplateType,
+  Picture as PictureType,
 } from './store/rxdb/schemas/types';
 import useXReducer, { useNestedXReducer, Action, Setter } from './hooks/useXReducer';
 import { useDB } from './hooks/useDB';
@@ -25,6 +26,7 @@ import {
   notes as noteActions,
   tags as tagActions,
   templates as templateActions,
+  pictures as pictureActions,
 } from './actions';
 import Home from './components/Home';
 import PriorityList from './components/Home/PriorityList';
@@ -44,6 +46,7 @@ import {
   NoteState,
   TagState,
   TemplateState,
+  PictureState,
 } from './types';
 
 
@@ -56,6 +59,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const [_tags, setTags] = useNestedXReducer('tags', state, dispatch);
   const [_plans, setPlans] = useNestedXReducer('plans', state, dispatch);
   const [_templates, setTemplates] = useNestedXReducer('templates', state, dispatch);
+  const [_pictures, setPictures] = useNestedXReducer('pictures', state, dispatch);
   const [DBProvider, db, dbReadyState] = useDB();
   const rootRef = useRef(null);
 
@@ -69,6 +73,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
         tag: setTags,
         plan: setPlans,
         template: setTemplates,
+        picture: setPictures,
       }, setLastNotification);
     }
   }, [db, dbReadyState]);
@@ -78,37 +83,37 @@ const App: FC<AppProps> = ({ classes, history }) => {
   return (
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
-        <ModalProvider>
-            <div id={'app'} ref={rootRef} className={classes.root}>
-              <Notifications lastNotification={lastNotification}/>
-              <PriorityList thoughts={state.thoughts}/>
-              <Switch>
-                <Route exact path={'/'}>
-                  {dbReadyState && <Home state={state}/>}
-                </Route>
-                <Route path={'/settings'}>
-                  {dbReadyState && <Settings state={state}/>}
-                </Route>
-                <Route path={'/thought/new'}>
-                  {dbReadyState && <CreateThought state={state}/>}
-                </Route>
-                <Route path={'/thought/:id'}>
-                  {dbReadyState && <Thought state={state}/>}
-                </Route>
-                <Route path={'/plan/:id/thought/new'}>
-                  {dbReadyState && <CreateThought state={state}/>}
-                </Route>
-                <Route path={'/plan/:id/thought/:thoughtId'}>
-                  {dbReadyState && <Thought state={state}/>}
-                </Route>
-                <Route path={'/plan/:id/settings'}>
-                  {dbReadyState && <Settings state={state}/>}
-                </Route>
-                <Route path={'/plan/:id'}>
-                  {dbReadyState && <Home state={state}/>}
-                </Route>
-              </Switch> 
-            </div>
+        <ModalProvider dynamicState={state}>
+          <div id={'app'} ref={rootRef} className={classes.root}>
+            <Notifications lastNotification={lastNotification}/>
+            <PriorityList thoughts={state.thoughts}/>
+            <Switch>
+              <Route exact path={'/'}>
+                {dbReadyState && <Home state={state}/>}
+              </Route>
+              <Route path={'/settings'}>
+                {dbReadyState && <Settings state={state}/>}
+              </Route>
+              <Route path={'/thought/new'}>
+                {dbReadyState && <CreateThought state={state}/>}
+              </Route>
+              <Route path={'/thought/:id'}>
+                {dbReadyState && <Thought state={state}/>}
+              </Route>
+              <Route path={'/plan/:id/thought/new'}>
+                {dbReadyState && <CreateThought state={state}/>}
+              </Route>
+              <Route path={'/plan/:id/thought/:thoughtId'}>
+                {dbReadyState && <Thought state={state}/>}
+              </Route>
+              <Route path={'/plan/:id/settings'}>
+                {dbReadyState && <Settings state={state}/>}
+              </Route>
+              <Route path={'/plan/:id'}>
+                {dbReadyState && <Home state={state}/>}
+              </Route>
+            </Switch> 
+          </div>
         </ModalProvider>  
       </DBProvider>
     </Context.Provider>
@@ -116,13 +121,14 @@ const App: FC<AppProps> = ({ classes, history }) => {
 };
 
 const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>) => {
-  const [ thoughts, connections, plans, notes, tags, templates ] = await Promise.all([
+  const [ thoughts, connections, plans, notes, tags, templates, pictures ] = await Promise.all([
     thoughtActions.getThoughts(db),
     connectionActions.getConnections(db),
     planActions.getPlans(db),
     noteActions.getNotes(db),
     tagActions.getTags(db),
     templateActions.getTemplates(db),
+    pictureActions.getPictures(db),
   ]);
   
   dispatch({
@@ -133,6 +139,7 @@ const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>)
       plans,
       notes: intoMap(notes),
       tags: intoMap(tags),
+      pictures: intoMap(pictures),
       templates,
     },
   });
@@ -235,6 +242,46 @@ const handleNoteChange = (setter: Setter<NoteState>, setLastNotification: Dispat
           [note.id]: note,
         }));
         notification = { message: 'Note updated' };
+      break;
+  
+    default:
+      break;
+  }
+  setLastNotification(notification);  
+};
+
+const handlePictureChange = (setter: Setter<PictureState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  const picture: PictureType = data.v;
+  let notification;
+  switch (data.op) {
+    case 'INSERT':
+      setter(prev => ({
+        ...prev,
+        [picture.id]: picture,
+      }));
+      notification = { message: 'Picture created' };
+      break;
+    
+    case 'REMOVE':
+      setter(prev => {
+        const next = Object.keys(prev).reduce((nextState, key) => {
+          if (key !== picture.id) {
+            nextState[key] = prev[key];
+          }
+          return nextState;
+        }, {} as PictureState);
+
+        return next;
+      });
+      notification = { message: 'Picture removed' };
+      break;
+
+    case 'UPDATE':
+        setter(prev => ({
+          ...prev,
+          [picture.id]: picture,
+        }));
+        notification = { message: 'Picture updated' };
       break;
   
     default:
@@ -349,6 +396,8 @@ const subscribeToChanges = async (db: RxDatabase, setters: Setters, setLastNotif
   db.plan.$.subscribe(handlePlanChange(setters.plan, setLastNotification));
   //@ts-ignore
   db.template.$.subscribe(handleTemplateChange(setters.template, setLastNotification));
+  //@ts-ignore
+  db.picture.$.subscribe(handlePictureChange(setters.picture, setLastNotification));
 };
 
 export default withStyles(styles)(withRouter(App));

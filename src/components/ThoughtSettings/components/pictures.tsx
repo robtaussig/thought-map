@@ -1,18 +1,18 @@
-import React, { FC, useRef, useEffect, useState, Fragment } from 'react';
+import React, { FC, useRef, useEffect, useState, Fragment, useMemo } from 'react';
 import { Thought } from '~store/rxdb/schemas/types';
+import { AppState } from '../../../reducers';
 import { withStyles, StyleRules } from '@material-ui/core/styles';
+import { pictures as pictureActions } from '../../../actions/';
+import { useLoadedDB } from '../../../hooks/useDB';
+import { useModalDynamicState } from '../../../hooks/useModal';
+import { useNestedXReducer } from '../../../hooks/useXReducer';
+import useApp from '../../../hooks/useApp';
+import { getBase64ImageFromUrl } from './util';
 
-interface ThoughtPictureProps {
+interface PictureProps {
   classes: any,
   onClose: () => void,
   thought: Thought,
-}
-
-interface ThoughtPicture {
-  localUrl?: string,
-  imgurUrl?: string,
-  thoughtId: string,
-  description?: string,
 }
 
 const UPLOAD_OPTIONS_WIDTH = 50;
@@ -48,12 +48,12 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     margin: '15px 0',
   },
-  thoughtPictureItem: {
+  pictureItem: {
     display: 'flex',
     flexDirection: 'column',
     margin: '15px 0',
   },
-  thoughtPictureDescription: {
+  pictureDescription: {
 
   },
   image: {
@@ -76,10 +76,15 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const ThoughtPicture: FC<ThoughtPictureProps> = ({ classes, onClose, thought }) => {
+export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
   const uploadPictureRef = useRef<HTMLInputElement>(null);
+  const db = useLoadedDB();
+  const state: AppState = useModalDynamicState();
+  const { dispatch } = useApp();
+  const [pictures, setPictures] = useNestedXReducer('pictures', state, dispatch);
   const [tempImages, setTempImages] = useState<any[]>([]);
-  const [thoughtPictures, setThoughtPictures] = useState<ThoughtPicture[]>([]);
+  const relatedPictures = useMemo(() => Object.values(pictures).filter(picture => picture.thoughtId === thought.id),[pictures, thought]);
+
   useEffect(() => {
     const handleChange: EventListener = e => {
       setTempImages(prev => prev.concat(...Array.from(e.target.files).map<any>(URL.createObjectURL)));
@@ -90,11 +95,13 @@ export const ThoughtPicture: FC<ThoughtPictureProps> = ({ classes, onClose, thou
     return () => uploadPictureRef.current.removeEventListener('change', handleChange);
   }, []);
 
-  const uploadImageLocally = (idx: number) => () => {
-    setThoughtPictures(prev => prev.concat({
-      localUrl: tempImages[idx],
+  const uploadImageLocally = (idx: number) => async () => {
+    const base64: any = await getBase64ImageFromUrl(tempImages[idx]);
+
+    await pictureActions.createPicture(db, {
+      localUrl: base64,
       thoughtId: thought.id,
-    }));
+    });
     setTempImages(prev => prev.filter(prevImage => prevImage !== tempImages[idx]));
   };
 
@@ -121,13 +128,13 @@ export const ThoughtPicture: FC<ThoughtPictureProps> = ({ classes, onClose, thou
             })}
           </div>
         </Fragment>)}
-        {thoughtPictures.length > 0 && (<Fragment>
+        {relatedPictures.length > 0 && (<Fragment>
           <div className={classes.imageList}>
-            {thoughtPictures.map((thoughtPicture, idx) => {
+            {relatedPictures.map((picture, idx) => {
               return (
-                <div key={`${idx}-thought-picture`} className={classes.thoughtPictureItem}>
-                  <img src={thoughtPicture.localUrl || thoughtPicture.imgurUrl} className={classes.image}/>
-                  <span className={classes.thoughtPictureDescription}>{thoughtPicture.description}</span>
+                <div key={`${idx}-thought-picture`} className={classes.pictureItem}>
+                  <img src={picture.localUrl || picture.imgurUrl} className={classes.image}/>
+                  <span className={classes.pictureDescription}>{picture.description}</span>
                 </div>
               );
             })}
@@ -138,4 +145,4 @@ export const ThoughtPicture: FC<ThoughtPictureProps> = ({ classes, onClose, thou
   );
 };
 
-export default withStyles(styles)(ThoughtPicture);
+export default withStyles(styles)(Pictures);

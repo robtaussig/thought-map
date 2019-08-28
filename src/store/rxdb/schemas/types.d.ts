@@ -4,6 +4,7 @@ import { Note } from './note';
 import { Tag } from './tag';
 import { Connection } from './connection';
 import { Template } from './template';
+import { Picture } from './picture';
 
 export {
   Thought,
@@ -12,4 +13,5 @@ export {
   Tag,
   Connection,
   Template,
+  Picture,
 }
