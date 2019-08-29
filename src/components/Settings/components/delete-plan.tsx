@@ -57,7 +57,7 @@ export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, after
         isChecked={withThoughts}
         value={'Delete associated thoughts'}
         onChange={e => setWithThoughts(e.target.checked)}
-        label={'Deleted associated thoughts'}
+        label={'Delete associated thoughts'}
       />
     </section>
   );
