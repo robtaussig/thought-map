@@ -86,6 +86,12 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
     stopLoading();
   };
 
+  const deleteImage = (id: string) => async () => {
+    setLoading('Deleting...');
+    await pictureActions.deletePicture(db, id);
+    stopLoading();
+  };
+
   useEffect(() => {
     loaded.current = true;
   }, []);
@@ -108,6 +114,7 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
           classes={classes}
           relatedPictures={relatedPictures}
           loaded={loaded.current}
+          deleteImage={deleteImage}
         />
       </div>
     </div>

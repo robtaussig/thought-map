@@ -27,12 +27,25 @@ export const styles = (theme: any): StyleRules => ({
     margin: '15px 0',
   },
   pictureItem: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateAreas: `"image delete"
+                        "description description"`,
+    gridTemplateRows: '1fr max-content',
+    gridTemplateColumns: '1fr 40px',
     margin: '15px 0',
+    '& > img': {
+      gridArea: 'image',
+      width: '100%',
+    }
   },
   pictureDescription: {
-
+    gridArea: 'description',
+  },
+  deleteButton: {
+    gridArea: 'delete',
+    borderBottom: 'none!important',
+    color: `${theme.palette.red[500]}!important`,
+    margin: '0!important',
   },
   image: {
     width: `calc(100% - ${UPLOAD_OPTIONS_WIDTH}px)`,
