@@ -23,6 +23,7 @@ const IMGUR_CLIENT_ID = 'f1b9f4565330211';
 
 export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
   const rootRef = useRef<HTMLDivElement>(null);
+  const loaded = useRef<boolean>(false);
   const uploadPictureRef = useRef<HTMLInputElement>(null);
   const db = useLoadedDB();
   const state: AppState = useModalDynamicState();
@@ -85,6 +86,10 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
     stopLoading();
   };
 
+  useEffect(() => {
+    loaded.current = true;
+  }, []);
+
   return (
     <div ref={rootRef} className={classes.root}>
       <label className={classes.uploadInput}>
@@ -97,10 +102,12 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
           tempImages={tempImages}
           uploadImageLocally={uploadImageLocally}
           uploadImageToImgur={uploadImageToImgur}
+          loaded={loaded.current}
         />
         <Images
           classes={classes}
           relatedPictures={relatedPictures}
+          loaded={loaded.current}
         />
       </div>
     </div>
