@@ -1,13 +1,17 @@
-import React, { FC, useRef, useEffect, useState, Fragment, useMemo } from 'react';
+import React, { FC, useRef, useEffect, useState, useMemo } from 'react';
 import { Thought } from '~store/rxdb/schemas/types';
-import { AppState } from '../../../reducers';
-import { withStyles, StyleRules } from '@material-ui/core/styles';
-import { pictures as pictureActions } from '../../../actions/';
-import { useLoadedDB } from '../../../hooks/useDB';
-import { useModalDynamicState } from '../../../hooks/useModal';
-import { useNestedXReducer } from '../../../hooks/useXReducer';
-import useApp from '../../../hooks/useApp';
+import { AppState } from '../../../../reducers';
+import { withStyles } from '@material-ui/core/styles';
+import { pictures as pictureActions } from '../../../../actions/';
+import { useLoadedDB } from '../../../../hooks/useDB';
+import { useModalDynamicState } from '../../../../hooks/useModal';
+import { useNestedXReducer } from '../../../../hooks/useXReducer';
+import { useLoadingOverlay } from '../../../../hooks/useLoadingOverlay';
+import TempImages from './components/TempImages';
+import Images from './components/Images';
+import useApp from '../../../../hooks/useApp';
 import { getBase64ImageFromUrl } from './util';
+import { styles } from './styles';
 
 interface PictureProps {
   classes: any,
@@ -15,68 +19,17 @@ interface PictureProps {
   thought: Thought,
 }
 
-const UPLOAD_OPTIONS_WIDTH = 50;
 const IMGUR_CLIENT_ID = 'f1b9f4565330211';
 
-const styles = (theme: any): StyleRules => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    overflow: 'hidden',
-  },
-  uploadInput: {
-    flex: '0 0 40px',
-  },
-  thoughtsContainer: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'auto',
-  },
-  imageList: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  imageItem: {
-    display: 'flex',
-    margin: '15px 0',
-  },
-  pictureItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    margin: '15px 0',
-  },
-  pictureDescription: {
-
-  },
-  image: {
-    width: `calc(100% - ${UPLOAD_OPTIONS_WIDTH}px)`,
-    height: 'auto',
-    flex: 1,
-  },
-  uploadOptions: {
-    flex: `0 0 ${UPLOAD_OPTIONS_WIDTH}px`,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    '& > button': {
-      borderBottom: '1px solid white',
-      cursor: 'pointer',
-      color: 'white',
-      margin: '15px 0',
-    },
-  },
-});
-
 export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
+  const rootRef = useRef<HTMLDivElement>(null);
   const uploadPictureRef = useRef<HTMLInputElement>(null);
   const db = useLoadedDB();
   const state: AppState = useModalDynamicState();
   const { dispatch } = useApp();
   const [pictures, setPictures] = useNestedXReducer('pictures', state, dispatch);
   const [tempImages, setTempImages] = useState<any[]>([]);
+  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
   const relatedPictures = useMemo(() =>
     Object.values(pictures)
       .filter(picture => picture.thoughtId === thought.id)
@@ -94,16 +47,19 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
   }, []);
 
   const uploadImageLocally = (idx: number) => async () => {
+    setLoading('Uploading Locally...');
     const base64: any = await getBase64ImageFromUrl(tempImages[idx]);
 
     await pictureActions.createPicture(db, {
       localUrl: base64,
       thoughtId: thought.id,
     });
+    stopLoading();
     setTempImages(prev => prev.filter(prevImage => prevImage !== tempImages[idx]));
   };
 
   const uploadImageToImgur = (idx: number) => async () => {
+    setLoading('Uploading to Imgur...');
     try {
       const base64: any = await getBase64ImageFromUrl(tempImages[idx]);
       const res = await fetch('https://api.imgur.com/3/image', {
@@ -126,38 +82,26 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
     } catch(e) {
       alert(e && e.message ? e.message : e);
     }
+    stopLoading();
   };
 
   return (
-    <div className={classes.root}>
+    <div ref={rootRef} className={classes.root}>
       <label className={classes.uploadInput}>
         Upload/take picture
         <input ref={uploadPictureRef} type="file" accept="image/*" id="file-input"/>
       </label>
       <div className={classes.thoughtsContainer}>
-        {tempImages.length > 0 && (<div className={classes.imageList}>
-          {tempImages.map((objectUrl, idx) => {
-            return (
-              <div key={`${idx}-temp-image`} className={classes.imageItem}>
-                <img src={objectUrl} className={classes.image}/>
-                <div className={classes.uploadOptions}>
-                  <button onClick={uploadImageLocally(idx)}>Local</button>
-                  <button onClick={uploadImageToImgur(idx)}>Imgur</button>
-                </div>
-              </div>
-            );
-          })}
-        </div>)}
-        {relatedPictures.length > 0 && (<div className={classes.imageList}>
-          {relatedPictures.map((picture, idx) => {
-            return (
-              <div key={`${idx}-thought-picture`} className={classes.pictureItem}>
-                <img src={picture.localUrl || picture.imgurUrl} className={classes.image}/>
-                <span className={classes.pictureDescription}>{picture.description}</span>
-              </div>
-            );
-          })}
-        </div>)}
+        <TempImages
+          classes={classes}
+          tempImages={tempImages}
+          uploadImageLocally={uploadImageLocally}
+          uploadImageToImgur={uploadImageToImgur}
+        />
+        <Images
+          classes={classes}
+          relatedPictures={relatedPictures}
+        />
       </div>
     </div>
   );

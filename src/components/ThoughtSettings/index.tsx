@@ -4,7 +4,7 @@ import CircleButton from '../General/CircleButton';
 import Delete from '@material-ui/icons/Delete';
 import useModal from '../../hooks/useModal';
 import Template from './components/template';
-import Pictures from './components/pictures';
+import Pictures from './components/Pictures';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Tag } from 'store/rxdb/schemas/tag';
 import { Note } from 'store/rxdb/schemas/note';
