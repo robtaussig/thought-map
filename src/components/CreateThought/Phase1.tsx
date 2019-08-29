@@ -120,11 +120,6 @@ export const Phase1: FC<Phase1Props> = React.memo(({
           handleFocusField('description');
           setFocusDescription(true);
         }} onChange={handleDescriptionChange} label={'Description'}/>}
-      {isFocus && isReady && 
-        <PhaseNext classes={classes} onClick={() => {
-          handleFocusField('');
-          handleNext();
-        }} label={'Add Notes'} id={'add-notes'} Icon={Notes}/>}
     </div>
   );
 });

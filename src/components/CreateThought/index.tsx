@@ -116,26 +116,6 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
         focusTitleInput={setFocusInput}
         thoughts={state.thoughts}
       />
-      {phase > 1 && (
-        <Phase2
-          classes={classes}
-          onNext={() => setPhase(3)}
-          isFocus={phase === 2}
-          onFocus={() => setPhase(2)}
-          createdThought={createdThought}
-          dispatch={createdThoughtDispatch}
-          notes={state.notes}
-        />
-      )}
-      {phase > 2 && (
-        <Phase3
-          classes={classes}
-          onBack={() => setPhase(2)}
-          isFocus={phase === 3}
-          createdThought={createdThought}
-          dispatch={createdThoughtDispatch}
-        />
-      )}
       <CreateThoughtSettings
         display={displaySettings}
         templates={state.templates}
