@@ -39,6 +39,16 @@ const styles = (theme: any): StyleRules => ({
       }
     }
   },
+  header: {
+    flex: '0 0 80px',
+    backgroundColor: theme.palette.primary[500],
+    boxShadow: '0px 0px 5px 0px black',
+    width: '100%',
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: 24,
+  },
   button: {
     border: '2px solid white',
     padding: '3px 0',
@@ -128,6 +138,14 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
     openConfirmation('Are you sure you want to upload all of your pictures to imgur?', onConfirm);
   }, [pictures]);
 
+  const handleClickDownloadImages = useCallback(() => {
+    alert('Coming soon...')
+  }, [pictures]);
+
+  const handleClickViewAllImages = useCallback(() => {
+    alert('Coming soon...')
+  }, [pictures]);
+  
   return (
     <Fragment>
       <button className={classes.button} onClick={() => setSide(Side.MIDDLE)}>
@@ -139,7 +157,10 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
       })} style={{
         top: side === Side.TOP ? '100%' : 0,
       }}>
-        <button className={classes.button} disabled={kbUsed === 0} onClick={handleClickUploadLocalImages}>Upload all local images to imgur ({spaceUsedText})</button>
+        <h1 className={classes.header}>Manage Photos</h1>
+        <button className={classes.button} disabled={kbUsed === 0} onClick={handleClickUploadLocalImages}>Upload all images to imgur ({spaceUsedText})</button>
+        <button className={classes.button} onClick={handleClickDownloadImages}>Download all images to phone</button>
+        <button className={classes.button} onClick={handleClickViewAllImages}>View all images</button>
         <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
       </div>
     </Fragment>

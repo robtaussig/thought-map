@@ -1,5 +1,6 @@
-import React, { Fragment, FC } from 'react';
+import React, { Fragment, FC, useState, useCallback } from 'react';
 import ImageWrapper from './ImageWrapper';
+import FullScreenImage from './FullScreenImage';
 
 interface TempImagesProps {
   classes: any,
@@ -10,6 +11,15 @@ interface TempImagesProps {
 }
 
 export const TempImages: FC<TempImagesProps> = ({ classes, tempImages, uploadImageLocally, uploadImageToImgur, loaded }) => {
+  const [fullScreenImage, setFullScreenImage] = useState<string>(null);
+  const handleClickImage = (idx: number) => () => {
+    const picture = tempImages[idx];
+    setFullScreenImage(picture);
+  };
+
+  const handleCloseFullScreenImage = useCallback(() => {
+    setFullScreenImage(null);
+  }, []);
 
   return (
     <Fragment>
@@ -19,7 +29,7 @@ export const TempImages: FC<TempImagesProps> = ({ classes, tempImages, uploadIma
             <ImageWrapper key={`${idx}-temp-image`} className={classes.imageItem} loaded={loaded}>
               {/* 
               // @ts-ignore */}
-              <img src={objectUrl} className={classes.image} loading="lazy"/>
+              <img src={objectUrl} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>
               <div className={classes.uploadOptions}>
                 <button onClick={uploadImageLocally(idx)}>Local</button>
                 <button onClick={uploadImageToImgur(idx)}>Imgur</button>
@@ -28,6 +38,9 @@ export const TempImages: FC<TempImagesProps> = ({ classes, tempImages, uploadIma
           );
         })}
       </div>)}
+      {fullScreenImage && (
+        <FullScreenImage onClose={handleCloseFullScreenImage} image={fullScreenImage}/>
+      )}
     </Fragment>
   );
 };

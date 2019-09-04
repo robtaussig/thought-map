@@ -1,3 +1,4 @@
+import './full-screen-image.scss';
 import React, { FC, useEffect } from 'react';
 import { withStyles, StyleRules } from '@material-ui/core/styles';
 
@@ -24,7 +25,7 @@ const styles = (theme: any): StyleRules => ({
     width: '100%',
     height: 'auto',
     transition: 'all 0.3s linear',
-    opacity: 0,
+    
     '&.display': {
       opacity: 1,
     },
@@ -52,14 +53,17 @@ export const FullScreenImage: FC<FullScreenImageProps> = ({ classes, onClose, im
   useEffect(() => {
     const wrapper = document.createElement('div');
     wrapper.classList.add(classes.imageWrapper);
+
     const closeButton = document.createElement('button');
     closeButton.innerText = '×';
     closeButton.classList.add(classes.closeButton);
     closeButton.onclick = onClose;
+
     const imageElement = document.createElement('img');
     imageElement.src = image;
     imageElement.classList.add(classes.image);
-    imageElement.onclick = ({ x, y, target }) => {
+    imageElement.id = 'full-screen-image';
+    imageElement.onclick = e => {
       imageElement.classList.toggle('zoom');
       if (imageElement.classList.contains('zoom')) {
         closeButton.style.display = 'none';
@@ -67,12 +71,11 @@ export const FullScreenImage: FC<FullScreenImageProps> = ({ classes, onClose, im
         closeButton.style.display = 'block';
       }
     }
+  
     wrapper.appendChild(closeButton);
     wrapper.appendChild(imageElement);
     document.body.appendChild(wrapper);
-    setTimeout(() => {
-      imageElement.classList.add('display');
-    },50)
+
     return () => {
       document.body.removeChild(wrapper);
     }
