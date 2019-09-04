@@ -4,7 +4,8 @@ import Close from '@material-ui/icons/Close';
 import { CSSProperties } from '@material-ui/styles';
 
 interface Options {
-  style?: CSSProperties
+  style?: CSSProperties,
+  className?: string,
 }
 
 type OpenModal = (component: any, label?: string, options?: Options) => void;
@@ -70,7 +71,7 @@ export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) =
           open={modal.component !== null}
           onClose={handleClose}
         >
-          <div style={{ ...MODAL_WRAPPER_STYLE, ...(modal.options.style || {})}}>
+          <div className={modal.options.className} style={{ ...MODAL_WRAPPER_STYLE, ...(modal.options.style || {})}}>
             <button onClick={handleClose} style={CLOSE_BUTTON_STYLE}><Close/></button>
             {modal.component}
           </div>
