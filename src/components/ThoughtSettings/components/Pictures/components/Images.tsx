@@ -18,7 +18,8 @@ export const Images: FC<ImagesProps> = ({ classes, relatedPictures, loaded, dele
         {relatedPictures.map((picture, idx) => {
           return (
             <ImageWrapper key={`${idx}-thought-picture`} className={classes.pictureItem} loaded={loaded}>
-              <img src={picture.localUrl || picture.imgurUrl} className={classes.image}/>
+              //@ts-ignore
+              <img src={picture.localUrl || picture.imgurUrl} className={classes.image} loading="lazy"/>
               <div className={classes.uploadOptions}>
                 <button className={classes.deleteButton} onClick={deleteImage(picture.id)}><Delete/></button>
               </div>
