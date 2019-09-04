@@ -61,6 +61,11 @@ export const FullScreenImage: FC<FullScreenImageProps> = ({ classes, onClose, im
     imageElement.classList.add(classes.image);
     imageElement.onclick = ({ x, y, target }) => {
       imageElement.classList.toggle('zoom');
+      if (imageElement.classList.contains('zoom')) {
+        closeButton.style.display = 'none';
+      } else {
+        closeButton.style.display = 'block';
+      }
     }
     wrapper.appendChild(closeButton);
     wrapper.appendChild(imageElement);
