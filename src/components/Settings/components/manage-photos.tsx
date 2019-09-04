@@ -1,6 +1,6 @@
 import React, { FC, useState, Fragment, useCallback, useRef, useMemo } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import Check from '@material-ui/icons/Check';
+import Close from '@material-ui/icons/Close';
 import CircleButton from '../../../components/General/CircleButton';
 import classNames from 'classnames';
 import { openConfirmation } from '../../../lib/util';
@@ -16,22 +16,23 @@ interface ManagePhotosProps {
 }
 
 enum Side {
-  LEFT = 'left',
+  TOP = 'left',
   MIDDLE = 'middle',
 }
 
 const styles = (theme: any): StyleRules => ({
   container: {
-    position: 'absolute',
+    position: 'fixed',
+    height: '100vh',
     left: 0,
+    right: 0,
     top: 0,
-    bottom: 0,
-    width: '100%',
-    backgroundColor: 'red',
-    transition: 'all 0.2s ease-out',
+    backgroundColor: '#545454f0',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    transition: 'all 0.2s ease-out',
+    zIndex: 100,
     '&.hidden': {
       '& #submit': {
         display: 'none',
@@ -48,6 +49,14 @@ const styles = (theme: any): StyleRules => ({
     color: 'white',
     '&:active': {
       backgroundColor: theme.palette.gray[700],
+      boxShadow: 'none!important',
+    },
+    '&:disabled': {
+      backgroundColor: theme.palette.gray[300],
+      color: 'white',
+    },
+    '&:not(:disabled)': {
+      boxShadow: '0px 0px 5px 2px black',
     }
   },
   circleButton: {
@@ -62,13 +71,13 @@ const styles = (theme: any): StyleRules => ({
 const IMGUR_CLIENT_ID = 'f1b9f4565330211';
 
 export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
-  const [side, setSide] = useState<Side>(Side.LEFT);
+  const [side, setSide] = useState<Side>(Side.TOP);
 
   const rootRef = useRef(null);
   const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
   const db = useLoadedDB();
-  const handleClickCheck = useCallback(() => {
-    setSide(Side.LEFT);
+  const handleClickClose = useCallback(() => {
+    setSide(Side.TOP);
   }, []);
 
   const kbUsed = useMemo(() => {
@@ -119,8 +128,6 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
     openConfirmation('Are you sure you want to upload all of your pictures to imgur?', onConfirm);
   }, [pictures]);
 
-  console.log(spaceUsedText);
-
   return (
     <Fragment>
       <button className={classes.button} onClick={() => setSide(Side.MIDDLE)}>
@@ -128,12 +135,12 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
       </button>
       <div ref={rootRef} className={classNames(classes.container, {
         visible: side === Side.MIDDLE,
-        hidden: side === Side.LEFT
+        hidden: side === Side.TOP
       })} style={{
-        left: side === Side.LEFT ? '100%' : 0,
+        top: side === Side.TOP ? '100%' : 0,
       }}>
-        <button className={classes.button} onClick={handleClickUploadLocalImages}>Upload all local images to imgur ({spaceUsedText})</button>
-        <CircleButton classes={classes} id={'submit'} onClick={handleClickCheck} label={'Submit'} Icon={Check}/>
+        <button className={classes.button} disabled={kbUsed === 0} onClick={handleClickUploadLocalImages}>Upload all local images to imgur ({spaceUsedText})</button>
+        <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
       </div>
     </Fragment>
   );
