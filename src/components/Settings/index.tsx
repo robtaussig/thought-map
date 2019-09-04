@@ -49,7 +49,6 @@ export const Settings: FC<SettingsProps> = ({ classes, state }) => {
   return (
     <div className={classes.root}>
       <NavBar
-        classes={classes}
         items={items}
       />
       {type === 'plan' ? (
@@ -60,9 +59,7 @@ export const Settings: FC<SettingsProps> = ({ classes, state }) => {
           /> :
           <Loading id={'thought-loader'}/>
       ) : (
-        <AppSettings
-          classes={classes}
-        />
+        <AppSettings state={state}/>
       )}
     </div>
   );

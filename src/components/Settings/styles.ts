@@ -7,24 +7,6 @@ export const rootStyles = (theme: any): StyleRules => ({
     height: '100%',
     backgroundColor: theme.palette.gray[700],
   },
-  nav: {
-    display: 'flex',
-    flex: '0 0 80px',
-    boxShadow: '0px 3px 7px 2px black',
-  },
-  navItem: {
-    flex: 1,
-    fontSize: 24,
-    backgroundColor: theme.palette.gray[200],
-    '&.current': {
-      backgroundColor: theme.palette.primary[500],
-      boxShadow: '0px 0px 5px 0px black',
-      zIndex: 1,
-    },
-    '&[disabled]': {
-      color: 'black',
-    },
-  },  
 });
 
 export const planSettingsStyles = (theme: any): StyleRules => ({

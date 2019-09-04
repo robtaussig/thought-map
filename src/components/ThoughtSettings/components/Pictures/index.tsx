@@ -11,6 +11,7 @@ import TempImages from './components/TempImages';
 import Images from './components/Images';
 import useApp from '../../../../hooks/useApp';
 import { getBase64ImageFromUrl } from './util';
+import { openConfirmation } from '../../../../lib/util';
 import { styles } from './styles';
 
 interface PictureProps {
@@ -87,9 +88,13 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
   };
 
   const deleteImage = (id: string) => async () => {
-    setLoading('Deleting...');
-    await pictureActions.deletePicture(db, id);
-    stopLoading();
+    const afterConfirm = async () => {
+      setLoading('Deleting...');
+      await pictureActions.deletePicture(db, id);
+      stopLoading();
+    }
+
+    openConfirmation('Are you sure you want to delete this?', afterConfirm);
   };
 
   useEffect(() => {
