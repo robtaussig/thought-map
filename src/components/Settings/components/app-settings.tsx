@@ -3,6 +3,7 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import Home from '@material-ui/icons/Home';
 import CircleButton from '../../General/CircleButton';
 import ManagePhotos from './manage-photos';
+import AppConfiguration from './app-configuration';
 import { AppState } from '../../../reducers';
 import useApp from '../../../hooks/useApp';
 
@@ -35,6 +36,7 @@ export const AppSettings: FC<AppSettingsProps> = ({ classes, state }) => {
   return (
     <div className={classes.root}>
       <ManagePhotos pictures={state.pictures}/>
+      <AppConfiguration />
       <CircleButton
         classes={classes}
         id={'return-home'}

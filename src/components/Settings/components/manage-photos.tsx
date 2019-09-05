@@ -27,7 +27,7 @@ const styles = (theme: any): StyleRules => ({
     left: 0,
     right: 0,
     top: 0,
-    backgroundColor: '#545454f0',
+    backgroundColor: '#545454',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
