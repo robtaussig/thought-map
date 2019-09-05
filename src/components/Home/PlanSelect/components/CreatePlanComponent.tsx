@@ -94,6 +94,7 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
           borderRadius: 0,
           justifyContent: 'flex-start',
           visibility: 'visible',
+          overflow: 'auto'
         });
       } else {
         const root = document.querySelector('#app');
