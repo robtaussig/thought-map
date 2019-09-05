@@ -32,7 +32,7 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
   const [selectedThoughts, setSelectedThoughts] = useState<string[]>([]);
   const [style, setStyle] = useState<any>({});
   const rootRef = useRef<HTMLDivElement>(null);
-  const focusInput = useRef<() => void>(() => {});
+  const focusInput = useRef<(shouldFocus: boolean) => void>(() => {});
   const planNames = useMemo(() => new Set(Object.values(plans).map(({ name}) => name)), [plans]);
 
   const handleChange = useCallback(event => setPlanName(event.target.value), []);
@@ -70,6 +70,7 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
     };
 
     const createObjectsAndGoBack = async () => {
+      focusInput.current && focusInput.current(false);
       const plan = await createPlan();
       await attachThoughts(plan.id);
       onClose(plan.name);
@@ -112,7 +113,7 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
       }
 
       const timeout = setTimeout(() => {
-        focusInput.current && focusInput.current();
+        focusInput.current && focusInput.current(true);
       }, 400);
       const unlisten = history.listen((event, type) => type === 'POP' && onClose());
 

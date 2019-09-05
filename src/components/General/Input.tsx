@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useMemo, FC } from 'react';
 import Tooltip from './Tooltip';
 
-type Callback = () => void;
+type Callback = (...params: any[]) => void;
 
 interface ChangeTarget {
   value: string,
@@ -56,7 +56,7 @@ export const Input: FC<InputProps> = React.memo(({
       rootRef.current.scrollIntoView({ behavior: 'smooth' });
     }
     if (setFocus) {
-      const focus = () => inputRef.current.focus();
+      const focus = (shouldFocus: boolean) => shouldFocus ? inputRef.current.focus() : inputRef.current.blur();
       setFocus(focus);
     }
   }, []);
