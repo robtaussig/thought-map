@@ -97,10 +97,6 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
     setSide(Side.TOP);
   }, []);
 
-  const handleClickButton = useCallback(() => {
-    alert('Coming soon...')
-  }, []);
-
   const handleChangeReportBugs = useCallback(e => {
     settingsActions.editSetting(db, {
       field: 'reportBugs',
@@ -130,8 +126,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
         top: side === Side.TOP ? '100%' : 0,
       }}>
         <h1 className={classes.header}>App Configuration</h1>
-        <button className={classes.button} onClick={handleClickButton}>View all images</button>
-        <CheckBox
+]        <CheckBox
           classes={classes}
           value={'Report Bugs'}
           label={'Report Bugs'}
