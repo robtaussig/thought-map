@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useMemo, FC } from 'react';
+import Tooltip from './Tooltip';
 
 type Callback = () => void;
 
@@ -26,6 +27,7 @@ interface InputProps {
   focusOnLabelClick?: boolean,
   placeholder?: string,
   autoSuggest?: string[],
+  tooltip?: string,
   [rest: string]: any,
 }
 
@@ -43,6 +45,7 @@ export const Input: FC<InputProps> = React.memo(({
   focusOnLabelClick = true,
   placeholder,
   autoSuggest,
+  tooltip,
   ...rest
 }) => {
   const rootRef = useRef<HTMLLabelElement>(null);
@@ -135,6 +138,9 @@ export const Input: FC<InputProps> = React.memo(({
       {injectedComponent}
       {DeleteButton}
       {_autoSuggestComponent}
+      {tooltip && (
+        <Tooltip text={tooltip}/>
+      )}
     </label>
   );
 });

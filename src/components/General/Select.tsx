@@ -1,4 +1,5 @@
 import React, { FC, ChangeEventHandler } from 'react';
+import Tooltip from './Tooltip';
 
 interface SelectProps {
   id?: string,
@@ -10,10 +11,23 @@ interface SelectProps {
   injectedComponent?: any,
   title?: string,
   ariaLabel?: string,
+  tooltip?: string,
   [rest: string]: any,
 }
 
-export const Select: FC<SelectProps> = React.memo(({ id, classes, value, options, onChange, label, injectedComponent, title, ariaLabel, ...rest }) => {
+export const Select: FC<SelectProps> = React.memo(({
+  id,
+  classes,
+  value,
+  options,
+  onChange,
+  label,
+  injectedComponent,
+  title,
+  ariaLabel,
+  tooltip,
+  ...rest
+}) => {
 
   return (
     <label id={id} className={classes.selectLabel} title={title} {...rest}>
@@ -24,6 +38,9 @@ export const Select: FC<SelectProps> = React.memo(({ id, classes, value, options
       </select>
       {label}
       {injectedComponent}
+      {tooltip && (
+        <Tooltip text={tooltip}/>
+      )}
     </label>
   );
 });

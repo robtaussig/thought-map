@@ -131,8 +131,22 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
       }}>
         <h1 className={classes.header}>App Configuration</h1>
         <button className={classes.button} onClick={handleClickButton}>View all images</button>
-        <CheckBox classes={classes} value={'Report Bugs'} label={'Report Bugs'} isChecked={reportBugs} onChange={handleChangeReportBugs}/>
-        <CheckBox classes={classes} value={'Use AutoSuggest'} label={'Use AutoSuggest'} isChecked={useAutoSuggest} onChange={handleChangeUseAutoSuggest}/>
+        <CheckBox
+          classes={classes}
+          value={'Report Bugs'}
+          label={'Report Bugs'}
+          isChecked={reportBugs}
+          onChange={handleChangeReportBugs}
+          tooltip={'Agree to automatically submit bug reports on caught errors that will help the developers patch any related issues on future releases.'}
+        />
+        <CheckBox
+          classes={classes}
+          value={'Use AutoSuggest'}
+          label={'Use AutoSuggest'}
+          isChecked={useAutoSuggest}
+          onChange={handleChangeUseAutoSuggest}
+          tooltip={'If enabled, certain inputs will produce suggestions that draw from previous entries. Suggestions will be a combination of word completions and word sequences, and will be displayed as an overlay. This is different from any browser/device-based auto-suggestions which don\'t necessarily consider context.'}  
+        />
         <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
       </div>
     </Fragment>

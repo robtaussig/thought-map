@@ -50,11 +50,6 @@ export const Phase1: FC<Phase1Props> = React.memo(({
 
   const isReady = validateInputs(title);
 
-  const handleNext = (): void => {
-    setFocusDescription(false);
-    onNext();
-  };
-
   useEffect(() => {
     onReady(isReady);
   }, [isReady]);
