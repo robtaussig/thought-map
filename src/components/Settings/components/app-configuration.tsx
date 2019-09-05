@@ -126,7 +126,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
         top: side === Side.TOP ? '100%' : 0,
       }}>
         <h1 className={classes.header}>App Configuration</h1>
-]        <CheckBox
+        <CheckBox
           classes={classes}
           value={'Report Bugs'}
           label={'Report Bugs'}
