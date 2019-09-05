@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import SelectableThought from './components/SelectableThought';
 import { Thought } from '~store/rxdb/schemas/thought';
 
-interface IncludeThoughts {
+interface IncludeThoughtsProps {
   classes: any,
   thoughts: Thought[],
   selected: string[],
@@ -11,7 +11,7 @@ interface IncludeThoughts {
   onCancel: () => void,
 }
 
-export const IncludeThoughts: FC<IncludeThoughts> = ({ classes, thoughts, selected, onSelect, onRemove, onCancel }) => {
+export const IncludeThoughts: FC<IncludeThoughtsProps> = ({ classes, thoughts, selected, onSelect, onRemove, onCancel }) => {
 
   const handleSelect = (id: string) => () =>  onSelect(id);
   const handleRemove = (id: string) => () => onRemove(id);

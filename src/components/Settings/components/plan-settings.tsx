@@ -29,7 +29,6 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts })
   const { history } = useApp();
   const db = useLoadedDB();
   const [inputtedName, setInputtedName] = useState<string>(plan.name);
-  const [showCompleted, setShowCompleted] = useState<boolean>(Boolean(plan.showCompleted));
   const [hasChange, setHasChange] = useState<boolean>(false);
   const canAddThoughts: AddOrRemovableThoughts[] = useMemo(() => {
     return [{ label: 'Add Thought' }].concat(thoughts.filter(thought => {
@@ -50,15 +49,16 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts })
   const handleClickSubmitChanges = async () => {
     const editedPlan = Object.assign({}, plan, {
       name: inputtedName,
-      showCompleted,
     });
     await planActions.editPlan(db, editedPlan);
     setHasChange(false);
   };
 
   const handleCheckShowCompleted: ChangeEventHandler<HTMLInputElement> = e => {
-    setHasChange(true);
-    setShowCompleted(e.target.checked);
+    const editedPlan = Object.assign({}, plan, {
+      showCompleted: e.target.checked,
+    });
+    planActions.editPlan(db, editedPlan);
   };
 
   const handleAddThought: ChangeEventHandler<HTMLSelectElement> = e => {
@@ -99,7 +99,7 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts })
       <CheckBox
         id={'show-completed'}
         classes={classes}
-        isChecked={showCompleted}
+        isChecked={Boolean(plan.showCompleted)}
         value={'Show Completed Thoughts'}
         onChange={handleCheckShowCompleted}
         label={'Show Completed Thoughts'}

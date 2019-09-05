@@ -6,7 +6,6 @@ import CircleButton from '../../../General/CircleButton';
 import useApp from '../../../../hooks/useApp';
 import { useLoadedDB } from '../../../../hooks/useDB';
 import Input from '../../../General/Input';
-import CheckBox from '../../../General/CheckBox';
 import Cancel from '@material-ui/icons/Cancel';
 import Check from '@material-ui/icons/Check';
 import IncludeThoughts from './IncludeThoughts';
@@ -38,7 +37,7 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
 
   const handleChange = useCallback(event => setPlanName(event.target.value), []);
   const focusTitleInput = useCallback(focus => focusInput.current = focus, []);
-  const toggleWithThoughts = useCallback(event => setWithThoughts(event.target.checked),[]);
+  const toggleWithThoughts = useCallback(() => setWithThoughts(prev => !prev),[]);
   const handleSelectThought = useCallback(thought => setSelectedThoughts(prev => prev.concat(thought)), []);
   const handleRemoveThought = useCallback(thought => setSelectedThoughts(prev => prev.filter(prevThought => prevThought !== thought)), []);
 
@@ -112,7 +111,9 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
         });
       }
 
-      const timeout = setTimeout(focusInput.current, 400);
+      const timeout = setTimeout(() => {
+        focusInput.current && focusInput.current();
+      }, 600);
 
       const unlisten = history.listen((event, type) => type === 'POP' && onClose());
 
@@ -144,14 +145,7 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
           id={'plan-name'}
           onFocus={focusTitleInput}
           focusOnLabelClick={false}
-          injectedComponent={(<CheckBox
-            id={'with-thoughts'}
-            classes={classes}
-            isChecked={withThoughts}
-            value={'With thoughts'}
-            onChange={toggleWithThoughts}
-            label={'With thoughts'}
-          />)}
+          injectedComponent={(<button onClick={toggleWithThoughts}>Pick Thoughts</button>)}
         />
       }
       {open && withThoughts &&

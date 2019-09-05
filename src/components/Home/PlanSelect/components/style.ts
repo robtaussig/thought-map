@@ -50,6 +50,7 @@ export const styles = (theme: any): StyleRules => ({
     ...theme.defaults.centered,
     position: 'relative',
     flex: 1,
+    flexDirection: 'column',
     marginBottom: 100,
     '& input': {
       backgroundColor: 'transparent',
@@ -61,6 +62,16 @@ export const styles = (theme: any): StyleRules => ({
       [theme.breakpoints.up('sm')]: {
         width: 270,
       },
+    },
+    '& > button': {
+      marginTop: '15px',
+      padding: '3px 12px',
+      border: '1px solid white',
+      borderRadius: '3px',
+      color: '#8380ff',
+      backgroundColor: 'white',
+      marginRight: '40px',
+      marginLeft: 'auto',
     },
   },
   checkboxLabel: {
