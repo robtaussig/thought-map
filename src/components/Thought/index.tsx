@@ -88,6 +88,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state }) => {
           onEditState={setEditState}
           editState={editState}
           stateNotes={state.notes}
+          stateSettings={state.settings}
         />
       }
       <ThoughtSettings

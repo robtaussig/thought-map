@@ -5,8 +5,6 @@ import useXReducer from '../../hooks/useXReducer';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
 import Phase1 from './Phase1';
-import Phase2 from './Phase2';
-import Phase3 from './Phase3';
 import CreateThoughtSettings from './CreateThoughtSettings';
 import CircleButton from '../General/CircleButton';
 import Check from '@material-ui/icons/Check';
@@ -115,6 +113,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
         dispatch={createdThoughtDispatch}
         focusTitleInput={setFocusInput}
         thoughts={state.thoughts}
+        settings={state.settings}
       />
       <CreateThoughtSettings
         display={displaySettings}

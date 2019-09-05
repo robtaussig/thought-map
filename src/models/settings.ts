@@ -14,7 +14,7 @@ export default class Settings extends Base {
   }
   static fetchAll = async (db: RxDatabase): Promise<Setting[]> => {
     const results = await Base.fetchAll(db, TABLE_NAME);
-    console.log(results);
+
     return results ? results.map<Setting>(result => ({
       ...result,
       value: JSON.parse(result.value),
@@ -22,7 +22,7 @@ export default class Settings extends Base {
   }
   static fetch = async (db: RxDatabase, id: string): Promise<Setting> => {
     const result = await Base.fetch(db, id, TABLE_NAME);
-    console.log(result);
+
     return result ? {
       ...result,
       value: JSON.parse(result.value)

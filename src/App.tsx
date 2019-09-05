@@ -309,7 +309,7 @@ const handleSettingChange = (setter: Setter<SettingState>, setLastNotification: 
         ...prev,
         [setting.field]: setting.value,
       }));
-      notification = { message: 'Setting created' };
+      notification = { message: 'Setting updated' };
       break;
     
     case 'REMOVE':

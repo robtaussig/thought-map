@@ -20,7 +20,7 @@ import { Tag } from 'store/rxdb/schemas/tag';
 import { Note as NoteType } from 'store/rxdb/schemas/note';
 import { PriorityOption } from './'
 import { RxDatabase } from 'rxdb';
-import { Notes } from 'reducers';
+import { Notes, Settings } from 'reducers';
 
 interface ThoughtInformationProps {
   classes: any,
@@ -35,6 +35,7 @@ interface ThoughtInformationProps {
   editState: boolean,
   onEditState: (edit: boolean) => void,
   stateNotes: Notes,
+  stateSettings: Settings,
 }
 
 interface EditedMap {
@@ -67,6 +68,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   editState,
   onEditState,
   stateNotes,
+  stateSettings,
 }) => {
   const [edittingTime, setEdittingTime] = useState<boolean>(false);
   const [edittingDate, setEdittingDate] = useState<boolean>(false);
@@ -79,8 +81,8 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const db = useLoadedDB();
   const [lastNote, setLastNote] = useState<[number, string, boolean?]>([null, '']);
   const autoSuggestNotes = useMemo(() => {
-    return Object.values(stateNotes).map(({ text }) => text);
-  }, [stateNotes]);
+    return stateSettings.useAutoSuggest ? Object.values(stateNotes).map(({ text }) => text) : [];
+  }, [stateNotes, stateSettings.useAutoSuggest]);
   const noteSuggestions = useAutoSuggest(lastNote[1].trim(), autoSuggestNotes, 4);
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });

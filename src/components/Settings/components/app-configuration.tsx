@@ -108,7 +108,15 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
     });
   }, []);
 
+  const handleChangeUseAutoSuggest = useCallback(e => {
+    settingsActions.editSetting(db, {
+      field: 'useAutoSuggest',
+      value: e.target.checked,
+    });
+  }, []);
+
   const reportBugs = Boolean(settings && settings.reportBugs);
+  const useAutoSuggest = Boolean(settings && settings.useAutoSuggest);
 
   return (
     <Fragment>
@@ -124,6 +132,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
         <h1 className={classes.header}>App Configuration</h1>
         <button className={classes.button} onClick={handleClickButton}>View all images</button>
         <CheckBox classes={classes} value={'Report Bugs'} label={'Report Bugs'} isChecked={reportBugs} onChange={handleChangeReportBugs}/>
+        <CheckBox classes={classes} value={'Use AutoSuggest'} label={'Use AutoSuggest'} isChecked={useAutoSuggest} onChange={handleChangeUseAutoSuggest}/>
         <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
       </div>
     </Fragment>

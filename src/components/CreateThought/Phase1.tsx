@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useCallback, useMemo, FC, Dispatch, ReducerAction } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, FC, Dispatch } from 'react';
 import Header from '../General/Header';
 import Input from '../General/Input';
 import Select from '../General/Select';
 import Date from '../General/Date';
 import TextArea from '../General/TextArea';
-import PhaseNext from './PhaseNext';
-import Notes from '@material-ui/icons/Notes';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import { useNestedXReducer, Action } from '../../hooks/useXReducer';
 import useAutoSuggest from 'react-use-autosuggest';
 import { CreatedThought } from './';
 import { Thought } from '../../store/rxdb/schemas/thought';
+import { SettingState } from '../../types';
 
 interface Phase1Props {
   classes: any,
@@ -22,6 +21,7 @@ interface Phase1Props {
   dispatch: Dispatch<Action>,
   focusTitleInput: (cb: () => void) => void,
   thoughts: Thought[],
+  settings: SettingState,
 }
 
 export const Phase1: FC<Phase1Props> = React.memo(({
@@ -34,6 +34,7 @@ export const Phase1: FC<Phase1Props> = React.memo(({
   dispatch,
   focusTitleInput,
   thoughts,
+  settings,
 }) => {
   const [title, setTitle] = useNestedXReducer('title', createdThought, dispatch);
   const [typeOptions, setTypeOptions] = useNestedXReducer('typeOptions', createdThought, dispatch);
@@ -44,7 +45,7 @@ export const Phase1: FC<Phase1Props> = React.memo(({
   const [focusDescription, setFocusDescription] = useState(false);
   const [currentAutoSuggest, setCurrentAutoSuggest] = useState('');
 
-  const thoughtTitles = useMemo(() => thoughts.map(({ title }) => title), [thoughts]);
+  const thoughtTitles = useMemo(() => settings.useAutoSuggest ? thoughts.map(({ title }) => title) : [], [thoughts, settings.useAutoSuggest]);
   const titleSuggestions = useAutoSuggest(title.trim(), thoughtTitles, 4);
 
   const isReady = validateInputs(title);
