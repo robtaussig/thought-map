@@ -5,6 +5,7 @@ import Notes from '../models/notes';
 import Tags from '../models/tags';
 import Templates from '../models/templates';
 import Pictures from '../models/pictures';
+import Settings from '../models/settings';
 
 export const thoughts = {
   getThoughts: Thoughts.fetchAll,
@@ -60,4 +61,12 @@ export const pictures = {
   createPicture: Pictures.add,
   deletePicture: Pictures.delete,
   editPicture: Pictures.update,
+};
+
+export const settings = {
+  getSettings: Settings.fetchAll,
+  getSetting: Settings.fetch,
+  createSetting: Settings.upsert,
+  deleteSetting: Settings.delete,
+  editSetting: Settings.upsert,
 };

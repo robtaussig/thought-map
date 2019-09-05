@@ -1,4 +1,4 @@
-import { RxDatabase, RxJsonSchema, RxCollectionCreator } from 'rxdb';
+import { RxDatabase } from 'rxdb';
 import { Thought } from '../store/rxdb/schemas/thought';
 import { 
   thoughts as thoughtActions,

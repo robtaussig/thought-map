@@ -36,7 +36,7 @@ export const AppSettings: FC<AppSettingsProps> = ({ classes, state }) => {
   return (
     <div className={classes.root}>
       <ManagePhotos pictures={state.pictures}/>
-      <AppConfiguration />
+      <AppConfiguration settings={state.settings}/>
       <CircleButton
         classes={classes}
         id={'return-home'}

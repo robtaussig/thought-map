@@ -1,4 +1,6 @@
 import { History } from 'history';
+import { Setting } from '../store/rxdb/schemas/setting';
+import { SettingState } from '../types';
 
 interface Mappable {
   id?: string,
@@ -13,6 +15,13 @@ export const intoMap = (items: Mappable[]) => {
     all[each.id] = each;
     return all;
   }, {} as MappedCollection);
+};
+
+export const convertSettings = (settings: Setting[]): SettingState => {
+  return settings.reduce<any>((next, setting: Setting) => {
+    next[setting.field] = setting.value;
+    return next;
+  }, {});
 };
 
 export const openConfirmation = (confirmationText: string, onConfirm: () => void, onReject: () => void = () => {}) => {

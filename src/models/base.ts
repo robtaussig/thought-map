@@ -61,6 +61,16 @@ export default class Base {
 
     return response;
   }
+  
+  static find = async (db: RxDatabase, field: string, value: any, tableName: string): Promise<any> => {
+    const query = db[tableName]
+      .find()
+      .where(field)
+      .eq(value);
+    const results: RxDocumentTypeWithRev<any> = await query.exec();
+
+    return results ? results.map((result: any) => result.toJSON()) : null;
+  }
 
   static deleteAssociations = async (db: RxDatabase, deletions: Deletion[], id: string): Promise<any> => {
     return Promise.all(deletions.map(({ tableName, key }) => {

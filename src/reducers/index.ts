@@ -6,6 +6,7 @@ import { Plan } from '../store/rxdb/schemas/plan';
 import { Note } from '../store/rxdb/schemas/note';
 import { Tag } from '../store/rxdb/schemas/tag';
 import { Picture } from '../store/rxdb/schemas/picture';
+import { Setting } from '../store/rxdb/schemas/setting';
 
 export interface Notes {
   [noteId: string]: Note,
@@ -19,6 +20,10 @@ export interface Tags {
   [tagId: string]: Tag,
 }
 
+export interface Settings {
+  [field: string]: Setting,
+}
+
 export interface AppState {
   thoughts: Thought[],
   templates: Template[],
@@ -28,6 +33,7 @@ export interface AppState {
   notes: Notes,
   tags: Tags,
   creatingPlan: boolean,
+  settings: Settings,
 }
 
 enum ActionType {
@@ -54,6 +60,7 @@ export const DEFAULT_STATE: AppState = {
   notes: {},
   tags: {},
   creatingPlan: false,
+  settings: {},
 };
 
 export const ACTION_TYPES = {

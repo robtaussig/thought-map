@@ -34,7 +34,7 @@ export const Home: FC<HomeProps> = ({ classes, state }) => {
       return state.thoughts;
     }
   }, [planId, state.thoughts]);
-
+  
   return (
     <div className={classes.root}>
       <Content classes={classes} thoughts={thoughts} plan={plan}/>

@@ -5,10 +5,12 @@ import CircleButton from '../../../components/General/CircleButton';
 import CheckBox from '../../../components/General/CheckBox';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
-import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import { SettingState } from '../../../types';
+import { settings as settingsActions } from '../../../actions';
 
 interface AppConfigurationProps {
   classes: any,
+  settings: SettingState,
 }
 
 enum Side {
@@ -86,12 +88,10 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const AppConfiguration: FC<AppConfigurationProps> = ({ classes }) => {
+export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings }) => {
   const [side, setSide] = useState<Side>(Side.TOP);
-  const [reportBugs, setReportBugs] = useState<boolean>(false);
 
   const rootRef = useRef(null);
-  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
   const db = useLoadedDB();
   const handleClickClose = useCallback(() => {
     setSide(Side.TOP);
@@ -102,9 +102,14 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes }) => {
   }, []);
 
   const handleChangeReportBugs = useCallback(e => {
-    setReportBugs(e.target.checked);
+    settingsActions.editSetting(db, {
+      field: 'reportBugs',
+      value: e.target.checked,
+    });
   }, []);
-  
+
+  const reportBugs = Boolean(settings && settings.reportBugs);
+
   return (
     <Fragment>
       <button className={classes.button} onClick={() => setSide(Side.MIDDLE)}>

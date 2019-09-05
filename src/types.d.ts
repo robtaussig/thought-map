@@ -8,6 +8,7 @@ import {
   Connection as ConnectionType,
   Template as TemplateType,
   Picture as PictureType,
+  Setting as SettingType,
 } from './store/rxdb/schemas/types';
 import { Action, Setter } from './hooks/useXReducer';
 
@@ -63,5 +64,9 @@ export type TagState = {
 export type PictureState = {
   [id: string]: PictureType,
 };
+
+export type SettingState = {
+  [field: string]: any,
+}
 
 export type TemplateState = TemplateType[];

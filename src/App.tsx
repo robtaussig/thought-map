@@ -6,7 +6,7 @@ import { appReducer, DEFAULT_STATE } from './reducers';
 import { Context } from './store';
 import { sortByIndexThenDate } from './models/base';
 import { ACTION_TYPES } from './reducers';
-import { intoMap } from './lib/util';
+import { intoMap, convertSettings } from './lib/util';
 import {
   Thought as ThoughtType,
   Plan as PlanType,
@@ -15,6 +15,7 @@ import {
   Connection as ConnectionType,
   Template as TemplateType,
   Picture as PictureType,
+  Setting as SettingType,
 } from './store/rxdb/schemas/types';
 import useXReducer, { useNestedXReducer, Action, Setter } from './hooks/useXReducer';
 import { useDB } from './hooks/useDB';
@@ -27,6 +28,7 @@ import {
   tags as tagActions,
   templates as templateActions,
   pictures as pictureActions,
+  settings as settingActions,
 } from './actions';
 import Home from './components/Home';
 import PriorityList from './components/Home/PriorityList';
@@ -47,6 +49,7 @@ import {
   TagState,
   TemplateState,
   PictureState,
+  SettingState,
 } from './types';
 
 
@@ -60,6 +63,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const [_plans, setPlans] = useNestedXReducer('plans', state, dispatch);
   const [_templates, setTemplates] = useNestedXReducer('templates', state, dispatch);
   const [_pictures, setPictures] = useNestedXReducer('pictures', state, dispatch);
+  const [_settings, setSettings] = useNestedXReducer('settings', state, dispatch);
   const [DBProvider, db, dbReadyState] = useDB();
   const rootRef = useRef(null);
 
@@ -74,6 +78,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
         plan: setPlans,
         template: setTemplates,
         picture: setPictures,
+        setting: setSettings,
       }, setLastNotification);
     }
   }, [db, dbReadyState]);
@@ -121,7 +126,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
 };
 
 const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>) => {
-  const [ thoughts, connections, plans, notes, tags, templates, pictures ] = await Promise.all([
+  const [ thoughts, connections, plans, notes, tags, templates, pictures, settings ] = await Promise.all([
     thoughtActions.getThoughts(db),
     connectionActions.getConnections(db),
     planActions.getPlans(db),
@@ -129,6 +134,7 @@ const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>)
     tagActions.getTags(db),
     templateActions.getTemplates(db),
     pictureActions.getPictures(db),
+    settingActions.getSettings(db),
   ]);
   
   dispatch({
@@ -141,6 +147,7 @@ const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>)
       tags: intoMap(tags),
       pictures: intoMap(pictures),
       templates,
+      settings: convertSettings(settings),
     },
   });
 };
@@ -290,6 +297,49 @@ const handlePictureChange = (setter: Setter<PictureState>, setLastNotification: 
   setLastNotification(notification);  
 };
 
+const handleSettingChange = (setter: Setter<SettingState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  const setting: SettingType = {
+    ...data.v,
+    value: JSON.parse(data.v.value),
+  };
+  let notification;
+  switch (data.op) {
+    case 'INSERT':
+      setter(prev => ({
+        ...prev,
+        [setting.field]: setting.value,
+      }));
+      notification = { message: 'Setting created' };
+      break;
+    
+    case 'REMOVE':
+      setter(prev => {
+        const next = Object.keys(prev).reduce((nextState, key) => {
+          if (key !== setting.field) {
+            nextState[key] = prev[key];
+          }
+          return nextState;
+        }, {} as SettingState);
+
+        return next;
+      });
+      notification = { message: 'Setting removed' };
+      break;
+
+    case 'UPDATE':
+        setter(prev => ({
+          ...prev,
+          [setting.field]: setting.value,
+        }));
+        notification = { message: 'Setting updated' };
+      break;
+  
+    default:
+      break;
+  }
+  setLastNotification(notification);  
+};
+
 const handleTagChange = (setter: Setter<TagState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
   const tag: TagType = data.v;
   let notification;
@@ -398,6 +448,8 @@ const subscribeToChanges = async (db: RxDatabase, setters: Setters, setLastNotif
   db.template.$.subscribe(handleTemplateChange(setters.template, setLastNotification));
   //@ts-ignore
   db.picture.$.subscribe(handlePictureChange(setters.picture, setLastNotification));
+  //@ts-ignore
+  db.setting.$.subscribe(handleSettingChange(setters.setting, setLastNotification));
 };
 
 export default withStyles(styles)(withRouter(App));
