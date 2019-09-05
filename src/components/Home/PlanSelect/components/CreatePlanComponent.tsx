@@ -72,9 +72,11 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
     const createObjectsAndGoBack = async () => {
       focusInput.current && focusInput.current(false);
       const plan = await createPlan();
-      await attachThoughts(plan.id);
-      onClose(plan.name);
-      history.push(`/plan/${plan.id}/`);
+      setTimeout(() => {
+        onClose(planName);
+        attachThoughts(plan.id);
+        history.push(`/plan/${plan.id}/`);
+      },400);
     };
 
     createObjectsAndGoBack();
