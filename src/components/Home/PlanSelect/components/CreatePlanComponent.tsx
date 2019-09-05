@@ -72,8 +72,8 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
     const createObjectsAndGoBack = async () => {
       const plan = await createPlan();
       await attachThoughts(plan.id);
-      history.push(`/plan/${plan.id}/`);
       onClose(plan.name);
+      history.push(`/plan/${plan.id}/`);
     };
 
     createObjectsAndGoBack();
@@ -94,7 +94,6 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
           borderRadius: 0,
           justifyContent: 'flex-start',
           visibility: 'visible',
-          overflow: 'auto'
         });
       } else {
         const root = document.querySelector('#app');
@@ -114,13 +113,12 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
 
       const timeout = setTimeout(() => {
         focusInput.current && focusInput.current();
-      }, 600);
-
+      }, 400);
       const unlisten = history.listen((event, type) => type === 'POP' && onClose());
 
       return () => {
-        clearTimeout(timeout);
         unlisten();
+        clearTimeout(timeout);
       }
     } else {
       resetState();
@@ -144,7 +142,7 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
           value={planName}
           onChange={handleChange}
           id={'plan-name'}
-          onFocus={focusTitleInput}
+          setFocus={focusTitleInput}
           focusOnLabelClick={false}
           injectedComponent={(<button onClick={toggleWithThoughts}>Pick Thoughts</button>)}
         />
