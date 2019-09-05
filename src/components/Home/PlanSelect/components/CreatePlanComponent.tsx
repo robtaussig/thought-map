@@ -70,7 +70,9 @@ export const CreatePlanComponent: FC<CreatePlanComponentProps> = ({ classes, ope
     };
 
     const createObjectsAndGoBack = async () => {
-      focusInput.current && focusInput.current(false);
+      if (!withThoughts) {
+        focusInput.current && focusInput.current(false);
+      }
       const plan = await createPlan();
       setTimeout(() => {
         onClose(planName);
