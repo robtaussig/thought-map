@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo, FC, Dispatch } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, FC, Dispatch, useRef } from 'react';
 import Header from '../General/Header';
 import Input from '../General/Input';
 import Select from '../General/Select';
@@ -19,7 +19,6 @@ interface Phase1Props {
   onFocus: () => void,
   createdThought: CreatedThought,
   dispatch: Dispatch<Action>,
-  focusTitleInput: (cb: () => void) => void,
   thoughts: Thought[],
   settings: SettingState,
 }
@@ -32,10 +31,10 @@ export const Phase1: FC<Phase1Props> = React.memo(({
   onFocus,
   createdThought,
   dispatch,
-  focusTitleInput,
   thoughts,
   settings,
 }) => {
+  const focusTitleInput = useRef<() => {}>(null);
   const [title, setTitle] = useNestedXReducer('title', createdThought, dispatch);
   const [typeOptions, setTypeOptions] = useNestedXReducer('typeOptions', createdThought, dispatch);
   const [type, setType] = useNestedXReducer('type', createdThought, dispatch);
@@ -60,12 +59,15 @@ export const Phase1: FC<Phase1Props> = React.memo(({
   const handleTimeChange= useCallback(e => setTime(e.target.value), []);
   const handleDescriptionChange= useCallback(e => setDescription(e.target.value), []);
   const handleFocusField = (field: string) => () => setCurrentAutoSuggest(field);
-
+  const setFocus = useCallback(focus => focusTitleInput.current = focus, []);
+  useEffect(() => {
+    focusTitleInput.current();
+  }, []);
   return (
     <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
       {!isFocus && 
         <Header classes={classes} value={'Edit'} onClick={onFocus}/>}
-      {(!focusDescription || !isFocus) &&
+      {!focusDescription &&
         <Input
           id={'title'}
           classes={classes}
@@ -73,7 +75,7 @@ export const Phase1: FC<Phase1Props> = React.memo(({
           onChange={handleTitleChange}
           label={'Title'}
           onFocus={handleFocusField('title')}
-          setFocus={focusTitleInput}
+          setFocus={setFocus}
           autoSuggest={currentAutoSuggest === 'title' ? titleSuggestions : null}
         />
       }

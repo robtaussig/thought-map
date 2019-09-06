@@ -58,19 +58,13 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
   const [ phase, setPhase ] = useState<number>(1);
   const [ ready, setReady ] = useState<boolean>(false);
   const [ displaySettings, setDisplaySettings ] = useState<boolean>(false);
-  const focusInputRef = useRef<() => void>(() => {});
   const planId = getIdFromUrl(history, 'plan');
-  useEffect(() => {
-    const timeout = setTimeout(focusInputRef.current, 100);
-    return () => clearTimeout(timeout);
-  }, []);
 
   const handleSubmit = async () => {
     const response = await createWholeThought(db, createdThought, planId);
     history.push(`${homeUrl(history)}thought/${response.thought.id}`);
   };
 
-  const setFocusInput = useCallback(focusInput => focusInputRef.current = focusInput, []);
   const handleClickHome = useCallback(() => history.push(homeUrl(history)),[]);
   const handleClickSettings = useCallback(() => {
     setDisplaySettings(prev => !prev);
@@ -111,7 +105,6 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
         onFocus={() => setPhase(1)}
         createdThought={createdThought}
         dispatch={createdThoughtDispatch}
-        focusTitleInput={setFocusInput}
         thoughts={state.thoughts}
         settings={state.settings}
       />

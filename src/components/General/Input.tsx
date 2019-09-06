@@ -56,7 +56,7 @@ export const Input: FC<InputProps> = React.memo(({
       rootRef.current.scrollIntoView({ behavior: 'smooth' });
     }
     if (setFocus) {
-      const focus = (shouldFocus: boolean) => shouldFocus ? inputRef.current.focus() : inputRef.current.blur();
+      const focus = (shouldFocus: boolean = true) => shouldFocus ? inputRef.current.focus() : inputRef.current.blur();
       setFocus(focus);
     }
   }, []);
