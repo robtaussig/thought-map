@@ -31,10 +31,11 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts })
   const [inputtedName, setInputtedName] = useState<string>(plan.name);
   const [hasChange, setHasChange] = useState<boolean>(false);
   const canAddThoughts: AddOrRemovableThoughts[] = useMemo(() => {
-    return [{ label: 'Add Thought' }].concat(thoughts.filter(thought => {
-                            return thought.planId !== plan.id;
-                          })
-                          .map((thought, idx) => ({id: thought.id, label: `${idx + 1} - ${thought.title}`})));
+    return [{ label: 'Add Thought' }].concat(
+                                        thoughts
+                                          .filter(thought => !thought.planId)
+                                          .map((thought, idx) => ({id: thought.id, label: `${idx + 1} - ${thought.title}`}))
+                                      );
   }, [thoughts, plan]);
   const canRemoveThoughts: AddOrRemovableThoughts[] = useMemo(() => {
     return [{ label: 'Remove Thought' }].concat(thoughts.filter(thought => {
