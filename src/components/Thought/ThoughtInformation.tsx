@@ -233,7 +233,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 
     const linkifyIfUrl = (text: string): any => {
       if (/(^(http|www)).*(\.([A-z]{2,})$)/.test(text)) {
-        return <a href={`http://${text.replace(/^http(s?):\/\//,'')}`} target={'_blank'}>{text}</a>;
+        return <a href={`http://${text.replace(/^http(s?):\/\//,'')}`} target={'_blank'} style={{ color: 'white' }}>{text}</a>;
       } else {
         return text;
       }
