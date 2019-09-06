@@ -232,7 +232,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const noteList = useMemo(() => {
 
     const linkifyIfUrl = (text: string): any => {
-      if (/(^(http|www)).*(\.(A-z{2,})$)/.test(text)) {
+      if (/(^(http|www)).*(\.([A-z]{2,})$)/.test(text)) {
         return <a href={`http://${text.replace(/^http(s?):\/\//,'')}`} target={'_blank'}>{text}</a>;
       } else {
         return text;
