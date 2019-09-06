@@ -135,6 +135,7 @@ export const Data: FC<DataProps> = ({ classes, settings }) => {
         const importJSON = async () => {
           try {
             await db.importDump(json);
+            location.reload();
           } catch(e) {
             const onConfirm = async () => {
               await handleClickExportDataJSON();

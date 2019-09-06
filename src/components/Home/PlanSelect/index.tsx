@@ -14,7 +14,7 @@ interface PlanSelectProps {
   planId: string | boolean,
 }
 
-const HOME_NAME = 'Home';
+const HOME_NAME = 'ThoughtMap';
 export const CREATE_NEW_PLAN = 'Create Plan';
 
 export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, creatingPlan, thoughts, planId }) => {
@@ -38,7 +38,7 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, creatingPlan, 
         setCreatingPlan(true);
         break;
 
-      case 'Home':
+      case HOME_NAME:
         history.push('/');
         break;
     
