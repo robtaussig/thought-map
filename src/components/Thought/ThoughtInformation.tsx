@@ -230,6 +230,15 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   }, [noteSuggestions, lastNote]);
 
   const noteList = useMemo(() => {
+
+    const linkifyIfUrl = (text: string): any => {
+      if (/(^(http|www)).*(\.(com|net|io|org)$)/.test(text)) {
+        return <a href={`http://${text.replace(/^http(s?):\/\//,'')}`} target={'_blank'}>{text}</a>;
+      } else {
+        return text;
+      }
+    };
+
     return (
       <ul className={classes.noteList}>
           {notes
@@ -244,7 +253,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
                 }} value={edittedNotes[id] || text}/>
               </li>
             ) : (
-              <li className={classes.noteItem} key={`${idx}-note`}><Note className={classes.noteIcon}/>{text}</li>
+              <li className={classes.noteItem} key={`${idx}-note`}><Note className={classes.noteIcon}/>{(linkifyIfUrl(text))}</li>
             );
           }).concat(addedNotes.map((addedNote, idx) => {
             return (
