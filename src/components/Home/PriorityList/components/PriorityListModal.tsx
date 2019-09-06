@@ -60,10 +60,10 @@ const getDateModifier = ({ date }: { date?: string }) => {
 
   const daysDiff = differenceInDays(new Date(date), new Date());
 
-  if (daysDiff < 0) return 10;
-  if (daysDiff < 1) return 7;
-  if (daysDiff < 3) return 5;
-  if (daysDiff < 5) return 3;
+  if (daysDiff < 0) return 20;
+  if (daysDiff < 1) return 15;
+  if (daysDiff < 3) return 8;
+  if (daysDiff < 5) return 5;
   return 1;
 };
 
