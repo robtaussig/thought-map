@@ -42,19 +42,9 @@ export const styles = (theme: any): StyleRules => ({
   thoughtTitle: {
     '&.highPriority': {
       position: 'relative',
-      '&:before': {
-        content: '"!"',
-        position: 'absolute',
-        left: '-25px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        fontWeight: 600,
-        backgroundColor: 'white',
-        color: 'red',
-        borderRadius: '50%',
-        height: '20px',
-        width: '20px',
-        textAlign: 'center',
+      fontWeight: 600,
+      '& > button': {
+        color: '#b12121!important',
       }
     }
   },
