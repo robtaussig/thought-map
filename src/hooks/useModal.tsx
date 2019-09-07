@@ -30,7 +30,7 @@ interface ModalProps {
 
 const ModalContext = createContext<ModalContextValue>(null);
 
-const INITIAL_STATE: ModalState = { component: null, label: 'Modal', options: {} };
+const INITIAL_STATE: ModalState[] = [{ component: null, label: 'Modal', options: {} }];
 const MODAL_WRAPPER_STYLE: CSSProperties = {
   position: 'absolute',
   display: 'flex',
@@ -54,11 +54,11 @@ const CLOSE_BUTTON_STYLE: CSSProperties = {
 };
 
 export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) => {
-  const [modal, setModal] = useState<ModalState>(INITIAL_STATE);
-
-  const handleClose = useCallback(() => setModal(INITIAL_STATE),[]);
+  const [modals, setModals] = useState<ModalState[]>(INITIAL_STATE);
+  const modal = useMemo(() => modals[modals.length - 1], [modals]);
+  const handleClose = useCallback(() => setModals(prev => prev.slice(0, prev.length - 1)),[]);
   const handleOpen = useCallback((component, label = 'Modal', options = {}) => {
-    setModal({ component, label, options });
+    setModals(prev => prev.concat({ component, label, options }));
   },[]);
   const contextValue = useMemo(() => ({ openModal: handleOpen, closeModal: handleClose, dynamicState }), [dynamicState]);
 
