@@ -146,6 +146,10 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
   }, [diagnosisChunks])
 
   const handleClickFixIssues = async () => {
+    if (!diagnosisChunks[FormattedResultActionEnum.CAN_FIX]) {
+      onFix();
+      return;
+    }
     await Promise.all(Object.values(diagnosisChunks[FormattedResultActionEnum.CAN_FIX]).reduce((queries, { items }) => {
       items.forEach(({ item, table, solution }) => {
         switch (solution) {
