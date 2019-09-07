@@ -62,6 +62,14 @@ const styles = (theme: any): StyleRules => ({
 export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks }) => {
 
   const _diagnosis = useMemo(() => {
+    if (Object.keys(diagnosisChunks).length === 0) {
+      return (
+        <div className={classes.diagnosis}>
+          Congratulations! Your data is perfect.
+        </div>
+      );
+    }
+
     return (
       <div className={classes.diagnosis}>
         {Object.entries(diagnosisChunks).map(([actionType, chunks], actionIdx) => {          
