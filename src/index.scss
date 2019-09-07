@@ -70,7 +70,8 @@ table {
 }
 
 button {
-  background-color: transparent;
+	background-color: transparent;
+	user-select: none;
 }
 
 button:focus {outline:0;}

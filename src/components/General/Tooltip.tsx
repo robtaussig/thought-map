@@ -2,10 +2,12 @@ import React, { FC } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import Help from '@material-ui/icons/Help';
 import { useModal } from '../../hooks/useModal';
+import classNames from 'classnames';
 
 interface TooltipProps {
   classes: any,
   text: string,
+  className?: string,
 }
 
 const styles = (theme: any): StyleRules => ({
@@ -19,17 +21,22 @@ const styles = (theme: any): StyleRules => ({
     fontSize: 12,
     color: 'white',
   },
+  wrapper: {
+    overflow: 'auto',
+  }
 });
 
-export const Tooltip: FC<TooltipProps> = ({ classes, text }) => {
+export const Tooltip: FC<TooltipProps> = ({ classes, text, className }) => {
   const [openModal, closeModal] = useModal();
 
   const handleClickTooltip = () => {
-    openModal(<span>{text}</span>, 'Tooltip');
+    openModal(<span className={classes.wrapper}>{text}</span>, 'Tooltip');
   };
 
   return (
-    <button className={classes.root} onClick={handleClickTooltip}>
+    <button className={classNames(classes.root, {
+      [className]: Boolean(className)
+    })} onClick={handleClickTooltip}>
       <Help className={classes.icon}/>
     </button>
   );
