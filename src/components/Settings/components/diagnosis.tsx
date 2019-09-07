@@ -38,6 +38,7 @@ import { jsonDump } from './data';
 interface DiagnosisProps {
   classes: any,
   diagnosisChunks: DiagnosisChunks,
+  onFix: () => void,
 }
 
 const styles = (theme: any): StyleRules => ({
@@ -100,7 +101,7 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks }) => {
+export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix }) => {
   const db = useLoadedDB();
 
   const _diagnosis = useMemo(() => {
@@ -162,15 +163,16 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks }) => {
       });
       return queries;
     }, [] as Promise<any>[]));
+    onFix();
   };
 
   return (
     <div className={classes.root}>
       {_diagnosis}
-      <div className={classes.actionButtons}>
+      {(Object.keys(diagnosisChunks).length > 0) && (<div className={classes.actionButtons}>
         <button onClick={() => jsonDump(db)}>Backup data</button>
         <button onClick={handleClickFixIssues}>Fix issues</button>
-      </div>
+      </div>)}
     </div>
   );
 };

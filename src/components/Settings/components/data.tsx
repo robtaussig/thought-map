@@ -197,7 +197,7 @@ export const Data: FC<DataProps> = ({ classes, settings }) => {
       diagnosisChunks[action][title].items =
         diagnosisChunks[action][title].items.concat(affectedItems.map<ChunkItem>(item => ({ item, table, solution })));
     });
-    openModal(<Diagnosis diagnosisChunks={diagnosisChunks}/>);
+    openModal(<Diagnosis diagnosisChunks={diagnosisChunks} onFix={closeModal}/>);
   }, []);
 
   useEffect(() => {
