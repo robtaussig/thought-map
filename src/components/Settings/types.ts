@@ -40,11 +40,16 @@ export interface ValidSettings {
 }
 
 export enum FormattedResultActionEnum {
-  WAS_FIXED = 'FIXED',
+  CAN_FIX = 'CAN FIX',
   REQUIRES_MANUAL_FIX = 'REQUIRES MANUAL FIX',
   SHOULD_REPORT = 'SHOULD REPORT',
   REQUIRES_RESTART = 'REQUIRES RESTART',
   NOT_BUG = 'NOT BUG',
+}
+
+export enum SolutionTypes {
+  DELETE = 'DELETE',
+  NULL_OUT_PLAN_ID = 'NULL_OUT_PLAN_ID',
 }
 
 export interface FormattedResult {
@@ -53,11 +58,13 @@ export interface FormattedResult {
   table: string,
   affectedItems: any[],
   title: string,
+  solution?: SolutionTypes,
 }
 
 export interface ChunkItem {
   table: string,
   item: any,
+  solution?: SolutionTypes,
 }
 
 export interface ChunkDetails {

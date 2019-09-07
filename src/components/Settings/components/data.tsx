@@ -38,6 +38,7 @@ import {
   ChunkDetails,
   Chunks,
   DiagnosisChunks,
+  SolutionTypes,
 } from '../types';
 
 const styles = (theme: any): StyleRules => ({
@@ -158,6 +159,17 @@ const RELOAD_BEFORE_IMPORT_TEXT = 'You must clear your data and reload the app b
 const IMPORT_CONFIRM_TEXT = 'Are you sure you want to import new data from a JSON file?';
 const DIAGNOSIS_TOOLTIP_TEXT = 'Sometimes bugs magically appear and result in corrupted and/or orphaned data, and other unforeseeable consequences. This tool will scan your database and fix these issues automatically if possible and suggest actions where not.';
 
+export const jsonDump = async (db: RxDatabase) => {
+  const json = await db.dump();
+  const dataStr = JSON.stringify(json);
+  const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+  const exportFileDefaultName = 'data.json';
+  const linkElement = document.createElement('a');
+  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('download', exportFileDefaultName);
+  return linkElement.click();
+};
+
 export const Data: FC<DataProps> = ({ classes, settings }) => {
   const importJSONRef = useRef<HTMLInputElement>(null);
   const [side, setSide] = useState<Side>(Side.TOP);
@@ -170,27 +182,20 @@ export const Data: FC<DataProps> = ({ classes, settings }) => {
   }, []);
 
   const handleClickExportDataJSON = useCallback(async () => {
-    const json = await db.dump();
-    const dataStr = JSON.stringify(json);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    const exportFileDefaultName = 'data.json';
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    return linkElement.click();
+    jsonDump(db);
   }, []);
 
   const handleClickRunDiagnosis = useCallback(async () => {
     const results = await runDiagnosis(db);
     let diagnosisChunks: DiagnosisChunks = {};
-    results.forEach(({ action, furtherDetails, table, affectedItems, title }) => {
+    results.forEach(({ action, furtherDetails, table, affectedItems, title, solution }) => {
       diagnosisChunks[action] = diagnosisChunks[action] || {} as Chunks;
       diagnosisChunks[action][title] = diagnosisChunks[action][title] || {
         furtherDetails,
         items: [],
       } as ChunkDetails;
       diagnosisChunks[action][title].items =
-        diagnosisChunks[action][title].items.concat(affectedItems.map<ChunkItem>(item => ({ item, table })));
+        diagnosisChunks[action][title].items.concat(affectedItems.map<ChunkItem>(item => ({ item, table, solution })));
     });
     openModal(<Diagnosis diagnosisChunks={diagnosisChunks}/>);
   }, []);
@@ -283,11 +288,12 @@ const formatResults = (
 
   orphanedObjects.forEach(({ table, item }) => {
     formattedResults.push({
-      action: FormattedResultActionEnum.WAS_FIXED,
-      furtherDetails: 'Several child objects were found without an associated parent. They have been deleted.',
+      action: FormattedResultActionEnum.CAN_FIX,
+      furtherDetails: 'Several child objects were found without an associated parent. They should be deleted.',
       table,
       affectedItems: [item],
       title: 'Orphaned Item',
+      solution: SolutionTypes.DELETE,
     });
   });
 
@@ -303,38 +309,41 @@ const formatResults = (
 
   orphanedThoughts.forEach(orphanedThought => {
     formattedResults.push({
-      action: FormattedResultActionEnum.WAS_FIXED,
-      furtherDetails: 'These thoughts were categorized under a plan that no longer exists. They have been uncategorized.',
+      action: FormattedResultActionEnum.CAN_FIX,
+      furtherDetails: 'These thoughts were categorized under a plan that no longer exists. They should be uncategorized.',
       table: 'thought',
       affectedItems: [orphanedThought],
       title: 'Orphaned Thought',
+      solution: SolutionTypes.NULL_OUT_PLAN_ID,
     });
   });
 
   brokenConnections.forEach(brokenConnection => {
     formattedResults.push({
-      action: FormattedResultActionEnum.WAS_FIXED,
-      furtherDetails: 'These connections are no longer attached to two thoughts and have been deleted.',
+      action: FormattedResultActionEnum.CAN_FIX,
+      furtherDetails: 'These connections are no longer attached to two thoughts and should be deleted.',
       table: 'connection',
       affectedItems: [brokenConnection],
       title: 'Broken Connection',
+      solution: SolutionTypes.DELETE,
     });
   });
 
   invalidSettings.forEach(invalidSetting => {
     formattedResults.push({
-      action: FormattedResultActionEnum.WAS_FIXED,
-      furtherDetails: 'These settings are not valid and have been deleted.',
+      action: FormattedResultActionEnum.CAN_FIX,
+      furtherDetails: 'These settings are not valid and should be deleted.',
       table: 'setting',
       affectedItems: [invalidSetting],
       title: 'Invalid Setting',
+      solution: SolutionTypes.DELETE,
     });
   });
 
   fatPictures.forEach(fatPicture => {
     formattedResults.push({
-      action: FormattedResultActionEnum.WAS_FIXED,
-      furtherDetails: 'These pictures have been backed up to imgur and contain a valid url, but still have a stored copy in local memory. The local version has been deleted to preserve resources.',
+      action: FormattedResultActionEnum.CAN_FIX,
+      furtherDetails: 'These pictures should be backed up to imgur and contain a valid url, but still have a stored copy in local memory. The local version has been deleted to preserve resources.',
       table: 'picture',
       affectedItems: [fatPicture],
       title: 'Fat Picture',

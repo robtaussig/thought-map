@@ -52,7 +52,6 @@ import {
   SettingState,
 } from './types';
 
-
 const App: FC<AppProps> = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
   const [lastNotification, setLastNotification] = useState<Notification>(null);

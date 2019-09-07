@@ -1,9 +1,39 @@
 import React, { FC, useMemo, Fragment } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import Tooltip from '../../General/Tooltip';
+import { useLoadedDB } from '../../../hooks/useDB';
 import {
   DiagnosisChunks,
+  FormattedResultActionEnum,
+  SolutionTypes,
 } from '../types';
+
+import Thought from '../../../models/thoughts';
+import Connection from '../../../models/connections';
+import Plan from '../../../models/plans';
+import Note from '../../../models/notes';
+import Tag from '../../../models/tags';
+import Template from '../../../models/templates';
+import Picture from '../../../models/pictures';
+import Setting from '../../../models/settings';
+import { RxDatabase, RxDocumentTypeWithRev } from 'rxdb';
+
+const modelsByTable: {
+  [tableName: string]: {
+    delete: ((db: RxDatabase, id: string) => Promise<any>),
+    update: (db: RxDatabase, object: RxDocumentTypeWithRev<any>) => Promise<any> }
+  } = {
+  thought: { delete: Thought.delete, update: Thought.update },
+  connection: { delete: Connection.delete, update: Connection.update },
+  plan: { delete: Plan.delete, update: Plan.update },
+  note: { delete: Note.delete, update: Note.update },
+  tag: { delete: Tag.delete, update: Tag.update },
+  template: { delete: Template.delete, update: Template.update },
+  picture: { delete: Picture.delete, update: Picture.update },
+  setting: { delete: Setting.delete, update: Setting.update },
+};
+
+import { jsonDump } from './data';
 
 interface DiagnosisProps {
   classes: any,
@@ -12,10 +42,10 @@ interface DiagnosisProps {
 
 const styles = (theme: any): StyleRules => ({
   root: {
-
+    overflow: 'auto',
   },
   diagnosis: {
-    overflow: 'auto',
+    
   },
   actionType: {
     fontWeight: 600,
@@ -57,9 +87,21 @@ const styles = (theme: any): StyleRules => ({
     justifyContent: 'center',
     overflow: 'auto',
   },
+  actionButtons: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: 30,
+    '& > button': {
+      backgroundColor: 'white',
+      color: 'dodgerblue',
+      padding: '3px 15px',
+      borderRadius: '5px',
+    }
+  },
 });
 
 export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks }) => {
+  const db = useLoadedDB();
 
   const _diagnosis = useMemo(() => {
     if (Object.keys(diagnosisChunks).length === 0) {
@@ -101,9 +143,34 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks }) => {
       </div>
     );
   }, [diagnosisChunks])
+
+  const handleClickFixIssues = async () => {
+    await Promise.all(Object.values(diagnosisChunks[FormattedResultActionEnum.CAN_FIX]).reduce((queries, { items }) => {
+      items.forEach(({ item, table, solution }) => {
+        switch (solution) {
+          case SolutionTypes.DELETE:
+            queries.push(modelsByTable[table].delete(db, item.id));
+            break;
+        
+          case SolutionTypes.NULL_OUT_PLAN_ID:
+            queries.push(modelsByTable[table].update(db, {
+              ...item,
+              planId: '',
+            }));
+            break;
+        }
+      });
+      return queries;
+    }, [] as Promise<any>[]));
+  };
+
   return (
     <div className={classes.root}>
       {_diagnosis}
+      <div className={classes.actionButtons}>
+        <button onClick={() => jsonDump(db)}>Backup data</button>
+        <button onClick={handleClickFixIssues}>Fix issues</button>
+      </div>
     </div>
   );
 };
