@@ -1,8 +1,8 @@
-import { SettingState } from "../../types";
+import { AppState } from "../../reducers";
 
 export interface DataProps {
   classes: any,
-  settings: SettingState
+  state: AppState
 }
 
 export enum Side {

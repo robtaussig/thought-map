@@ -7,6 +7,9 @@ import { RxDatabase } from 'rxdb';
 import { openConfirmation } from '../../../lib/util';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
+import useApp from '../../../hooks/useApp';
+import { getSearchParam } from '../../../lib/util';
+import { useNestedXReducer, Action } from '../../../hooks/useXReducer';
 import { useModal } from '../../../hooks/useModal';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Plan } from '../../../store/rxdb/schemas/plan';
@@ -155,9 +158,10 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-const RELOAD_BEFORE_IMPORT_TEXT = 'You must clear your data and reload the app before importing from JSON. Would you like to back up your current data first?';
-const IMPORT_CONFIRM_TEXT = 'Are you sure you want to import new data from a JSON file?';
+const RELOAD_BEFORE_IMPORT_TEXT = 'Would you like to back up your current data first (cancel will proceed without backup)? The page will reload.';
+const CONTINUE_DELETE_TEXT = 'Are you sure you want to delete your data?';
 const DIAGNOSIS_TOOLTIP_TEXT = 'Sometimes bugs magically appear and result in corrupted and/or orphaned data, and other unforeseeable consequences. This tool will scan your database and fix these issues automatically if possible and suggest actions where not.';
+const DELETE_DATA_TOOLTIP = 'Before you can import data from a JSON file, you must first delete your data. You will be asked whether you want to create a backup before continuing.';
 
 export const jsonDump = async (db: RxDatabase) => {
   const json = await db.dump();
@@ -170,10 +174,12 @@ export const jsonDump = async (db: RxDatabase) => {
   return linkElement.click();
 };
 
-export const Data: FC<DataProps> = ({ classes, settings }) => {
+export const Data: FC<DataProps> = ({ classes, state }) => {
   const importJSONRef = useRef<HTMLInputElement>(null);
   const [side, setSide] = useState<Side>(Side.TOP);
-
+  const { dispatch, history } = useApp();
+  const readyToImport = getSearchParam(history, 'import');
+  const [_notificationDisabled, setNotificationDisabled] = useNestedXReducer('notificationDisabled', state, dispatch);
   const rootRef = useRef(null);
   const [openModal, closeModal] = useModal();
   const db = useLoadedDB();
@@ -206,35 +212,42 @@ export const Data: FC<DataProps> = ({ classes, settings }) => {
     
       fr.onload = e => {
         const json = JSON.parse((e.target as any).result);
-        
+
         const importJSON = async () => {
-          try {
-            await db.importDump(json);
-            location.reload();
-          } catch(e) {
-            const onConfirm = async () => {
-              await handleClickExportDataJSON();
-              await db.remove();
-              location.reload();
-            };
-
-            const onReject = async () => {
-              await db.remove();
-              location.reload();
-            };
-
-            openConfirmation(RELOAD_BEFORE_IMPORT_TEXT, onConfirm, onReject);
-          }
+          setNotificationDisabled(true);
+          await db.importDump(json);
+          location.href = '/settings';
         };
 
-        openConfirmation(IMPORT_CONFIRM_TEXT, importJSON);
+        importJSON();
       };
 
       fr.readAsText((event.target as any).files[0]);
     };
   
-    importJSONRef.current.addEventListener('change', handleChange);
+    if (readyToImport) {
+      importJSONRef.current.addEventListener('change', handleChange);
+    }
   }, []);
+
+  const handleClickDeleteDatabase = () => {
+    const onConfirm = async () => {
+      await handleClickExportDataJSON();
+      await db.remove();
+      location.href = '/settings?import=true';
+    };
+
+    const onReject = async () => {
+      await db.remove();
+      location.href = '/settings?import=true';
+    };
+
+    const onContinue = () => {
+      openConfirmation(RELOAD_BEFORE_IMPORT_TEXT, onConfirm, onReject);
+    };
+
+    openConfirmation(CONTINUE_DELETE_TEXT, onContinue);
+  };
 
   return (
     <Fragment>
@@ -248,10 +261,15 @@ export const Data: FC<DataProps> = ({ classes, settings }) => {
         top: side === Side.TOP ? '100%' : 0,
       }}>
         <h1 className={classes.header}>Data</h1>
-        <label className={classes.uploadInput}>
+        {readyToImport ? (<label className={classes.uploadInput}>
           <span>Import Data from JSON</span>
           <input ref={importJSONRef} type="file" accept="json/*" id="file-input"/>
-        </label>
+        </label>) : (
+          <div className={classes.buttonWrapper}>
+            <button className={classes.tooltipButton} onClick={handleClickDeleteDatabase}>Delete Data</button>
+            <Tooltip className={'tooltip'} text={DELETE_DATA_TOOLTIP}/>
+          </div>
+        )}
         <button className={classes.button} onClick={handleClickExportDataJSON}>Export Data to JSON</button>
         <div className={classes.buttonWrapper}>
           <button className={classes.tooltipButton} onClick={handleClickRunDiagnosis}>Run diagnosis</button>

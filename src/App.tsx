@@ -63,6 +63,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const [_templates, setTemplates] = useNestedXReducer('templates', state, dispatch);
   const [_pictures, setPictures] = useNestedXReducer('pictures', state, dispatch);
   const [_settings, setSettings] = useNestedXReducer('settings', state, dispatch);
+  const [notificationDisabled] = useNestedXReducer('notificationDisabled', state, dispatch);
   const [DBProvider, db, dbReadyState] = useDB();
   const rootRef = useRef(null);
 
@@ -89,7 +90,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
       <DBProvider value={db}>
         <ModalProvider dynamicState={state}>
           <div id={'app'} ref={rootRef} className={classes.root}>
-            <Notifications lastNotification={lastNotification}/>
+            <Notifications lastNotification={lastNotification} notificationDisabled={notificationDisabled}/>
             <PriorityList thoughts={state.thoughts}/>
             <Switch>
               <Route exact path={'/'}>
@@ -111,7 +112,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Thought state={state}/>}
               </Route>
               <Route path={'/plan/:id/settings'}>
-                {dbReadyState && <Settings state={state}/>}
+                {dbReadyState && <Settings state={state} />}
               </Route>
               <Route path={'/plan/:id'}>
                 {dbReadyState && <Home state={state}/>}

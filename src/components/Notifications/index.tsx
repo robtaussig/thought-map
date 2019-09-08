@@ -4,17 +4,18 @@ import "react-notifications-component/dist/theme.css";
 
 interface NotificationsProps {
   lastNotification: Notification,
+  notificationDisabled: boolean,
 }
 
 interface Notification {
   message: string,
 }
 
-export const Notifications: FC<NotificationsProps> = React.memo(({ lastNotification }) => {
+export const Notifications: FC<NotificationsProps> = React.memo(({ lastNotification, notificationDisabled = false }) => {
   const notificationRef = useRef<any>(null);
 
   useEffect(() => {
-    if (lastNotification) {
+    if (notificationDisabled !== true && lastNotification) {
       notificationRef.current.addNotification({
         message: lastNotification.message,
         type: 'success',
@@ -26,7 +27,7 @@ export const Notifications: FC<NotificationsProps> = React.memo(({ lastNotificat
         dismissable: { click: true },
       });
     }
-  }, [lastNotification]);
+  }, [lastNotification, notificationDisabled]);
 
   return (
     <ReactNotification ref={notificationRef} isMobile={true}/>

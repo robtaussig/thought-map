@@ -34,6 +34,7 @@ export interface AppState {
   tags: Tags,
   creatingPlan: boolean,
   settings: Settings,
+  notificationDisabled: boolean,
 }
 
 enum ActionType {
@@ -61,6 +62,7 @@ export const DEFAULT_STATE: AppState = {
   tags: {},
   creatingPlan: false,
   settings: {},
+  notificationDisabled: false,
 };
 
 export const ACTION_TYPES = {

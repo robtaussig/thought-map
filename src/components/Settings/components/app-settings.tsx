@@ -32,13 +32,16 @@ const styles = (theme: any): StyleRules => ({
 
 export const AppSettings: FC<AppSettingsProps> = ({ classes, state }) => {
   const { history } = useApp();
-  const handleClickReturnHome = () => history.goBack();
+  const handleClickReturnHome = () => {
+    const nextUrl = location.pathname.replace(/settings.*/, '');
+    history.push(nextUrl);
+  }
 
   return (
     <div className={classes.root}>
       <ManagePhotos pictures={state.pictures}/>
       <AppConfiguration settings={state.settings}/>
-      <Data settings={state.settings}/>
+      <Data state={state}/>
       <CircleButton
         classes={classes}
         id={'return-home'}

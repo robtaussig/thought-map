@@ -44,7 +44,11 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts })
                               .map((thought, idx) => ({id: thought.id, label: `${idx + 1} - ${thought.title}`})));
   }, [thoughts, plan]);
 
-  const handleClickReturnHome = () => history.push(`/plan/${plan.id}`);
+  const handleClickReturnHome = () => {
+    const nextUrl = location.pathname.replace(/settings.*/, '');
+    history.push(nextUrl);
+  }
+
   const handleReturnHomeAfterDelete = () => history.push('/');
 
   const handleClickSubmitChanges = async () => {
