@@ -150,7 +150,7 @@ const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>)
 
   const thoughtWithLatestStatus = thoughts.map(thought => {
     if (statusesByThought[thought.id]) {
-      const statusId = statusesByThought[thought.id][statusesByThought[thought.id].length - 1];
+      const statusId = statusesByThought[thought.id][0];
       const statusText = (statusesById[statusId] as StatusType).text;
 
       return {
@@ -478,7 +478,7 @@ const handleStatusChange = (
       }));
       setStatusesByThought(prev => ({
         ...prev,
-        [status.thoughtId]: (prev[status.thoughtId] || []).concat(status.id),
+        [status.thoughtId]: [status.id].concat(prev[status.thoughtId] || []),
       }));
       setThoughts(prev => prev.map(prevThought => {
         if (prevThought.id === status.thoughtId) {
