@@ -193,7 +193,7 @@ export const styles = (theme: any): StyleRules => ({
       opacity: '0.5!important',
     },
     '&#settings': {
-      top: 10,
+      bottom: 10,
       left: 10,
       opacity: '0.5!important',
       '& svg': {
