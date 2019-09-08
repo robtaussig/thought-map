@@ -27,6 +27,7 @@ export default class Statuses extends Base {
       updated: object.updated || timestamp,
     })), Thoughts.update(db, {
       ...thought,
+      status: object.text,
       updated: timestamp,
     })]);
 
