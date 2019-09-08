@@ -3,7 +3,7 @@ import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
 import { STATUS_OPTIONS } from '../../Thought';
-import { thoughts as thoughtActions } from '../../../actions';
+import { statuses as statusActions } from '../../../actions';
 import { homeUrl } from '../../../lib/util';
 import { Thought } from 'store/rxdb/schemas/thought';
 
@@ -43,9 +43,10 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought 
   };
 
   const handleChangeStatus = useCallback(event => {
-    thoughtActions.editThought(db, Object.assign({}, thought, {
-      status: event.target.value,
-    }));
+    statusActions.createStatus(db, {
+      text: event.target.value,
+      thoughtId: thought.id,
+    });
   }, []);
 
   return (

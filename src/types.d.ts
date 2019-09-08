@@ -9,6 +9,7 @@ import {
   Template as TemplateType,
   Picture as PictureType,
   Setting as SettingType,
+  Status as StatusType
 } from './store/rxdb/schemas/types';
 import { Action, Setter } from './hooks/useXReducer';
 
@@ -67,6 +68,14 @@ export type PictureState = {
 
 export type SettingState = {
   [field: string]: any,
+}
+
+export type StatusState = {
+  [id: string]: StatusType,
+}
+
+export type StatusesByThought = {
+  [thoughtId: string]: string[],
 }
 
 export type TemplateState = TemplateType[];

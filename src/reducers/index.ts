@@ -7,9 +7,14 @@ import { Note } from '../store/rxdb/schemas/note';
 import { Tag } from '../store/rxdb/schemas/tag';
 import { Picture } from '../store/rxdb/schemas/picture';
 import { Setting } from '../store/rxdb/schemas/setting';
+import { Status } from '../store/rxdb/schemas/status';
 
 export interface Notes {
   [noteId: string]: Note,
+}
+
+export interface Statuses {
+  [statusId: string]: Status,
 }
 
 export interface Pictures {
@@ -24,6 +29,10 @@ export interface Settings {
   [field: string]: Setting,
 }
 
+export interface StatusesByThought {
+  [thoughtId: string]: string[],
+}
+
 export interface AppState {
   thoughts: Thought[],
   templates: Template[],
@@ -31,6 +40,8 @@ export interface AppState {
   pictures: Pictures,
   plans: Plan[],
   notes: Notes,
+  statuses: Statuses,
+  statusesByThought: StatusesByThought,
   tags: Tags,
   creatingPlan: boolean,
   settings: Settings,
@@ -60,6 +71,8 @@ export const DEFAULT_STATE: AppState = {
   pictures: {},
   notes: {},
   tags: {},
+  statuses: {},
+  statusesByThought: {},
   creatingPlan: false,
   settings: {},
   notificationDisabled: false,

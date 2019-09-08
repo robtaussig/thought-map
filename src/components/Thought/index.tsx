@@ -45,6 +45,14 @@ export const Thought: FC<ThoughtProps> = ({ classes, state }) => {
   const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
   const relatedTags = useMemo(() => Object.values(state.tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, state.tags]);
   const relatedNotes = useMemo(() => Object.values(state.notes).filter(note => note.thoughtId === thoughtId), [thoughtId, state.notes]);
+  const statuses = useMemo(() => {    
+    if (typeof thoughtId === 'string') {
+      return (state.statusesByThought[thoughtId] || [])
+        .map(statusId => state.statuses[statusId])
+        .filter(Boolean);
+    }
+    return [];
+  }, [state.statuses, state.statusesByThought, thoughtId]);
   const handleClickHome = (): void => {
     history.push(homeUrl(history));
   };
@@ -89,6 +97,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state }) => {
           editState={editState}
           stateNotes={state.notes}
           stateSettings={state.settings}
+          statuses={statuses}
         />
       }
       <ThoughtSettings

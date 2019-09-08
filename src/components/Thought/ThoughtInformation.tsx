@@ -12,7 +12,7 @@ import Edit from '@material-ui/icons/Edit';
 import Check from '@material-ui/icons/Check';
 import Delete from '@material-ui/icons/Delete';
 import { openConfirmation } from '../../lib/util';
-import { notes as noteActions, tags as tagActions } from '../../actions';
+import { notes as noteActions, tags as tagActions, statuses as statusActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 import useAutoSuggest from 'react-use-autosuggest';
 import {
@@ -36,6 +36,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   onEditState,
   stateNotes,
   stateSettings,
+  statuses,
 }) => {
   const [edittingTime, setEdittingTime] = useState<boolean>(false);
   const [edittingDate, setEdittingDate] = useState<boolean>(false);
@@ -52,10 +53,19 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   }, [stateNotes, stateSettings.useAutoSuggest]);
   const noteSuggestions = useAutoSuggest(lastNote[1].trim(), autoSuggestNotes, 4);
   const handleStatusChange = useCallback(event => {
-    onUpdate({ ...thought, status: event.target.value });
+    statusActions.createStatus(db, {
+      text: event.target.value,
+      thoughtId: thought.id,
+    });
   }, [thought]);
 
-  const [createdText, lastUpdatedText]: [string, string] = [getTime(thought.created), getTime(thought.updated)];
+  const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
+    if (statuses && statuses.length > 0) {
+      return [getTime(statuses[0].created), getTime(statuses[statuses.length - 1].updated)];
+    }
+
+    return [getTime(thought.created), getTime(thought.updated)];
+  }, [thought, statuses]);
 
   const handlePriorityChange = useCallback(event => {
     const value = priorityOptions.find(({ label }) => label === event.target.value).value;

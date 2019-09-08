@@ -3,6 +3,7 @@ import { Notes, Settings } from 'reducers';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Tag } from 'store/rxdb/schemas/tag';
 import { Note as NoteType } from 'store/rxdb/schemas/note';
+import { Status as StatusType } from 'store/rxdb/schemas/status';
 
 export interface ThoughtInformationProps {
   classes: any,
@@ -18,6 +19,7 @@ export interface ThoughtInformationProps {
   onEditState: (edit: boolean) => void,
   stateNotes: Notes,
   stateSettings: Settings,
+  statuses: StatusType[],
 }
 
 export interface EditedMap {

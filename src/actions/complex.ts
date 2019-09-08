@@ -6,6 +6,7 @@ import {
   plans as planActions,
   notes as noteActions,
   tags as tagActions,
+  statuses as statusActions,
 } from './';
 
 interface WholeThought {
@@ -26,14 +27,18 @@ export const createWholeThought = async (db: RxDatabase, {
   description,
   notes,
   tags,
-}:WholeThought, planId: string | boolean) => {
+}: WholeThought, planId: string | boolean) => {
   const thought: Thought = {
-    title, type, date, time, description, status: 'new', priority: 5,
+    title, type, date, time, description, priority: 5,
   };
   if (typeof planId === 'string') thought.planId = planId;
 
   const createdThought = await thoughtActions.createThought(db, thought);
   const thoughtId = createdThought.id;
+  await statusActions.createStatus(db, {
+    thoughtId,
+    text: 'new',
+  });
   const [createdNotes, createdTags] = await Promise.all([
     Promise.all(notes.map((note, idx) => noteActions.createNote(db, {
       text: note,

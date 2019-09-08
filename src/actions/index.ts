@@ -6,6 +6,7 @@ import Tags from '../models/tags';
 import Templates from '../models/templates';
 import Pictures from '../models/pictures';
 import Settings from '../models/settings';
+import Statuses from '../models/statuses';
 
 export const thoughts = {
   getThoughts: Thoughts.fetchAll,
@@ -69,4 +70,12 @@ export const settings = {
   createSetting: Settings.upsert,
   deleteSetting: Settings.delete,
   editSetting: Settings.upsert,
+};
+
+export const statuses = {
+  getStatuses: Statuses.fetchAll,
+  getStatus: Statuses.fetch,
+  createStatus: Statuses.add,
+  deleteStatus: Statuses.delete,
+  editStatus: Statuses.update,
 };

@@ -75,5 +75,5 @@ export const getTime = (ms: number): string => {
 
   const datetime = new Date(ms);
 
-  return `${datetime.getMonth()}/${datetime.getDate()}/${datetime.getFullYear()}`;
+  return `${datetime.getMonth() + 1}/${datetime.getDate()}/${datetime.getFullYear()}`;
 };

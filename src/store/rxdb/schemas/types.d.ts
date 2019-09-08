@@ -6,6 +6,7 @@ import { Connection } from './connection';
 import { Template } from './template';
 import { Picture } from './picture';
 import { Setting } from './setting';
+import { Status } from './status';
 
 export {
   Thought,
@@ -16,4 +17,5 @@ export {
   Template,
   Picture,
   Setting,
+  Status,
 }

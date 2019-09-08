@@ -1,5 +1,6 @@
 import { History } from 'history';
 import { Setting } from '../store/rxdb/schemas/setting';
+import { Status } from '../store/rxdb/schemas/status';
 import { SettingState } from '../types';
 
 interface Mappable {
@@ -30,6 +31,18 @@ export const openConfirmation = (confirmationText: string, onConfirm: () => void
   } else {
     onReject();
   }
+};
+
+type StatusesByThought = { [thoughtId: string]: string[] };
+
+export const thoughtStatuses = (statuses: Status[]): StatusesByThought => {
+  const statusesByThought: StatusesByThought = {};
+  statuses.forEach(({ id, thoughtId }) => {
+    statusesByThought[thoughtId] = statusesByThought[thoughtId] || [];
+    statusesByThought[thoughtId].push(id);
+  });
+
+  return statusesByThought;
 };
 
 export const homeUrl = (history: History) => {

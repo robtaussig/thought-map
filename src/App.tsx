@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState, Dispatch, SetStateAction } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState, Dispatch, SetStateAction, useCallback } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
@@ -6,7 +6,7 @@ import { appReducer, DEFAULT_STATE } from './reducers';
 import { Context } from './store';
 import { sortByIndexThenDate } from './models/base';
 import { ACTION_TYPES } from './reducers';
-import { intoMap, convertSettings } from './lib/util';
+import { intoMap, convertSettings, thoughtStatuses } from './lib/util';
 import {
   Thought as ThoughtType,
   Plan as PlanType,
@@ -16,6 +16,7 @@ import {
   Template as TemplateType,
   Picture as PictureType,
   Setting as SettingType,
+  Status as StatusType,
 } from './store/rxdb/schemas/types';
 import useXReducer, { useNestedXReducer, Action, Setter } from './hooks/useXReducer';
 import { useDB } from './hooks/useDB';
@@ -29,6 +30,7 @@ import {
   templates as templateActions,
   pictures as pictureActions,
   settings as settingActions,
+  statuses as statusActions,
 } from './actions';
 import Home from './components/Home';
 import PriorityList from './components/Home/PriorityList';
@@ -50,6 +52,8 @@ import {
   TemplateState,
   PictureState,
   SettingState,
+  StatusState,
+  StatusesByThought,
 } from './types';
 
 const App: FC<AppProps> = ({ classes, history }) => {
@@ -63,6 +67,8 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const [_templates, setTemplates] = useNestedXReducer('templates', state, dispatch);
   const [_pictures, setPictures] = useNestedXReducer('pictures', state, dispatch);
   const [_settings, setSettings] = useNestedXReducer('settings', state, dispatch);
+  const [_statuses, setStatuses] = useNestedXReducer('statuses', state, dispatch);
+  const [_statusesByThought, setStatusesByThought] = useNestedXReducer('statusesByThought', state, dispatch);
   const [notificationDisabled] = useNestedXReducer('notificationDisabled', state, dispatch);
   const [DBProvider, db, dbReadyState] = useDB();
   const rootRef = useRef(null);
@@ -79,7 +85,8 @@ const App: FC<AppProps> = ({ classes, history }) => {
         template: setTemplates,
         picture: setPictures,
         setting: setSettings,
-      }, setLastNotification);
+        status: setStatuses,
+      }, setLastNotification, setStatusesByThought);
     }
   }, [db, dbReadyState]);
 
@@ -126,7 +133,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
 };
 
 const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>) => {
-  const [ thoughts, connections, plans, notes, tags, templates, pictures, settings ] = await Promise.all([
+  const [ thoughts, connections, plans, notes, tags, templates, pictures, settings, statuses ] = await Promise.all([
     thoughtActions.getThoughts(db),
     connectionActions.getConnections(db),
     planActions.getPlans(db),
@@ -135,17 +142,37 @@ const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>)
     templateActions.getTemplates(db),
     pictureActions.getPictures(db),
     settingActions.getSettings(db),
+    statusActions.getStatuses(db),
   ]);
+
+  const statusesById = intoMap(statuses);
+  const statusesByThought = thoughtStatuses(statuses);
+
+  const thoughtWithLatestStatus = thoughts.map(thought => {
+    if (statusesByThought[thought.id]) {
+      const statusId = statusesByThought[thought.id][statusesByThought[thought.id].length - 1];
+      const statusText = (statusesById[statusId] as StatusType).text;
+
+      return {
+        ...thought,
+        status: statusText,
+      };
+    }
+
+    return thought;
+  });
   
   dispatch({
     type: ACTION_TYPES.INITIALIZE_APPLICATION,
     payload: {
-      thoughts,
+      thoughts: thoughtWithLatestStatus,
       connections: intoMap(connections),
       plans,
       notes: intoMap(notes),
       tags: intoMap(tags),
       pictures: intoMap(pictures),
+      statuses: statusesById,
+      statusesByThought: statusesByThought,
       templates,
       settings: convertSettings(settings),
     },
@@ -433,7 +460,86 @@ const handleTemplateChange = (setter: Setter<TemplateState>, setLastNotification
   setLastNotification(notification);  
 };
 
-const subscribeToChanges = async (db: RxDatabase, setters: Setters, setLastNotification: Dispatch<SetStateAction<Notification>>) => {
+const handleStatusChange = (
+  setter: Setter<StatusState>,
+  setLastNotification: Dispatch<SetStateAction<Notification>>,
+  setThoughts: Setter<ThoughtType[]>,
+  setStatusesByThought: Setter<StatusesByThought>,
+) => ({ data }: RxChangeEvent) => {
+
+  const status: StatusType = data.v;
+  let notification;
+
+  switch (data.op) {
+    case 'INSERT':
+      setter(prev => ({
+        ...prev,
+        [status.id]: status,
+      }));
+      setStatusesByThought(prev => ({
+        ...prev,
+        [status.thoughtId]: (prev[status.thoughtId] || []).concat(status.id),
+      }));
+      setThoughts(prev => prev.map(prevThought => {
+        if (prevThought.id === status.thoughtId) {
+          return {
+            ...prevThought,
+            status: status.text,
+          };
+        }
+        return prevThought;
+      }))
+      notification = { message: 'Status updated' };
+      break;
+    
+    //TODO Determine whether removal of status is supported. If so, need to update thoughts here
+    case 'REMOVE':
+      setter(prev => {
+        const next = Object.keys(prev).reduce((nextState, key) => {
+          if (key !== status.id) {
+            nextState[key] = prev[key];
+          }
+          return nextState;
+        }, {} as StatusState);
+
+        return next;
+      });
+      setStatusesByThought(prev => ({
+        ...prev,
+        [status.thoughtId]: (prev[status.thoughtId] || []).filter(statusId => statusId !== status.id),
+      }));
+      notification = { message: 'Status removed' };
+      break;
+
+    case 'UPDATE':
+        setter(prev => ({
+          ...prev,
+          [status.id]: status,
+        }));
+        setThoughts(prev => prev.map(prevThought => {
+          if (prevThought.id === status.thoughtId) {
+            return {
+              ...prevThought,
+              status: status.text,
+            };
+          }
+          return prevThought;
+        }));
+        notification = { message: 'Status updated' };
+      break;
+  
+    default:
+      break;
+  }
+  setLastNotification(notification);
+};
+
+const subscribeToChanges = async (
+  db: RxDatabase,
+  setters: Setters,
+  setLastNotification: Dispatch<SetStateAction<Notification>>,
+  setStatusesByThought: Setter<StatusesByThought>,
+) => {
   //@ts-ignore
   db.thought.$.subscribe(handleThoughtChange(setters.thought, setLastNotification));
   //@ts-ignore
@@ -450,6 +556,8 @@ const subscribeToChanges = async (db: RxDatabase, setters: Setters, setLastNotif
   db.picture.$.subscribe(handlePictureChange(setters.picture, setLastNotification));
   //@ts-ignore
   db.setting.$.subscribe(handleSettingChange(setters.setting, setLastNotification));
+  //@ts-ignore
+  db.status.$.subscribe(handleStatusChange(setters.status, setLastNotification, setters.thought, setStatusesByThought));
 };
 
 export default withStyles(styles)(withRouter(App));
