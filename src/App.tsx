@@ -480,15 +480,6 @@ const handleStatusChange = (
         ...prev,
         [status.thoughtId]: [status.id].concat(prev[status.thoughtId] || []),
       }));
-      setThoughts(prev => prev.map(prevThought => {
-        if (prevThought.id === status.thoughtId) {
-          return {
-            ...prevThought,
-            status: status.text,
-          };
-        }
-        return prevThought;
-      }))
       notification = { message: 'Status updated' };
       break;
     
