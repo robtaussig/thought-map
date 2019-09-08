@@ -58,6 +58,7 @@ export const styles = (theme: any): StyleRules => ({
     gridRowGap: '30px',
     padding: 10,
     gridTemplateAreas: `"title title ."
+                        "create-time create-time create-time"
                         "time date ."
                         "type status status"
                         "priority-header priority priority"
@@ -225,5 +226,13 @@ export const styles = (theme: any): StyleRules => ({
   },
   noteEditInput: {
 
+  },
+  creationTimes: {
+    gridArea: 'create-time',
+    display: 'flex',
+  },
+  timeText: {
+    marginRight: 20,
+    color: 'white',
   },
 });

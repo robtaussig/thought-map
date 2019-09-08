@@ -12,48 +12,15 @@ import Edit from '@material-ui/icons/Edit';
 import Check from '@material-ui/icons/Check';
 import Delete from '@material-ui/icons/Delete';
 import { openConfirmation } from '../../lib/util';
-import { notes as noteActions, thoughts as thoughtActions, tags as tagActions } from '../../actions';
+import { notes as noteActions, tags as tagActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 import useAutoSuggest from 'react-use-autosuggest';
-import { Thought } from 'store/rxdb/schemas/thought';
-import { Tag } from 'store/rxdb/schemas/tag';
-import { Note as NoteType } from 'store/rxdb/schemas/note';
-import { PriorityOption } from './'
-import { RxDatabase } from 'rxdb';
-import { Notes, Settings } from 'reducers';
-
-interface ThoughtInformationProps {
-  classes: any,
-  thought: Thought,
-  tags: Tag[],
-  notes: NoteType[],
-  statusOptions: string[],
-  typeOptions: string[],
-  tagOptions: string[],
-  priorityOptions: PriorityOption[],
-  onUpdate: (thought: Thought) => void,
-  editState: boolean,
-  onEditState: (edit: boolean) => void,
-  stateNotes: Notes,
-  stateSettings: Settings,
-}
-
-interface EditedMap {
-  [id: string]: string
-}
-
-interface EditedObject {
-  thoughtId: string,
-  text: string,
-}
-
-interface ChangeValue {
-  value: any,
-}
-
-interface ChangeType {
-  target: ChangeValue,
-}
+import {
+  ThoughtInformationProps,
+  EditedMap,
+  ChangeType,
+} from './types';
+import { handleUpdates, getTime } from './util';
 
 export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   classes,
@@ -87,6 +54,8 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const handleStatusChange = useCallback(event => {
     onUpdate({ ...thought, status: event.target.value });
   }, [thought]);
+
+  const [createdText, lastUpdatedText]: [string, string] = [getTime(thought.created), getTime(thought.updated)];
 
   const handlePriorityChange = useCallback(event => {
     const value = priorityOptions.find(({ label }) => label === event.target.value).value;
@@ -284,6 +253,10 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
         ) : (
           <Header classes={classes} value={thought.title}/>
         )}
+        <div className={classes.creationTimes}>
+          {createdText && (<span className={classes.timeText}>Created at {createdText}</span>)}
+          {lastUpdatedText && (<span className={classes.timeText}>Updated at {lastUpdatedText}</span>)}
+        </div>
         {edittingTime || editState ? (
           <Date
             id={'time'}
@@ -392,65 +365,5 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   );
 });
 
-const handleUpdates = async (
-  db: RxDatabase,
-  addedNotes: string[],
-  addedTags: string[],
-  edittedNotes: EditedMap,
-  thought: Thought,
-  tags: Tag[],
-  notes: NoteType[],
-  edittedTitle: string,
-  edittedDescription: string,
-  reset: () => void
-) => {
-  const notesToAdd: EditedObject[] = [];
-  const tagsToAdd: EditedObject[] = [];
-  const notesToEdit: EditedObject[] = [];
-  const tagsToEdit: EditedObject[] = [];
-
-  addedNotes.forEach(addedNote => {
-    notesToAdd.push({
-      text: addedNote,
-      thoughtId: thought.id,
-    });
-  });
-
-  addedTags.forEach(addedTag => {
-    tagsToAdd.push({
-      text: addedTag,
-      thoughtId: thought.id,
-    });
-  });
-
-  Object.keys(edittedNotes).forEach(id => {
-    const foundNote = notes.find(note => note.id === id);
-    const foundTag = tags.find(tag => tag.id === id);
-    if (foundNote) {
-      notesToEdit.push(Object.assign({}, foundNote, {
-        text: edittedNotes[id],
-      }));
-    } else if (foundTag) {
-      tagsToEdit.push(Object.assign({}, foundTag, {
-        text: edittedNotes[id],
-      }));
-    }
-  });
-
-  if (edittedTitle !== thought.title || edittedDescription !== thought.description) {
-    await thoughtActions.editThought(db, Object.assign({}, thought, {
-      title: edittedTitle !== '' ? edittedTitle : thought.title,
-      description: edittedDescription !== '' ? edittedDescription : thought.description,
-    }));
-  }
-
-  await Promise.all([
-    Promise.all(notesToAdd.map(note => noteActions.createNote(db, note))),
-    Promise.all(tagsToAdd.map(tag => tagActions.createTag(db, tag))),
-    Promise.all(notesToEdit.map(note => noteActions.editNote(db, note))),
-    Promise.all(tagsToEdit.map(tag => tagActions.editTag(db, tag))),
-  ]);
-  reset();
-};
 
 export default ThoughtInformation;
