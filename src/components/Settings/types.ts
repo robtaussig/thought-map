@@ -50,6 +50,7 @@ export enum FormattedResultActionEnum {
 export enum SolutionTypes {
   DELETE = 'DELETE',
   NULL_OUT_PLAN_ID = 'NULL_OUT_PLAN_ID',
+  CREATE_STATUS = 'CREATE_STATUS',
 }
 
 export interface FormattedResult {

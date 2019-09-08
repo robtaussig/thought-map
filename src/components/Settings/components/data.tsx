@@ -9,7 +9,7 @@ import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
 import useApp from '../../../hooks/useApp';
 import { getSearchParam } from '../../../lib/util';
-import { useNestedXReducer, Action } from '../../../hooks/useXReducer';
+import { useNestedXReducer } from '../../../hooks/useXReducer';
 import { useModal } from '../../../hooks/useModal';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Plan } from '../../../store/rxdb/schemas/plan';
@@ -18,6 +18,7 @@ import { Tag } from '../../../store/rxdb/schemas/tag';
 import { Picture } from '../../../store/rxdb/schemas/picture';
 import { Setting } from '../../../store/rxdb/schemas/setting';
 import { Connection } from '../../../store/rxdb/schemas/connection';
+import { Status } from '../../../store/rxdb/schemas/status';
 import {
   thoughts as thoughtActions,
   plans as planActions,
@@ -26,6 +27,7 @@ import {
   tags as tagActions,
   pictures as pictureActions,
   settings as settingActions,
+  statuses as statusActions,
 } from '../../../actions';
 import Tooltip from '../../General/Tooltip';
 import {
@@ -296,6 +298,7 @@ const VALID_SETTINGS: ValidSettings = {
 
 const formatResults = (
   orphanedObjects: OrphanedChildObject[],
+  statuslessThoughts: Thought[],
   uncategorizedThoughts: Thought[],
   orphanedThoughts: Thought[],
   brokenConnections: Connection[],
@@ -312,6 +315,17 @@ const formatResults = (
       affectedItems: [item],
       title: 'Orphaned Item',
       solution: SolutionTypes.DELETE,
+    });
+  });
+
+  statuslessThoughts.forEach(statuslessThought => {
+    formattedResults.push({
+      action: FormattedResultActionEnum.CAN_FIX,
+      furtherDetails: 'These thoughts do not have an associated status. This might be due to unmigrated data from an older version of the app. At least a new status should be created for each thought.',
+      table: 'thought',
+      affectedItems: [statuslessThought],
+      title: 'Statusless Thought',
+      solution: SolutionTypes.CREATE_STATUS
     });
   });
 
@@ -382,6 +396,12 @@ const getOrphanedObjects = (orphanedChildObjectSources: OrphanedChildSource[], t
   }, [] as OrphanedChildObject[]);
 }
 
+const getStatuslessThoughts = (thoughts: Thought[], statuses: Status[]): Thought[] => {
+  return thoughts.filter(thought => {
+    return statuses.some(status => status.thoughtId === thought.id) === false;
+  });
+};
+
 const isBrokenConnection = (thoughtIds: Set<string>): (connection: Connection) => boolean => {
   return connection => {
     return !(connection.to &&
@@ -409,7 +429,7 @@ const getInvalidSettings = (settings: Setting[]): InvalidSetting[] => {
 }
 
 const getDBItems = (db: RxDatabase): Promise<[
-  Thought[], Connection[], Plan[], Note[], Tag[], Picture[], Setting[]
+  Thought[], Connection[], Plan[], Note[], Tag[], Picture[], Setting[], Status[]
 ]> => {
   return Promise.all([
     thoughtActions.getThoughts(db),
@@ -419,20 +439,23 @@ const getDBItems = (db: RxDatabase): Promise<[
     tagActions.getTags(db),
     pictureActions.getPictures(db),
     settingActions.getSettings(db),
+    statusActions.getStatuses(db),
   ]);
 };
 
 const runDiagnosis = async (db: RxDatabase) => {
-  const [ thoughts, connections, plans, notes, tags, pictures, settings ] = await getDBItems(db);
+  const [ thoughts, connections, plans, notes, tags, pictures, settings, statuses ] = await getDBItems(db);
   const thoughtIds = new Set<string>(thoughts.map<string>(({ id }) => id));
   const orphanedChildObjectSources: OrphanedChildSource[] = [
     { table: 'note', items: notes },
     { table: 'tag', items: tags },
     { table: 'tag', items: tags },
     { table: 'picture', items: pictures },
+    { table: 'status', items: statuses },
   ];
 
   const orphanedObjects = getOrphanedObjects(orphanedChildObjectSources, thoughtIds);
+  const statuslessThoughts = getStatuslessThoughts(thoughts, statuses);
   const uncategorizedThoughts: Thought[] = thoughts.filter(thought => !thought.planId);
   const orphanedThoughts: Thought[] = thoughts.filter(thought => {
     return thought.planId && (plans.some(plan => plan.id === thought.planId) === false);
@@ -446,6 +469,7 @@ const runDiagnosis = async (db: RxDatabase) => {
 
   return formatResults(
     orphanedObjects,
+    statuslessThoughts,
     uncategorizedThoughts,
     orphanedThoughts,
     brokenConnections,

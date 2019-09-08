@@ -16,13 +16,16 @@ import Tag from '../../../models/tags';
 import Template from '../../../models/templates';
 import Picture from '../../../models/pictures';
 import Setting from '../../../models/settings';
+import Status from '../../../models/statuses';
 import { RxDatabase, RxDocumentTypeWithRev } from 'rxdb';
 
 const modelsByTable: {
   [tableName: string]: {
     delete: ((db: RxDatabase, id: string) => Promise<any>),
-    update: (db: RxDatabase, object: RxDocumentTypeWithRev<any>) => Promise<any> }
-  } = {
+    update: ((db: RxDatabase, object: RxDocumentTypeWithRev<any>) => Promise<any>),
+    add?: ((db: RxDatabase, object: RxDocumentTypeWithRev<any>) => Promise<any>),
+  },
+} = {
   thought: { delete: Thought.delete, update: Thought.update },
   connection: { delete: Connection.delete, update: Connection.update },
   plan: { delete: Plan.delete, update: Plan.update },
@@ -31,6 +34,7 @@ const modelsByTable: {
   template: { delete: Template.delete, update: Template.update },
   picture: { delete: Picture.delete, update: Picture.update },
   setting: { delete: Setting.delete, update: Setting.update },
+  status: { delete: Status.delete, update: Status.update, add: Status.add }
 };
 
 import { jsonDump } from './data';
@@ -163,6 +167,23 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
               ...item,
               planId: '',
             }));
+            break;
+
+          case SolutionTypes.CREATE_STATUS:
+            queries.push(modelsByTable.status.add(db, {
+              text: 'new',
+              thoughtId: item.id,
+              created: item.created,
+              updated: item.created,
+            }));
+            if (item.status !== 'new') {
+              queries.push(modelsByTable.status.add(db, {
+                text: item.status,
+                thoughtId: item.id,
+                created: item.updated,
+                updated: item.updated,
+              }));
+            }
             break;
         }
       });
