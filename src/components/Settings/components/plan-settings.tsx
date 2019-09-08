@@ -6,6 +6,7 @@ import CheckBox from '../../General/CheckBox';
 import Select from '../../General/Select';
 import Home from '@material-ui/icons/Home';
 import Check from '@material-ui/icons/Check';
+import Create from '@material-ui/icons/Create';
 import DeletePlan from './delete-plan';
 import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
@@ -100,6 +101,7 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts })
         classes={classes}
         value={inputtedName}
         onChange={handleInputName}
+        injectedComponent={<Create className={classes.editIcon} color={'primary'}/>}
       />
       <CheckBox
         id={'show-completed'}
@@ -136,14 +138,15 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts })
         label={'Return Home'}
         Icon={Home}
       />
-      <CircleButton
-        classes={classes}
-        id={'submit-changes'}
-        disabled={hasChange === false}
-        onClick={handleClickSubmitChanges}
-        label={'Submit'}
-        Icon={Check}
-      />
+      {hasChange &&
+          <CircleButton
+          classes={classes}
+          id={'submit-changes'}
+          onClick={handleClickSubmitChanges}
+          label={'Submit'}
+          Icon={Check}
+        />
+      }
     </article>
   );
 };

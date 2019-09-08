@@ -34,7 +34,8 @@ export default class Base {
   static fetch = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
     const query = db[tableName].find({ id: { $eq: id } });
     const result: RxDocumentTypeWithRev<any> = await query.exec();
-    return result.toJSON();
+
+    return result && result[0]? result[0].toJSON() : null;
   }
 
   static add = async (db: RxDatabase, object: RxDocumentTypeWithRev<any>, tableName: string): Promise<any> => {

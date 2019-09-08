@@ -6,7 +6,7 @@ import { TABLE_NAME as tagTableName } from './tags';
 import { TABLE_NAME as pictureName } from './pictures';
 import { TABLE_NAME as connectionTableName } from './connections';
 
-const TABLE_NAME = 'thought';
+export const TABLE_NAME = 'thought';
 
 export default class Thoughts extends Base {
   static props = {

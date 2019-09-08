@@ -61,7 +61,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
     if (statuses && statuses.length > 0) {
-      return [getTime(statuses[0].created), getTime(statuses[statuses.length - 1].updated)];
+      return [getTime(statuses[statuses.length - 1].updated), getTime(statuses[0].created)];
     }
 
     return [getTime(thought.created), getTime(thought.updated)];

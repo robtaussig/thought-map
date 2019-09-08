@@ -100,7 +100,6 @@ export const styles = (theme: any): StyleRules => ({
     '&#edit-plan': {
       bottom: 10,
       left: 10,
-      opacity: 0.5,
     },
     '&#create-plan': {
       '&:disabled': {
@@ -109,7 +108,7 @@ export const styles = (theme: any): StyleRules => ({
     },'&#search': {
       top: 10,
       right: 10,
-      opacity: 0.5,      
+      opacity: 0.2,      
     },
   },
   settingsButton: {

@@ -24,10 +24,17 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     gridTemplateColumns: 'max-content 1fr',
     gridRowGap: '20px',
   },
+  editIcon: {
+    position: 'absolute',
+    right: 0,
+    top: '50%',
+    transform: 'translateY(-50%)',
+  },
   inputLabel: {
     '&#plan-name': {
       gridArea: 'plan-name',
       display: 'flex',
+      position: 'relative',
       '& > *': {
         flex: 1,
       },
