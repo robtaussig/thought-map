@@ -68,7 +68,7 @@ const getDateModifier = ({ date }: { date?: string }) => {
 };
 
 const getPriorityModifier = ({ priority }: { priority?: number }) => {
-  return priority || 0;
+  return priority || -1000;
 };
 
 const getLastUpdatedModifier = ({ updated }: { updated?: number }) => {
