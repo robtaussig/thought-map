@@ -33,6 +33,7 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
         openModal(<CreatePlan
           onClose={closeModal}
         />);
+        setCurrentPlan(lastPlan.current);
       break;
 
       case HOME_NAME:
