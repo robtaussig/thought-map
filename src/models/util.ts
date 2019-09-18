@@ -1,7 +1,7 @@
 interface WithTime {
-  createdAt: number,
-  updatedAt: number,
-  [key: string]: any,
+  createdAt: number;
+  updatedAt: number;
+  [key: string]: any;
 }
 
 export const withTime = (object: Object): WithTime => {

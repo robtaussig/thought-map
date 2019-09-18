@@ -3,15 +3,15 @@ import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 
 interface CircleButtonProps {
-  classes?: any,
-  id?: string,
-  onClick: (event?: ChangeEvent) => void,
-  label?: string,
-  disabled?: boolean,
-  Icon?: any,
-  title?: string,
-  svgRef?: React.Ref<HTMLElement>,
-  [rest: string]: any,
+  classes?: any;
+  id?: string;
+  onClick: (event?: ChangeEvent) => void;
+  label?: string;
+  disabled?: boolean;
+  Icon?: any;
+  title?: string;
+  svgRef?: React.Ref<HTMLElement>;
+  [rest: string]: any;
 }
 
 export const CircleButton: FC<CircleButtonProps> = React.memo(({ classes, id = 'add-button', onClick, label, disabled, Icon = Add, title, svgRef, ...rest }) => {

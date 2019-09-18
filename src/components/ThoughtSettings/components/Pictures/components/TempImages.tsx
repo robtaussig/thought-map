@@ -3,11 +3,11 @@ import ImageWrapper from './ImageWrapper';
 import FullScreenImage from './FullScreenImage';
 
 interface TempImagesProps {
-  classes: any,
-  tempImages: any[],
-  loaded: boolean,
-  uploadImageLocally: (idx: number) => () => Promise<any>,
-  uploadImageToImgur: (idx: number) => () => Promise<any>,
+  classes: any;
+  tempImages: any[];
+  loaded: boolean;
+  uploadImageLocally: (idx: number) => () => Promise<any>;
+  uploadImageToImgur: (idx: number) => () => Promise<any>;
 }
 
 export const TempImages: FC<TempImagesProps> = ({ classes, tempImages, uploadImageLocally, uploadImageToImgur, loaded }) => {

@@ -33,11 +33,11 @@ const styles = (theme: any): StyleRules => ({
 });
 
 interface CreateThoughtSettingsProps {
-  classes: any,
-  display: boolean,
-  templates: Template[],
-  onClose: () => void,
-  onCreateFromTemplate: (template: Template) => void,
+  classes: any;
+  display: boolean;
+  templates: Template[];
+  onClose: () => void;
+  onCreateFromTemplate: (template: Template) => void;
 }
 
 export const CreateThoughtSettings: FC<CreateThoughtSettingsProps> = ({ classes, display, templates, onClose, onCreateFromTemplate }) => {

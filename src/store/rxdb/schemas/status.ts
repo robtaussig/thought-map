@@ -1,11 +1,11 @@
 import { RxJsonSchema } from 'rxdb';
 
 export interface Status {
-  id?: string,
-  thoughtId: string,
-  text: string,
-  created?: number,
-  updated?: number,
+  id?: string;
+  thoughtId: string;
+  text: string;
+  created?: number;
+  updated?: number;
 }
 
 export default ['status', {

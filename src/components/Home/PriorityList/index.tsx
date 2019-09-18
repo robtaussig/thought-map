@@ -6,8 +6,8 @@ import PriorityListModal from './components/PriorityListModal';
 import { Thought } from 'store/rxdb/schemas/thought';
 
 interface PriorityListProps {
-  classes: any,
-  thoughts: Thought[],
+  classes: any;
+  thoughts: Thought[];
 }
 export const PriorityList: FC<PriorityListProps> = ({ classes, thoughts = [] }) => {
   const [openModal, closeModal] = useModal();

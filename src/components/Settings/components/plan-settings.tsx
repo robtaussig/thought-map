@@ -16,14 +16,14 @@ import { Plan } from 'store/rxdb/schemas/plan';
 import { Thought } from 'store/rxdb/schemas/thought';
 
 interface PlanSettingsProps {
-  classes: any,
-  plan: Plan,
-  thoughts: Thought[],
+  classes: any;
+  plan: Plan;
+  thoughts: Thought[];
 }
 
 interface AddOrRemovableThoughts {
-  id?: string,
-  label: string,
+  id?: string;
+  label: string;
 }
 
 export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts }) => {

@@ -7,10 +7,10 @@ import { Plan } from 'store/rxdb/schemas/plan';
 import { Thought } from 'store/rxdb/schemas/thought';
 
 interface DeletePlanProps {
-  classes: any,
-  plan: Plan,
-  thoughts: Thought[],
-  afterDelete: () => void,
+  classes: any;
+  plan: Plan;
+  thoughts: Thought[];
+  afterDelete: () => void;
 }
 
 export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, afterDelete }) => {

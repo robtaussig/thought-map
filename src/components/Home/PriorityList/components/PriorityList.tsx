@@ -4,9 +4,9 @@ import PriorityFields from './PriorityFields';
 import { Thought } from 'store/rxdb/schemas/thought';
 
 interface PriorityListProps {
-  classes: any,
-  thoughts: Thought[],
-  onMinimize: () => void,
+  classes: any;
+  thoughts: Thought[];
+  onMinimize: () => void;
 }
 
 export const PriorityList: FC<PriorityListProps> = ({ classes, thoughts, onMinimize }) => {

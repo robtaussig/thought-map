@@ -3,9 +3,9 @@ import React, { FC, useEffect } from 'react';
 import { withStyles, StyleRules } from '@material-ui/core/styles';
 
 interface FullScreenImageProps {
-  classes: any,
-  onClose: () => void,
-  image: string,
+  classes: any;
+  onClose: () => void;
+  image: string;
 }
 
 const styles = (theme: any): StyleRules => ({

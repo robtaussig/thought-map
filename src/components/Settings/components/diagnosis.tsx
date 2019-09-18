@@ -40,9 +40,9 @@ const modelsByTable: {
 import { jsonDump } from './data';
 
 interface DiagnosisProps {
-  classes: any,
-  diagnosisChunks: DiagnosisChunks,
-  onFix: () => void,
+  classes: any;
+  diagnosisChunks: DiagnosisChunks;
+  onFix: () => void;
 }
 
 const styles = (theme: any): StyleRules => ({

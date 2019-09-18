@@ -11,12 +11,12 @@ import { Note } from 'store/rxdb/schemas/note';
 import { styles } from './styles';
 
 interface ThoughtSettingsProps {
-  classes: any,
-  display: boolean,
-  thought: Thought,
-  tags: Tag[],
-  notes: Note[],
-  onDelete: () => void,
+  classes: any;
+  display: boolean;
+  thought: Thought;
+  tags: Tag[];
+  notes: Note[];
+  onDelete: () => void;
 }
 
 export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, thought, tags, notes, onDelete }) => {

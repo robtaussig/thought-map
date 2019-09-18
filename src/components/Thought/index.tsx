@@ -15,13 +15,13 @@ import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 import { AppState } from 'reducers';
 
 export interface PriorityOption {
-  value: number,
-  label: string,
+  value: number;
+  label: string;
 }
 
 interface ThoughtProps {
-  classes: any,
-  state: AppState,
+  classes: any;
+  state: AppState;
 }
 
 export const STATUS_OPTIONS: string[] = ['new', 'in progress', 'almost done', 'completed'];

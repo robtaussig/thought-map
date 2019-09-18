@@ -5,9 +5,9 @@ import { Thought } from '~store/rxdb/schemas/thought';
 import { Connection } from '~store/rxdb/schemas/connection';
 
 interface ContentProps {
-  classes: any,
-  thoughts: Thought[],
-  plan: Plan,
+  classes: any;
+  thoughts: Thought[];
+  plan: Plan;
 }
 
 export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan }) => {

@@ -15,9 +15,9 @@ import { openConfirmation } from '../../../../lib/util';
 import { styles } from './styles';
 
 interface PictureProps {
-  classes: any,
-  onClose: () => void,
-  thought: Thought,
+  classes: any;
+  onClose: () => void;
+  thought: Thought;
 }
 
 const IMGUR_CLIENT_ID = 'f1b9f4565330211';

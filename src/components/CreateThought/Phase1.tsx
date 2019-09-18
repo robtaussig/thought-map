@@ -12,15 +12,15 @@ import { Thought } from '../../store/rxdb/schemas/thought';
 import { SettingState } from '../../types';
 
 interface Phase1Props {
-  classes: any,
-  onNext: () => void,
-  isFocus: boolean,
-  onReady: (isReady: boolean) => void,
-  onFocus: () => void,
-  createdThought: CreatedThought,
-  dispatch: Dispatch<Action>,
-  thoughts: Thought[],
-  settings: SettingState,
+  classes: any;
+  onNext: () => void;
+  isFocus: boolean;
+  onReady: (isReady: boolean) => void;
+  onFocus: () => void;
+  createdThought: CreatedThought;
+  dispatch: Dispatch<Action>;
+  thoughts: Thought[];
+  settings: SettingState;
 }
 
 export const Phase1: FC<Phase1Props> = React.memo(({

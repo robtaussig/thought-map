@@ -1,9 +1,9 @@
 import React, { FC, useRef, useEffect } from 'react';
 
 interface ImageWrapperProps {
-  children: any,
-  className: string,
-  loaded: boolean,
+  children: any;
+  className: string;
+  loaded: boolean;
 }
 
 export const ImageWrapper: FC<ImageWrapperProps> = ({ children, className, loaded = true }) => {

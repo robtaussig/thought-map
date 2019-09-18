@@ -9,32 +9,32 @@ import { Note } from 'store/rxdb/schemas/note';
 import { Tag } from 'store/rxdb/schemas/tag';
 
 interface ThoughtSearchProps {
-  classes: any,
-  thoughts: Thought[],
-  notes: Notes,
-  tags: Tags,
-  close: () => void,
+  classes: any;
+  thoughts: Thought[];
+  notes: Notes;
+  tags: Tags;
+  close: () => void;
 }
 
 interface ThoughtMatch {
-  id: string,
-  title?: string,
+  id: string;
+  title?: string;
 }
 
 interface TrieNode {
-  [char: string]: TrieNode
+  [char: string]: TrieNode;
 }
 
 interface TrieNodes {
-  [thoughtId: string]: TrieNode
+  [thoughtId: string]: TrieNode;
 }
 
 interface Notes {
-  [noteId: string]: Note,
+  [noteId: string]: Note;
 }
 
 interface Tags {
-  [tagId: string]: Tag,
+  [tagId: string]: Tag;
 }
 
 class Searchable {

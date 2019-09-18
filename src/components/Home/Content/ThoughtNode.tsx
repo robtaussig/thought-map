@@ -8,8 +8,8 @@ import { homeUrl } from '../../../lib/util';
 import { Thought } from 'store/rxdb/schemas/thought';
 
 interface ThoughtNodeProps {
-  classes: any,
-  thought: Thought,
+  classes: any;
+  thought: Thought;
 }
 
 const STATUS_TO_COLOR: { [key: string]: string } = {

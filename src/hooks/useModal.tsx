@@ -4,17 +4,17 @@ import Close from '@material-ui/icons/Close';
 import { CSSProperties } from '@material-ui/styles';
 
 interface Options {
-  style?: CSSProperties,
-  className?: string,
+  style?: CSSProperties;
+  className?: string;
 }
 
 type OpenModal = (component: any, label?: string, options?: Options) => void;
 type CloseModal = () => void;
 
 interface ModalContextValue {
-  openModal: OpenModal,
-  closeModal: CloseModal,
-  dynamicState?: any,
+  openModal: OpenModal;
+  closeModal: CloseModal;
+  dynamicState?: any;
 }
 
 interface ModalState {
@@ -24,8 +24,8 @@ interface ModalState {
 }
 
 interface ModalProps {
-  children: any,
-  dynamicState?: any,
+  children: any;
+  dynamicState?: any;
 }
 
 const ModalContext = createContext<ModalContextValue>(null);

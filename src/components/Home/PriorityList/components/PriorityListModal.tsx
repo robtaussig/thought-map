@@ -5,9 +5,9 @@ import { Thought } from 'store/rxdb/schemas/thought';
 import useApp from '../../../../hooks/useApp';
 
 interface PriorityListModalProps {
-  classes: any,
-  thoughts: Thought[],
-  onMinimize: () => void,
+  classes: any;
+  thoughts: Thought[];
+  onMinimize: () => void;
 }
 
 export const PriorityListModal: FC<PriorityListModalProps> = ({ classes, thoughts, onMinimize }) => {

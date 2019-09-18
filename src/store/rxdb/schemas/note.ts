@@ -1,12 +1,12 @@
 import { RxJsonSchema } from 'rxdb';
 
 export interface Note {
-  id?: string,
-  thoughtId: string,
-  text: string,
-  index?: number,
-  created?: number,
-  updated?: number,
+  id?: string;
+  thoughtId: string;
+  text: string;
+  index?: number;
+  created?: number;
+  updated?: number;
 }
 
 export default ['note', {

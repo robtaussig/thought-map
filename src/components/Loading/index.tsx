@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import './style.css';
 
 interface LoadingProps {
-  id?: string,
+  id?: string;
 }
 
 export const Loading: FC<LoadingProps> = ({ id }) => {

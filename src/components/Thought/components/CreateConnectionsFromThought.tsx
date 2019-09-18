@@ -6,15 +6,15 @@ import { Thought } from 'store/rxdb/schemas/thought';
 import { Connection } from 'store/rxdb/schemas/connection';
 
 interface CreateConnectionsFromThoughtProps {
-  classes: any,
-  thought: Thought,
-  thoughts: Thought[],
-  connections: Connection[],
+  classes: any;
+  thought: Thought;
+  thoughts: Thought[];
+  connections: Connection[];
 }
 
 export interface ModifiedConnection {
-  id: string,
-  thoughtId: string,
+  id: string;
+  thoughtId: string;
 }
 
 const SETTING_CONNECTION_STATE = {

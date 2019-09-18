@@ -5,10 +5,10 @@ import Delete from '@material-ui/icons/Delete';
 import FullScreenImage from './FullScreenImage';
 
 interface ImagesProps {
-  classes: any,
-  relatedPictures: Picture[],
-  loaded: boolean,
-  deleteImage: (id: string) => () => Promise<any>
+  classes: any;
+  relatedPictures: Picture[];
+  loaded: boolean;
+  deleteImage: (id: string) => () => Promise<any>;
 }
 
 export const Images: FC<ImagesProps> = ({ classes, relatedPictures, loaded, deleteImage }) => {

@@ -10,42 +10,41 @@ import { Setting } from '../store/rxdb/schemas/setting';
 import { Status } from '../store/rxdb/schemas/status';
 
 export interface Notes {
-  [noteId: string]: Note,
+  [noteId: string]: Note;
 }
 
 export interface Statuses {
-  [statusId: string]: Status,
+  [statusId: string]: Status;
 }
 
 export interface Pictures {
-  [pictureId: string]: Picture,
+  [pictureId: string]: Picture;
 }
 
 export interface Tags {
-  [tagId: string]: Tag,
+  [tagId: string]: Tag;
 }
 
 export interface Settings {
-  [field: string]: Setting,
+  [field: string]: Setting;
 }
 
 export interface StatusesByThought {
-  [thoughtId: string]: string[],
+  [thoughtId: string]: string[];
 }
 
 export interface AppState {
-  thoughts: Thought[],
-  templates: Template[],
-  connections: Connection[],
-  pictures: Pictures,
-  plans: Plan[],
-  notes: Notes,
-  statuses: Statuses,
-  statusesByThought: StatusesByThought,
-  tags: Tags,
-  creatingPlan: boolean,
-  settings: Settings,
-  notificationDisabled: boolean,
+  thoughts: Thought[];
+  templates: Template[];
+  connections: Connection[];
+  pictures: Pictures;
+  plans: Plan[];
+  notes: Notes;
+  statuses: Statuses;
+  statusesByThought: StatusesByThought;
+  tags: Tags;
+  settings: Settings;
+  notificationDisabled: boolean;
 }
 
 enum ActionType {
@@ -55,12 +54,11 @@ enum ActionType {
   CREATE_THOUGHT = 'CREATE_THOUGHT',
   DELETE_THOUGHT = 'DELETE_THOUGHT',
   UPDATE_THOUGHT = 'UPDATE_THOUGHT',
-  CREATING_PLAN = 'CREATING_PLAN',
 }
 
 interface Action {
-  type: ActionType,
-  payload: any,
+  type: ActionType;
+  payload: any;
 }
 
 export const DEFAULT_STATE: AppState = {
@@ -73,7 +71,6 @@ export const DEFAULT_STATE: AppState = {
   tags: {},
   statuses: {},
   statusesByThought: {},
-  creatingPlan: false,
   settings: {},
   notificationDisabled: false,
 };
@@ -85,7 +82,6 @@ export const ACTION_TYPES = {
   CREATE_THOUGHT: 'CREATE_THOUGHT',
   DELETE_THOUGHT: 'DELETE_THOUGHT',
   UPDATE_THOUGHT: 'UPDATE_THOUGHT',
-  CREATING_PLAN: 'CREATING_PLAN',
 };
 
 export const appReducer: Reducer<AppState, Action> = (state, action) => {
@@ -103,11 +99,6 @@ export const appReducer: Reducer<AppState, Action> = (state, action) => {
         thoughts: action.payload,
       };
 
-    case ACTION_TYPES.CREATING_PLAN:
-      return {
-        ...state,
-        creatingPlan: action.payload,
-      };
     case ACTION_TYPES.FETCH_THOUGHT:
     case ACTION_TYPES.CREATE_THOUGHT:
     case ACTION_TYPES.DELETE_THOUGHT:

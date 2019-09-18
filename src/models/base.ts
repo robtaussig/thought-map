@@ -4,13 +4,13 @@ import { RxDatabase, RxDocumentTypeWithRev } from 'rxdb';
 const toJSON = (res: RxDocumentTypeWithRev<any>) => res.toJSON();
 
 interface Sortable {
-  index?: number,
-  updated?: number,
+  index?: number;
+  updated?: number;
 }
 
 interface Deletion {
-  tableName: string,
-  key: string,  
+  tableName: string;
+  key: string;  
 }
 
 export const sortByIndexThenDate = (resLeft: Sortable, resRight: Sortable): number => {

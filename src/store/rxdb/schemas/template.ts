@@ -1,11 +1,11 @@
 import { RxJsonSchema } from 'rxdb';
 
 export interface Template {
-  id?: string,
-  name: string,
-  template: any,
-  created?: number,
-  updated?: number,
+  id?: string;
+  name: string;
+  template: any;
+  created?: number;
+  updated?: number;
 }
 
 export default ['template', {

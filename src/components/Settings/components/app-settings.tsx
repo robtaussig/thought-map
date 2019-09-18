@@ -9,8 +9,8 @@ import { AppState } from '../../../reducers';
 import useApp from '../../../hooks/useApp';
 
 interface AppSettingsProps {
-  classes: any,
-  state: AppState,
+  classes: any;
+  state: AppState;
 }
 
 const styles = (theme: any): StyleRules => ({

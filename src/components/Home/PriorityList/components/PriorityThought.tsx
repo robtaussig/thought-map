@@ -5,9 +5,9 @@ import classNames from 'classnames';
 import { Thought } from 'store/rxdb/schemas/thought';
 
 interface PriorityThoughtProps {
-  classes: any,
-  thought: Thought,
-  onMinimize: () => void,
+  classes: any;
+  thought: Thought;
+  onMinimize: () => void;
 }
 
 export const PriorityThought: FC<PriorityThoughtProps> = ({ classes, thought, onMinimize }) => {

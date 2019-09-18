@@ -4,31 +4,31 @@ import Tooltip from './Tooltip';
 type Callback = (...params: any[]) => void;
 
 interface ChangeTarget {
-  value: string,
+  value: string;
 }
 
 interface ChangeType {
-  target: ChangeTarget
+  target: ChangeTarget;
 }
 
 export type InputChangeHandler = (e: ChangeType) => void;
 
 interface InputProps {
-  classes?: any,
-  value: string,
-  onChange: InputChangeHandler,
-  label?: string,
-  id?: string,
-  setFocus?: (cb: Callback) => void,
-  DeleteButton?: any,
-  scrollToOnMount?: boolean,
-  autoFocus?: boolean,
-  injectedComponent?: any,
-  focusOnLabelClick?: boolean,
-  placeholder?: string,
-  autoSuggest?: string[],
-  tooltip?: string,
-  [rest: string]: any,
+  classes?: any;
+  value: string;
+  onChange: InputChangeHandler;
+  label?: string;
+  id?: string;
+  setFocus?: (cb: Callback) => void;
+  DeleteButton?: any;
+  scrollToOnMount?: boolean;
+  autoFocus?: boolean;
+  injectedComponent?: any;
+  focusOnLabelClick?: boolean;
+  placeholder?: string;
+  autoSuggest?: string[];
+  tooltip?: string;
+  [rest: string]: any;
 }
 
 export const Input: FC<InputProps> = React.memo(({

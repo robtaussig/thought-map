@@ -8,11 +8,11 @@ import { Note } from '../../../store/rxdb/schemas/note';
 import { Tag } from '../../../store/rxdb/schemas/tag';
 
 interface TemplateProps {
-  classes: any,
-  onClose: () => void,
-  thought: Thought,
-  notes: Note[],
-  tags: Tag[],
+  classes: any;
+  onClose: () => void;
+  thought: Thought;
+  notes: Note[];
+  tags: Tag[];
 }
 
 type TemplateThought = Omit<Thought, 'id'|'thoughtId'|'planId'|'created'|'updated'|'deleted'|'_rev'>
@@ -20,9 +20,9 @@ type TemplateNote = Omit<Note, 'id'|'thoughtId'|'planId'|'created'|'updated'|'de
 type TemplateTag = Omit<Tag, 'id'|'thoughtId'|'planId'|'created'|'updated'|'deleted'|'_rev'>
 
 interface TemplateType {
-  thought: TemplateThought,
-  notes: TemplateNote[],
-  tags: TemplateTag[],
+  thought: TemplateThought;
+  notes: TemplateNote[];
+  tags: TemplateTag[];
 }
 
 export const Template: FC<TemplateProps> = ({ classes, onClose, thought, notes, tags }) => {

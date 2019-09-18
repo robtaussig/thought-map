@@ -1,13 +1,13 @@
 import { RxJsonSchema } from 'rxdb';
 
 export interface Picture {
-  id?: string,
-  localUrl?: string,
-  imgurUrl?: string,
-  thoughtId: string,
-  description?: string,
-  created?: number,
-  updated?: number,
+  id?: string;
+  localUrl?: string;
+  imgurUrl?: string;
+  thoughtId: string;
+  description?: string;
+  created?: number;
+  updated?: number;
 }
 
 export default ['picture', {

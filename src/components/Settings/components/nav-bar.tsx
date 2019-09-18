@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { withStyles, StyleRules } from '@material-ui/core/styles';
 
 interface NavBarProps {
-  classes: any,
-  items: any[],
+  classes: any;
+  items: any[];
 }
 
 const styles = (theme: any): StyleRules => ({

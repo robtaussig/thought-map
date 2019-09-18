@@ -2,14 +2,14 @@ import React, { FC, ChangeEventHandler } from 'react';
 import Tooltip from './Tooltip';
 
 interface TextAreaProps {
-  id?: string,
-  classes?: any,
-  value: string,
-  onChange: ChangeEventHandler<HTMLTextAreaElement>,
-  onFocus?: ChangeEventHandler<HTMLTextAreaElement>,
-  label?: string,
-  tooltip?: string,
-  [rest: string]: any,
+  id?: string;
+  classes?: any;
+  value: string;
+  onChange: ChangeEventHandler<HTMLTextAreaElement>;
+  onFocus?: ChangeEventHandler<HTMLTextAreaElement>;
+  label?: string;
+  tooltip?: string;
+  [rest: string]: any;
 }
 
 

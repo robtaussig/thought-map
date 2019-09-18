@@ -7,8 +7,8 @@ type Action = {
 }
 
 interface AppContext {
-  history?: History,
-  dispatch?: Dispatch<Action>
+  history?: History;
+  dispatch?: Dispatch<Action>;
 }
 
 export const Context = createContext<AppContext>({});

@@ -3,7 +3,7 @@ import { Context } from '../store';
 import { withStyles, StyleRules } from '@material-ui/core/styles';
 
 interface TemplateProps {
-  classes: any,
+  classes: any;
 }
 
 const styles = (theme: any): StyleRules => ({

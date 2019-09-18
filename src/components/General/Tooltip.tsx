@@ -5,9 +5,9 @@ import { useModal } from '../../hooks/useModal';
 import classNames from 'classnames';
 
 interface TooltipProps {
-  classes: any,
-  text: string,
-  className?: string,
+  classes: any;
+  text: string;
+  className?: string;
 }
 
 const styles = (theme: any): StyleRules => ({

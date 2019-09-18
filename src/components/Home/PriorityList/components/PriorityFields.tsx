@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 interface PriorityFieldsProps {
-  classes: any,
+  classes: any;
 }
 
 export const PriorityFields: FC<PriorityFieldsProps> = ({ classes }) => {

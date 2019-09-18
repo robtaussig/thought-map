@@ -7,12 +7,12 @@ import Remove from '@material-ui/icons/Remove';
 import { Thought } from 'store/rxdb/schemas/thought';
 
 interface ConnectionProps {
-  classes: any,
-  targetThought: Thought,
-  sourceThought: Thought,
-  connected?: string,
-  from: boolean,
-  to: boolean,
+  classes: any;
+  targetThought: Thought;
+  sourceThought: Thought;
+  connected?: string;
+  from: boolean;
+  to: boolean;
 }
 
 export const Connection: FC<ConnectionProps> = ({ classes, targetThought, sourceThought, connected, from, to }) => {

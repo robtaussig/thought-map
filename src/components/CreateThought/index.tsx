@@ -19,15 +19,15 @@ import { Template } from '../../store/rxdb/schemas/template';
 import { AppState } from '../../reducers';
 
 export interface CreatedThought {
-  title: string,
-  typeOptions: string[],
-  type: string,
-  date: string,
-  time: string,
-  description: string,
-  notes: string[],
-  tags: string[],
-  tagOptions: string[],
+  title: string;
+  typeOptions: string[];
+  type: string;
+  date: string;
+  time: string;
+  description: string;
+  notes: string[];
+  tags: string[];
+  tagOptions: string[];
 }
 
 const DEFAULT_STATE: CreatedThought = {
@@ -43,8 +43,8 @@ const DEFAULT_STATE: CreatedThought = {
 };
 
 interface CreateThoughtProps {
-  classes: any,
-  state: AppState,
+  classes: any;
+  state: AppState;
 }
 
 export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {

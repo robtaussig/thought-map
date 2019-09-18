@@ -10,15 +10,15 @@ import { rootStyles } from './styles';
 import { AppState } from '../../reducers';
 
 interface SettingsProps {
-  classes: any,
-  state: AppState,
+  classes: any;
+  state: AppState;
 }
 
 interface NavBarItem {
-  value: string,
-  current: boolean,
-  onClick: () => void,
-  disabled?: boolean,
+  value: string;
+  current: boolean;
+  onClick: () => void;
+  disabled?: boolean;
 }
 
 export const Settings: FC<SettingsProps> = ({ classes, state }) => {

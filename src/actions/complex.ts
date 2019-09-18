@@ -10,13 +10,13 @@ import {
 } from './';
 
 interface WholeThought {
-  title: string,
-  type: string,
-  date: string,
-  time: string,
-  description: string,
-  notes: any[],
-  tags: any[],
+  title: string;
+  type: string;
+  date: string;
+  time: string;
+  description: string;
+  notes: any[];
+  tags: any[];
 }
 
 export const createWholeThought = async (db: RxDatabase, {

@@ -15,20 +15,20 @@ import { Action, Setter } from './hooks/useXReducer';
 
 
 export interface Classes {
-  [className: string]: string,
+  [className: string]: string;
 }
 
 export interface AppProps extends RouteComponentProps {
-  classes: Classes,
-  history: History
+  classes: Classes;
+  history: History;
 }
 
 export interface Notification {
-  message: string,
+  message: string;
 }
 
 export interface Setters {
-  [key: string]: Setter<any>,
+  [key: string]: Setter<any>;
 }
 
 export enum Operation {
@@ -38,12 +38,12 @@ export enum Operation {
 }
 
 export interface RxChangeEventData {
-  v: any,
-  op: Operation
+  v: any;
+  op: Operation;
 }
 
 export interface RxChangeEvent {
-  data: RxChangeEventData,
+  data: RxChangeEventData;
 }
 
 export type ConnectionState = {

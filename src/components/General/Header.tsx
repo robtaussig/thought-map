@@ -2,11 +2,11 @@ import React, { FC, MouseEvent } from 'react';
 import Tooltip from './Tooltip';
 
 interface HeaderProps {
-  classes: any,
-  value: string,
-  onClick?: (event: MouseEvent<HTMLHeadingElement>) => void,
-  tooltip?: string,
-  [rest: string]: any,
+  classes: any;
+  value: string;
+  onClick?: (event: MouseEvent<HTMLHeadingElement>) => void;
+  tooltip?: string;
+  [rest: string]: any;
 }
 
 export const Header: FC<HeaderProps> = React.memo(({ classes, value, onClick, tooltip, ...rest }) => {

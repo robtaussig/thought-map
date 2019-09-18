@@ -11,8 +11,8 @@ import { useLoadedDB } from '../../../hooks/useDB';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 
 interface ManagePhotosProps {
-  classes: any,
-  pictures: Pictures,
+  classes: any;
+  pictures: Pictures;
 }
 
 enum Side {

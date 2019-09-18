@@ -5,17 +5,17 @@ import { Thought } from 'store/rxdb/schemas/thought';
 import { ModifiedConnection } from './CreateConnectionsFromThought';
 
 interface ConnectionsProps {
-  classes: any,
-  thought: Thought,
-  from?: boolean,
-  to?: boolean,
-  revealed: boolean,
-  connections: ModifiedConnection[],
-  thoughts: Thought[],
+  classes: any;
+  thought: Thought;
+  from?: boolean;
+  to?: boolean;
+  revealed: boolean;
+  connections: ModifiedConnection[];
+  thoughts: Thought[];
 }
 
 interface ConnectionMap {
-  [id: string]: string,
+  [id: string]: string;
 }
 
 const styles = (theme: any): StyleRules => ({

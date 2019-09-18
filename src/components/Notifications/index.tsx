@@ -3,12 +3,12 @@ import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
 interface NotificationsProps {
-  lastNotification: Notification,
-  notificationDisabled: boolean,
+  lastNotification: Notification;
+  notificationDisabled: boolean;
 }
 
 interface Notification {
-  message: string,
+  message: string;
 }
 
 export const Notifications: FC<NotificationsProps> = React.memo(({ lastNotification, notificationDisabled = false }) => {

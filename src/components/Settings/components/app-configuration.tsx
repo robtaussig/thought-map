@@ -9,8 +9,8 @@ import { SettingState } from '../../../types';
 import { settings as settingsActions } from '../../../actions';
 
 interface AppConfigurationProps {
-  classes: any,
-  settings: SettingState,
+  classes: any;
+  settings: SettingState;
 }
 
 enum Side {

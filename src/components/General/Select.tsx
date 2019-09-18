@@ -2,17 +2,17 @@ import React, { FC, ChangeEventHandler } from 'react';
 import Tooltip from './Tooltip';
 
 interface SelectProps {
-  id?: string,
-  classes?: any,
-  value: string,
-  options: string[],
-  onChange: ChangeEventHandler<HTMLSelectElement>,
-  label?: string,
-  injectedComponent?: any,
-  title?: string,
-  ariaLabel?: string,
-  tooltip?: string,
-  [rest: string]: any,
+  id?: string;
+  classes?: any;
+  value: string;
+  options: string[];
+  onChange: ChangeEventHandler<HTMLSelectElement>;
+  label?: string;
+  injectedComponent?: any;
+  title?: string;
+  ariaLabel?: string;
+  tooltip?: string;
+  [rest: string]: any;
 }
 
 export const Select: FC<SelectProps> = React.memo(({

@@ -4,11 +4,11 @@ import { Status } from '../store/rxdb/schemas/status';
 import { SettingState } from '../types';
 
 interface Mappable {
-  id?: string,
+  id?: string;
 }
 
 interface MappedCollection {
-  [id: string]: Mappable,
+  [id: string]: Mappable;
 }
 
 export const intoMap = (items: Mappable[]) => {

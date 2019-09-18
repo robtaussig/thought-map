@@ -13,8 +13,8 @@ import useModal from '../../hooks/useModal';
 import { AppState } from '../../reducers';
 
 interface HomeProps {
-  classes: any,
-  state: AppState,
+  classes: any;
+  state: AppState;
 }
 
 export const Home: FC<HomeProps> = ({ classes, state }) => {
@@ -38,10 +38,10 @@ export const Home: FC<HomeProps> = ({ classes, state }) => {
   return (
     <div className={classes.root}>
       <Content classes={classes} thoughts={thoughts} plan={plan}/>
-      <PlanSelect classes={classes} plans={state.plans} creatingPlan={state.creatingPlan} thoughts={thoughts} planId={planId}/>
-      {!state.creatingPlan && <CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
-      {!state.creatingPlan && <CircleButton id={'search'} classes={classes} onClick={handleSearch} label={'Search'} Icon={Search}/>}
-      {!state.creatingPlan && <CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
+      <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId}/>
+      {<CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
+      {<CircleButton id={'search'} classes={classes} onClick={handleSearch} label={'Search'} Icon={Search}/>}
+      {<CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { AppState } from "../../reducers";
 
 export interface DataProps {
-  classes: any,
+  classes: any;
   state: AppState
 }
 
@@ -11,32 +11,32 @@ export enum Side {
 }
 
 export interface ChildObject {
-  thoughtId: string,
+  thoughtId: string;
 }
 
 export interface OrphanedChildSource {
-  table: string,
-  items: ChildObject[],
+  table: string;
+  items: ChildObject[];
 }
 
 export interface OrphanedChildObject {
-  table: string,
-  item: ChildObject,
+  table: string;
+  item: ChildObject;
 }
 
 export interface InvalidSetting {
-  field: string,
-  value: string,
-  reason: string,
+  field: string;
+  value: string;
+  reason: string;
 }
 
 export interface ValidSetting {
-  values: Set<any>,
-  reason: string,
+  values: Set<any>;
+  reason: string;
 }
 
 export interface ValidSettings {
-  [field: string]: ValidSetting,
+  [field: string]: ValidSetting;
 }
 
 export enum FormattedResultActionEnum {
@@ -54,23 +54,23 @@ export enum SolutionTypes {
 }
 
 export interface FormattedResult {
-  action: FormattedResultActionEnum,
-  furtherDetails?: string,
-  table: string,
-  affectedItems: any[],
-  title: string,
-  solution?: SolutionTypes,
+  action: FormattedResultActionEnum;
+  furtherDetails?: string;
+  table: string;
+  affectedItems: any[];
+  title: string;
+  solution?: SolutionTypes;
 }
 
 export interface ChunkItem {
-  table: string,
-  item: any,
-  solution?: SolutionTypes,
+  table: string;
+  item: any;
+  solution?: SolutionTypes;
 }
 
 export interface ChunkDetails {
-  furtherDetails?: string,
-  items: ChunkItem[],
+  furtherDetails?: string;
+  items: ChunkItem[];
 }
 
 export interface Chunks {
