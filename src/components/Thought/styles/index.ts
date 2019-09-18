@@ -61,7 +61,7 @@ export const styles = (theme: any): StyleRules => ({
                         "create-time create-time create-time"
                         "time date ."
                         "type status complete-button"
-                        "priority-header priority priority"
+                        "priority-header priority priority-button"
                         "notes notes notes"
                         "tags tags tags"
                         "description description description"`,
@@ -71,6 +71,14 @@ export const styles = (theme: any): StyleRules => ({
   completeButton: {
     gridArea: 'complete-button',
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  priorityButton: {
+    gridArea: 'priority-button',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
   },
   priorityHeader: {
     gridArea: 'priority-header',

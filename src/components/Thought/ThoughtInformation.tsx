@@ -3,6 +3,7 @@ import Note from '@material-ui/icons/Note';
 import AccessTime from '@material-ui/icons/AccessTime';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import PriorityHighRounded from '@material-ui/icons/PriorityHighRounded';
 import Header from '../General/Header';
 import Select from '../General/Select';
 import Input from '../General/Input';
@@ -259,6 +260,10 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     });
   };
 
+  const handleClickPriorityButton = () => {
+    onUpdate({ ...thought, priority: 10 });
+  };
+
   return (
     <Fragment>
       <div className={classes.thoughtInformation}>
@@ -310,9 +315,12 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           options={statusOptions}
           onChange={handleStatusChange}
         />
-        <button className={classes.completeButton} onClick={handleClickCompleteStatus}>
-          <CheckCircleOutlineIcon color={'primary'}/>
-        </button>
+        {!editState &&
+          thought.status !== 'completed' &&
+          <button className={classes.completeButton} onClick={handleClickCompleteStatus}>
+            <CheckCircleOutlineIcon color={'primary'}/>
+          </button>
+        }
         {(thought.priority !== 0 || editState) && <span className={classes.priorityHeader}>Priority</span>}
         {(thought.priority !== 0 || editState) && (
           <Select
@@ -323,6 +331,13 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
             onChange={handlePriorityChange}
           />
         )}
+        {!editState &&
+          thought.priority > 0 &&
+          thought.priority < 10 && 
+          <button className={classes.priorityButton} onClick={handleClickPriorityButton}>
+            <PriorityHighRounded color={'primary'}/>
+          </button>
+        }
         {editState ? (
           <Select
             id={'type'}
