@@ -5,6 +5,7 @@ import { TABLE_NAME as noteTableName } from './notes';
 import { TABLE_NAME as tagTableName } from './tags';
 import { TABLE_NAME as pictureName } from './pictures';
 import { TABLE_NAME as connectionTableName } from './connections';
+import { TABLE_NAME as statusTableName } from './statuses';
 
 export const TABLE_NAME = 'thought';
 
@@ -31,6 +32,7 @@ export default class Thoughts extends Base {
       { tableName: connectionTableName, key: 'from' },
       { tableName: connectionTableName, key: 'to' },
       { tableName: pictureName, key: 'thoughtId' },
+      { tableName: statusTableName, key: 'thoughtId' },
     ], id);
 
     return Base.delete(db, id, TABLE_NAME);
