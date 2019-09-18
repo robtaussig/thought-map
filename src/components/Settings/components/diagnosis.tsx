@@ -105,6 +105,10 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
+const canFix = (diagnosisChunks: DiagnosisChunks) => {
+  return Object.keys(diagnosisChunks).filter(key => key === FormattedResultActionEnum.CAN_FIX).length > 0;
+};
+
 export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix }) => {
   const db = useLoadedDB();
 
@@ -196,7 +200,7 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
   return (
     <div className={classes.root}>
       {_diagnosis}
-      {(Object.keys(diagnosisChunks).length > 0) && (<div className={classes.actionButtons}>
+      {canFix(diagnosisChunks) && (<div className={classes.actionButtons}>
         <button onClick={() => jsonDump(db)}>Backup data</button>
         <button onClick={handleClickFixIssues}>Fix issues</button>
       </div>)}
