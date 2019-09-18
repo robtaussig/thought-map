@@ -20,7 +20,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
                         "add-thoughts add-thoughts"
                         "remove-thoughts remove-thoughts"
                         "delete-plan delete-plan"`,
-    gridTemplateRows: '1fr 1fr 1fr 1fr 200px',
+    gridTemplateRows: '50px 1fr 1fr 1fr 200px',
     gridTemplateColumns: 'max-content 1fr',
     gridRowGap: '20px',
   },
