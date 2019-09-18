@@ -29,7 +29,8 @@ const styles = (theme: any): StyleRules => ({
 export const Tooltip: FC<TooltipProps> = ({ classes, text, className }) => {
   const [openModal, closeModal] = useModal();
 
-  const handleClickTooltip = () => {
+  const handleClickTooltip = (e: any) => {
+    e.preventDefault();
     openModal(<span className={classes.wrapper}>{text}</span>, 'Tooltip');
   };
 
