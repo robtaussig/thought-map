@@ -125,7 +125,9 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
     }
 
     const handleClickThought = (thought: any) => () => {
-      history.push(`/thought/${thought.id}`);
+      if (!thought.thoughtId && thought.planId) {
+        history.push(`/thought/${thought.id}`);
+      }
     };
 
     return (
