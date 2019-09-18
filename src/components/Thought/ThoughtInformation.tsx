@@ -2,6 +2,7 @@ import React, { useCallback, useState, useMemo, useEffect, useRef, Fragment, FC 
 import Note from '@material-ui/icons/Note';
 import AccessTime from '@material-ui/icons/AccessTime';
 import CalendarToday from '@material-ui/icons/CalendarToday';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import Header from '../General/Header';
 import Select from '../General/Select';
 import Input from '../General/Input';
@@ -220,9 +221,9 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 
     return (
       <ul className={classes.noteList}>
-          {notes
-            .sort((a, b) => a.created - b.created)
-            .map(({ text, id }, idx) => {
+        {notes
+          .sort((a, b) => a.created - b.created)
+          .map(({ text, id }, idx) => {
             return editState ? (
               <li className={classes.noteItem} key={`${idx}-note`}>
                 <button className={classes.deleteIcon} onClick={handleDelete(id, 'note')}><Delete/></button>
@@ -244,11 +245,19 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
                 }} value={addedNote}/>
               </li>
             )
-          }))}
-          {editState && <button className={classes.addItem} onClick={() => setAddedNotes(prev => prev.concat(''))}>Add Note</button>}
-        </ul>
+          }))
+        }
+        {editState && <button className={classes.addItem} onClick={() => setAddedNotes(prev => prev.concat(''))}>Add Note</button>}
+      </ul>
     );
   }, [classes, notes, edittedNotes, editState, addedNotes]);
+
+  const handleClickCompleteStatus = () => {
+    statusActions.createStatus(db, {
+      text: 'completed',
+      thoughtId: thought.id,
+    });
+  };
 
   return (
     <Fragment>
@@ -301,6 +310,9 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           options={statusOptions}
           onChange={handleStatusChange}
         />
+        <button className={classes.completeButton} onClick={handleClickCompleteStatus}>
+          <CheckCircleOutlineIcon color={'primary'}/>
+        </button>
         {(thought.priority !== 0 || editState) && <span className={classes.priorityHeader}>Priority</span>}
         {(thought.priority !== 0 || editState) && (
           <Select

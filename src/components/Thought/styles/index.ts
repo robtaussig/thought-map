@@ -60,13 +60,17 @@ export const styles = (theme: any): StyleRules => ({
     gridTemplateAreas: `"title title ."
                         "create-time create-time create-time"
                         "time date ."
-                        "type status status"
+                        "type status complete-button"
                         "priority-header priority priority"
                         "notes notes notes"
                         "tags tags tags"
                         "description description description"`,
     gridTemplateRows: 'max-content',
     gridTemplateColumns: 'max-content 1fr max-content',
+  },
+  completeButton: {
+    gridArea: 'complete-button',
+    cursor: 'pointer',
   },
   priorityHeader: {
     gridArea: 'priority-header',
