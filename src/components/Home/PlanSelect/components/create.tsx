@@ -17,10 +17,11 @@ const styles = (theme: any): StyleRules => ({
     justifyContent: 'space-between',
   },
   submitButton: {
-    flex: '0 0 100px',
+    flex: 0,
     color: 'white',
     fontWeight: 600,
     cursor: 'pointer',
+    marginLeft: 30,
     '&:active': {
       opacity: 0.7,
     }
