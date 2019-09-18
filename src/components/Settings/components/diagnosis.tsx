@@ -2,6 +2,7 @@ import React, { FC, useMemo, Fragment } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import Tooltip from '../../General/Tooltip';
 import { useLoadedDB } from '../../../hooks/useDB';
+import useApp from '../../../hooks/useApp';
 import {
   DiagnosisChunks,
   FormattedResultActionEnum,
@@ -87,6 +88,7 @@ const styles = (theme: any): StyleRules => ({
     backgroundColor: 'white',
     borderRadius: '3px',
     padding: '1px 3px',
+    cursor: 'pointer',
   },
   tooltip: {
     justifyContent: 'center',
@@ -111,6 +113,7 @@ const canFix = (diagnosisChunks: DiagnosisChunks) => {
 
 export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix }) => {
   const db = useLoadedDB();
+  const { history } = useApp();
 
   const _diagnosis = useMemo(() => {
     if (Object.keys(diagnosisChunks).length === 0) {
@@ -120,6 +123,10 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
         </div>
       );
     }
+
+    const handleClickThought = (thought: any) => () => {
+      history.push(`/thought/${thought.id}`);
+    };
 
     return (
       <div className={classes.diagnosis}>
@@ -137,7 +144,7 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
                       {items.map(({ item, table }, itemIdx) => {
                         return (
                           <div key={`${itemIdx}-item`} className={classes.item}>
-                            <span className={classes.table}>{table}</span>
+                            <button className={classes.table} onClick={handleClickThought(item)}>{table}</button>
                             <Tooltip className={classes.tooltip} text={JSON.stringify(item)}/>
                           </div>
                         );
