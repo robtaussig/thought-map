@@ -55,6 +55,9 @@ export const styles = (theme: any): StyleRules => ({
   },
   pictureDescriptionButton: {
     gridArea: 'description',
+    marginTop: 10,
+    color: 'white',
+    fontWeight: 600,
   },
   deleteButton: {
     gridArea: 'delete',
