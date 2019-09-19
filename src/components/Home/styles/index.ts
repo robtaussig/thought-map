@@ -9,10 +9,11 @@ export const styles = (theme: any): StyleRules => ({
     padding: 20,
     backgroundColor: theme.palette.gray[500],
     gap: '20px',
-    gridTemplateAreas: `"content content"
+    gridTemplateAreas: `"sort-buttons sort-buttons"
+                        "content content"
                         "plans-list plans-list"
                         "search search"`,
-    gridTemplateRows: '7fr minmax(50px, 1fr) minmax(50px, 1fr)',
+    gridTemplateRows: '40px 7fr minmax(50px, 1fr) minmax(50px, 1fr)',
     gridTemplateColumns: 'repeat(2, 1fr)',
   },
   selectLabel: {
@@ -56,6 +57,27 @@ export const styles = (theme: any): StyleRules => ({
         bottom: 0,
       },
     },
+  },
+  sortByButtons: {
+    display: 'flex',  
+    gridArea: 'sort-buttons',
+    backgroundColor: theme.palette.primary[500],
+    color: 'white',
+  },
+  sortButton: {
+    fontWeight: 600,
+    color: 'white',
+  },
+  sortByNames: {
+    flex: 1,
+    ...theme.defaults.centered,
+  },
+  sortByStatus: {
+    flex: '0 0 100px',
+    ...theme.defaults.centered,
+  },
+  emptyIcon: {
+    width: 24,
   },
   thoughtNode: {
     display: 'flex',
@@ -107,7 +129,7 @@ export const styles = (theme: any): StyleRules => ({
       },
     },'&#search': {
       top: 10,
-      right: 10,
+      left: 10,
       opacity: 0.2,      
     },
   },
