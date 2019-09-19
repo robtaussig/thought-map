@@ -39,6 +39,7 @@ import CreateThought from './components/CreateThought';
 import Thought from './components/Thought';
 import Notifications from './components/Notifications';
 import { ModalProvider } from './hooks/useModal';
+import Div100vh from 'react-div-100vh';
 import {
   AppProps,
   Notification,
@@ -104,7 +105,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
         <ModalProvider dynamicState={state}>
-          <div id={'app'} ref={rootRef} className={classes.root}>
+          <Div100vh id={'app'} ref={rootRef} className={classes.root}>
             <Notifications lastNotification={lastNotification} notificationDisabled={notificationDisabled}/>
             <PriorityList thoughts={state.thoughts}/>
             <Switch>
@@ -133,7 +134,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Home state={state} statusOptions={statusOptions}/>}
               </Route>
             </Switch> 
-          </div>
+          </Div100vh>
         </ModalProvider>  
       </DBProvider>
     </Context.Provider>

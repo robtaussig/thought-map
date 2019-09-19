@@ -13,7 +13,6 @@ import {
 } from './store/rxdb/schemas/types';
 import { Action, Setter } from './hooks/useXReducer';
 
-
 export interface Classes {
   [className: string]: string;
 }
