@@ -56,6 +56,8 @@ import {
   StatusesByThought,
 } from './types';
 
+export const STATUS_OPTIONS: string[] = ['new', 'in progress', 'almost done', 'completed'];
+
 const App: FC<AppProps> = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
   const [lastNotification, setLastNotification] = useState<Notification>(null);
@@ -92,6 +94,12 @@ const App: FC<AppProps> = ({ classes, history }) => {
 
   const appContext = useMemo(() => ({ dispatch, history }), []);
 
+  const statusOptions = useMemo(() => {
+    return STATUS_OPTIONS.slice(0, STATUS_OPTIONS.length - 1).concat(
+      Array.isArray(state.settings.customStatuses) ? state.settings.customStatuses : []
+    ).concat(STATUS_OPTIONS[STATUS_OPTIONS.length - 1]);
+  }, [state.settings.customStatuses]);
+
   return (
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
@@ -101,7 +109,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
             <PriorityList thoughts={state.thoughts}/>
             <Switch>
               <Route exact path={'/'}>
-                {dbReadyState && <Home state={state}/>}
+                {dbReadyState && <Home state={state} statusOptions={statusOptions}/>}
               </Route>
               <Route path={'/settings'}>
                 {dbReadyState && <Settings state={state}/>}
@@ -110,19 +118,19 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <CreateThought state={state}/>}
               </Route>
               <Route path={'/thought/:id'}>
-                {dbReadyState && <Thought state={state}/>}
+                {dbReadyState && <Thought state={state} statusOptions={statusOptions}/>}
               </Route>
               <Route path={'/plan/:id/thought/new'}>
                 {dbReadyState && <CreateThought state={state}/>}
               </Route>
               <Route path={'/plan/:id/thought/:thoughtId'}>
-                {dbReadyState && <Thought state={state}/>}
+                {dbReadyState && <Thought state={state} statusOptions={statusOptions}/>}
               </Route>
               <Route path={'/plan/:id/settings'}>
                 {dbReadyState && <Settings state={state} />}
               </Route>
               <Route path={'/plan/:id'}>
-                {dbReadyState && <Home state={state}/>}
+                {dbReadyState && <Home state={state} statusOptions={statusOptions}/>}
               </Route>
             </Switch> 
           </div>

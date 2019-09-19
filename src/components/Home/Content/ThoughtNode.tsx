@@ -2,7 +2,6 @@ import React, { useCallback, FC } from 'react';
 import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
-import { STATUS_OPTIONS } from '../../Thought';
 import { statuses as statusActions } from '../../../actions';
 import { homeUrl } from '../../../lib/util';
 import { Thought } from 'store/rxdb/schemas/thought';
@@ -10,6 +9,7 @@ import { Thought } from 'store/rxdb/schemas/thought';
 interface ThoughtNodeProps {
   classes: any;
   thought: Thought;
+  statusOptions: string[];
 }
 
 const STATUS_TO_COLOR: { [key: string]: string } = {
@@ -34,7 +34,7 @@ const styleFromPriority = (priority: number): { color?: string, fontWeight?: num
   return {};
 };
 
-export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought }) => {
+export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought, statusOptions }) => {
   const { history } = useApp();
   const db = useLoadedDB();
 
@@ -56,7 +56,7 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought 
         id={'status-select'}
         classes={classes}
         value={thought.status}
-        options={STATUS_OPTIONS}
+        options={statusOptions}
         onChange={handleChangeStatus}
         style={{
           backgroundColor: STATUS_TO_COLOR[thought.status],

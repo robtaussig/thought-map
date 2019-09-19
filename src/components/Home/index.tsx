@@ -15,9 +15,10 @@ import { AppState } from '../../reducers';
 interface HomeProps {
   classes: any;
   state: AppState;
+  statusOptions: string[];
 }
 
-export const Home: FC<HomeProps> = ({ classes, state }) => {
+export const Home: FC<HomeProps> = ({ classes, state, statusOptions }) => {
   const { history } = useApp();
   const [openModal, closeModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
@@ -37,7 +38,7 @@ export const Home: FC<HomeProps> = ({ classes, state }) => {
   
   return (
     <div className={classes.root}>
-      <Content classes={classes} thoughts={thoughts} plan={plan}/>
+      <Content classes={classes} thoughts={thoughts} plan={plan} statusOptions={statusOptions}/>
       <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId}/>
       {<CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
       {<CircleButton id={'search'} classes={classes} onClick={handleSearch} label={'Search'} Icon={Search}/>}

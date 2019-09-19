@@ -9,6 +9,7 @@ interface ContentProps {
   classes: any;
   thoughts: Thought[];
   plan: Plan;
+  statusOptions: string[];
 }
 
 type Field = 'name' | 'status';
@@ -18,7 +19,7 @@ interface SortRule {
   desc?: boolean;
 }
 
-export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan }) => {
+export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const [sortRule, setSortRule] = useState<SortRule>({});
 
@@ -70,6 +71,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan }
                 classes={classes}
                 key={`thought-node-${thought.id}`}  
                 thought={thought}
+                statusOptions={statusOptions}
               />
             );
           })}

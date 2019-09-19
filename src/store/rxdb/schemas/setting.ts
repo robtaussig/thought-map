@@ -3,7 +3,7 @@ import { RxJsonSchema } from 'rxdb';
 export interface Setting {
   id?: string,
   field: string,
-  value: string,
+  value: any,
   created?: number,
   updated?: number,
 }

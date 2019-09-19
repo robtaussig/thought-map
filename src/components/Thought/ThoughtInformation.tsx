@@ -59,6 +59,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       text: event.target.value,
       thoughtId: thought.id,
     });
+    onEditState(false);
   }, [thought]);
 
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
@@ -72,6 +73,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const handlePriorityChange = useCallback(event => {
     const value = priorityOptions.find(({ label }) => label === event.target.value).value;
     onUpdate({ ...thought, priority: value });
+    onEditState(false);
   }, [thought]);
 
   const handleSetTime = useCallback(event => {
