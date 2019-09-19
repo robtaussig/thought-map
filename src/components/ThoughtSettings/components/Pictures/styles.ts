@@ -33,12 +33,27 @@ export const styles = (theme: any): StyleRules => ({
     gridTemplateRows: '1fr max-content',
     gridTemplateColumns: '1fr 40px',
     margin: '15px 0',
+    flexDirection: 'column',
     '& > img': {
       gridArea: 'image',
       width: '100%',
     }
   },
   pictureDescription: {
+    gridArea: 'description',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  pictureDescriptionText: {
+    flex: 1,
+  },
+  editPictureDescriptionButton: {
+    flex: '0 0 40px',
+    color: 'white',
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  pictureDescriptionButton: {
     gridArea: 'description',
   },
   deleteButton: {

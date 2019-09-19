@@ -87,16 +87,19 @@ export const CustomObjects: FC<CustomObjectsProps> = ({ classes, settings }) => 
 
   const handleClickCustomStatuses = useCallback(() => {
     openModal(<CustomStatuses onClose={closeModal}/>);
-
-  }, [settings]);
+  }, []);
 
   const handleClickCustomTags = useCallback(() => {
     alert('Coming soon...')
-  }, [settings]);
+  }, []);
 
   const handleClickCustomTypes = useCallback(() => {
     alert('Coming soon...')
-  }, [settings]);
+  }, []);
+
+  const handleClickDeleteTemplates = useCallback(() => {
+    alert('Coming soon...');
+  }, []);
   
   return (
     <Fragment>
@@ -113,6 +116,7 @@ export const CustomObjects: FC<CustomObjectsProps> = ({ classes, settings }) => 
         <button className={classes.button} onClick={handleClickCustomStatuses}>Custom Statuses</button>
         <button className={classes.button} onClick={handleClickCustomTags}>Custom Tags</button>
         <button className={classes.button} onClick={handleClickCustomTypes}>Custom Types</button>
+        <button className={classes.button} onClick={handleClickDeleteTemplates}>Delete Templates</button>
         <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
       </div>
     </Fragment>
