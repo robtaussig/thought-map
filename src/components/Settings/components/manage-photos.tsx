@@ -23,7 +23,7 @@ enum Side {
 const styles = (theme: any): StyleRules => ({
   container: {
     position: 'fixed',
-    height: '100vh',
+    height: '100%',
     left: 0,
     right: 0,
     top: 0,

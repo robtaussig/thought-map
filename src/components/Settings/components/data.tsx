@@ -49,7 +49,7 @@ import {
 const styles = (theme: any): StyleRules => ({
   container: {
     position: 'fixed',
-    height: '100vh',
+    height: '100%',
     left: 0,
     right: 0,
     top: 0,
@@ -293,6 +293,10 @@ const VALID_SETTINGS: ValidSettings = {
   useAutoSuggest: {
     values: booleanValues,
     reason: 'useAutoSuggest must be a boolean',
+  },
+  customStatuses: {
+    values: null,
+    reason: 'customStatuses must be an array of strings',
   },
 };
 

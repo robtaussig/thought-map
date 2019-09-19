@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-// import './store/database.js';
+import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
 import { theme } from './App.style';
 import { ThemeProvider } from '@material-ui/styles';

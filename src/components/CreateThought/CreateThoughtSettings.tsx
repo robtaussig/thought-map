@@ -6,7 +6,7 @@ import { Template } from '../../store/rxdb/schemas/template';
 const styles = (theme: any): StyleRules => ({
   root: {
     position: 'fixed',
-    height: '100vh',
+    height: '100%',
     left: 0,
     right: 0,
     backgroundColor: '#545454f0',    
