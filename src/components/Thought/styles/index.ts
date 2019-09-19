@@ -61,27 +61,31 @@ export const styles = (theme: any): StyleRules => ({
                         "create-time create-time create-time"
                         "time date ."
                         "type status complete-button"
-                        "priority-header priority priority-button"
+                        "priority priority priority-button"
                         "notes notes notes"
                         "tags tags tags"
                         "description description description"`,
     gridTemplateRows: 'max-content',
-    gridTemplateColumns: 'max-content 1fr max-content',
+    gridTemplateColumns: 'max-content 1fr 50px',
   },
   completeButton: {
     gridArea: 'complete-button',
     cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
+    ...theme.defaults.centered,
   },
   priorityButton: {
     gridArea: 'priority-button',
     cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
+    ...theme.defaults.centered,
   },
   priorityHeader: {
     gridArea: 'priority-header',
+    color: theme.palette.secondary[300],
+    ...theme.defaults.centered,
+    fontSize: 20,
+  },
+  priorityText: {
+    gridArea: 'priority',
     color: theme.palette.secondary[300],
     ...theme.defaults.centered,
     fontSize: 20,
@@ -131,6 +135,12 @@ export const styles = (theme: any): StyleRules => ({
   changeStatus: {
     color: theme.palette.primary[500],
     gridArea: 'change-status-button',
+  },
+  statusText: {
+    gridArea: 'status',
+    color: theme.palette.secondary[300],
+    ...theme.defaults.centered,
+    fontSize: 20,
   },
   thoughtType: {
     color: theme.palette.secondary[300],

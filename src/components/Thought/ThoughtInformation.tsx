@@ -292,9 +292,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           />
         ) : thought.time ? (
           <span className={classes.thoughtTime}>{thought.time}</span>
-        ) : (
-          <button id={'time-button'} className={'icon-button'} onClick={_ => setEdittingTime(true)}><AccessTime className={classes.timeIcon}/></button>
-        )}
+        ) : null}
         {edittingDate || editState ? (
           <Date
             id={'date'}
@@ -305,24 +303,23 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           />
         ) : thought.date ? (
           <span className={classes.thoughtDate}>{thought.date}</span>
-        ) : (
-          <button id={'date-button'} className={'icon-button'} onClick={_ => setEdittingDate(true)}><CalendarToday className={classes.dateIcon}/></button>
-        )}
-        <Select
+        ) : null}
+        {editState ? (<Select
           id={'status'}
           classes={classes}
           value={thought.status}
           options={statusOptions}
           onChange={handleStatusChange}
-        />
+        />) : (
+          <span className={classes.statusText}>{thought.status}</span>
+        )}
         {!editState &&
           thought.status !== 'completed' &&
           <button className={classes.completeButton} onClick={handleClickCompleteStatus}>
             <CheckCircleOutlineIcon color={'primary'}/>
           </button>
         }
-        {(thought.priority !== 0 || editState) && <span className={classes.priorityHeader}>Priority</span>}
-        {(thought.priority !== 0 || editState) && (
+        {editState && (
           <Select
             id={'priority'}
             classes={classes}
@@ -330,6 +327,9 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
             options={priorityOptions.map(option => option.label)}
             onChange={handlePriorityChange}
           />
+        )}
+        {thought.priority !== 0 && !editState && (
+          <span className={classes.priorityText}>{priorityOptions.find(({ value }) => value === thought.priority).label}</span>
         )}
         {!editState &&
           thought.priority > 0 &&
