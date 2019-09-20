@@ -215,8 +215,8 @@ export const Data: FC<DataProps> = ({ classes, state }) => {
       fr.onload = e => {
         const json = JSON.parse((e.target as any).result);
 
-        const importJSON = async () => {
-          setNotificationDisabled(true);
+        const importJSON = async () => {          
+          (window as any).blockDBSubscriptions = true;
           await db.importDump(json);
           location.href = '/settings';
         };

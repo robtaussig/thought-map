@@ -205,6 +205,7 @@ const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>)
 };
 
 const handleThoughtChange = (setter: Setter<ThoughtState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  if ((window as any).blockDBSubscriptions === true) return;
   const thought: ThoughtType = data.v;
   let notification;
   switch (data.op) {
@@ -230,6 +231,7 @@ const handleThoughtChange = (setter: Setter<ThoughtState>, setLastNotification: 
 };
 
 const handleConnectionChange = (setter: Setter<ConnectionState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  if ((window as any).blockDBSubscriptions === true) return;
   const connection: ConnectionType = data.v;
   let notification;
   switch (data.op) {
@@ -270,6 +272,7 @@ const handleConnectionChange = (setter: Setter<ConnectionState>, setLastNotifica
 };
 
 const handleNoteChange = (setter: Setter<NoteState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  if ((window as any).blockDBSubscriptions === true) return;
   const note: NoteType = data.v;
   let notification;
   switch (data.op) {
@@ -310,6 +313,7 @@ const handleNoteChange = (setter: Setter<NoteState>, setLastNotification: Dispat
 };
 
 const handlePictureChange = (setter: Setter<PictureState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  if ((window as any).blockDBSubscriptions === true) return;
   const picture: PictureType = data.v;
   let notification;
   switch (data.op) {
@@ -350,6 +354,7 @@ const handlePictureChange = (setter: Setter<PictureState>, setLastNotification: 
 };
 
 const handleSettingChange = (setter: Setter<SettingState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  if ((window as any).blockDBSubscriptions === true) return;
   const setting: SettingType = {
     ...data.v,
     value: JSON.parse(data.v.value),
@@ -393,6 +398,7 @@ const handleSettingChange = (setter: Setter<SettingState>, setLastNotification: 
 };
 
 const handleTagChange = (setter: Setter<TagState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  if ((window as any).blockDBSubscriptions === true) return;
   const tag: TagType = data.v;
   let notification;
   switch (data.op) {
@@ -433,6 +439,7 @@ const handleTagChange = (setter: Setter<TagState>, setLastNotification: Dispatch
 };
 
 const handlePlanChange = (setter: Setter<PlanState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  if ((window as any).blockDBSubscriptions === true) return;
   const plan: PlanType = data.v;
   let notification;
   switch (data.op) {
@@ -458,6 +465,7 @@ const handlePlanChange = (setter: Setter<PlanState>, setLastNotification: Dispat
 };
 
 const handleTemplateChange = (setter: Setter<TemplateState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+  if ((window as any).blockDBSubscriptions === true) return;
   const template: TemplateType = {
     ...data.v,
     template: JSON.parse(data.v.template),
@@ -486,6 +494,7 @@ const handleTemplateChange = (setter: Setter<TemplateState>, setLastNotification
 };
 
 const handleStatusChange = (
+  if ((window as any).blockDBSubscriptions === true) return;
   setter: Setter<StatusState>,
   setLastNotification: Dispatch<SetStateAction<Notification>>,
   setThoughts: Setter<ThoughtType[]>,
