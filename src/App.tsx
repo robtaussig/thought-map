@@ -498,7 +498,6 @@ const handleStatusChange = (
   setStatusesByThought: Setter<StatusesByThought>,
   matchStatusLocationIfEnabled: (status: StatusType) => Promise<void>,
 ) => ({ data }: RxChangeEvent) => {
-
   if ((window as any).blockDBSubscriptions === true) return;
   const status: StatusType = data.v;
   let notification;
@@ -514,7 +513,7 @@ const handleStatusChange = (
         [status.thoughtId]: [status.id].concat(prev[status.thoughtId] || []),
       }));
       notification = { message: 'Status updated' };
-      // matchStatusLocationIfEnabled(status);
+      matchStatusLocationIfEnabled(status);
       break;
     
     //TODO Determine whether removal of status is supported. If so, need to update thoughts here
@@ -534,7 +533,6 @@ const handleStatusChange = (
         [status.thoughtId]: (prev[status.thoughtId] || []).filter(statusId => statusId !== status.id),
       }));
       notification = { message: 'Status removed' };
-      matchStatusLocationIfEnabled(status);
       break;
 
     case 'UPDATE':
