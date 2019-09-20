@@ -507,7 +507,7 @@ const handleStatusChange = (
         [status.thoughtId]: [status.id].concat(prev[status.thoughtId] || []),
       }));
       notification = { message: 'Status updated' };
-      matchStatusLocationIfEnabled(status);
+      // matchStatusLocationIfEnabled(status);
       break;
     
     //TODO Determine whether removal of status is supported. If so, need to update thoughts here

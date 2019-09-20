@@ -26,8 +26,8 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   const sortBySortRule = (left: Thought, right: Thought): number => {
     if (sortRule.field) {
       const leftIsBigger = sortRule.field === 'name' ?
-        left.title.toLowerCase() > right.title.toLowerCase():
-        left.status.toLowerCase() > right.status.toLowerCase();
+        left.title && (!right.title || (left.title.toLowerCase() > right.title.toLowerCase())):
+        left.title && (!right.status || (left.status.toLowerCase() > right.status.toLowerCase()));
       
       return (leftIsBigger && sortRule.desc) || (!leftIsBigger && !sortRule.desc) ? 1 : -1;
     }
