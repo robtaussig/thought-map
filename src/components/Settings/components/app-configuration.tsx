@@ -111,8 +111,26 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
     });
   }, []);
 
+  const handleChangeUseLocation = useCallback(e => {
+    settingsActions.editSetting(db, {
+      field: 'useLocation',
+      value: e.target.checked,
+    });
+    if (e.target.checked) {
+      navigator.geolocation.getCurrentPosition(() => {
+        console.log('Location enabled');
+      }, () => {
+        settingsActions.editSetting(db, {
+          field: 'useLocation',
+          value: false,
+        });
+      });
+    }
+  }, []);
+
   const reportBugs = Boolean(settings && settings.reportBugs);
   const useAutoSuggest = Boolean(settings && settings.useAutoSuggest);
+  const useLocation = Boolean(settings && settings.useLocation);
 
   return (
     <Fragment>
@@ -142,6 +160,14 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           onChange={handleChangeUseAutoSuggest}
           tooltip={'If enabled, certain inputs will produce suggestions that draw from previous entries. Suggestions will be a combination of word completions and word sequences, and will be displayed as an overlay. This is different from any browser/device-based auto-suggestions which don\'t necessarily consider context.'}  
         />
+        {'geolocation' in navigator && <CheckBox
+          classes={classes}
+          value={'Use Location'}
+          label={'Use Location'}
+          isChecked={useLocation}
+          onChange={handleChangeUseLocation}
+          tooltip={'If enabled, and permission to use geolocation granted, your location will be saved along with updates to thought statuses. This will allow for a more comprehensive context behind thought transitions.'}  
+        />}
         <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
       </div>
     </Fragment>

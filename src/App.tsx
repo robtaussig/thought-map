@@ -59,6 +59,22 @@ import {
 
 export const STATUS_OPTIONS: string[] = ['new', 'in progress', 'almost done', 'completed'];
 
+const matchStatusLocationIfEnabled = (db: RxDatabase) => async (status: StatusType): Promise<void> => {
+  const [useLocation] = await settingActions.findSetting(db, 'field', 'useLocation');
+  if (useLocation && useLocation.value === true) {
+    navigator.geolocation.getCurrentPosition(position => {
+      if (position && position.coords) {
+        const locationValue = `${position.coords.latitude},${position.coords.longitude}`;
+        const nextStatus = {
+          ...status,
+          location: locationValue,
+        };
+        statusActions.editStatus(db, nextStatus);
+      }
+    });
+  }
+};
+
 const App: FC<AppProps> = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
   const [lastNotification, setLastNotification] = useState<Notification>(null);
@@ -89,7 +105,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
         picture: setPictures,
         setting: setSettings,
         status: setStatuses,
-      }, setLastNotification, setStatusesByThought);
+      }, setLastNotification, setStatusesByThought, matchStatusLocationIfEnabled(db));
     }
   }, [db, dbReadyState]);
 
@@ -474,6 +490,7 @@ const handleStatusChange = (
   setLastNotification: Dispatch<SetStateAction<Notification>>,
   setThoughts: Setter<ThoughtType[]>,
   setStatusesByThought: Setter<StatusesByThought>,
+  matchStatusLocationIfEnabled: (status: StatusType) => Promise<void>,
 ) => ({ data }: RxChangeEvent) => {
 
   const status: StatusType = data.v;
@@ -490,6 +507,7 @@ const handleStatusChange = (
         [status.thoughtId]: [status.id].concat(prev[status.thoughtId] || []),
       }));
       notification = { message: 'Status updated' };
+      matchStatusLocationIfEnabled(status);
       break;
     
     //TODO Determine whether removal of status is supported. If so, need to update thoughts here
@@ -509,6 +527,7 @@ const handleStatusChange = (
         [status.thoughtId]: (prev[status.thoughtId] || []).filter(statusId => statusId !== status.id),
       }));
       notification = { message: 'Status removed' };
+      matchStatusLocationIfEnabled(status);
       break;
 
     case 'UPDATE':
@@ -525,13 +544,13 @@ const handleStatusChange = (
           }
           return prevThought;
         }));
-        notification = { message: 'Status updated' };
+
       break;
   
     default:
       break;
   }
-  setLastNotification(notification);
+  if (notification) setLastNotification(notification);
 };
 
 const subscribeToChanges = async (
@@ -539,6 +558,7 @@ const subscribeToChanges = async (
   setters: Setters,
   setLastNotification: Dispatch<SetStateAction<Notification>>,
   setStatusesByThought: Setter<StatusesByThought>,
+  matchStatusLocationIfEnabled: (status: StatusType) => Promise<void>,
 ) => {
   //@ts-ignore
   db.thought.$.subscribe(handleThoughtChange(setters.thought, setLastNotification));
@@ -557,7 +577,7 @@ const subscribeToChanges = async (
   //@ts-ignore
   db.setting.$.subscribe(handleSettingChange(setters.setting, setLastNotification));
   //@ts-ignore
-  db.status.$.subscribe(handleStatusChange(setters.status, setLastNotification, setters.thought, setStatusesByThought));
+  db.status.$.subscribe(handleStatusChange(setters.status, setLastNotification, setters.thought, setStatusesByThought, matchStatusLocationIfEnabled));
 };
 
 export default withStyles(styles)(withRouter(App));

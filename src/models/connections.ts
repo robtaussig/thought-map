@@ -5,14 +5,6 @@ import Base from './base';
 export const TABLE_NAME = 'connection';
 
 export default class Connections extends Base {
-  static props = {
-    id: Number,
-    to: Number,
-    from: Number,
-    created: Number,
-    updated: Number,
-    deleted: Number,
-  }
   static fetchAll = (db: RxDatabase): Promise<Connection[]> => Base.fetchAll(db, TABLE_NAME)
   static fetch = (db: RxDatabase, id: string): Promise<Connection> => Base.fetch(db, id, TABLE_NAME)
   static add = (db: RxDatabase, object: Connection): Promise<Connection> => Base.add(db, object, TABLE_NAME)

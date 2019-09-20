@@ -5,28 +5,26 @@ import Base from './base';
 export const TABLE_NAME = 'setting';
 
 export default class Settings extends Base {
-  static props = {
-    id: Number,
-    field: String,
-    value: String,
-    created: Number,
-    updated: Number,
+  static parseSetting = (setting: Setting): Setting => {
+    return setting ? {
+      ...setting,
+      value: JSON.parse(setting.value)
+    } : setting;
   }
   static fetchAll = async (db: RxDatabase): Promise<Setting[]> => {
     const results = await Base.fetchAll(db, TABLE_NAME);
 
-    return results ? results.map<Setting>(result => ({
-      ...result,
-      value: JSON.parse(result.value),
-    })) : results;
+    return results ? results.map<Setting>(Settings.parseSetting) : results;
   }
   static fetch = async (db: RxDatabase, id: string): Promise<Setting> => {
     const result = await Base.fetch(db, id, TABLE_NAME);
 
-    return result ? {
-      ...result,
-      value: JSON.parse(result.value)
-    } : result;
+    return result ? Settings.parseSetting(result) : result;
+  }
+  static find = async (db: RxDatabase, field: string, value: string): Promise<Setting[]> => {
+    const result = await Base.find(db, field, value, TABLE_NAME);
+
+    return result ? result.map(Settings.parseSetting) : result;
   }
   static add = (db: RxDatabase, object: Setting): Promise<Setting> => Base.add(db, object, TABLE_NAME)
   static update = (db: RxDatabase, object: Setting): Promise<Setting> => Base.update(db, object, TABLE_NAME)

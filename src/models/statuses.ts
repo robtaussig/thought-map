@@ -7,14 +7,6 @@ import Thoughts from './thoughts';
 export const TABLE_NAME = 'status';
 
 export default class Statuses extends Base {
-  static props = {
-    id: Number,
-    thoughtId: Number,
-    text: String,
-    created: Number,
-    updated: Number,
-    deleted: Number,
-  }
   static fetchAll = (db: RxDatabase): Promise<Status[]> => Base.fetchAll(db, TABLE_NAME)
   static fetch = (db: RxDatabase, id: string): Promise<Status> => Base.fetch(db, id, TABLE_NAME)
   static add = async (db: RxDatabase, object: Status): Promise<any> => {

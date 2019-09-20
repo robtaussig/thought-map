@@ -1,16 +1,17 @@
-import { RxJsonSchema } from 'rxdb';
+import { RxJsonSchema, RxDocument } from 'rxdb';
 
 export interface Status {
   id?: string;
   thoughtId: string;
   text: string;
+  location?: string;
   created?: number;
   updated?: number;
 }
 
 export default ['status', {
   "title": "Status schema",
-  "version": 0,
+  "version": 1,
   "description": "A Status",
   "type": "object",
   "properties": {
@@ -23,6 +24,9 @@ export default ['status', {
       "type": "string",
     },
     "text": {
+      "type": "string",
+    },
+    "location": {
       "type": "string",
     },
     "index": {
@@ -39,4 +43,10 @@ export default ['status', {
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema, {
+  "migrationStrategies": {
+    1: (oldStatus: RxDocument<Status>) => {
+      return oldStatus;
+    },
+  },
+}];

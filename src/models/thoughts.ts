@@ -10,17 +10,6 @@ import { TABLE_NAME as statusTableName } from './statuses';
 export const TABLE_NAME = 'thought';
 
 export default class Thoughts extends Base {
-  static props = {
-    id: Number,
-    planId: Number,
-    title: String,
-    type: String,
-    status: String,
-    description: String,
-    created: Number,
-    updated: Number,
-    deleted: Number,
-  }
   static fetchAll = (db: RxDatabase): Promise<Thought[]> => Base.fetchAll(db, TABLE_NAME)
   static fetch = (db: RxDatabase, id: string): Promise<Thought> => Base.fetch(db, id, TABLE_NAME)
   static add = (db: RxDatabase, object: Thought): Promise<Thought> => Base.add(db, object, TABLE_NAME)

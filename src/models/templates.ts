@@ -5,14 +5,6 @@ import Base from './base';
 export const TABLE_NAME = 'template';
 
 export default class Templates extends Base {
-  static props = {
-    id: Number,
-    name: String,
-    template: String,
-    created: Number,
-    updated: Number,
-    deleted: Number,
-  }
   static fetchAll = async (db: RxDatabase): Promise<Template[]> => {
     const objects = await Base.fetchAll(db, TABLE_NAME);
     return objects.map(({ template, ...rest }) => ({

@@ -67,6 +67,7 @@ export const pictures = {
 export const settings = {
   getSettings: Settings.fetchAll,
   getSetting: Settings.fetch,
+  findSetting: Settings.find,
   createSetting: Settings.upsert,
   deleteSetting: Settings.delete,
   editSetting: Settings.upsert,
