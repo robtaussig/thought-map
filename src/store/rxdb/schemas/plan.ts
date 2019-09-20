@@ -4,13 +4,14 @@ export interface Plan {
   id?: string;
   name: string;
   showCompleted?: boolean;
+  defaultType?: string;
   created?: number;
   updated?: number;
 }
 
 export default ['plan', {
   "title": "Plan schema",
-  "version": 1,
+  "version": 2,
   "description": "A Plan",
   "type": "object",
   "properties": {
@@ -23,6 +24,9 @@ export default ['plan', {
     },
     "showCompleted": {
       "type": "boolean",
+    },
+    "defaultType": {
+      "type": "string",
     },
     "created": {
       "type": "number",
@@ -39,6 +43,10 @@ export default ['plan', {
   "migrationStrategies": {
     1: (oldPlan: RxDocument<Plan>) => {
       oldPlan.showCompleted = false;
+      return oldPlan;
+    },
+    2: (oldPlan: RxDocument<Plan>) => {
+      oldPlan.defaultType = 'task';
       return oldPlan;
     },
   },

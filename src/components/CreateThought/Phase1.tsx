@@ -13,7 +13,6 @@ import { SettingState } from '../../types';
 
 interface Phase1Props {
   classes: any;
-  onNext: () => void;
   isFocus: boolean;
   onReady: (isReady: boolean) => void;
   onFocus: () => void;
@@ -21,11 +20,11 @@ interface Phase1Props {
   dispatch: Dispatch<Action>;
   thoughts: Thought[];
   settings: SettingState;
+  typeOptions: string[];
 }
 
 export const Phase1: FC<Phase1Props> = React.memo(({
   classes,
-  onNext,
   isFocus,
   onReady,
   onFocus,
@@ -33,10 +32,10 @@ export const Phase1: FC<Phase1Props> = React.memo(({
   dispatch,
   thoughts,
   settings,
+  typeOptions,
 }) => {
   const focusTitleInput = useRef<() => {}>(null);
   const [title, setTitle] = useNestedXReducer('title', createdThought, dispatch);
-  const [typeOptions, setTypeOptions] = useNestedXReducer('typeOptions', createdThought, dispatch);
   const [type, setType] = useNestedXReducer('type', createdThought, dispatch);
   const [date, setDate] = useNestedXReducer('date', createdThought, dispatch);
   const [time, setTime] = useNestedXReducer('time', createdThought, dispatch);

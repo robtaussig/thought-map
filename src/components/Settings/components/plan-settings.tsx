@@ -19,6 +19,7 @@ interface PlanSettingsProps {
   classes: any;
   plan: Plan;
   thoughts: Thought[];
+  typeOptions: string[];
 }
 
 interface AddOrRemovableThoughts {
@@ -26,7 +27,7 @@ interface AddOrRemovableThoughts {
   label: string;
 }
 
-export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts }) => {
+export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, typeOptions }) => {
   const { history } = useApp();
   const db = useLoadedDB();
   const [inputtedName, setInputtedName] = useState<string>(plan.name);
@@ -89,6 +90,14 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts })
     thoughtActions.editThought(db, nextThought);
   };
 
+  const handleSelectDefaultType: ChangeEventHandler<HTMLSelectElement> = async e => {
+    const { value } = e.target;
+    planActions.editPlan(db, {
+      ...plan,
+      defaultType: value,
+    });
+  };
+
   const handleInputName: ChangeEventHandler<HTMLInputElement> = e => {
     setHasChange(true);
     setInputtedName(e.target.value);
@@ -125,6 +134,16 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts })
         options={canRemoveThoughts.map(({ label }) => label)}
         onChange={handleRemoveThought}
       />
+      <div className={classes.defaultType}>
+        <span className={classes.defaultTypeHeader}>Default Type</span>
+        <Select
+          id={'default-type'}
+          classes={classes}
+          value={plan.defaultType || 'Select'}
+          options={typeOptions}
+          onChange={handleSelectDefaultType}
+        />
+      </div>
       <DeletePlan
         classes={classes}
         plan={plan}

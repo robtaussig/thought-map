@@ -136,7 +136,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Home state={state} statusOptions={statusOptions}/>}
               </Route>
               <Route path={'/settings'}>
-                {dbReadyState && <Settings state={state}/>}
+                {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/thought/new'}>
                 {dbReadyState && <CreateThought state={state} typeOptions={typeOptions}/>}
@@ -151,7 +151,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/plan/:id/settings'}>
-                {dbReadyState && <Settings state={state} />}
+                {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/plan/:id'}>
                 {dbReadyState && <Home state={state} statusOptions={statusOptions}/>}

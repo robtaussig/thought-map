@@ -19,8 +19,9 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
                         "show-completed show-completed"
                         "add-thoughts add-thoughts"
                         "remove-thoughts remove-thoughts"
+                        "default-type default-type"
                         "delete-plan delete-plan"`,
-    gridTemplateRows: '50px 50px 50px 50px 1fr',
+    gridTemplateRows: '50px 50px 50px 50px 50px 1fr',
     gridTemplateColumns: 'max-content 1fr',
     gridRowGap: '20px',
   },
@@ -64,6 +65,20 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     '&#remove-thoughts': {
       gridArea: 'remove-thoughts',
     },
+    '&#default-type': {
+      flex: 1,
+      height: '100%',
+    },
+  },
+  defaultType: {
+    gridArea: 'default-type',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  defaultTypeHeader: {
+    color: 'white',
+    fontWeight: 600,
+    marginRight: 15,
   },
   checkboxLabel: {
     ...theme.defaults.centered,

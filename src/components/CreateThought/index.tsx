@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, FC } from 'react';
 import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
-import useXReducer from '../../hooks/useXReducer';
+import useXReducer, { useNestedXReducer } from '../../hooks/useXReducer';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
 import Phase1 from './Phase1';
@@ -20,7 +20,6 @@ import { AppState } from '../../reducers';
 
 export interface CreatedThought {
   title: string;
-  typeOptions: string[];
   type: string;
   date: string;
   time: string;
@@ -32,7 +31,6 @@ export interface CreatedThought {
 
 const DEFAULT_STATE: CreatedThought = {
   title: '',
-  typeOptions: [],
   type: 'Task',
   date: '',
   time: '',
@@ -49,18 +47,20 @@ interface CreateThoughtProps {
 }
 
 export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOptions }) => {
-  const { history } = useApp();
+  const { history } = useApp();  
   const settingsSVGRef = useRef<HTMLElement>(null);
   const db = useLoadedDB();
+  const planId = getIdFromUrl(history, 'plan');
+  const plan = state.plans.find(plan => plan.id === planId);
   const [ createdThought, createdThoughtDispatch ] = useXReducer(DEFAULT_STATE, (state, action) => {
     if (action.type === 'CREATE_FROM_TEMPLATE') return action.payload;
     return state;
   });
+  const [ type, setType ] = useNestedXReducer('type', createdThought, createdThoughtDispatch);
   const [ phase, setPhase ] = useState<number>(1);
   const [ ready, setReady ] = useState<boolean>(false);
   const [ displaySettings, setDisplaySettings ] = useState<boolean>(false);
-  const planId = getIdFromUrl(history, 'plan');
-
+  
   const handleSubmit = async () => {
     const response = await createWholeThought(db, createdThought, planId);
     history.push(`${homeUrl(history)}thought/${response.thought.id}`);
@@ -95,12 +95,15 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOpti
       payload: thoughtFromTemplate,
     });
   }, []);
+
+  useEffect(() => {
+    if (plan && plan.defaultType) setType(plan.defaultType);
+  }, [plan]);
   
   return (
     <div className={classes.root}>
       <Phase1
         classes={classes}
-        onNext={() => setPhase(2)}
         isFocus={phase === 1}
         onReady={(isReady: boolean) => setReady(isReady)}
         onFocus={() => setPhase(1)}
@@ -108,6 +111,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOpti
         dispatch={createdThoughtDispatch}
         thoughts={state.thoughts}
         settings={state.settings}
+        typeOptions={typeOptions}
       />
       <CreateThoughtSettings
         display={displaySettings}

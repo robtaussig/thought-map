@@ -12,6 +12,7 @@ import { AppState } from '../../reducers';
 interface SettingsProps {
   classes: any;
   state: AppState;
+  typeOptions: string[];
 }
 
 interface NavBarItem {
@@ -21,7 +22,7 @@ interface NavBarItem {
   disabled?: boolean;
 }
 
-export const Settings: FC<SettingsProps> = ({ classes, state }) => {
+export const Settings: FC<SettingsProps> = ({ classes, state, typeOptions }) => {
   const { history } = useApp();
   const planId = getIdFromUrl(history, 'plan');
   const type = getSearchParam(history, 'type');
@@ -56,6 +57,7 @@ export const Settings: FC<SettingsProps> = ({ classes, state }) => {
           <PlanSettings
             plan={plan}
             thoughts={state.thoughts}
+            typeOptions={typeOptions}
           /> :
           <Loading id={'thought-loader'}/>
       ) : (
