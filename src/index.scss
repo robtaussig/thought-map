@@ -7,15 +7,6 @@ body {
 
 #root {
 	width: 100%;
-	@media (min-width: 960px) {
-		height: 731px;
-		width: 411px;
-		position: relative;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
-		overflow: hidden;
-	}
 }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 

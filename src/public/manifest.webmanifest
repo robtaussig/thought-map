@@ -1,23 +1,51 @@
 {
-  "short_name" : "ThoughtMap",
-  "name" : "ThoughtMap",
-  "start_url" : "/",
-  "display" : "standalone",
-  "theme_color" : "#000000",
-  "background_color" : "#ffffff",
-  "lang" : "",
-  "orientation" : "portrait-primary",
-  "description" : "A Progressive Web App to map your thoughts",
-  "icons" : [
+  "dir": "ltr",
+  "lang": "en",
+  "name": "ThoughtMap",
+  "scope": "/",
+  "display": "standalone",
+  "start_url": "/",
+  "short_name": "ThoughtMap",
+  "theme_color": "#bada55",
+  "description": "Where your thoughts live",
+  "orientation": "Portrait",
+  "background_color": "#bada55",
+  "related_applications": "",
+  "prefer_related_applications": false,
+  "screenshots": [
       {
-        "src": "personal-logo.png",
-        "sizes": "89x89",
-        "type": "image/png"
+          "sizes": "1458x818",
+          "src": "screenshots/screenshot.png",
+          "type": "image/png"
+      }
+  ],
+  "categories": [
+      "productivity"
+  ],
+  "icons": [
+      {
+          "src": "icons/android/android-launchericon-144-144.png",
+          "sizes": "144x144"
       },
       {
-        "src": "large-icon.png",
-        "sizes": "512x512",
-        "type": "image/png"
+          "src": "icons/android/android-launchericon-192-192.png",
+          "sizes": "192x192"
+      },
+      {
+          "src": "icons/android/android-launchericon-48-48.png",
+          "sizes": "48x48"
+      },
+      {
+          "src": "icons/android/android-launchericon-512-512.png",
+          "sizes": "512x512"
+      },
+      {
+          "src": "icons/android/android-launchericon-72-72.png",
+          "sizes": "72x72"
+      },
+      {
+          "src": "icons/android/android-launchericon-96-96.png",
+          "sizes": "96x96"
       }
   ]
 }
