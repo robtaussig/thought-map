@@ -58,6 +58,7 @@ import {
 } from './types';
 
 export const STATUS_OPTIONS: string[] = ['new', 'in progress', 'almost done', 'completed'];
+export const TYPE_OPTIONS: string[] = ['Task', 'Todo', 'Reminder', 'Misc'];
 
 const matchStatusLocationIfEnabled = (db: RxDatabase) => async (status: StatusType): Promise<void> => {
   const [useLocation] = await settingActions.findSetting(db, 'field', 'useLocation');
@@ -117,6 +118,12 @@ const App: FC<AppProps> = ({ classes, history }) => {
     ).concat(STATUS_OPTIONS[STATUS_OPTIONS.length - 1]);
   }, [state.settings.customStatuses]);
 
+  const typeOptions = useMemo(() => {
+    return TYPE_OPTIONS.concat(
+      Array.isArray(state.settings.customTypes) ? state.settings.customTypes : []
+    );
+  }, [state.settings.customTypes]);
+
   return (
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
@@ -132,16 +139,16 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Settings state={state}/>}
               </Route>
               <Route path={'/thought/new'}>
-                {dbReadyState && <CreateThought state={state}/>}
+                {dbReadyState && <CreateThought state={state} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/thought/:id'}>
-                {dbReadyState && <Thought state={state} statusOptions={statusOptions}/>}
+                {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/plan/:id/thought/new'}>
-                {dbReadyState && <CreateThought state={state}/>}
+                {dbReadyState && <CreateThought state={state} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/plan/:id/thought/:thoughtId'}>
-                {dbReadyState && <Thought state={state} statusOptions={statusOptions}/>}
+                {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/plan/:id/settings'}>
                 {dbReadyState && <Settings state={state} />}

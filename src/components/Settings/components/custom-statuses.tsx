@@ -22,9 +22,18 @@ const styles = (theme: any): StyleRules => ({
   },
   form: {
     display: 'flex',
+    '& button': {
+      fontWeight: 600,
+      cursor: 'pointer',
+      marginLeft: 30,
+      color: 'white',
+    },
   },
   inputLabel: {
-
+    flex: 1,
+    '& input': {
+      width: '100%',
+    },
   },
   customStatus: {
     display: 'flex',
@@ -98,6 +107,7 @@ export const CustomStatuses: FC<CustomStatusesProps> = ({ classes, onClose }) =>
           classes={classes}
           value={inputtedValue}
           onChange={e => setInputtedValue(e.target.value)}
+          autoFocus
         />
         <button>Create</button>
       </form>

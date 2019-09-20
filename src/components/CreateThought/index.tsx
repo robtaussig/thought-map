@@ -12,7 +12,7 @@ import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import { createWholeThought } from '../../actions/complex';
 import { homeUrl, getIdFromUrl } from '../../lib/util';
-import { TYPE_OPTIONS, TAG_OPTIONS } from '../Thought';
+import { TAG_OPTIONS } from '../Thought';
 import { Note } from '../../store/rxdb/schemas/note';
 import { Tag } from '../../store/rxdb/schemas/tag';
 import { Template } from '../../store/rxdb/schemas/template';
@@ -32,7 +32,7 @@ export interface CreatedThought {
 
 const DEFAULT_STATE: CreatedThought = {
   title: '',
-  typeOptions: TYPE_OPTIONS,
+  typeOptions: [],
   type: 'Task',
   date: '',
   time: '',
@@ -45,9 +45,10 @@ const DEFAULT_STATE: CreatedThought = {
 interface CreateThoughtProps {
   classes: any;
   state: AppState;
+  typeOptions: string[];
 }
 
-export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
+export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOptions }) => {
   const { history } = useApp();
   const settingsSVGRef = useRef<HTMLElement>(null);
   const db = useLoadedDB();
@@ -79,7 +80,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state }) => {
 
     const thoughtFromTemplate = {
       title: thought.title,
-      typeOptions: TYPE_OPTIONS,
+      typeOptions: typeOptions,
       type: thought.type,
       date: thought.date,
       time: thought.time,

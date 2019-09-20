@@ -298,6 +298,14 @@ const VALID_SETTINGS: ValidSettings = {
     values: null,
     reason: 'customStatuses must be an array of strings',
   },
+  useLocation: {
+    values: booleanValues,
+    reason: 'useLocation must be a boolean',
+  },
+  customTypes: {
+    values: null,
+    reason: 'customStatuses must be an array of strings',
+  },
 };
 
 const formatResults = (

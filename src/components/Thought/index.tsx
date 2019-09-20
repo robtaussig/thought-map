@@ -23,9 +23,9 @@ interface ThoughtProps {
   classes: any;
   state: AppState;
   statusOptions: string[];
+  typeOptions: string[];
 }
 
-export const TYPE_OPTIONS: string[] = ['Task', 'Todo', 'Reminder', 'Misc'];
 export const TAG_OPTIONS: string[] = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
 export const PRIORITY_OPTIONS: PriorityOption[] = [
   { value: 0, label: 'NOT RELEVANT (HIDE)' },
@@ -34,7 +34,7 @@ export const PRIORITY_OPTIONS: PriorityOption[] = [
   { value: 10, label: 'HIGH' },
 ];
 
-export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions }) => {
+export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeOptions }) => {
   
   const db = useLoadedDB();
   const { history } = useApp();
@@ -89,7 +89,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions }) => 
           tags={relatedTags}
           notes={relatedNotes}
           statusOptions={statusOptions}
-          typeOptions={TYPE_OPTIONS}
+          typeOptions={typeOptions}
           tagOptions={TAG_OPTIONS}
           priorityOptions={PRIORITY_OPTIONS}
           onUpdate={handleUpdate}

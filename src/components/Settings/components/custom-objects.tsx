@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { useModal } from '../../../hooks/useModal';
 import CustomStatuses from './custom-statuses';
+import CustomTypes from './custom-types';
 
 interface CustomObjectsProps {
   classes: any;
@@ -94,7 +95,7 @@ export const CustomObjects: FC<CustomObjectsProps> = ({ classes, settings }) => 
   }, []);
 
   const handleClickCustomTypes = useCallback(() => {
-    alert('Coming soon...')
+    openModal(<CustomTypes onClose={closeModal}/>);
   }, []);
 
   const handleClickDeleteTemplates = useCallback(() => {
