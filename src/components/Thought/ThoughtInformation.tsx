@@ -1,7 +1,5 @@
 import React, { useCallback, useState, useMemo, useEffect, useRef, Fragment, FC } from 'react';
 import Note from '@material-ui/icons/Note';
-import AccessTime from '@material-ui/icons/AccessTime';
-import CalendarToday from '@material-ui/icons/CalendarToday';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import PriorityHighRounded from '@material-ui/icons/PriorityHighRounded';
 import Header from '../General/Header';
@@ -143,7 +141,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     };
   }, []);
 
-  useEffect(reset,[thought]);
+  useEffect(reset,[thought, editState]);
 
   const _autoSuggestComponent = useMemo(() => {
 
