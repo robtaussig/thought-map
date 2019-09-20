@@ -354,7 +354,6 @@ const handlePictureChange = (setter: Setter<PictureState>, setLastNotification: 
 };
 
 const handleSettingChange = (setter: Setter<SettingState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
-  if ((window as any).blockDBSubscriptions === true) return;
   const setting: SettingType = {
     ...data.v,
     value: JSON.parse(data.v.value),
@@ -465,7 +464,6 @@ const handlePlanChange = (setter: Setter<PlanState>, setLastNotification: Dispat
 };
 
 const handleTemplateChange = (setter: Setter<TemplateState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
-  if ((window as any).blockDBSubscriptions === true) return;
   const template: TemplateType = {
     ...data.v,
     template: JSON.parse(data.v.template),
@@ -494,7 +492,6 @@ const handleTemplateChange = (setter: Setter<TemplateState>, setLastNotification
 };
 
 const handleStatusChange = (
-  if ((window as any).blockDBSubscriptions === true) return;
   setter: Setter<StatusState>,
   setLastNotification: Dispatch<SetStateAction<Notification>>,
   setThoughts: Setter<ThoughtType[]>,
@@ -502,6 +499,7 @@ const handleStatusChange = (
   matchStatusLocationIfEnabled: (status: StatusType) => Promise<void>,
 ) => ({ data }: RxChangeEvent) => {
 
+  if ((window as any).blockDBSubscriptions === true) return;
   const status: StatusType = data.v;
   let notification;
 
@@ -515,8 +513,8 @@ const handleStatusChange = (
         ...prev,
         [status.thoughtId]: [status.id].concat(prev[status.thoughtId] || []),
       }));
-      notification = { message: 'Status created' };
-      matchStatusLocationIfEnabled(status);
+      notification = { message: 'Status updated' };
+      // matchStatusLocationIfEnabled(status);
       break;
     
     //TODO Determine whether removal of status is supported. If so, need to update thoughts here
@@ -536,7 +534,7 @@ const handleStatusChange = (
         [status.thoughtId]: (prev[status.thoughtId] || []).filter(statusId => statusId !== status.id),
       }));
       notification = { message: 'Status removed' };
-      
+      matchStatusLocationIfEnabled(status);
       break;
 
     case 'UPDATE':
