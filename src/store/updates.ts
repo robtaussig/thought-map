@@ -85,8 +85,19 @@ const handleThoughtChange = (
       break;
 
     case 'UPDATE':
-      setter(prev => prev.map((prevThought: ThoughtType) => prevThought.id === thought.id ? thought : prevThought).sort(sortByIndexThenDate));
-      notification = { message: 'Thought updated' };
+      setter(prev => {
+        return prev.map((prevThought: ThoughtType) => {
+          if (prevThought.id === thought.id) {
+            if (+new Date() - prevThought.created > 1000) {
+              notification = { message: 'Thought updated' };
+            }
+            return thought;
+          }
+          return prevThought;          
+        })
+          .sort(sortByIndexThenDate)
+      });
+      
       break;
   
     default:
@@ -369,7 +380,6 @@ const handleTemplateChange = (
 
     case 'UPDATE':
       setter(prev => prev.map(prevTemplate => prevTemplate.id === template.id ? template : prevTemplate));
-      notification = { message: 'Template updated' };
       break;
   
     default:
@@ -399,7 +409,6 @@ const handleStatusChange = (
         ...prev,
         [status.thoughtId]: [status.id].concat(prev[status.thoughtId] || []),
       }));
-      notification = { message: 'Status updated' };
       matchStatusLocationIfEnabled(status);
       break;
     
@@ -419,7 +428,6 @@ const handleStatusChange = (
         ...prev,
         [status.thoughtId]: (prev[status.thoughtId] || []).filter(statusId => statusId !== status.id),
       }));
-      notification = { message: 'Status removed' };
       break;
 
     case 'UPDATE':
