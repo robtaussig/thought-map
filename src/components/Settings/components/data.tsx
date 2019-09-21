@@ -304,7 +304,11 @@ const VALID_SETTINGS: ValidSettings = {
   },
   customTypes: {
     values: null,
-    reason: 'customStatuses must be an array of strings',
+    reason: 'customTypes must be an array of strings',
+  },
+  customTags: {
+    values: null,
+    reason: 'customTags must be an array of strings',
   },
 };
 

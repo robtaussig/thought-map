@@ -8,6 +8,7 @@ import { useLoadedDB } from '../../../hooks/useDB';
 import { useModal } from '../../../hooks/useModal';
 import CustomStatuses from './custom-statuses';
 import CustomTypes from './custom-types';
+import CustomTags from './custom-tags';
 
 interface CustomObjectsProps {
   classes: any;
@@ -91,7 +92,7 @@ export const CustomObjects: FC<CustomObjectsProps> = ({ classes, settings }) => 
   }, []);
 
   const handleClickCustomTags = useCallback(() => {
-    alert('Coming soon...')
+    openModal(<CustomTags onClose={closeModal}/>);
   }, []);
 
   const handleClickCustomTypes = useCallback(() => {

@@ -21,8 +21,9 @@ import {
   Notification,
 } from './types';
 
-export const STATUS_OPTIONS: string[] = ['new', 'in progress', 'almost done', 'completed'];
-export const TYPE_OPTIONS: string[] = ['Task', 'Todo', 'Reminder', 'Misc'];
+const STATUS_OPTIONS: string[] = ['new', 'in progress', 'almost done', 'completed'];
+const TYPE_OPTIONS: string[] = ['Task', 'Todo', 'Reminder', 'Misc'];
+const TAG_OPTIONS: string[] = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
 
 const App: FC<AppProps> = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
@@ -75,6 +76,12 @@ const App: FC<AppProps> = ({ classes, history }) => {
     );
   }, [state.settings.customTypes]);
 
+  const tagOptions = useMemo(() => {
+    return TAG_OPTIONS.concat(
+      Array.isArray(state.settings.customTags) ? state.settings.customTags : []
+    );
+  }, [state.settings.customTags]);
+
   return (
     <Context.Provider value={appContext}>
       <DBProvider value={db}>
@@ -90,16 +97,16 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/thought/new'}>
-                {dbReadyState && <CreateThought state={state} typeOptions={typeOptions}/>}
+                {dbReadyState && <CreateThought state={state} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
               <Route path={'/thought/:id'}>
-                {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions}/>}
+                {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
               <Route path={'/plan/:id/thought/new'}>
-                {dbReadyState && <CreateThought state={state} typeOptions={typeOptions}/>}
+                {dbReadyState && <CreateThought state={state} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
               <Route path={'/plan/:id/thought/:thoughtId'}>
-                {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions}/>}
+                {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
               <Route path={'/plan/:id/settings'}>
                 {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}

@@ -12,7 +12,6 @@ import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import { createWholeThought } from '../../actions/complex';
 import { homeUrl, getIdFromUrl } from '../../lib/util';
-import { TAG_OPTIONS } from '../Thought';
 import { Note } from '../../store/rxdb/schemas/note';
 import { Tag } from '../../store/rxdb/schemas/tag';
 import { Template } from '../../store/rxdb/schemas/template';
@@ -37,16 +36,17 @@ const DEFAULT_STATE: CreatedThought = {
   description: '',
   notes: [],
   tags: [],
-  tagOptions: TAG_OPTIONS,
+  tagOptions: [],
 };
 
 interface CreateThoughtProps {
   classes: any;
   state: AppState;
   typeOptions: string[];
+  tagOptions: string[];
 }
 
-export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOptions }) => {
+export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOptions, tagOptions }) => {
   const { history } = useApp();  
   const settingsSVGRef = useRef<HTMLElement>(null);
   const db = useLoadedDB();
@@ -87,7 +87,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOpti
       description: thought.description,
       notes: notes.map((note: Note) => note.text),
       tags: tags.map((tag: Tag) => tag.text),
-      tagOptions: TAG_OPTIONS,
+      tagOptions: tagOptions,
     };
 
     createdThoughtDispatch({

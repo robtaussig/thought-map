@@ -24,9 +24,9 @@ interface ThoughtProps {
   state: AppState;
   statusOptions: string[];
   typeOptions: string[];
+  tagOptions: string[];
 }
 
-export const TAG_OPTIONS: string[] = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
 export const PRIORITY_OPTIONS: PriorityOption[] = [
   { value: 0, label: 'NOT RELEVANT (HIDE)' },
   { value: 1, label: 'LOW' },
@@ -34,7 +34,7 @@ export const PRIORITY_OPTIONS: PriorityOption[] = [
   { value: 10, label: 'HIGH' },
 ];
 
-export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeOptions }) => {
+export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeOptions, tagOptions }) => {
   
   const db = useLoadedDB();
   const { history } = useApp();
@@ -90,7 +90,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
           notes={relatedNotes}
           statusOptions={statusOptions}
           typeOptions={typeOptions}
-          tagOptions={TAG_OPTIONS}
+          tagOptions={tagOptions}
           priorityOptions={PRIORITY_OPTIONS}
           onUpdate={handleUpdate}
           onEditState={setEditState}
@@ -108,7 +108,16 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         onDelete={handleClickDelete}  
       />
       <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
-      {!editState && <CircleButton svgRef={returnHomeSVGRef} classes={classes} id={'settings'} onClick={handleClickSettings} label={'Settings'} Icon={Settings}/>}
+      {!editState && (
+        <CircleButton
+          svgRef={returnHomeSVGRef}
+          classes={classes}
+          id={'settings'}
+          onClick={handleClickSettings}
+          label={'Settings'}
+          Icon={Settings}
+        />
+      )}
       {editState && <CreateConnectionsFromThought classes={classes} thought={thought} thoughts={state.thoughts} connections={state.connections}/>}
     </div>
   );
