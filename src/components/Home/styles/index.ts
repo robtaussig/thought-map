@@ -23,6 +23,7 @@ export const styles = (theme: any): StyleRules => ({
       backgroundColor: '#8380ff',      
       borderRadius: '10px',
       position: 'relative',
+      boxShadow: '0px 0px 5px -1px black',
       '& > select': {
         flex: 1,
         color: 'white',

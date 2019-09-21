@@ -1,4 +1,4 @@
-import { RxJsonSchema } from 'rxdb';
+import { RxJsonSchema, RxDocument } from 'rxdb';
 
 export interface Picture {
   id?: string;
@@ -6,13 +6,14 @@ export interface Picture {
   imgurUrl?: string;
   thoughtId: string;
   description?: string;
+  location?: string;
   created?: number;
   updated?: number;
 }
 
 export default ['picture', {
   "title": "Picture schema",
-  "version": 0,
+  "version": 1,
   "description": "A Picture",
   "type": "object",
   "properties": {
@@ -30,6 +31,9 @@ export default ['picture', {
     "imgurUrl": {
       "type": "string",
     },
+    "location": {
+      "type": "string",
+    },
     "description": {
       "type": "string",
     },
@@ -44,4 +48,10 @@ export default ['picture', {
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema, {
+  "migrationStrategies": {
+    1: (oldPicture: RxDocument<Picture>) => {
+      return oldPicture;
+    },
+  },
+}];

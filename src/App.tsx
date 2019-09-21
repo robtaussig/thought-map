@@ -17,6 +17,7 @@ import {
   Picture as PictureType,
   Setting as SettingType,
   Status as StatusType,
+  Picture,
 } from './store/rxdb/schemas/types';
 import useXReducer, { useNestedXReducer, Action, Setter } from './hooks/useXReducer';
 import { useDB } from './hooks/useDB';
@@ -76,6 +77,22 @@ const matchStatusLocationIfEnabled = (db: RxDatabase) => async (status: StatusTy
   }
 };
 
+const matchPictureLocationIfEnabled = (db: RxDatabase) => async (picture: Picture): Promise<void> => {
+  const [useLocation] = await settingActions.findSetting(db, 'field', 'useLocation');
+  if (useLocation && useLocation.value === true) {
+    navigator.geolocation.getCurrentPosition(position => {
+      if (position && position.coords) {
+        const locationValue = `${position.coords.latitude},${position.coords.longitude}`;
+        const nextPicture = {
+          ...picture,
+          location: locationValue,
+        };
+        pictureActions.editPicture(db, nextPicture);
+      }
+    });
+  }
+};
+
 const App: FC<AppProps> = ({ classes, history }) => {
   const [state, dispatch] = useXReducer(DEFAULT_STATE, appReducer);
   const [lastNotification, setLastNotification] = useState<Notification>(null);
@@ -106,7 +123,12 @@ const App: FC<AppProps> = ({ classes, history }) => {
         picture: setPictures,
         setting: setSettings,
         status: setStatuses,
-      }, setLastNotification, setStatusesByThought, matchStatusLocationIfEnabled(db));
+      },
+        setLastNotification,
+        setStatusesByThought,
+        matchStatusLocationIfEnabled(db),
+        matchPictureLocationIfEnabled(db),
+      );
     }
   }, [db, dbReadyState]);
 
@@ -319,7 +341,11 @@ const handleNoteChange = (setter: Setter<NoteState>, setLastNotification: Dispat
   setLastNotification(notification);  
 };
 
-const handlePictureChange = (setter: Setter<PictureState>, setLastNotification: Dispatch<SetStateAction<Notification>>) => ({ data }: RxChangeEvent) => {
+const handlePictureChange = (
+  setter: Setter<PictureState>,
+  setLastNotification: Dispatch<SetStateAction<Notification>>,
+  matchPictureLocationIfEnabled: (picture: Picture) => void,
+) => ({ data }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const picture: PictureType = data.v;
   let notification;
@@ -330,6 +356,7 @@ const handlePictureChange = (setter: Setter<PictureState>, setLastNotification: 
         [picture.id]: picture,
       }));
       notification = { message: 'Picture created' };
+      matchPictureLocationIfEnabled(picture);
       break;
     
     case 'REMOVE':
@@ -350,8 +377,7 @@ const handlePictureChange = (setter: Setter<PictureState>, setLastNotification: 
         setter(prev => ({
           ...prev,
           [picture.id]: picture,
-        }));
-        notification = { message: 'Picture updated' };
+        }));        
       break;
   
     default:
@@ -571,6 +597,7 @@ const subscribeToChanges = async (
   setLastNotification: Dispatch<SetStateAction<Notification>>,
   setStatusesByThought: Setter<StatusesByThought>,
   matchStatusLocationIfEnabled: (status: StatusType) => Promise<void>,
+  matchPictureLocationIfEnabled: (picture: Picture) => Promise<void>,
 ) => {
   //@ts-ignore
   db.thought.$.subscribe(handleThoughtChange(setters.thought, setLastNotification));
@@ -585,7 +612,7 @@ const subscribeToChanges = async (
   //@ts-ignore
   db.template.$.subscribe(handleTemplateChange(setters.template, setLastNotification));
   //@ts-ignore
-  db.picture.$.subscribe(handlePictureChange(setters.picture, setLastNotification));
+  db.picture.$.subscribe(handlePictureChange(setters.picture, setLastNotification, matchPictureLocationIfEnabled));
   //@ts-ignore
   db.setting.$.subscribe(handleSettingChange(setters.setting, setLastNotification));
   //@ts-ignore

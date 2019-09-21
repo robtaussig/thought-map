@@ -121,7 +121,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           </div>
         </div>
         <form className={classNames(classes.searchWrapper, 'flippable', isSearching ? 'front' : 'back')} onSubmit={handleSubmitSearch}>
-          <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)}/>
+          <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'}/>
           <button className={classes.searchButton}><Search/></button>
         </form>
       </div>
