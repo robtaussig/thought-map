@@ -16,7 +16,7 @@ interface ThoughtSearchProps {
   close: () => void;
 }
 
-interface ThoughtMatch {
+export interface ThoughtMatch {
   id: string;
   title?: string;
 }
@@ -29,15 +29,15 @@ interface TrieNodes {
   [thoughtId: string]: TrieNode;
 }
 
-interface Notes {
+export interface Notes {
   [noteId: string]: Note;
 }
 
-interface Tags {
+export interface Tags {
   [tagId: string]: Tag;
 }
 
-class Searchable {
+export class Searchable {
   roots: TrieNodes = {};
 
   buildTree = (thoughts: Thought[], notes: Notes, tags: Tags): void => {

@@ -58,23 +58,59 @@ export const styles = (theme: any): StyleRules => ({
       },
     },
   },
-  sortByButtons: {
+  flippableWrapper: {
     display: 'flex',  
     gridArea: 'sort-buttons',
+    position: 'relative',
+  },
+  sortByButtons: {
+    display: 'flex',
+    justifyContent: 'space-between',
     backgroundColor: theme.palette.primary[500],
+    color: 'white',
+  },
+  searchWrapper: {
+    backgroundColor: theme.palette.primary[500],
+    color: 'white',
+    display: 'flex',
+  },
+  inputLabel: {
+    flex: 1,
+    '& > div': {
+      height: '100%',
+      display: 'flex',
+      marginLeft: '10px',
+    },
+    '& input': {
+      width: '100%',
+      margin: 'auto 0',
+      fontSize: 18,
+      borderRadius: '10px',
+      border: '1px solid black',
+      padding: '3px 10px',
+      outline: 'none',
+    }
+  },
+  searchButton: {
+    flex: '0 0 40px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     color: 'white',
   },
   sortButton: {
     fontWeight: 600,
     color: 'white',
-  },
-  sortByNames: {
-    flex: 1,
+    cursor: 'pointer',
     ...theme.defaults.centered,
+  },
+  sortByNames: {    
+    ...theme.defaults.centered,
+    marginLeft: 24,
   },
   sortByStatus: {
-    flex: '0 0 100px',
     ...theme.defaults.centered,
+    marginRight: 18,
   },
   emptyIcon: {
     width: 24,
