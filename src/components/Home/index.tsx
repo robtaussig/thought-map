@@ -8,14 +8,16 @@ import { styles } from './styles';
 import useApp from '../../hooks/useApp';
 import { getIdFromUrl } from '../../lib/util';
 import { AppState } from '../../reducers';
+import { Notification } from '../../types';
 
 interface HomeProps {
   classes: any;
   state: AppState;
   statusOptions: string[];
+  setLastNotification: (notification: Notification) => void;
 }
 
-export const Home: FC<HomeProps> = ({ classes, state, statusOptions }) => {
+export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNotification }) => {
   const { history } = useApp();
   const planId = getIdFromUrl(history, 'plan');
   const handleAddThought = useCallback(() => history.push(planId ? `/plan/${planId}/thought/new` :'/thought/new'), [planId]);
@@ -32,7 +34,7 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions }) => {
   return (
     <div className={classes.root}>
       <Content classes={classes} thoughts={thoughts} notes={state.notes} tags={state.tags} plan={plan} statusOptions={statusOptions}/>
-      <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId}/>
+      <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId} setLastNotification={setLastNotification}/>
       {<CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
       {<CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
     </div>

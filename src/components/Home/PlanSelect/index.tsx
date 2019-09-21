@@ -5,22 +5,33 @@ import useApp from '../../../hooks/useApp';
 import CreatePlan from './components/create';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Plan } from 'store/rxdb/schemas/plan';
+import { Notification } from '../../../types';
 
 interface PlanSelectProps {
   classes: any;
   plans: Plan[];
   thoughts: Thought[];
   planId: string | boolean;
+  setLastNotification: (notification: Notification) => void;
 }
 
 const HOME_NAME = 'ThoughtMap';
+const SHOW_ARCHIVED = 'Show Archived';
+const HIDE_ARCHIVED = 'Hide Archived';
+
 export const CREATE_NEW_PLAN = 'Create Plan';
 
-export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, planId }) => {
+export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, planId, setLastNotification }) => {
   const [currentPlan, setCurrentPlan] = useState<string>(HOME_NAME);
+  const [showArchived, setShowArchived] = useState<boolean>(false);
   const [openModal, closeModal] = useModal();
   const lastPlan = useRef<string>(HOME_NAME);
-  const planOptions = [HOME_NAME, ...[...new Set(plans.map(toName))], CREATE_NEW_PLAN];
+  const planOptions = [
+    HOME_NAME,
+    ...[...new Set(plans.filter(hideOrShowArchived(showArchived)).map(toName))],
+    showArchived ? HIDE_ARCHIVED : SHOW_ARCHIVED,
+    CREATE_NEW_PLAN
+  ];
   const { history, dispatch } = useApp();
 
   const handleChange = useCallback(e => {
@@ -34,7 +45,19 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
           onClose={closeModal}
         />);
         setCurrentPlan(lastPlan.current);
-      break;
+        break;
+
+      case HIDE_ARCHIVED:
+        setLastNotification({ message: 'Hiding archived plans' });
+        setShowArchived(false);
+        setCurrentPlan(lastPlan.current);
+        break;
+
+      case SHOW_ARCHIVED:
+        setLastNotification({ message: 'Showing archived plans' });
+        setShowArchived(true);
+        setCurrentPlan(lastPlan.current);
+        break;
 
       case HOME_NAME:
         history.push('/');
@@ -71,5 +94,6 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
 };
 
 const toName = (plan: Plan) => plan.name;
+const hideOrShowArchived = (showArchived: boolean) => (plan: Plan) => showArchived || !plan.archived;
 
 export default PlanSelect;

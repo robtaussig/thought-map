@@ -61,6 +61,13 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
     setHasChange(false);
   };
 
+  const handleCheckArchive: ChangeEventHandler<HTMLInputElement> = e => {
+    const editedPlan = Object.assign({}, plan, {
+      archived: e.target.checked,
+    });
+    planActions.editPlan(db, editedPlan);
+  };
+
   const handleCheckShowCompleted: ChangeEventHandler<HTMLInputElement> = e => {
     const editedPlan = Object.assign({}, plan, {
       showCompleted: e.target.checked,
@@ -119,6 +126,14 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
         value={'Show Completed Thoughts'}
         onChange={handleCheckShowCompleted}
         label={'Show Completed Thoughts'}
+      />
+      <CheckBox
+        id={'archive-plan'}
+        classes={classes}
+        isChecked={Boolean(plan.archived)}
+        value={'Archive Plan'}
+        onChange={handleCheckArchive}
+        label={'Archive Plan'}
       />
       <Select
         id={'add-thoughts'}

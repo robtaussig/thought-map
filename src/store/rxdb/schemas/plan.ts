@@ -4,6 +4,7 @@ export interface Plan {
   id?: string;
   name: string;
   showCompleted?: boolean;
+  archived?: boolean;
   defaultType?: string;
   created?: number;
   updated?: number;
@@ -11,7 +12,7 @@ export interface Plan {
 
 export default ['plan', {
   "title": "Plan schema",
-  "version": 2,
+  "version": 3,
   "description": "A Plan",
   "type": "object",
   "properties": {
@@ -27,6 +28,9 @@ export default ['plan', {
     },
     "defaultType": {
       "type": "string",
+    },
+    "archived": {
+      "type": "boolean",
     },
     "created": {
       "type": "number",
@@ -47,6 +51,10 @@ export default ['plan', {
     },
     2: (oldPlan: RxDocument<Plan>) => {
       oldPlan.defaultType = 'task';
+      return oldPlan;
+    },
+    3: (oldPlan: RxDocument<Plan>) => {
+      oldPlan.archived = false;
       return oldPlan;
     },
   },

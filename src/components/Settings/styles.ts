@@ -16,7 +16,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     paddingBottom: '80px',
     margin: 20,
     gridTemplateAreas: `"plan-name plan-name"
-                        "show-completed show-completed"
+                        "archive-plan show-completed"
                         "add-thoughts add-thoughts"
                         "remove-thoughts remove-thoughts"
                         "default-type default-type"
@@ -24,6 +24,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     gridTemplateRows: '50px 50px 50px 50px 50px 1fr',
     gridTemplateColumns: 'max-content 1fr',
     gridRowGap: '20px',
+    gridColumnGap: '10px',
   },
   editIcon: {
     position: 'absolute',
@@ -86,6 +87,9 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     color: theme.palette.gray[300],
     '&#show-completed': {
       gridArea: 'show-completed',
+    },
+    '&#archive-plan': {
+      gridArea: 'archive-plan',
     },
     '&#with-thoughts': {
       

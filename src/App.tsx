@@ -91,7 +91,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
             <PriorityList thoughts={state.thoughts}/>
             <Switch>
               <Route exact path={'/'}>
-                {dbReadyState && <Home state={state} statusOptions={statusOptions}/>}
+                {dbReadyState && <Home state={state} statusOptions={statusOptions} setLastNotification={setLastNotification}/>}
               </Route>
               <Route path={'/settings'}>
                 {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}
@@ -112,7 +112,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/plan/:id'}>
-                {dbReadyState && <Home state={state} statusOptions={statusOptions}/>}
+                {dbReadyState && <Home state={state} statusOptions={statusOptions} setLastNotification={setLastNotification}/>}
               </Route>
             </Switch> 
           </Div100vh>
