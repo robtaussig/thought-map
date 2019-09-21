@@ -6,6 +6,7 @@ export interface Picture {
   imgurUrl?: string;
   thoughtId: string;
   description?: string;
+  pinned?: boolean;
   location?: string;
   created?: number;
   updated?: number;
@@ -13,7 +14,7 @@ export interface Picture {
 
 export default ['picture', {
   "title": "Picture schema",
-  "version": 1,
+  "version": 2,
   "description": "A Picture",
   "type": "object",
   "properties": {
@@ -30,6 +31,9 @@ export default ['picture', {
     },
     "imgurUrl": {
       "type": "string",
+    },
+    "pinned": {
+      "type": "boolean",
     },
     "location": {
       "type": "string",
@@ -51,6 +55,10 @@ export default ['picture', {
 } as RxJsonSchema, {
   "migrationStrategies": {
     1: (oldPicture: RxDocument<Picture>) => {
+      return oldPicture;
+    },
+    2: (oldPicture: RxDocument<Picture>) => {
+      oldPicture.pinned = false;
       return oldPicture;
     },
   },

@@ -64,7 +64,8 @@ export const styles = (theme: any): StyleRules => ({
                         "priority priority priority-button"
                         "notes notes notes"
                         "tags tags tags"
-                        "description description description"`,
+                        "description description description"
+                        "pinned-pictures pinned-pictures pinned-pictures"`,
     gridTemplateRows: 'max-content',
     gridTemplateColumns: 'max-content 1fr 50px',
   },
@@ -258,5 +259,15 @@ export const styles = (theme: any): StyleRules => ({
   timeText: {
     marginRight: 20,
     color: 'white',
+  },
+  pinnedPictures: {
+    gridArea: 'pinned-pictures',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  image: {
+    width: '100%',
+    height: 'auto',
+    flex: 1,
   },
 });

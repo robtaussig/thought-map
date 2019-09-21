@@ -13,6 +13,7 @@ import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 import { AppState } from 'reducers';
+import { Picture } from '../../store/rxdb/schemas/picture';
 
 export interface PriorityOption {
   value: number;
@@ -53,6 +54,11 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
     }
     return [];
   }, [state.statuses, state.statusesByThought, thoughtId]);
+  const pinnedPictures: Picture[] = useMemo(() => {
+    return Object.values(state.pictures).filter(picture => {
+      return picture.pinned && picture.thoughtId === thoughtId;
+    });
+  }, [thoughtId, state.pictures]);
   const handleClickHome = (): void => {
     history.push(homeUrl(history));
   };
@@ -98,6 +104,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
           stateNotes={state.notes}
           stateSettings={state.settings}
           statuses={statuses}
+          pinnedPictures={pinnedPictures}
         />
       }
       <ThoughtSettings

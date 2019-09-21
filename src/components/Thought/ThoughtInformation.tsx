@@ -37,6 +37,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   stateNotes,
   stateSettings,
   statuses,
+  pinnedPictures,
 }) => {
   const [edittingTime, setEdittingTime] = useState<boolean>(false);
   const [edittingDate, setEdittingDate] = useState<boolean>(false);
@@ -391,6 +392,13 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
             {thought.description}
           </span>
         )}
+        <div className={classes.pinnedPictures}>
+          {pinnedPictures.map(picture => {
+            {/* 
+              // @ts-ignore */}
+            return <img key={picture.id} src={picture.localUrl || picture.imgurUrl} className={classes.image} loading="lazy"/>;
+          })}
+        </div>
       </div>
       {editState ? (
         <CircleButton classes={classes} id={'edit'} onClick={handleClickCancelEdit} label={'Cancel'} Icon={Check}/>

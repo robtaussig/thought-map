@@ -1,6 +1,7 @@
 import { PriorityOption } from './'
 import { Notes, Settings } from 'reducers';
 import { Thought } from 'store/rxdb/schemas/thought';
+import { Picture } from 'store/rxdb/schemas/picture';
 import { Tag } from 'store/rxdb/schemas/tag';
 import { Note as NoteType } from 'store/rxdb/schemas/note';
 import { Status as StatusType } from 'store/rxdb/schemas/status';
@@ -20,6 +21,7 @@ export interface ThoughtInformationProps {
   stateNotes: Notes;
   stateSettings: Settings;
   statuses: StatusType[];
+  pinnedPictures: Picture[];
 }
 
 export interface EditedMap {

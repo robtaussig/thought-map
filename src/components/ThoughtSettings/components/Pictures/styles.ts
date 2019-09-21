@@ -44,6 +44,9 @@ export const styles = (theme: any): StyleRules => ({
     display: 'flex',
     alignItems: 'center',
   },
+  toggleDestructiveIcons: {
+    marginLeft: 'auto',
+  },
   pictureDescriptionText: {
     flex: 1,
   },
@@ -63,6 +66,17 @@ export const styles = (theme: any): StyleRules => ({
     gridArea: 'delete',
     borderBottom: 'none!important',
     color: `${theme.palette.red[500]}!important`,
+    margin: '0!important',
+  },
+  pinButton: {
+    gridArea: 'delete',
+    color: `#0000002e!important`,
+    borderBottom: 'none!important',
+    margin: '0!important',
+  },
+  unpinButton: {
+    gridArea: 'delete',
+    borderBottom: 'none!important',
     margin: '0!important',
   },
   image: {
