@@ -6,6 +6,7 @@ import Input from '../../General/Input';
 import { settings as settingsActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Delete from '@material-ui/icons/Delete';
+import { openConfirmation } from '../../../lib/util';
 
 interface CustomTypesProps {
   classes: any;
@@ -71,8 +72,8 @@ export const CustomTypes: FC<CustomTypesProps> = ({ classes, onClose }) => {
         value: next,
       });
     };
-    //Need to edit thoughts with deleted type?
-    deleteCustomType();
+
+    openConfirmation('Are you sure you want to delete this?', deleteCustomType); 
   };
 
   return (

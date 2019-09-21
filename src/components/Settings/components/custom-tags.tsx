@@ -6,6 +6,7 @@ import Input from '../../General/Input';
 import { settings as settingsActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Delete from '@material-ui/icons/Delete';
+import { openConfirmation } from '../../../lib/util';
 
 interface CustomTagsProps {
   classes: any;
@@ -71,8 +72,8 @@ export const CustomTags: FC<CustomTagsProps> = ({ classes, onClose }) => {
         value: next,
       });
     };
-
-    deleteCustomTag();
+    
+    openConfirmation('Are you sure you want to delete this?', deleteCustomTag);
   };
 
   return (

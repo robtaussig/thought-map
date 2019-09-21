@@ -302,6 +302,10 @@ const VALID_SETTINGS: ValidSettings = {
     values: booleanValues,
     reason: 'useLocation must be a boolean',
   },
+  usePushNotifications: {
+    values: booleanValues,
+    reason: 'usePushNotifications must be a boolean',
+  },
   customTypes: {
     values: null,
     reason: 'customTypes must be an array of strings',

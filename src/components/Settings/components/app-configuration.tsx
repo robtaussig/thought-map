@@ -111,6 +111,26 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
     });
   }, []);
 
+  const handleChangeUsePushNotifications = useCallback(e => {
+    if (e.target.checked) {
+      Notification.requestPermission(function(status) {
+        if (status === 'granted') {
+          settingsActions.editSetting(db, {
+            field: 'usePushNotifications',
+            value: true,
+          });
+        } else {
+          alert('If you would like to use push notifications in the future, you will need to manually grant permission.');
+        }
+    });
+    } else {
+      settingsActions.editSetting(db, {
+        field: 'usePushNotifications',
+        value: e.target.checked,
+      });
+    }
+  }, []);
+
   const handleChangeUseLocation = useCallback(e => {
     settingsActions.editSetting(db, {
       field: 'useLocation',
@@ -131,6 +151,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
   const reportBugs = Boolean(settings && settings.reportBugs);
   const useAutoSuggest = Boolean(settings && settings.useAutoSuggest);
   const useLocation = Boolean(settings && settings.useLocation);
+  const usePushNotifications = Boolean(settings && settings.usePushNotifications);
 
   return (
     <Fragment>
@@ -159,6 +180,14 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           isChecked={useAutoSuggest}
           onChange={handleChangeUseAutoSuggest}
           tooltip={'If enabled, certain inputs will produce suggestions that draw from previous entries. Suggestions will be a combination of word completions and word sequences, and will be displayed as an overlay. This is different from any browser/device-based auto-suggestions which don\'t necessarily consider context.'}  
+        />
+        <CheckBox
+          classes={classes}
+          value={'Enable Push Notifications'}
+          label={'Enable Push Notifications'}
+          isChecked={usePushNotifications}
+          onChange={handleChangeUsePushNotifications}
+          tooltip={'In order to use reminders and other related features, push notifications must be enabled'}
         />
         {'geolocation' in navigator && <CheckBox
           classes={classes}

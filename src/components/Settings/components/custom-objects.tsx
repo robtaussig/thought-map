@@ -115,9 +115,9 @@ export const CustomObjects: FC<CustomObjectsProps> = ({ classes, settings }) => 
         top: side === Side.TOP ? '100%' : 0,
       }}>
         <h1 className={classes.header}>Custom Objects</h1>
-        <button className={classes.button} onClick={handleClickCustomStatuses}>Custom Statuses</button>
-        <button className={classes.button} onClick={handleClickCustomTags}>Custom Tags</button>
-        <button className={classes.button} onClick={handleClickCustomTypes}>Custom Types</button>
+        <button className={classes.button} onClick={handleClickCustomStatuses}>Statuses</button>
+        <button className={classes.button} onClick={handleClickCustomTags}>Tags</button>
+        <button className={classes.button} onClick={handleClickCustomTypes}>Types</button>
         <button className={classes.button} onClick={handleClickDeleteTemplates}>Delete Templates</button>
         <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
       </div>
