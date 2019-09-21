@@ -213,7 +213,8 @@ export const styles = (theme: any): StyleRules => ({
       bottom: 10,
       left: 10,
       '& svg': {
-        transition: 'all 0.3s linear',
+        willChange: 'transform',
+        transition: 'transform 0.3s linear',
         transform: 'rotate(-90deg)',
         '&.gear-opening': {
           transform: 'rotate(90deg) scale(2)',
@@ -241,7 +242,8 @@ export const styles = (theme: any): StyleRules => ({
     color: theme.palette.primary[500],
     borderRadius: '5px',
     padding: '3px 5px',
-    transition: 'all 0.1s linear',
+    willChange: 'transform',
+    transition: 'transform 0.1s linear',
     '&:active': {
       transform: 'scale(0.96)',
     },

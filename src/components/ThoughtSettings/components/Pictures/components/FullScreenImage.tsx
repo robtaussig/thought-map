@@ -24,6 +24,7 @@ const styles = (theme: any): StyleRules => ({
   image: {
     width: '100%',
     height: 'auto',
+    transform: 'translateZ',
     transition: 'all 0.3s linear',
     
     '&.display': {

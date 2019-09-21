@@ -34,9 +34,6 @@ export const styles = (theme: any): StyleRules => ({
     '&#note': {
       marginRight: 30,
     },
-    '& > div': {
-      ...theme.defaults.underlineInput,
-    },
   },
   inputField: {
     height: '100%',
@@ -197,7 +194,8 @@ export const styles = (theme: any): StyleRules => ({
       left: 10,
       opacity: '0.5!important',
       '& svg': {
-        transition: 'all 0.3s linear',
+        willChange: 'transform',
+        transition: 'transform 0.3s linear',
         transform: 'rotate(-90deg)',
         '&.gear-opening': {
           transform: 'rotate(90deg) scale(2)',

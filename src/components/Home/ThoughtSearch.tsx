@@ -164,7 +164,7 @@ const styles = (theme: any): StyleRules => ({
     overflow: 'hidden',
     borderRadius: 12,
     marginBottom: 30,
-    '& > div': {
+    '& > input': {
       flex: 1,
     }
   },

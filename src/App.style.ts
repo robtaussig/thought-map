@@ -125,7 +125,8 @@ export const theme = responsiveFontSizes(
           backgroundColor: '#bada55',
           transformOrigin: 'center',
           transform: 'translate(-50%, 0) scaleX(0)',
-          transition: 'all 0.3s ease',
+          willChange: 'transform',
+          transition: 'transform 0.3s ease',
         },
         '& > input:focus ~ span': {
           transform: 'translate(-50%, 0) scaleX(1)',

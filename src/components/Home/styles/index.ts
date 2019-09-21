@@ -78,11 +78,9 @@ export const styles = (theme: any): StyleRules => ({
   },
   inputLabel: {
     flex: 1,
-    '& > div': {
-      height: '100%',
-      display: 'flex',
-      marginLeft: '10px',
-    },
+    height: '100%',
+    display: 'flex',
+    marginLeft: '10px',
     '& input': {
       width: '100%',
       margin: 'auto 0',
@@ -178,7 +176,8 @@ export const styles = (theme: any): StyleRules => ({
     borderRadius: 20,
     color: 'white',
     backgroundColor: '#0e466399',
-    transition: 'all 0.1s linear',
+    willChange: 'transform',
+    transition: 'transform 0.1s linear',
     ...theme.defaults.castShadow.light,
     '&:active': {
       transform: 'scale(0.99)',
