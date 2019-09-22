@@ -20,7 +20,7 @@ import {
   Notification,
 } from './types';
 
-const STATUS_OPTIONS: string[] = ['new', 'in progress', 'almost done', 'completed'];
+const STATUS_OPTIONS: string[] = ['new', 'in progress', 'won\'t fix', 'completed'];
 const TYPE_OPTIONS: string[] = ['Task', 'Todo', 'Reminder', 'Misc'];
 const TAG_OPTIONS: string[] = ['Select', 'Important', 'Lazy', 'Misc', 'Later'];
 

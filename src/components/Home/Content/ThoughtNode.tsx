@@ -15,7 +15,7 @@ interface ThoughtNodeProps {
 const STATUS_TO_COLOR: { [key: string]: string } = {
   'new': 'gold',
   'in progress': 'lightgreen',
-  'almost done': 'green',
+  'won\'t fix': 'red',
   'completed': 'midnightblue',
 };
 

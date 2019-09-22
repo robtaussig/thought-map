@@ -86,8 +86,8 @@ const getStatusModifier = ({ status }: { status?: string }): number => {
       return 1;
     case 'in progress':
       return 2;
-    case 'almost done':
-      return 3;
+    case 'won\'t fix':
+      return -1000;
     case 'completed':
       return -1000;
     default:

@@ -25,17 +25,14 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
   const { history } = useApp();
   const [openModal, closeModal, expandModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
-  const handleAddThought = useCallback(() => {
-    openModal(
-      <CreateThought
-        onExpand={expandModal}
-        onClose={closeModal}
-        state={state}
-        typeOptions={typeOptions}
-        tagOptions={tagOptions}
-      />
-    )
-  }, []);
+  const handleAddThought = () => openModal(
+    <CreateThought
+      onExpand={expandModal}
+      onClose={closeModal}
+      typeOptions={typeOptions}
+      tagOptions={tagOptions}
+    />
+  );
   const handleEditPlan = useCallback(() => planId ? history.push(`/plan/${planId}/settings?type=plan`) : history.push(`/settings`), [planId]);
   const plan = state.plans.find(plan => plan.id === planId);
   const thoughts = useMemo(() => {

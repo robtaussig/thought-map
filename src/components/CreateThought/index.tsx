@@ -13,6 +13,7 @@ import { Tag } from '../../store/rxdb/schemas/tag';
 import { Template } from '../../store/rxdb/schemas/template';
 import { AppState } from '../../reducers';
 import classNames from 'classnames';
+import { useModalDynamicState } from '../../hooks/useModal';
 
 export interface CreatedThought {
   title: string;
@@ -38,15 +39,15 @@ const DEFAULT_STATE: CreatedThought = {
 
 interface CreateThoughtProps {
   classes: any;
-  state: AppState;
   typeOptions: string[];
   tagOptions: string[];
   onExpand: ExpandModal;
   onClose: CloseModal;
 }
 
-export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOptions, tagOptions, onExpand, onClose }) => {
+export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, tagOptions, onExpand, onClose }) => {
   const { history } = useApp();
+  const state: AppState = useModalDynamicState();
   const [ready, setReady] = useState<boolean>(false);
   const db = useLoadedDB();
   const planId = getIdFromUrl(history, 'plan');

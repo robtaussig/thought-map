@@ -44,7 +44,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   }));
 
   const thoughtComponents = useMemo(() => {
-    const filterCompletedThoughts = (thought: Thought) => (plan && plan.showCompleted) || thought.status !== 'completed';
+    const filterCompletedThoughts = (thought: Thought) => (plan && plan.showCompleted) || (thought.status !== 'completed' && thought.status !== 'wont\'t fix');
     const filterMatchedThoughts = (thought: Thought) => {
       return matchingThoughts === null || matchingThoughts.includes(thought.id);
     };

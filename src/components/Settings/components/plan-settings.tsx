@@ -68,7 +68,7 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
     planActions.editPlan(db, editedPlan);
   };
 
-  const handleCheckShowCompleted: ChangeEventHandler<HTMLInputElement> = e => {
+  const handleCheckShowAll: ChangeEventHandler<HTMLInputElement> = e => {
     const editedPlan = Object.assign({}, plan, {
       showCompleted: e.target.checked,
     });
@@ -123,9 +123,9 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
         id={'show-completed'}
         classes={classes}
         isChecked={Boolean(plan.showCompleted)}
-        value={'Show Completed Thoughts'}
-        onChange={handleCheckShowCompleted}
-        label={'Show Completed Thoughts'}
+        value={'Show All Thoughts'}
+        onChange={handleCheckShowAll}
+        label={'Show All Thoughts'}
       />
       <CheckBox
         id={'archive-plan'}
