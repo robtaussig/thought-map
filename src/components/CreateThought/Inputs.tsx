@@ -1,38 +1,27 @@
-import React, { useEffect, useState, useCallback, useMemo, FC, Dispatch, useRef } from 'react';
-import Header from '../General/Header';
+import React, { useEffect, Fragment, useCallback, useMemo, FC, Dispatch, useRef } from 'react';
 import Input from '../General/Input';
 import Select from '../General/Select';
-import Date from '../General/Date';
-import TextArea from '../General/TextArea';
-import ExpandLess from '@material-ui/icons/ExpandLess';
 import { useNestedXReducer, Action } from '../../hooks/useXReducer';
-import useAutoSuggest from 'react-use-autosuggest';
 import { CreatedThought } from './';
-import { Thought } from '../../store/rxdb/schemas/thought';
-import { SettingState } from '../../types';
 
-interface Phase1Props {
+interface InputsProps {
   classes: any;
-  isFocus: boolean;
-  onReady: (isReady: boolean) => void;
-  onFocus: () => void;
   createdThought: CreatedThought;
   dispatch: Dispatch<Action>;
-  thoughts: Thought[];
-  settings: SettingState;
   typeOptions: string[];
+  tagOptions: string[];
+  onReady: (ready: boolean) => void;
+  expanded: boolean;
 }
 
-export const Phase1: FC<Phase1Props> = React.memo(({
+export const Inputs: FC<InputsProps> = React.memo(({
   classes,
-  isFocus,
-  onReady,
-  onFocus,
   createdThought,
   dispatch,
-  thoughts,
-  settings,
   typeOptions,
+  tagOptions,
+  onReady,
+  expanded,
 }) => {
   const focusTitleInput = useRef<() => {}>(null);
   const [title, setTitle] = useNestedXReducer('title', createdThought, dispatch);
@@ -40,11 +29,6 @@ export const Phase1: FC<Phase1Props> = React.memo(({
   const [date, setDate] = useNestedXReducer('date', createdThought, dispatch);
   const [time, setTime] = useNestedXReducer('time', createdThought, dispatch);
   const [description, setDescription] = useNestedXReducer('description', createdThought, dispatch);
-  const [focusDescription, setFocusDescription] = useState(false);
-  const [currentAutoSuggest, setCurrentAutoSuggest] = useState('');
-
-  const thoughtTitles = useMemo(() => settings.useAutoSuggest ? thoughts.map(({ title }) => title) : [], [thoughts, settings.useAutoSuggest]);
-  const titleSuggestions = useAutoSuggest(title.trim(), thoughtTitles, 4);
 
   const isReady = validateInputs(title);
 
@@ -52,19 +36,34 @@ export const Phase1: FC<Phase1Props> = React.memo(({
     onReady(isReady);
   }, [isReady]);
 
-  const handleTitleChange= useCallback(e => setTitle(e.target.value), []);
   const handleTypeChange= useCallback(e => setType(e.target.value), []);
   const handleDateChange= useCallback(e => setDate(e.target.value), []);
   const handleTimeChange= useCallback(e => setTime(e.target.value), []);
   const handleDescriptionChange= useCallback(e => setDescription(e.target.value), []);
-  const handleFocusField = (field: string) => () => setCurrentAutoSuggest(field);
-  const setFocus = useCallback(focus => focusTitleInput.current = focus, []);
-  useEffect(() => {
-    focusTitleInput.current();
-  }, []);
+
+  const _expandableContent = useMemo(() => {
+    return expanded ? (
+      <div className={classes.expandedContent}>Coming soon...</div>
+    ) : null;
+  },[expanded]);
+
   return (
-    <div className={`${classes.phase} ${classes.phase1} ${isFocus ? ' isFocus' : ''}`}>
-      {!isFocus && 
+    <Fragment>
+      <Input classes={classes} id={'title'} value={title} onChange={e => setTitle(e.target.value)} autoFocus/>
+      <Select classes={classes} id={'type'} value={type} options={typeOptions} onChange={e => setType(e.target.value)}/>
+      {_expandableContent}
+    </Fragment>
+  );
+});
+
+export default Inputs;
+
+const validateInputs = (title: string): boolean => {
+  return title !== '';
+};
+
+/*
+{!isFocus && 
         <Header classes={classes} value={'Edit'} onClick={onFocus}/>}
       {!focusDescription &&
         <Input
@@ -117,12 +116,4 @@ export const Phase1: FC<Phase1Props> = React.memo(({
           handleFocusField('description');
           setFocusDescription(true);
         }} onChange={handleDescriptionChange} label={'Description'}/>}
-    </div>
-  );
-});
-
-export default Phase1;
-
-const validateInputs = (title: string): boolean => {
-  return title !== '';
-};
+*/

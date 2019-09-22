@@ -8,19 +8,22 @@ interface Options {
   className?: string;
 }
 
-type OpenModal = (component: any, label?: string, options?: Options) => void;
-type CloseModal = () => void;
+export type OpenModal = (component: any, label?: string, options?: Options) => void;
+export type CloseModal = () => void;
+export type ExpandModal = (expand: boolean) => void;
 
 interface ModalContextValue {
   openModal: OpenModal;
   closeModal: CloseModal;
+  expand: ExpandModal;
   dynamicState?: any;
 }
 
 interface ModalState {
-  component: Component,
-  label: string,
-  options: Options,
+  component: Component;
+  label: string;
+  options: Options;
+  expanded: boolean;
 }
 
 interface ModalProps {
@@ -30,15 +33,12 @@ interface ModalProps {
 
 const ModalContext = createContext<ModalContextValue>(null);
 
-const INITIAL_STATE: ModalState[] = [{ component: null, label: 'Modal', options: {} }];
+const INITIAL_STATE: ModalState[] = [{ component: null, label: 'Modal', options: {}, expanded: false }];
 const MODAL_WRAPPER_STYLE: CSSProperties = {
   position: 'absolute',
   display: 'flex',
   flexDirection: 'column',
-  maxHeight: '80%',
   overflow: 'auto',
-  left: '10%',
-  right: '10%',
   top: '50%',
   transform: 'translateY(-50%)',
   backgroundColor: '#539aff',
@@ -58,9 +58,23 @@ export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) =
   const modal = useMemo(() => modals[modals.length - 1], [modals]);
   const handleClose = useCallback(() => setModals(prev => prev.slice(0, prev.length - 1)),[]);
   const handleOpen = useCallback((component, label = 'Modal', options = {}) => {
-    setModals(prev => prev.concat({ component, label, options }));
+    setModals(prev => prev.concat({ component, label, options, expanded: false }));
   },[]);
-  const contextValue = useMemo(() => ({ openModal: handleOpen, closeModal: handleClose, dynamicState }), [dynamicState]);
+  const handleExpand = useCallback((expand: boolean) => {
+    setModals(prev => prev.map((modal, idx) => idx === prev.length - 1 ? {
+      ...modal,
+      expanded: expand,
+    } : modal))
+  }, []);
+  const contextValue = useMemo(() => ({ openModal: handleOpen, closeModal: handleClose, expand: handleExpand, dynamicState }), [dynamicState]);
+  const modalStyle = {
+    ...MODAL_WRAPPER_STYLE,
+    left: modal.expanded ? 0 : '10%',
+    right: modal.expanded ? 0 : '10%',
+    height: modal.expanded ? '100%' : undefined,
+    maxHeight: modal.expanded ? '100%' : '80%',
+    ...(modal.options.style || {})
+  };
 
   return (
     <ModalContext.Provider value={contextValue}>
@@ -71,7 +85,7 @@ export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) =
           open={modal.component !== null}
           onClose={handleClose}
         >
-          <div className={modal.options.className} style={{ ...MODAL_WRAPPER_STYLE, ...(modal.options.style || {})}}>
+          <div className={modal.options.className} style={modalStyle}>
             <button onClick={handleClose} style={CLOSE_BUTTON_STYLE}><Close/></button>
             {modal.component}
           </div>
@@ -81,10 +95,10 @@ export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) =
   );
 };
 
-export const useModal = (): [OpenModal, CloseModal] => {
-  const { openModal, closeModal } = useContext(ModalContext);
+export const useModal = (): [OpenModal, CloseModal, ExpandModal] => {
+  const { openModal, closeModal, expand } = useContext(ModalContext);
 
-  return [openModal, closeModal];
+  return [openModal, closeModal, expand];
 };
 
 export const useModalDynamicState = (): any => {

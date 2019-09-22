@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useCallback, useRef, FC } from 'react';
+import React, { useState, useEffect, useCallback, MouseEvent, FC, FormEventHandler, Fragment } from 'react';
 import useApp from '../../hooks/useApp';
+import { ExpandModal, CloseModal } from '../../hooks/useModal';
 import { useLoadedDB } from '../../hooks/useDB';
 import useXReducer, { useNestedXReducer } from '../../hooks/useXReducer';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
-import Phase1 from './Phase1';
-import CreateThoughtSettings from './CreateThoughtSettings';
-import CircleButton from '../General/CircleButton';
-import Check from '@material-ui/icons/Check';
-import Home from '@material-ui/icons/Home';
-import Settings from '@material-ui/icons/Settings';
+import Inputs from './Inputs';
 import { createWholeThought } from '../../actions/complex';
 import { homeUrl, getIdFromUrl } from '../../lib/util';
 import { Note } from '../../store/rxdb/schemas/note';
 import { Tag } from '../../store/rxdb/schemas/tag';
 import { Template } from '../../store/rxdb/schemas/template';
 import { AppState } from '../../reducers';
+import classNames from 'classnames';
 
 export interface CreatedThought {
   title: string;
@@ -44,11 +41,13 @@ interface CreateThoughtProps {
   state: AppState;
   typeOptions: string[];
   tagOptions: string[];
+  onExpand: ExpandModal;
+  onClose: CloseModal;
 }
 
-export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOptions, tagOptions }) => {
-  const { history } = useApp();  
-  const settingsSVGRef = useRef<HTMLElement>(null);
+export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOptions, tagOptions, onExpand, onClose }) => {
+  const { history } = useApp();
+  const [ready, setReady] = useState<boolean>(false);
   const db = useLoadedDB();
   const planId = getIdFromUrl(history, 'plan');
   const plan = state.plans.find(plan => plan.id === planId);
@@ -57,24 +56,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOpti
     return state;
   });
   const [ type, setType ] = useNestedXReducer('type', createdThought, createdThoughtDispatch);
-  const [ phase, setPhase ] = useState<number>(1);
-  const [ ready, setReady ] = useState<boolean>(false);
-  const [ displaySettings, setDisplaySettings ] = useState<boolean>(false);
-  
-  const handleSubmit = async () => {
-    const response = await createWholeThought(db, createdThought, planId);
-    history.push(`${homeUrl(history)}thought/${response.thought.id}`);
-  };
 
-  const handleClickHome = useCallback(() => history.push(homeUrl(history)),[]);
-  const handleClickSettings = useCallback(() => {
-    setDisplaySettings(prev => !prev);
-    if (!displaySettings) {
-      gearOpening(settingsSVGRef.current);
-    } else {
-      gearClosing(settingsSVGRef.current);
-    }
-  }, [displaySettings]);
   const handleCreateFromTemplate = useCallback(({ template }: Template) => {
     const { thought, notes, tags } = template;
 
@@ -99,39 +81,46 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, state, typeOpti
   useEffect(() => {
     if (plan && plan.defaultType) setType(plan.defaultType);
   }, [plan]);
+
+  const [expanded, setExpanded] = useState<boolean>(false);
+
+  const handleSubmit: FormEventHandler = async (e) => {
+    e.preventDefault();
+    if (ready) {
+      const response = await createWholeThought(db, createdThought, planId);
+      onClose();
+      history.push(`${homeUrl(history)}thought/${response.thought.id}`);
+    }
+  };
+
+  const handleExpand = (e: MouseEvent) => {
+    onExpand(true);
+    setExpanded(true);
+  };
   
   return (
-    <div className={classes.root}>
-      <Phase1
-        classes={classes}
-        isFocus={phase === 1}
-        onReady={(isReady: boolean) => setReady(isReady)}
-        onFocus={() => setPhase(1)}
-        createdThought={createdThought}
-        dispatch={createdThoughtDispatch}
-        thoughts={state.thoughts}
-        settings={state.settings}
-        typeOptions={typeOptions}
-      />
-      <CreateThoughtSettings
-        display={displaySettings}
-        templates={state.templates}
-        onCreateFromTemplate={handleCreateFromTemplate}
-        onClose={() => setDisplaySettings(false)}
-      />
-      <CircleButton classes={classes} id={'create-thought'} onClick={handleSubmit} label={'Create Thought'} disabled={!ready} Icon={Check}/>
-      <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
-      <CircleButton classes={classes} svgRef={settingsSVGRef} id={'settings'} onClick={handleClickSettings} label={'Settings'} Icon={Settings}/>
-    </div>
+    <Fragment>
+      <form className={classNames(classes.form, {
+        [classes.expanded]: expanded,
+      })} onSubmit={handleSubmit}>
+        <Inputs
+          classes={classes}
+          createdThought={createdThought}
+          dispatch={createdThoughtDispatch}
+          typeOptions={typeOptions}
+          tagOptions={tagOptions}
+          onReady={setReady}
+          expanded={expanded}
+        />
+        <button className={classes.submitButton} disabled={!ready}>
+          Submit
+        </button>
+      </form>
+      {!expanded && (<button className={classes.moreButton} onClick={handleExpand}>
+        More...
+      </button>)}
+    </Fragment>
   );
 };
-
-const gearOpening = (element: HTMLElement): void => {
-  element.classList.add('gear-opening');
-};
-
-const gearClosing = (element: HTMLElement): void => {
-  element.classList.remove('gear-opening');
-}
 
 export default withStyles(styles)(CreateThought);

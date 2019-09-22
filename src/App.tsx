@@ -11,7 +11,6 @@ import { useDB } from './hooks/useDB';
 import Home from './components/Home';
 import PriorityList from './components/Home/PriorityList';
 import Settings from './components/Settings';
-import CreateThought from './components/CreateThought';
 import Thought from './components/Thought';
 import Notifications from './components/Notifications';
 import { ModalProvider } from './hooks/useModal';
@@ -91,19 +90,13 @@ const App: FC<AppProps> = ({ classes, history }) => {
             <PriorityList thoughts={state.thoughts}/>
             <Switch>
               <Route exact path={'/'}>
-                {dbReadyState && <Home state={state} statusOptions={statusOptions} setLastNotification={setLastNotification}/>}
+                {dbReadyState && <Home state={state} statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
               <Route path={'/settings'}>
                 {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}
               </Route>
-              <Route path={'/thought/new'}>
-                {dbReadyState && <CreateThought state={state} typeOptions={typeOptions} tagOptions={tagOptions}/>}
-              </Route>
               <Route path={'/thought/:id'}>
                 {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
-              </Route>
-              <Route path={'/plan/:id/thought/new'}>
-                {dbReadyState && <CreateThought state={state} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
               <Route path={'/plan/:id/thought/:thoughtId'}>
                 {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
@@ -112,7 +105,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}
               </Route>
               <Route path={'/plan/:id'}>
-                {dbReadyState && <Home state={state} statusOptions={statusOptions} setLastNotification={setLastNotification}/>}
+                {dbReadyState && <Home state={state} statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
             </Switch> 
           </Div100vh>

@@ -3,9 +3,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Content from './Content/index';
 import Build from '@material-ui/icons/Build';
 import PlanSelect from './PlanSelect';
+import CreateThought from '../CreateThought';
 import CircleButton from '../General/CircleButton';
 import { styles } from './styles';
 import useApp from '../../hooks/useApp';
+import useModal from '../../hooks/useModal';
 import { getIdFromUrl } from '../../lib/util';
 import { AppState } from '../../reducers';
 import { Notification } from '../../types';
@@ -15,12 +17,25 @@ interface HomeProps {
   state: AppState;
   statusOptions: string[];
   setLastNotification: (notification: Notification) => void;
+  typeOptions: string[];
+  tagOptions: string[];
 }
 
-export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNotification }) => {
+export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNotification, typeOptions, tagOptions }) => {
   const { history } = useApp();
+  const [openModal, closeModal, expandModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
-  const handleAddThought = useCallback(() => history.push(planId ? `/plan/${planId}/thought/new` :'/thought/new'), [planId]);
+  const handleAddThought = useCallback(() => {
+    openModal(
+      <CreateThought
+        onExpand={expandModal}
+        onClose={closeModal}
+        state={state}
+        typeOptions={typeOptions}
+        tagOptions={tagOptions}
+      />
+    )
+  }, []);
   const handleEditPlan = useCallback(() => planId ? history.push(`/plan/${planId}/settings?type=plan`) : history.push(`/settings`), [planId]);
   const plan = state.plans.find(plan => plan.id === planId);
   const thoughts = useMemo(() => {

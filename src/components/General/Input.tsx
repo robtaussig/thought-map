@@ -14,7 +14,7 @@ interface ChangeType {
 export type InputChangeHandler = (e: ChangeType) => void;
 
 interface InputProps {
-  classes?: any;
+  classes: any;
   value: string;
   onChange: InputChangeHandler;
   label?: string;
