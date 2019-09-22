@@ -131,7 +131,7 @@ export const styles = (theme: any): StyleRules => ({
         color: 'white',
         display: 'flex',
         textAlignLast: 'center',
-        paddingLeft: 13,
+        padding: '0 13px',
         backgroundColor: 'transparent',
         border: 'none',
       },
