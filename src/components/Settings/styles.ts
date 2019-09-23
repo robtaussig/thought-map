@@ -122,5 +122,5 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
       bottom: 10,
       right: 10,
     },
-  },
+  },  
 });

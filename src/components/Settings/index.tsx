@@ -13,6 +13,7 @@ interface SettingsProps {
   classes: any;
   state: AppState;
   typeOptions: string[];
+  setLastNotification: (notification: { message: string }) => void;
 }
 
 interface NavBarItem {
@@ -22,7 +23,7 @@ interface NavBarItem {
   disabled?: boolean;
 }
 
-export const Settings: FC<SettingsProps> = ({ classes, state, typeOptions }) => {
+export const Settings: FC<SettingsProps> = ({ classes, state, typeOptions, setLastNotification }) => {
   const { history } = useApp();
   const planId = getIdFromUrl(history, 'plan');
   const type = getSearchParam(history, 'type');
@@ -61,7 +62,7 @@ export const Settings: FC<SettingsProps> = ({ classes, state, typeOptions }) => 
           /> :
           <Loading id={'thought-loader'}/>
       ) : (
-        <AppSettings state={state}/>
+        <AppSettings state={state} setLastNotification={setLastNotification}/>
       )}
     </div>
   );

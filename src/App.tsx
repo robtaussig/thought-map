@@ -93,7 +93,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Home state={state} statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
               <Route path={'/settings'}>
-                {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}
+                {dbReadyState && <Settings state={state} typeOptions={typeOptions} setLastNotification={setLastNotification}/>}
               </Route>
               <Route path={'/thought/:id'}>
                 {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
@@ -102,7 +102,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
                 {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
               <Route path={'/plan/:id/settings'}>
-                {dbReadyState && <Settings state={state} typeOptions={typeOptions}/>}
+                {dbReadyState && <Settings state={state} typeOptions={typeOptions} setLastNotification={setLastNotification}/>}
               </Route>
               <Route path={'/plan/:id'}>
                 {dbReadyState && <Home state={state} statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions} tagOptions={tagOptions}/>}
