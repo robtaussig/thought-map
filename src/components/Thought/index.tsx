@@ -125,7 +125,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
           Icon={Settings}
         />
       )}
-      {editState && <CreateConnectionsFromThought classes={classes} thought={thought} thoughts={state.thoughts} connections={state.connections}/>}
     </div>
   );
 };
