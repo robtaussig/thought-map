@@ -6,6 +6,7 @@ import { CSSProperties } from '@material-ui/styles';
 interface Options {
   style?: CSSProperties;
   className?: string;
+  afterClose?: () => void;
 }
 
 export type OpenModal = (component: any, label?: string, options?: Options) => void;
@@ -56,7 +57,14 @@ const CLOSE_BUTTON_STYLE: CSSProperties = {
 export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) => {
   const [modals, setModals] = useState<ModalState[]>(INITIAL_STATE);
   const modal = useMemo(() => modals[modals.length - 1], [modals]);
-  const handleClose = useCallback(() => setModals(prev => prev.slice(0, prev.length - 1)),[]);
+  const handleClose = useCallback(() => {
+    setModals(prev => {
+      if (prev[prev.length - 1].options && prev[prev.length - 1].options.afterClose) {
+        prev[prev.length - 1].options.afterClose();
+      }
+      return prev.slice(0, prev.length - 1);
+    });
+  },[]);
   const handleOpen = useCallback((component, label = 'Modal', options = {}) => {
     setModals(prev => prev.concat({ component, label, options, expanded: false }));
   },[]);

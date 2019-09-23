@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, FC } from 'react';
+import React, { useCallback, useMemo, FC, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Content from './Content/index';
 import Build from '@material-ui/icons/Build';
@@ -23,16 +23,22 @@ interface HomeProps {
 
 export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNotification, typeOptions, tagOptions }) => {
   const { history } = useApp();
+  const [addingThought, setAddingThought] = useState<boolean>(false);
   const [openModal, closeModal, expandModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
-  const handleAddThought = () => openModal(
-    <CreateThought
-      onExpand={expandModal}
-      onClose={closeModal}
-      typeOptions={typeOptions}
-      tagOptions={tagOptions}
-    />
-  );
+  const handleAddThought = () => {
+    setAddingThought(true);
+    openModal(
+      <CreateThought
+        onExpand={expandModal}
+        onClose={closeModal}
+        typeOptions={typeOptions}
+        tagOptions={tagOptions}
+      />, 'Create Thought', {
+        afterClose: () => setAddingThought(false),
+      }
+    );
+  }
   const handleEditPlan = useCallback(() => planId ? history.push(`/plan/${planId}/settings?type=plan`) : history.push(`/settings`), [planId]);
   const plan = state.plans.find(plan => plan.id === planId);
   const thoughts = useMemo(() => {
@@ -47,8 +53,8 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
     <div className={classes.root}>
       <Content classes={classes} thoughts={thoughts} notes={state.notes} tags={state.tags} plan={plan} statusOptions={statusOptions}/>
       <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId} setLastNotification={setLastNotification}/>
-      {<CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
-      {<CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
+      {!addingThought && <CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
+      {!addingThought && <CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
     </div>
   );
 };
