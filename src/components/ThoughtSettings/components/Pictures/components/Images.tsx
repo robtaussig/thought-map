@@ -22,7 +22,6 @@ export const Images: FC<ImagesProps> = ({ classes, relatedPictures, loaded, dele
   const [fullScreenImage, setFullScreenImage] = useState<Picture>(null);
   const [openModal, closeModal] = useModal();
   const db = useLoadedDB();
-  const [showDestructiveActions, setShowDestructiveActions] = useState<boolean>(false);
 
   const handleClickImage = (idx: number) => () => {
     const picture = relatedPictures[idx];
@@ -66,13 +65,6 @@ export const Images: FC<ImagesProps> = ({ classes, relatedPictures, loaded, dele
 
   return (
     <Fragment>
-      <button className={classes.toggleDestructiveIcons} onClick={() => setShowDestructiveActions(prev => !prev)}>
-        {showDestructiveActions ? (
-          <Close/>
-        ) : (
-          <Edit/>
-        )}
-      </button>
       {relatedPictures.length > 0 && (<div className={classes.imageList}>
         {relatedPictures.map((picture, idx) => {
           return (
@@ -80,7 +72,7 @@ export const Images: FC<ImagesProps> = ({ classes, relatedPictures, loaded, dele
               {/* 
               // @ts-ignore */}
               <img src={picture.localUrl || picture.imgurUrl} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>
-              {showDestructiveActions && (<div className={classes.uploadOptions}>
+              {(<div className={classes.uploadOptions}>
                 {picture.pinned ? (
                   <button className={classes.unpinButton} onClick={unpinImage(picture)}><Wallpaper/></button>
                 ) : (
@@ -100,9 +92,7 @@ export const Images: FC<ImagesProps> = ({ classes, relatedPictures, loaded, dele
                     </button>
                   </div>
                 ) :
-                showDestructiveActions ?
-                  (<button className={classes.pictureDescriptionButton} onClick={handleClickEditDescription(picture)}>Write Description</button>) :
-                  null
+                (<button className={classes.pictureDescriptionButton} onClick={handleClickEditDescription(picture)}>Write Description</button>)
               }
             </ImageWrapper>
           );
