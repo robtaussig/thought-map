@@ -5,8 +5,8 @@ export const styles = (theme: any): StyleRules => ({
     height: '100%',
     display: 'grid',
     gridTemplateAreas: `"title title"
-                        "type submit"
-                        "expand expand"`,
+                        "type type"
+                        ". submit"`,
     gridTemplateRows: 'max-content max-content max-content',
     gridTemplateColumns: '1fr max-content',
     gridGap: '10px',
@@ -33,22 +33,25 @@ export const styles = (theme: any): StyleRules => ({
   },
   selectLabel: {
     '&#type': {
+      gridArea: 'type',
       '& select': {
         width: '100%',
         fontSize: 18,
       },
     },
   },
-  moreButton: {
-    gridArea: 'expand',
-  },
   submitButton: {
     gridArea: 'submit',
     cursor: 'pointer',
     fontWeight: 600,
     color: 'white',
+    marginTop: 20,
+    border: '1px solid white',
+    padding: '5px 12px',
+    borderRadius: '5px',
     '&:disabled': {
       color: 'gray',
+      border: '1px solid gray',
     },
   },
 });

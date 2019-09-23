@@ -116,10 +116,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, ta
         <button className={classes.submitButton} disabled={!ready}>
           Submit
         </button>
-      </form>
-      {!expanded && (<button className={classes.moreButton} onClick={handleExpand}>
-        More...
-      </button>)}
+      </form>      
     </Fragment>
   );
 };

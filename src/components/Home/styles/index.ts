@@ -20,19 +20,20 @@ export const styles = (theme: any): StyleRules => ({
     '&#plans': {
       gridArea: 'plans-list',
       display: 'flex',
-      backgroundColor: '#8380ff',      
+      backgroundColor: theme.palette.primary[500],      
       borderRadius: '10px',
       position: 'relative',
       boxShadow: '0px 0px 5px -1px black',
       '& > select': {
         flex: 1,
-        color: 'white',
+        color: theme.palette.gray[600],
         display: 'flex',
         textAlignLast: 'center',
         paddingLeft: 13,
         backgroundColor: 'transparent',
         border: 'none',
         fontSize: 24,
+        fontWeight: 600,
       }
     },
   },
