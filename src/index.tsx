@@ -6,7 +6,7 @@ import { theme } from './App.style';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
-(window as any).APP_VERSION = '0.3';
+(window as any).APP_VERSION = '0.4';
 
 ReactDOM.render(
   (
