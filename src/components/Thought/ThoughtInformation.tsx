@@ -7,6 +7,7 @@ import Check from '@material-ui/icons/Check';
 import Close from '@material-ui/icons/Close';
 import Edit from '@material-ui/icons/Edit';
 import LowPriority from '@material-ui/icons/LowPriority';
+import Description from '@material-ui/icons/Description';
 import PriorityHighRounded from '@material-ui/icons/PriorityHighRounded';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import classNames from 'classnames';
@@ -14,6 +15,7 @@ import { handleUpdates, getTime } from './util';
 import { statuses as statusActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 import Input from '../General/Input';
+import TextArea from '../General/TextArea';
 import Select from '../General/Select';
 import {
   ThoughtInformationProps,
@@ -84,7 +86,7 @@ const styles = (theme: any): StyleRules => ({
     gridTemplateRows: '20px 1fr max-content 20px',
     gridTemplateColumns: '50px 1fr 50px',
     gridColumnGap: '10px',
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.gray[200],
     borderRadius: '10px',
     color: 'black',
     margin: '10px 0',
@@ -132,6 +134,11 @@ const styles = (theme: any): StyleRules => ({
     '& select': {
       width: '100%',
     },
+    '& textarea': {
+      width: '100%',
+      resize: 'none',
+      height: 100,
+    },
   },
   highPriorityButton: {
     color: theme.palette.red[500],
@@ -171,6 +178,8 @@ interface ThoughtSectionProps {
 
 const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, field, value, className, edit, visible, quickActionButton }) => {  
   const [editting, setEditting] = useState<boolean>(false);
+  const lastClick = useRef<number>(0);
+  const rootRef = useRef<HTMLDivElement>(null);
   const [inputtedValue, setInputtedValue] = useState<string>(String(value));
 
   const handleToggleEdit = () => {
@@ -205,6 +214,16 @@ const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, f
             options={edit.options}
           />
         );
+      case EditTypes.TextArea:
+        return (
+          <TextArea
+            classes={classes}
+            id={'section-editor'}
+            value={inputtedValue}
+            onChange={e => setInputtedValue(e.target.value)}
+            autoFocus
+          />
+        );
     
       default:
         return (
@@ -212,14 +231,37 @@ const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, f
             classes={classes}
             id={'section-editor'}
             value={inputtedValue}
-            onChange={e => setInputtedValue(e.target.value)} autoFocus
+            onChange={e => setInputtedValue(e.target.value)}
+            autoFocus
           />
         );
     }
-  }, [inputtedValue, edit]);  
+  }, [inputtedValue, edit]);
+
+  const handleClickValue: MouseEventHandler<Element> = e => {
+    const currentClick = +new Date();
+    if (currentClick - lastClick.current < 500) {
+      setEditting(true);
+    }
+    lastClick.current = currentClick;
+  };
+
+  useEffect(() => {
+    if (editting) {
+      const handleBodyClick = (e: any) => {
+        if (!rootRef.current.contains(e.target)) {
+          setEditting(false);
+        }       
+      };
+
+      document.body.addEventListener('click', handleBodyClick);
+
+      return () => document.body.removeEventListener('click', handleBodyClick);
+    }
+  }, [editting]);
 
   return (
-    <section className={classNames(classes.thoughtSection, className)}>
+    <section ref={rootRef} className={classNames(classes.thoughtSection, className)}>
       <button className={classes.editToggle} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
       <div className={classes.sectionIcon}>
         <Icon/>
@@ -228,7 +270,7 @@ const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, f
         <form className={classes.sectionEditForm} onSubmit={handleSubmit}>
           {_editComponent}
         </form>
-      ) : (<h3 className={classes.sectionValue}>{value}</h3>)}
+      ) : (<h3 className={classes.sectionValue} onClick={handleClickValue}>{value}</h3>)}
       <span className={classes.sectionField}>{field}</span>
       <div className={classes.sectionQuickActionButton}>
         {quickActionButton}
@@ -369,6 +411,19 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
             type: EditTypes.Select,
             options: priorityOptions.map(({ label }) => label),
             onEdit: value => handleEditThought('priority')(priorityOptions.find(({ label }) => label === value).value),
+            onChangeVisibility: console.log,
+          }}
+        />
+        <ThoughtSection
+          classes={classes}
+          Icon={Description}
+          field={'description'}
+          value={thought.description}
+          className={'description'}
+          visible={true}
+          edit={{
+            type: EditTypes.TextArea,
+            onEdit: handleEditThought('description'),
             onChangeVisibility: console.log,
           }}
         />
