@@ -19,10 +19,11 @@ interface ContentProps {
   thoughts: Thought[];
   plan: Plan;
   statusOptions: string[];
+  typeOptions: string[];
   state: AppState;
 }
 
-export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, state }) => {
+export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, state }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const { dispatch } = useApp();
   const lastScrollPos = useRef<number>(0);
@@ -67,6 +68,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
             key={`thought-node-${thought.id}`}  
             thought={thought}
             statusOptions={statusOptions}
+            typeOptions={typeOptions}
             displayField={sortFilterSettings.field}
           />
         );

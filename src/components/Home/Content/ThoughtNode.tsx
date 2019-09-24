@@ -2,7 +2,7 @@ import React, { useCallback, FC } from 'react';
 import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
-import { statuses as statusActions } from '../../../actions';
+import { statuses as statusActions, thoughts as thoughtActions } from '../../../actions';
 import { homeUrl } from '../../../lib/util';
 import { Thought } from 'store/rxdb/schemas/thought';
 
@@ -10,6 +10,7 @@ interface ThoughtNodeProps {
   classes: any;
   thought: Thought;
   statusOptions: string[];
+  typeOptions: string[];
   displayField: string;
 }
 
@@ -35,7 +36,7 @@ const styleFromPriority = (priority: number): { color?: string, fontWeight?: num
   return {};
 };
 
-export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought, statusOptions, displayField }) => {
+export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought, statusOptions, typeOptions, displayField }) => {
   const { history } = useApp();
   const db = useLoadedDB();
 
@@ -50,11 +51,24 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought,
     });
   }, []);
 
+  const handleChangeType = useCallback(event => {
+    thoughtActions.editThought(db, {
+        ...thought,
+        type: event.target.value,
+    });
+  }, []);
+
   return (
     <div className={classes.thoughtNode}>
       <span className={classes.thoughtNodeTitle} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
       {displayField === 'type' ? (
-        <span className={classes.thoughtNodeType}>{thought.type}</span>
+        <Select
+          id={'status-select'}
+          classes={classes}
+          value={thought.type}
+          options={typeOptions}
+          onChange={handleChangeType}
+        />
       ) : (
         <Select
           id={'status-select'}
