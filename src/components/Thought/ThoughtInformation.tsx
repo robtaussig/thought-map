@@ -119,6 +119,9 @@ const styles = (theme: any): StyleRules => ({
     gridArea: 'quick-action',
     ...theme.defaults.centered,
     justifyContent: 'flex-start',
+    '& > button': {
+      ...theme.defaults.centered,
+    },
   },
   completeThoughtButton: {
     color: theme.palette.primary[500],
