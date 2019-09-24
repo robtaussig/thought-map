@@ -10,6 +10,7 @@ import LowPriority from '@material-ui/icons/LowPriority';
 import Description from '@material-ui/icons/Description';
 import PriorityHighRounded from '@material-ui/icons/PriorityHighRounded';
 import ArrowRight from '@material-ui/icons/ArrowRight';
+import CalendarToday from '@material-ui/icons/CalendarToday';
 import classNames from 'classnames';
 import { handleUpdates, getTime } from './util';
 import { statuses as statusActions } from '../../actions';
@@ -17,6 +18,7 @@ import { useLoadedDB } from '../../hooks/useDB';
 import Input from '../General/Input';
 import TextArea from '../General/TextArea';
 import Select from '../General/Select';
+import DateInput from '../General/Date';
 import {
   ThoughtInformationProps,
   EditedMap,
@@ -156,6 +158,7 @@ enum EditTypes {
   Checkbox = 'Checkbox',
   Date = 'Date',
   Time = 'Time',
+  DateTime = 'DateTime',
 }
 
 interface EditProps {
@@ -224,6 +227,22 @@ const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, f
             autoFocus
           />
         );
+      case EditTypes.DateTime:
+        const [inputtedDate, inputtedTime] = inputtedValue.split(',');
+        const handleSetDate = (e: any) => {
+          const date = e.target.value;
+          setInputtedValue(prev => prev.split(',').map((val, idx) => idx === 0 ? date : val).join(','));
+        };
+        const handleSetTime = (e: any) => {
+          const time = e.target.value;
+          setInputtedValue(prev => prev.split(',').map((val, idx) => idx === 1 ? time : val).join(','));
+        };
+        return (
+          <div>
+            <DateInput classes={classes} value={inputtedDate} onChange={handleSetDate}/>
+            <DateInput classes={classes} value={inputtedTime} time onChange={handleSetTime}/>
+          </div>
+        );
     
       default:
         return (
@@ -260,6 +279,8 @@ const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, f
     }
   }, [editting]);
 
+  const displayValue = edit.type === EditTypes.DateTime ? value.split(',').join(' ') : value;
+
   return (
     <section ref={rootRef} className={classNames(classes.thoughtSection, className)}>
       <button className={classes.editToggle} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
@@ -270,7 +291,7 @@ const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, f
         <form className={classes.sectionEditForm} onSubmit={handleSubmit}>
           {_editComponent}
         </form>
-      ) : (<h3 className={classes.sectionValue} onClick={handleClickValue}>{value}</h3>)}
+      ) : (<h3 className={classes.sectionValue} onClick={handleClickValue}>{displayValue}</h3>)}
       <span className={classes.sectionField}>{field}</span>
       <div className={classes.sectionQuickActionButton}>
         {quickActionButton}
@@ -346,6 +367,17 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     lastTitleClick.current = currentTitleClick;
   };
 
+  const handleEditDateTime = (datetime: any) => {
+    const [date, time] = datetime.split(',');
+    onUpdate({
+      ...thought,
+      date: date || '',
+      time: time || '',
+    });
+  };
+
+  const dateTimeText = `${thought.date},${thought.time}`;
+
   return (
     <div className={classes.root}>
       {edittingTitle ?
@@ -369,7 +401,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
         <ThoughtSection
           classes={classes}
           Icon={Category}
-          field={'type'}
+          field={'Type'}
           value={thought.type}
           className={'type'}
           visible={true}
@@ -383,7 +415,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
         <ThoughtSection
           classes={classes}
           Icon={thought.status === 'completed' ? CheckBoxIcon : CheckBoxOutlineBlank}
-          field={'status'}
+          field={'Status'}
           value={thought.status}
           className={'status'}
           visible={true}
@@ -400,7 +432,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
         <ThoughtSection
           classes={classes}
           Icon={LowPriority}
-          field={'priority'}
+          field={'Priority'}
           value={priorityOptions.find(({ value }) => value === thought.priority).label}
           className={'priority'}
           visible={true}
@@ -417,13 +449,26 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
         <ThoughtSection
           classes={classes}
           Icon={Description}
-          field={'description'}
+          field={'Description'}
           value={thought.description}
           className={'description'}
           visible={true}
           edit={{
             type: EditTypes.TextArea,
             onEdit: handleEditThought('description'),
+            onChangeVisibility: console.log,
+          }}
+        />
+        <ThoughtSection
+          classes={classes}
+          Icon={CalendarToday}
+          field={'Date/Time'}
+          value={dateTimeText}
+          className={'datetime'}
+          visible={true}
+          edit={{
+            type: EditTypes.DateTime,
+            onEdit: handleEditDateTime,
             onChangeVisibility: console.log,
           }}
         />
