@@ -207,7 +207,7 @@ export const styles = (theme: any): StyleRules => ({
     backgroundColor: theme.palette.gray[600],
     opacity: 0.5,
     '&#return-home': {
-      top: 10,
+      bottom: 10,
       right: 10,
     },
     '&#settings': {

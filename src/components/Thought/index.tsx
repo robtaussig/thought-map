@@ -8,7 +8,6 @@ import { styles } from './styles';
 import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
 import ThoughtSettings from '../ThoughtSettings';
-import CreateConnectionsFromThought from './components/CreateConnectionsFromThought';
 import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
@@ -90,7 +89,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         <Loading id={'thought-loader'}/>}
       {thought && 
         <ThoughtInformation
-          classes={classes}
           thought={thought}
           tags={relatedTags}
           notes={relatedNotes}
