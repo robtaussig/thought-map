@@ -383,6 +383,8 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       {edittingTitle ?
         (
           <form className={classes.editTitleForm} onSubmit={handleSubmitTitle}>
+            <button className={classes.submitTitleButton}><Check/></button>
+            <button className={classes.cancelTitleButton} onClick={handleCancelTitle}><Close/></button>
             <Input
               classes={classes}
               id={'title'}
@@ -390,8 +392,6 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
               onChange={e => setInputtedTitle(e.target.value)}
               autoFocus
             />
-            <button className={classes.submitTitleButton}><Check/></button>
-            <button className={classes.cancelTitleButton} onClick={handleCancelTitle}><Close/></button>
           </form>
         ) : 
         (<h1 className={classes.thoughtTitle} onClick={handleClickTitle}>{thought.title}</h1>)}
