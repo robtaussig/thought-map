@@ -9,15 +9,17 @@ import { Thought } from '~store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import Input from '../../General/Input';
 import Search from '@material-ui/icons/Search';
-import { Searchable, Notes, Tags } from '../ThoughtSearch';
+import { Searchable } from '../ThoughtSearch';
+import { useNestedXReducer } from '../../../hooks/useXReducer';
+import useApp from '../../../hooks/useApp';
+import { AppState } from '~reducers';
 
 interface ContentProps {
   classes: any;
   thoughts: Thought[];
   plan: Plan;
-  notes: Notes;
-  tags: Tags;
   statusOptions: string[];
+  state: AppState;
 }
 
 type Field = 'name' | 'status';
@@ -27,16 +29,19 @@ interface SortRule {
   desc?: boolean;
 }
 
-export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, notes, tags }) => {
+export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, state }) => {
   const rootRef = useRef<HTMLDivElement>(null);
+  const { dispatch } = useApp();
   const lastScrollPos = useRef<number>(0);
-  const [sortRule, setSortRule] = useState<SortRule>({});
   const [scrollingUp, setScrollingUp] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
   const searchTree = useRef<Searchable>(new Searchable());
+  const [notes] = useNestedXReducer('notes', state, dispatch);
+  const [tags] = useNestedXReducer('tags', state, dispatch);
+  const [sortFilterSettings, setSortFilterSettings] = useNestedXReducer('sortFilterSettings', state, dispatch);
 
-  const handleSortBy = (name: Field) => () => setSortRule(({ field, desc }) => ({
+  const handleSortBy = (name: Field) => () => setSortFilterSettings(({ field, desc }) => ({
     field: field === name && desc === false ? null : name,
     desc: field === name ?
       desc === false ? null : !desc :
@@ -49,12 +54,12 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       return matchingThoughts === null || matchingThoughts.includes(thought.id);
     };
     const sortBySortRule = (left: Thought, right: Thought): number => {
-      if (sortRule.field) {
-        const leftIsBigger = sortRule.field === 'name' ?
+      if (sortFilterSettings.field) {
+        const leftIsBigger = sortFilterSettings.field === 'name' ?
           left.title && (!right.title || (left.title.toLowerCase() > right.title.toLowerCase())):
           left.title && (!right.status || (left.status.toLowerCase() > right.status.toLowerCase()));
         
-        return (leftIsBigger && sortRule.desc) || (!leftIsBigger && !sortRule.desc) ? 1 : -1;
+        return (leftIsBigger && sortFilterSettings.desc) || (!leftIsBigger && !sortFilterSettings.desc) ? 1 : -1;
       }
       return 1;
     };
@@ -73,7 +78,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           />
         );
       });
-  }, [thoughts, plan, sortRule, matchingThoughts]);
+  }, [thoughts, plan, sortFilterSettings, matchingThoughts]);
 
   const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
     const scrollTop = e.target.scrollTop;
@@ -104,8 +109,8 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           <div className={classes.sortByNames}>
             <button className={classes.sortButton} onClick={handleSortBy('name')}>
               Name
-              {sortRule.field === 'name' ?
-                (sortRule.desc ? <ExpandMore/> : <ExpandLess/>) :
+              {sortFilterSettings.field === 'name' ?
+                (sortFilterSettings.desc ? <ExpandMore/> : <ExpandLess/>) :
                 <UnfoldMore/>
               }  
             </button>
@@ -113,8 +118,8 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           <div className={classes.sortByStatus}>
           <button className={classes.sortButton} onClick={handleSortBy('status')}>
             Status
-            {sortRule.field === 'status' ?
-              (sortRule.desc ? <ExpandMore/> : <ExpandLess/>) :
+            {sortFilterSettings.field === 'status' ?
+              (sortFilterSettings.desc ? <ExpandMore/> : <ExpandLess/>) :
               <UnfoldMore/>
             }
           </button>

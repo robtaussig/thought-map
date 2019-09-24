@@ -45,6 +45,7 @@ export interface AppState {
   tags: Tags;
   settings: Settings;
   notificationDisabled: boolean;
+  sortFilterSettings: SortFilterSettings;
 }
 
 enum ActionType {
@@ -61,6 +62,13 @@ interface Action {
   payload: any;
 }
 
+type Field = 'name' | 'status';
+
+interface SortFilterSettings {
+  field?: Field;
+  desc?: boolean;
+}
+
 export const DEFAULT_STATE: AppState = {
   thoughts: [],
   templates: [],
@@ -73,6 +81,7 @@ export const DEFAULT_STATE: AppState = {
   statusesByThought: {},
   settings: {},
   notificationDisabled: false,
+  sortFilterSettings: {},
 };
 
 export const ACTION_TYPES = {
