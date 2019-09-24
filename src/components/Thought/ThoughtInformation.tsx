@@ -7,6 +7,7 @@ import Check from '@material-ui/icons/Check';
 import Close from '@material-ui/icons/Close';
 import Edit from '@material-ui/icons/Edit';
 import LowPriority from '@material-ui/icons/LowPriority';
+import PriorityHighRounded from '@material-ui/icons/PriorityHighRounded';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import classNames from 'classnames';
 import { handleUpdates, getTime } from './util';
@@ -362,7 +363,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           className={'priority'}
           visible={true}
           quickActionButton={thought.priority !== 10 && (
-            <button className={classes.highPriorityButton} onClick={() => handleEditThought('priority')(10)}><Check/></button>
+            <button className={classes.highPriorityButton} onClick={() => handleEditThought('priority')(10)}><PriorityHighRounded/></button>
           )}
           edit={{
             type: EditTypes.Select,
