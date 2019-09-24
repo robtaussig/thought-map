@@ -205,6 +205,7 @@ const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, f
 
   const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     edit.onEdit(e.target.value);
+    setInputtedValue(e.target.value);
     setEditting(false);
   };
 

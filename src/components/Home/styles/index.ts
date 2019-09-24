@@ -7,7 +7,7 @@ export const styles = (theme: any): StyleRules => ({
     width: '100%',
     display: 'grid',
     padding: 20,
-    backgroundColor: theme.palette.gray[500],
+    backgroundColor: theme.palette.gray[700],
     gap: '20px',
     gridTemplateAreas: `"sort-buttons sort-buttons"
                         "content content"
@@ -100,7 +100,7 @@ export const styles = (theme: any): StyleRules => ({
     color: 'white',
   },
   sortButton: {
-    color: 'white',
+    color: theme.palette.gray[800],
     cursor: 'pointer',
     ...theme.defaults.centered,
     '&.selected': {
@@ -114,6 +114,7 @@ export const styles = (theme: any): StyleRules => ({
   sortByStatus: {
     ...theme.defaults.centered,
     marginRight: 18,
+    color: theme.palette.gray[800],
   },
   emptyIcon: {
     width: 24,
