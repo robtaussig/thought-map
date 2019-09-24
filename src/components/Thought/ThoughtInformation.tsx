@@ -1,308 +1,48 @@
-import React, { useCallback, useState, useMemo, useEffect, useRef, Fragment, FC, FormEventHandler, ChangeEvent, MouseEventHandler } from 'react';
-import { withStyles, StyleRules } from '@material-ui/core/styles';
+import React, { useState, useMemo, useRef, FC, FormEventHandler, MouseEventHandler } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Category from '@material-ui/icons/Category';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 import Check from '@material-ui/icons/Check';
 import Close from '@material-ui/icons/Close';
-import Edit from '@material-ui/icons/Edit';
 import LowPriority from '@material-ui/icons/LowPriority';
 import Description from '@material-ui/icons/Description';
 import PriorityHighRounded from '@material-ui/icons/PriorityHighRounded';
-import ArrowRight from '@material-ui/icons/ArrowRight';
 import CalendarToday from '@material-ui/icons/CalendarToday';
-import classNames from 'classnames';
 import { handleUpdates, getTime } from './util';
 import { statuses as statusActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 import Input from '../General/Input';
-import TextArea from '../General/TextArea';
-import Select from '../General/Select';
-import DateInput from '../General/Date';
+import { thoughtInformationStyles } from './styles';
 import {
-  ThoughtInformationProps,
-  EditedMap,
-  ChangeType,
+  EditTypes,
 } from './types';
+import { PriorityOption } from './'
+import { Notes, Settings } from 'reducers';
+import { Thought } from 'store/rxdb/schemas/thought';
+import { Picture } from 'store/rxdb/schemas/picture';
+import { Tag } from 'store/rxdb/schemas/tag';
+import { Note as NoteType } from 'store/rxdb/schemas/note';
+import { Status as StatusType } from 'store/rxdb/schemas/status';
+import ThoughtSection from './components/ThoughtSection';
 
-const styles = (theme: any): StyleRules => ({
-  root: {
-    display: 'grid',
-    height: '100%',
-    padding: 20,
-    overflow: 'hidden',
-    gridTemplateAreas: `"title title title"
-                        "created-at updated-at ."
-                        "sections sections sections"`,
-    gridTemplateRows: 'max-content max-content 1fr',
-    gridTemplateColumns: 'max-content max-content 1fr',
-    gridGap: '10px',
-    color: 'white',
-  },
-  thoughtTitle: {
-    gridArea: 'title',
-    fontSize: 24,
-    color: theme.palette.primary[500],
-    userSelect: 'none',
-  },
-  editTitleForm: {
-    gridArea: 'title',
-    fontSize: 24,
-    display: 'flex',
-    '& input': {
-      width: '100%',
-      fontSize: 24,
-    },
-  },
-  inputLabel: {
-    '&#title': {
-      flex: 1,
-    },
-  },
-  submitTitleButton: {
-    flex: '0 0 35px',
-    ...theme.defaults.centered,
-    color: theme.palette.primary[500],
-  },
-  cancelTitleButton: {
-    flex: '0 0 35px',
-    ...theme.defaults.centered,
-    color: theme.palette.red[500],
-  },
-  createdAt: {
-    gridArea: 'created-at',
-  },
-  updatedAt: {
-    gridArea: 'updated-at',
-  },
-  thoughtSections: {
-    gridArea: 'sections',
-    overflow: 'auto',
-  },
-  thoughtSection: {
-    display: 'grid',
-    gridTemplateAreas: `". . action-buttons"
-                        "section-icon section-value quick-action"
-                        "section-icon section-field quick-action"
-                        ". . ."`,
-    gridTemplateRows: '20px 1fr max-content 20px',
-    gridTemplateColumns: '50px 1fr 50px',
-    gridColumnGap: '10px',
-    backgroundColor: theme.palette.gray[200],
-    borderRadius: '10px',
-    color: 'black',
-    margin: '10px 0',
-  },
-  editToggle: {
-    gridArea: 'action-buttons',
-    ...theme.defaults.centered,
-    marginRight: 5,
-    marginLeft: 'auto',
-    '& > svg': {
-      fontSize: 16,
-    }
-  },
-  sectionIcon: {
-    gridArea: 'section-icon',
-    ...theme.defaults.centered,
-  },
-  sectionValue: {
-    gridArea: 'section-value',
-    fontSize: 18,
-    fontWeight: 600,
-  },
-  sectionField: {
-    gridArea: 'section-field',
-    color: theme.palette.gray[400],
-  },
-  sectionQuickActionButton: {
-    gridArea: 'quick-action',
-    ...theme.defaults.centered,
-    justifyContent: 'flex-start',
-    '& > button': {
-      ...theme.defaults.centered,
-    },
-  },
-  completeThoughtButton: {
-    color: theme.palette.primary[500],
-    '& > svg': {
-      background: 'black',
-      borderRadius: '5px',
-    },
-  },
-  sectionEditForm: {
-    gridArea: 'section-value',
-    fontSize: 18,
-    '& input': {
-      width: '100%',
-    },
-    '& select': {
-      width: '100%',
-    },
-    '& textarea': {
-      width: '100%',
-      resize: 'none',
-      height: 100,
-    },
-  },
-  highPriorityButton: {
-    color: theme.palette.red[500],
-    '& > svg': {
-      background: 'black',
-      borderRadius: '5px',
-    },
-  },
-});
-
-enum EditTypes {
-  Text = 'Text',
-  TextArea = 'TextArea',
-  Select = 'Select',
-  Checkbox = 'Checkbox',
-  Date = 'Date',
-  Time = 'Time',
-  DateTime = 'DateTime',
-}
-
-interface EditProps {
-  type: EditTypes;
-  options?: string[];
-  onEdit: (value: any) => void;
-  onChangeVisibility: (visibility: boolean) => void;
-}
-
-interface ThoughtSectionProps {
+export interface ThoughtInformationProps {
   classes: any;
-  Icon: any;
-  field: string;
-  value: string;
-  className: string;
-  edit: EditProps;
-  visible: boolean;
-  quickActionButton?: any;
+  thought: Thought;
+  tags: Tag[];
+  notes: NoteType[];
+  statusOptions: string[];
+  typeOptions: string[];
+  tagOptions: string[];
+  priorityOptions: PriorityOption[];
+  onUpdate: (thought: Thought) => void;
+  editState: boolean;
+  onEditState: (edit: boolean) => void;
+  stateNotes: Notes;
+  stateSettings: Settings;
+  statuses: StatusType[];
+  pinnedPictures: Picture[];
 }
-
-const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, field, value, className, edit, visible, quickActionButton }) => {  
-  const [editting, setEditting] = useState<boolean>(false);
-  const lastClick = useRef<number>(0);
-  const rootRef = useRef<HTMLDivElement>(null);
-  const [inputtedValue, setInputtedValue] = useState<string>(String(value));
-
-  const handleToggleEdit = () => {
-    if (editting) {
-      if (inputtedValue !== String(value)) {
-        edit.onEdit(inputtedValue);
-      }
-    }
-    setEditting(prev => !prev);    
-  };
-
-  const handleSubmit: FormEventHandler = e => {
-    e.preventDefault();
-    edit.onEdit(inputtedValue);
-    setEditting(false);
-  };
-
-  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    edit.onEdit(e.target.value);
-    setInputtedValue(e.target.value);
-    setEditting(false);
-  };
-
-  const _editComponent = useMemo(() => {
-    switch (edit.type) {
-      case EditTypes.Select:
-        return (
-          <Select
-            classes={classes}
-            id={'section-editor'}
-            value={value}
-            onChange={handleSelect}
-            options={edit.options}
-          />
-        );
-      case EditTypes.TextArea:
-        return (
-          <TextArea
-            classes={classes}
-            id={'section-editor'}
-            value={inputtedValue}
-            onChange={e => setInputtedValue(e.target.value)}
-            autoFocus
-          />
-        );
-      case EditTypes.DateTime:
-        const [inputtedDate, inputtedTime] = inputtedValue.split(',');
-        const handleSetDate = (e: any) => {
-          const date = e.target.value;
-          setInputtedValue(prev => prev.split(',').map((val, idx) => idx === 0 ? date : val).join(','));
-        };
-        const handleSetTime = (e: any) => {
-          const time = e.target.value;
-          setInputtedValue(prev => prev.split(',').map((val, idx) => idx === 1 ? time : val).join(','));
-        };
-        return (
-          <div>
-            <DateInput classes={classes} value={inputtedDate} onChange={handleSetDate}/>
-            <DateInput classes={classes} value={inputtedTime} time onChange={handleSetTime}/>
-          </div>
-        );
-    
-      default:
-        return (
-          <Input
-            classes={classes}
-            id={'section-editor'}
-            value={inputtedValue}
-            onChange={e => setInputtedValue(e.target.value)}
-            autoFocus
-          />
-        );
-    }
-  }, [inputtedValue, edit]);
-
-  const handleClickValue: MouseEventHandler<Element> = e => {
-    const currentClick = +new Date();
-    if (currentClick - lastClick.current < 500) {
-      setEditting(true);
-    }
-    lastClick.current = currentClick;
-  };
-
-  useEffect(() => {
-    if (editting) {
-      const handleBodyClick = (e: any) => {
-        if (!rootRef.current.contains(e.target)) {
-          setEditting(false);
-        }       
-      };
-
-      document.body.addEventListener('click', handleBodyClick);
-
-      return () => document.body.removeEventListener('click', handleBodyClick);
-    }
-  }, [editting]);
-
-  const displayValue = edit.type === EditTypes.DateTime ? value.split(',').join(' ') : value;
-
-  return (
-    <section ref={rootRef} className={classNames(classes.thoughtSection, className)}>
-      <button className={classes.editToggle} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
-      <div className={classes.sectionIcon}>
-        <Icon/>
-      </div>
-      {editting ? (
-        <form className={classes.sectionEditForm} onSubmit={handleSubmit}>
-          {_editComponent}
-        </form>
-      ) : (<h3 className={classes.sectionValue} onClick={handleClickValue}>{displayValue}</h3>)}
-      <span className={classes.sectionField}>{field}</span>
-      <div className={classes.sectionQuickActionButton}>
-        {quickActionButton}
-      </div>
-    </section>
-  );
-};
 
 export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   classes,
@@ -481,7 +221,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   )
 });
 
-export default withStyles(styles)(ThoughtInformation);
+export default withStyles(thoughtInformationStyles)(ThoughtInformation);
 
 
 // import React, { useCallback, useState, useMemo, useEffect, useRef, Fragment, FC } from 'react';

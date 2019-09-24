@@ -4,7 +4,7 @@ import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
-import { styles } from './styles';
+import { thoughtHomeStyles } from './styles';
 import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
 import ThoughtSettings from '../ThoughtSettings';
@@ -135,4 +135,4 @@ const gearClosing = (element: HTMLElement): void => {
   element.classList.remove('gear-opening');
 }
 
-export default withStyles(styles)(Thought);
+export default withStyles(thoughtHomeStyles)(Thought);

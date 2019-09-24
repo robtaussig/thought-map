@@ -1,6 +1,6 @@
 import { StyleRules } from '@material-ui/core/styles';
 
-export const styles = (theme: any): StyleRules => ({
+export const thoughtHomeStyles = (theme: any): StyleRules => ({
   root: {
     height: '100%',
     position: 'relative',
@@ -15,191 +15,6 @@ export const styles = (theme: any): StyleRules => ({
       left: '50%',
       transform: 'translate(-50%, -50%)',
     },
-    '& .icon-button': {
-      ...theme.defaults.centered,      
-      color: theme.palette.primary[500],
-      borderRadius: '3px',
-      '&#time-button': {
-        gridArea: 'time',
-      },
-      '&#date-button': {
-        gridArea: 'date',
-      },
-    },
-    '& #time': {
-      gridArea: 'time',
-      display: 'flex',
-    },
-    '& #date': {
-      gridArea: 'date',
-      display: 'flex',
-      '& > input': {
-        width: '100%',
-      }
-    },
-    '& #thought-title': {
-      gridArea: 'title',
-      '& input': {
-        fontSize: 24,
-        width: '100%',
-      },
-    },
-    '& #description': {
-      gridArea: 'description',
-      display: 'flex',
-      flexDirection: 'column',
-      color: 'white',
-    },
-  },
-  thoughtInformation: {
-    display: 'grid',
-    position: 'relative',
-    gridColumnGap: '10px',
-    gridRowGap: '30px',
-    padding: 10,
-    gridTemplateAreas: `"title title ."
-                        "create-time create-time create-time"
-                        "time date ."
-                        "type status complete-button"
-                        "priority priority priority-button"
-                        "notes notes notes"
-                        "tags tags tags"
-                        "description description description"
-                        "pinned-pictures pinned-pictures pinned-pictures"`,
-    gridTemplateRows: 'max-content',
-    gridTemplateColumns: 'max-content 1fr 50px',
-  },
-  completeButton: {
-    gridArea: 'complete-button',
-    cursor: 'pointer',
-    ...theme.defaults.centered,
-  },
-  priorityButton: {
-    gridArea: 'priority-button',
-    cursor: 'pointer',
-    ...theme.defaults.centered,
-  },
-  priorityHeader: {
-    gridArea: 'priority-header',
-    color: theme.palette.secondary[300],
-    ...theme.defaults.centered,
-    fontSize: 20,
-  },
-  priorityText: {
-    gridArea: 'priority',
-    color: theme.palette.secondary[300],
-    ...theme.defaults.centered,
-    fontSize: 20,
-  },
-  header: {
-    color: theme.palette.secondary[300],
-    borderBottom: `1px solid ${theme.palette.secondary[100]}`,
-    fontSize: 30,
-    gridArea: 'title',
-  },
-  thoughtTime: {
-    color: theme.palette.secondary[300],
-    gridArea: 'time',
-    fontSize: 20,
-  },
-  timeIcon: {
-
-  },
-  dateIcon: {
-
-  },
-  thoughtDate: {
-    color: theme.palette.secondary[300],
-    gridArea: 'date',
-    fontSize: 20,
-  },
-  selectLabel: {
-    color: theme.palette.primary[500],    
-    border: `1px solid ${theme.palette.primary[500]}`,
-    backgroundColor: theme.palette.primary[100],
-    display: 'flex',
-    '&#status': {
-      gridArea: 'status',
-    },
-    '&#type': {
-      gridArea: 'type',
-    },
-    '&#priority': {
-      gridArea: 'priority',
-    },
-  },
-  selectInput: {
-    color: theme.palette.primary[900],
-    width: '100%',
-    fontSize: 24,
-  },
-  changeStatus: {
-    color: theme.palette.primary[500],
-    gridArea: 'change-status-button',
-  },
-  statusText: {
-    gridArea: 'status',
-    color: theme.palette.secondary[300],
-    ...theme.defaults.centered,
-    fontSize: 20,
-  },
-  thoughtType: {
-    color: theme.palette.secondary[300],
-    gridArea: 'type',
-    ...theme.defaults.centered,
-    fontSize: 20,
-  },
-  noteList: {
-    gridArea: 'notes',
-  },
-  noteItem: {
-    display: 'flex',
-    alignItems: 'center',
-    color: theme.palette.secondary[300],
-    margin: '10px 0',
-  },
-  noteIcon: {
-    marginRight: 5,
-  },
-  deleteIcon: {
-    marginRight: 5,
-    color: theme.palette.red[500],
-    ...theme.defaults.centered,
-    cursor: 'pointer',
-  },
-  tagList: {
-    gridArea: 'tags',
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    '& #added-tag': {
-      margin: '10px 0',
-      marginRight: 10,
-      color: theme.palette.secondary[300],
-      border: `1px solid ${theme.palette.secondary[300]}`,
-      padding: '4px 10px',
-      borderRadius: '10px',
-    },
-  },
-  tagItem: {
-    margin: '10px 0',
-    marginRight: 10,
-    display: 'flex',
-    alignItems: 'center',
-    color: theme.palette.secondary[300],
-    border: `1px solid ${theme.palette.secondary[300]}`,
-    padding: '4px 10px',
-    borderRadius: '10px',
-  },
-  deleteTagIcon: {
-    color: theme.palette.red[500],
-  },
-  deleteTagButton: {
-    ...theme.defaults.centered,
-  },
-  thoughtDescription: {
-    gridArea: 'description',
-    color: theme.palette.secondary[300],
   },
   circleButton: {
     ...theme.defaults.circleButton,
@@ -222,52 +37,134 @@ export const styles = (theme: any): StyleRules => ({
         },
       },
     },
-    '&#edit': {
-      bottom: 10,
-      right: 10,
-      border: `2px solid ${theme.palette.primary[500]}`,
-    },
-    '&#from': {
-      bottom: 10,
-      left: 10,
-      border: `2px solid ${theme.palette.primary[500]}`,
-    },
-    '&#to': {
-      bottom: 10,
-      left: 'calc(50% - 65px)',
-      border: `2px solid ${theme.palette.primary[500]}`,
-    },
   },
-  addItem: {
-    border: `1px solid ${theme.palette.primary[500]}`,
-    color: theme.palette.primary[500],
-    borderRadius: '5px',
-    padding: '3px 5px',
-    willChange: 'transform',
-    transition: 'transform 0.1s linear',
-    '&:active': {
-      transform: 'scale(0.96)',
-    },
-  },
-  noteEditInput: {
+});
 
-  },
-  creationTimes: {
-    gridArea: 'create-time',
-    display: 'flex',
-  },
-  timeText: {
-    marginRight: 20,
+export const thoughtInformationStyles = (theme: any): StyleRules => ({
+  root: {
+    display: 'grid',
+    height: '100%',
+    padding: 20,
+    overflow: 'hidden',
+    gridTemplateAreas: `"title title title"
+                        "created-at updated-at ."
+                        "sections sections sections"`,
+    gridTemplateRows: 'max-content max-content 1fr',
+    gridTemplateColumns: 'max-content max-content 1fr',
+    gridGap: '10px',
     color: 'white',
   },
-  pinnedPictures: {
-    gridArea: 'pinned-pictures',
-    display: 'flex',
-    flexDirection: 'column',
+  thoughtTitle: {
+    gridArea: 'title',
+    fontSize: 24,
+    color: theme.palette.primary[500],
+    userSelect: 'none',
   },
-  image: {
-    width: '100%',
-    height: 'auto',
-    flex: 1,
+  editTitleForm: {
+    gridArea: 'title',
+    fontSize: 24,
+    display: 'flex',
+    '& input': {
+      width: '100%',
+      fontSize: 24,
+    },
+  },
+  inputLabel: {
+    '&#title': {
+      flex: 1,
+    },
+  },
+  submitTitleButton: {
+    flex: '0 0 35px',
+    ...theme.defaults.centered,
+    color: theme.palette.primary[500],
+  },
+  cancelTitleButton: {
+    flex: '0 0 35px',
+    ...theme.defaults.centered,
+    color: theme.palette.red[500],
+  },
+  createdAt: {
+    gridArea: 'created-at',
+  },
+  updatedAt: {
+    gridArea: 'updated-at',
+  },
+  thoughtSections: {
+    gridArea: 'sections',
+    overflow: 'auto',
+  },
+  thoughtSection: {
+    display: 'grid',
+    gridTemplateAreas: `". . action-buttons"
+                        "section-icon section-value quick-action"
+                        "section-icon section-field quick-action"
+                        ". . ."`,
+    gridTemplateRows: '20px 1fr max-content 20px',
+    gridTemplateColumns: '50px 1fr 50px',
+    gridColumnGap: '10px',
+    backgroundColor: theme.palette.gray[200],
+    borderRadius: '10px',
+    color: 'black',
+    margin: '10px 0',
+  },
+  editToggle: {
+    gridArea: 'action-buttons',
+    ...theme.defaults.centered,
+    marginRight: 5,
+    marginLeft: 'auto',
+    '& > svg': {
+      fontSize: 16,
+    }
+  },
+  sectionIcon: {
+    gridArea: 'section-icon',
+    ...theme.defaults.centered,
+  },
+  sectionValue: {
+    gridArea: 'section-value',
+    fontSize: 18,
+    fontWeight: 600,
+  },
+  sectionField: {
+    gridArea: 'section-field',
+    color: theme.palette.gray[400],
+  },
+  sectionQuickActionButton: {
+    gridArea: 'quick-action',
+    ...theme.defaults.centered,
+    justifyContent: 'flex-start',
+    '& > button': {
+      ...theme.defaults.centered,
+    },
+  },
+  completeThoughtButton: {
+    color: theme.palette.primary[500],
+    '& > svg': {
+      background: 'black',
+      borderRadius: '5px',
+    },
+  },
+  sectionEditForm: {
+    gridArea: 'section-value',
+    fontSize: 18,
+    '& input': {
+      width: '100%',
+    },
+    '& select': {
+      width: '100%',
+    },
+    '& textarea': {
+      width: '100%',
+      resize: 'none',
+      height: 100,
+    },
+  },
+  highPriorityButton: {
+    color: theme.palette.red[500],
+    '& > svg': {
+      background: 'black',
+      borderRadius: '5px',
+    },
   },
 });
