@@ -62,10 +62,10 @@ interface Action {
   payload: any;
 }
 
-type Field = 'name' | 'status';
+export type SortFilterField = 'title' | 'status' | 'type';
 
-interface SortFilterSettings {
-  field?: Field;
+export interface SortFilterSettings {
+  field?: SortFilterField;
   desc?: boolean;
 }
 

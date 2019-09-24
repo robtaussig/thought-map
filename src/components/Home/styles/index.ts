@@ -100,10 +100,12 @@ export const styles = (theme: any): StyleRules => ({
     color: 'white',
   },
   sortButton: {
-    fontWeight: 600,
     color: 'white',
     cursor: 'pointer',
     ...theme.defaults.centered,
+    '&.selected': {
+      fontWeight: 600,
+    }
   },
   sortByNames: {    
     ...theme.defaults.centered,
@@ -140,6 +142,12 @@ export const styles = (theme: any): StyleRules => ({
   },
   thoughtNodeTitle: {
     color: theme.palette.gray[500],
+  },
+  thoughtNodeType: {
+    marginLeft: 20,
+    padding: '0 13px',
+    color: '#8380ff',
+    fontWeight: 600,
   },
   guideButton: {
     gridArea: 'guide-button',

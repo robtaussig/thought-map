@@ -12,7 +12,7 @@ import Search from '@material-ui/icons/Search';
 import { Searchable } from '../ThoughtSearch';
 import { useNestedXReducer } from '../../../hooks/useXReducer';
 import useApp from '../../../hooks/useApp';
-import { AppState } from '~reducers';
+import { AppState, SortFilterField } from '~reducers';
 
 interface ContentProps {
   classes: any;
@@ -20,13 +20,6 @@ interface ContentProps {
   plan: Plan;
   statusOptions: string[];
   state: AppState;
-}
-
-type Field = 'name' | 'status';
-
-interface SortRule {
-  field?: Field;
-  desc?: boolean;
 }
 
 export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, state }) => {
@@ -41,7 +34,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   const [tags] = useNestedXReducer('tags', state, dispatch);
   const [sortFilterSettings, setSortFilterSettings] = useNestedXReducer('sortFilterSettings', state, dispatch);
 
-  const handleSortBy = (name: Field) => () => setSortFilterSettings(({ field, desc }) => ({
+  const handleSortBy = (name: SortFilterField) => () => setSortFilterSettings(({ field, desc }) => ({
     field: field === name && desc === false ? null : name,
     desc: field === name ?
       desc === false ? null : !desc :
@@ -55,9 +48,8 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
     };
     const sortBySortRule = (left: Thought, right: Thought): number => {
       if (sortFilterSettings.field) {
-        const leftIsBigger = sortFilterSettings.field === 'name' ?
-          left.title && (!right.title || (left.title.toLowerCase() > right.title.toLowerCase())):
-          left.title && (!right.status || (left.status.toLowerCase() > right.status.toLowerCase()));
+        const leftIsBigger = left[sortFilterSettings.field] &&
+          (!right[sortFilterSettings.field] || (left[sortFilterSettings.field].toLowerCase() > right[sortFilterSettings.field].toLowerCase()));
         
         return (leftIsBigger && sortFilterSettings.desc) || (!leftIsBigger && !sortFilterSettings.desc) ? 1 : -1;
       }
@@ -75,6 +67,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
             key={`thought-node-${thought.id}`}  
             thought={thought}
             statusOptions={statusOptions}
+            displayField={sortFilterSettings.field}
           />
         );
       });
@@ -107,22 +100,32 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       <div className={classes.flippableWrapper}>
         <div className={classNames(classes.sortByButtons, 'flippable', isSearching ? 'back' : 'front')}>
           <div className={classes.sortByNames}>
-            <button className={classes.sortButton} onClick={handleSortBy('name')}>
+            <button className={classNames(classes.sortButton, {
+              selected: sortFilterSettings.field === 'title'
+            })} onClick={handleSortBy('title')}>
               Name
-              {sortFilterSettings.field === 'name' ?
+              {sortFilterSettings.field === 'title' ?
                 (sortFilterSettings.desc ? <ExpandMore/> : <ExpandLess/>) :
                 <UnfoldMore/>
-              }  
+              }
             </button>
           </div>
           <div className={classes.sortByStatus}>
-          <button className={classes.sortButton} onClick={handleSortBy('status')}>
+          <button className={classNames(classes.sortButton, {
+            selected: sortFilterSettings.field === 'status'
+          })} onClick={handleSortBy('status')}>
             Status
-            {sortFilterSettings.field === 'status' ?
-              (sortFilterSettings.desc ? <ExpandMore/> : <ExpandLess/>) :
-              <UnfoldMore/>
-            }
           </button>
+          /
+          <button className={classNames(classes.sortButton, {
+            selected: sortFilterSettings.field === 'type'
+          })} onClick={handleSortBy('type')}>
+            Type
+          </button>
+          {['status', 'type'].includes(sortFilterSettings.field) ?
+            (sortFilterSettings.desc ? <ExpandMore/> : <ExpandLess/>) :
+            <UnfoldMore/>
+          }
           </div>
         </div>
         <form className={classNames(classes.searchWrapper, 'flippable', isSearching ? 'front' : 'back')} onSubmit={handleSubmitSearch}>

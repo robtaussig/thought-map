@@ -10,6 +10,7 @@ interface ThoughtNodeProps {
   classes: any;
   thought: Thought;
   statusOptions: string[];
+  displayField: string;
 }
 
 const STATUS_TO_COLOR: { [key: string]: string } = {
@@ -34,7 +35,7 @@ const styleFromPriority = (priority: number): { color?: string, fontWeight?: num
   return {};
 };
 
-export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought, statusOptions }) => {
+export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought, statusOptions, displayField }) => {
   const { history } = useApp();
   const db = useLoadedDB();
 
@@ -52,16 +53,20 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought,
   return (
     <div className={classes.thoughtNode}>
       <span className={classes.thoughtNodeTitle} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
-      <Select
-        id={'status-select'}
-        classes={classes}
-        value={thought.status}
-        options={statusOptions}
-        onChange={handleChangeStatus}
-        style={{
-          backgroundColor: STATUS_TO_COLOR[thought.status],
-        }}
-      />
+      {displayField === 'type' ? (
+        <span className={classes.thoughtNodeType}>{thought.type}</span>
+      ) : (
+        <Select
+          id={'status-select'}
+          classes={classes}
+          value={thought.status}
+          options={statusOptions}
+          onChange={handleChangeStatus}
+          style={{
+            backgroundColor: STATUS_TO_COLOR[thought.status],
+          }}
+        />
+      )}
     </div>
   );
 });
