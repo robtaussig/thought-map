@@ -211,8 +211,8 @@ export const styles = (theme: any): StyleRules => ({
       right: 10,
     },
     '&#settings': {
-      bottom: 10,
-      left: 10,
+      top: 10,
+      right: 10,
       '& svg': {
         willChange: 'transform',
         transition: 'transform 0.3s linear',

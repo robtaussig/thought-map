@@ -112,7 +112,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         notes={relatedNotes}
         onDelete={handleClickDelete}  
       />
-      <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>
+      {!displaySettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>}
       {!editState && (
         <CircleButton
           svgRef={returnHomeSVGRef}

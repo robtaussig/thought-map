@@ -49,7 +49,7 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
         <button className={classes.background} onClick={handleClickCustomBackground}>Custom Background</button>
         <button className={classes.fields} onClick={handleClickHideFields}>Hide Fields</button>
         <div className={classes.recurring}>Recurring</div>
-        <CircleButton classes={classes} id={'delete-thought'} onClick={onDelete} label={'Delete Thought'} Icon={Delete}/>
+        {display && <CircleButton classes={classes} id={'delete-thought'} onClick={onDelete} label={'Delete Thought'} Icon={Delete}/>}
       </div>
     </div>
   );
