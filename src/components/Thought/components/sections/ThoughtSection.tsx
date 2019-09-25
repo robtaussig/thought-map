@@ -124,26 +124,36 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
     } else {
       return (
         <div className={classes.sectionEditForm}>
-          {value.map((item, idx) => {
-            return (
-              <div key={`${item}-${idx}`} className={classes.editableItem}>
-                <Input
-                  classes={classes}
-                  id={'quick-item-edit'}
-                  value={edittedItems[idx]}
-                  onChange={e => {
-                    const value = e.target.value;
-                    setEdittedItems(prev => prev.map((prevItem, prevIdx) => {
-                      if (prevIdx === idx) return value;
-                      return prevItem;
-                    }));
-                  }}
-                  aria-label={`Edit ${item}`}
-                />
-                <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete/></button>
-              </div>
-            );
-          })}
+          {edit.options ? 
+            (value.map((item, idx) => {
+              return (
+                <div key={`${item}-${idx}`} className={classes.editableItem}>
+                  <span className={classes.quickItem}>{item}</span>
+                  <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete/></button>
+                </div>
+              );
+            })) :
+            (value.map((item, idx) => {
+              return (
+                <div key={`${item}-${idx}`} className={classes.editableItem}>
+                  <Input
+                    classes={classes}
+                    id={'quick-item-edit'}
+                    value={edittedItems[idx]}
+                    onChange={e => {
+                      const value = e.target.value;
+                      setEdittedItems(prev => prev.map((prevItem, prevIdx) => {
+                        if (prevIdx === idx) return value;
+                        return prevItem;
+                      }));
+                    }}
+                    aria-label={`Edit ${item}`}
+                  />
+                  <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete/></button>
+                </div>
+              );
+            }))
+          }
         </div>
       );
     }
@@ -217,6 +227,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
             classes={classes}
             onClose={closeModal}
             onSubmit={handleSubmit}
+            options={edit.options}
           />
           , 'Add', { className: classes.addModal, afterClose: handleAfterClose });
       };

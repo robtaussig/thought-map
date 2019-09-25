@@ -17,6 +17,7 @@ import PrioritySection from './components/sections/PrioritySection';
 import DescriptionSection from './components/sections/DescriptionSection';
 import DateTimeSection from './components/sections/DateTimeSection';
 import NotesSection from './components/sections/NotesSection';
+import TagsSection from './components/sections/TagsSection';
 import ThoughtTitle from './components/sections/ThoughtTitle';
 
 export interface ThoughtInformationProps {
@@ -98,6 +99,18 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     noteActions.deleteNote(db, notes[idx].id);
   };
 
+  const handleDeleteTag = (idx: number) => {    
+    tagActions.deleteTag(db, tags[idx].id);
+  };
+
+  const handleCreateTag = (value: string) => {
+    tagActions.createTag(db, {
+      thoughtId: thought.id,
+      text: value,
+    });
+  };
+
+
   return (
     <div className={classes.root}>
       <ThoughtTitle
@@ -142,6 +155,13 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           onEdit={handleEditNote}
           onCreate={handleCreateNote}
           onDelete={handleDeleteNote}
+        />
+        <TagsSection
+          classes={classes}
+          tags={tags}
+          onDelete={handleDeleteTag}
+          onCreate={handleCreateTag}
+          tagOptions={tagOptions}
         />
       </div>
     </div>

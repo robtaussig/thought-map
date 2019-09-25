@@ -93,6 +93,8 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   thoughtSections: {
     gridArea: 'sections',
     overflow: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
   },
   thoughtSection: {
     display: 'grid',
@@ -194,7 +196,11 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     },
   },
   addModal: {
-
+    '& #tag-select': {
+      '& select': {
+        width: '100%',
+      },
+    },
   },
   quickAddForm: {
     display: 'grid',
@@ -243,5 +249,8 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   deleteItemButton: {
     ...theme.defaults.centered,
     color: theme.palette.red[500],
+  },
+  quickItem: {
+
   },
 });
