@@ -110,6 +110,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     });
   };
 
+  const uniqueTagOptions = [...new Set([...tagOptions, ...tags.map(({ text }) => text)])];
 
   return (
     <div className={classes.root}>
@@ -161,7 +162,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           tags={tags}
           onDelete={handleDeleteTag}
           onCreate={handleCreateTag}
-          tagOptions={tagOptions}
+          tagOptions={uniqueTagOptions}
         />
       </div>
     </div>
