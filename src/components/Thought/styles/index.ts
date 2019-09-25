@@ -107,6 +107,9 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     borderRadius: '10px',
     color: 'black',
     margin: '10px 0',
+    '&:last-child': {
+      marginBottom: 100,
+    },
   },
   editToggle: {
     gridArea: 'action-buttons',
