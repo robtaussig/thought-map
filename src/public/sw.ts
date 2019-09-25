@@ -1,5 +1,5 @@
 //This is the service worker with the Advanced caching
-const VERSION = "v3";
+const VERSION = "v4";
 const CACHE = "sw-cache";
 const precacheFiles = [
   'index.html',
@@ -16,6 +16,8 @@ const networkFirstPaths: any[] = [
 const avoidCachingPaths: any[] = [
   /* Add an array of regex of paths that shouldn't be cached */
   // Example: /\/api\/.*/
+  /\/plan\/.*/,
+  /\/thought\/.*/
 ];
 
 function pathComparer(requestUrl: string, pathRegEx:RegExp) {
