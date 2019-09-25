@@ -16,9 +16,12 @@ interface TextAreaProps {
 export const TextArea: FC<TextAreaProps> = React.memo(({ id, classes, value, onChange, onFocus, label, tooltip, ...rest }) => {
 
   const handleFocus: ChangeEventHandler<HTMLTextAreaElement> = e => {
-    e.target.scrollIntoView({
-      behavior: 'smooth',
-    });
+    const target = e.target;
+    setTimeout(() => {
+      target.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }, 100);
     onFocus && onFocus(e);
   };
   return (
