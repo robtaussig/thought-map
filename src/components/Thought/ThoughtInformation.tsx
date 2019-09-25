@@ -1,23 +1,12 @@
 import React, { useState, useMemo, useRef, FC, FormEventHandler, MouseEventHandler } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Category from '@material-ui/icons/Category';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 import Check from '@material-ui/icons/Check';
-import NotesIcon from '@material-ui/icons/Notes';
 import Close from '@material-ui/icons/Close';
-import LowPriority from '@material-ui/icons/LowPriority';
-import Description from '@material-ui/icons/Description';
-import PriorityHighRounded from '@material-ui/icons/PriorityHighRounded';
-import CalendarToday from '@material-ui/icons/CalendarToday';
-import { handleUpdates, getTime } from './util';
+import { getTime } from './util';
 import { notes as noteActions, tags as tagActions, statuses as statusActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 import Input from '../General/Input';
 import { thoughtInformationStyles } from './styles';
-import {
-  EditTypes,
-} from './types';
 import { PriorityOption } from './'
 import { Notes, Settings } from 'reducers';
 import { Thought } from 'store/rxdb/schemas/thought';
@@ -25,8 +14,12 @@ import { Picture } from 'store/rxdb/schemas/picture';
 import { Tag } from 'store/rxdb/schemas/tag';
 import { Note as NoteType } from 'store/rxdb/schemas/note';
 import { Status as StatusType } from 'store/rxdb/schemas/status';
-import ThoughtSection from './components/ThoughtSection';
-import classNames from 'classnames';
+import TypeSection from './components/sections/TypeSection';
+import StatusSection from './components/sections/StatusSection';
+import PrioritySection from './components/sections/PrioritySection';
+import DescriptionSection from './components/sections/DescriptionSection';
+import DateTimeSection from './components/sections/DateTimeSection';
+import NotesSection from './components/sections/NotesSection';
 
 export interface ThoughtInformationProps {
   classes: any;
@@ -140,8 +133,6 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     noteActions.deleteNote(db, notes[idx].id);
   };
 
-  const dateTimeText = `${thought.date},${thought.time}`;
-
   return (
     <div className={classes.root}>
       {edittingTitle ?
@@ -162,100 +153,40 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       <span className={classes.createdAt}>Created {createdText}</span>
       <span className={classes.updatedAt}>Updated {lastUpdatedText}</span>
       <div className={classes.thoughtSections}>
-        <ThoughtSection
+        <TypeSection
           classes={classes}
-          Icon={Category}
-          field={'Type'}
-          value={thought.type}
-          className={'type'}
-          visible={true}
-          edit={{
-            type: EditTypes.Select,
-            options: typeOptions,
-            onEdit: handleEditThought('type'),
-            onChangeVisibility: console.log,
-          }}
+          thought={thought}
+          typeOptions={typeOptions}
+          onEdit={handleEditThought('type')}
         />
-        <ThoughtSection
+        <StatusSection
           classes={classes}
-          Icon={thought.status === 'completed' ? CheckBoxIcon : CheckBoxOutlineBlank}
-          field={'Status'}
-          value={thought.status}
-          className={'status'}
-          visible={true}
-          quickActionButton={thought.status !== 'completed' && (
-            <button className={classNames(classes.completeThoughtButton, {
-              firstAction: thought.status === statusOptions[0],
-            })} onClick={() => handleEditStatus(
-              thought.status === statusOptions[0] ?
-                statusOptions[1] :
-                statusOptions[statusOptions.length - 1]
-            )}><Check/></button>
-          )}
-          edit={{
-            type: EditTypes.Select,
-            options: statusOptions,
-            onEdit: handleEditStatus,
-            onChangeVisibility: console.log,
-          }}
+          thought={thought}
+          statusOptions={statusOptions}
+          onEdit={handleEditStatus}
         />
-        <ThoughtSection
+        <PrioritySection
           classes={classes}
-          Icon={LowPriority}
-          field={'Priority'}
-          value={priorityOptions.find(({ value }) => value === thought.priority).label}
-          className={'priority'}
-          visible={true}
-          quickActionButton={thought.priority !== 10 && (
-            <button className={classes.highPriorityButton} onClick={() => handleEditThought('priority')(10)}><PriorityHighRounded/></button>
-          )}
-          edit={{
-            type: EditTypes.Select,
-            options: priorityOptions.map(({ label }) => label),
-            onEdit: value => handleEditThought('priority')(priorityOptions.find(({ label }) => label === value).value),
-            onChangeVisibility: console.log,
-          }}
+          thought={thought}
+          priorityOptions={priorityOptions}
+          onEdit={handleEditThought('priority')}
         />
-        <ThoughtSection
+        <DescriptionSection
           classes={classes}
-          Icon={Description}
-          field={'Description'}
-          value={thought.description}
-          className={'description'}
-          visible={true}
-          edit={{
-            type: EditTypes.TextArea,
-            onEdit: handleEditThought('description'),
-            onChangeVisibility: console.log,
-          }}
+          thought={thought}
+          onEdit={handleEditThought('description')}
         />
-        <ThoughtSection
+        <DateTimeSection
           classes={classes}
-          Icon={CalendarToday}
-          field={'Date/Time'}
-          value={dateTimeText}
-          className={'datetime'}
-          visible={true}
-          edit={{
-            type: EditTypes.DateTime,
-            onEdit: handleEditDateTime,
-            onChangeVisibility: console.log,
-          }}
+          thought={thought}
+          onEdit={handleEditDateTime}
         />
-        <ThoughtSection
+        <NotesSection
           classes={classes}
-          Icon={NotesIcon}
-          field={'Notes'}
-          value={notes.map(note => note.text)}
-          className={'notes'}
-          visible={true}
-          edit={{
-            type: EditTypes.Text,
-            onEdit: handleEditNote,
-            onCreate: handleCreateNote,
-            onDelete: handleDeleteNote,
-            onChangeVisibility: console.log,
-          }}
+          notes={notes}
+          onEdit={handleEditNote}
+          onCreate={handleCreateNote}
+          onDelete={handleDeleteNote}
         />
       </div>
     </div>

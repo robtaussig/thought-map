@@ -5,16 +5,16 @@ import Add from '@material-ui/icons/Add';
 import Check from '@material-ui/icons/Check';
 import Delete from '@material-ui/icons/Delete';
 import classNames from 'classnames';
-import TextArea from '../../General/TextArea';
-import Select from '../../General/Select';
-import DateInput from '../../General/Date';
-import Input from '../../General/Input';
-import useModal from '../../../hooks/useModal';
+import TextArea from '../../../General/TextArea';
+import Select from '../../../General/Select';
+import DateInput from '../../../General/Date';
+import Input from '../../../General/Input';
+import useModal from '../../../../hooks/useModal';
 import {
   EditTypes,
   EditProps,
-} from '../types';
-import QuickAddModal from './QuickAddModal';
+} from '../../types';
+import QuickAddModal from '../QuickAddModal';
 
 interface ThoughtSectionProps {
   classes: any;
@@ -96,8 +96,8 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
           };
           _component = (
             <div>
-              <DateInput classes={classes} value={inputtedDate} onChange={handleSetDate}/>
-              <DateInput classes={classes} value={inputtedTime} time onChange={handleSetTime}/>
+              <DateInput classes={classes} value={inputtedDate} onChange={handleSetDate} autoFocus/>
+              <DateInput classes={classes} value={inputtedTime} time onChange={handleSetTime} autoFocus/>
             </div>
           );
           break;
