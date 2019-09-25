@@ -220,7 +220,11 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
   }, [value]);
 
   useEffect(() => {
-    setEdittedItems(typeof value === 'string' ? [value] : value);
+    if (Array.isArray(value)) {
+      setEdittedItems(value);
+    } else {
+      setInputtedValue(value);
+    }
   }, [value]);
 
   return (

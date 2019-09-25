@@ -147,6 +147,9 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       background: 'black',
       borderRadius: '5px',
     },
+    '&.firstAction': {
+      color: 'gold',
+    },
   },
   sectionEditForm: {
     gridArea: 'section-value',

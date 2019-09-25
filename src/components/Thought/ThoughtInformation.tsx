@@ -26,6 +26,7 @@ import { Tag } from 'store/rxdb/schemas/tag';
 import { Note as NoteType } from 'store/rxdb/schemas/note';
 import { Status as StatusType } from 'store/rxdb/schemas/status';
 import ThoughtSection from './components/ThoughtSection';
+import classNames from 'classnames';
 
 export interface ThoughtInformationProps {
   classes: any;
@@ -183,7 +184,13 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           className={'status'}
           visible={true}
           quickActionButton={thought.status !== 'completed' && (
-            <button className={classes.completeThoughtButton} onClick={() => handleEditStatus('completed')}><Check/></button>
+            <button className={classNames(classes.completeThoughtButton, {
+              firstAction: thought.status === statusOptions[0],
+            })} onClick={() => handleEditStatus(
+              thought.status === statusOptions[0] ?
+                statusOptions[1] :
+                statusOptions[statusOptions.length - 1]
+            )}><Check/></button>
           )}
           edit={{
             type: EditTypes.Select,
