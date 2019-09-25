@@ -72,6 +72,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
               options={edit.options}
             />
           );
+        break;
         case EditTypes.TextArea:
           _component = (
             <TextArea
@@ -82,6 +83,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
               autoFocus
             />
           );
+          break;
         case EditTypes.DateTime:
           const [inputtedDate, inputtedTime] = inputtedValue.split(',');
           const handleSetDate = (e: any) => {
@@ -98,6 +100,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
               <DateInput classes={classes} value={inputtedTime} time onChange={handleSetTime}/>
             </div>
           );
+          break;
       
         default:
           _component = (
