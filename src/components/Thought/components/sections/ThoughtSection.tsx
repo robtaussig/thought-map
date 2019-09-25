@@ -243,8 +243,8 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
       <div className={classes.sectionIcon}>
         <Icon/>
       </div>
-      {editting ? _editComponent : _displayComponent}
       <span className={classes.sectionField} onClick={handleClickValue} title={'Double-click to edit'}>{field}</span>
+      {editting ? _editComponent : _displayComponent}
       <div className={classes.sectionQuickActionButton}>
         {!editting && (quickActionButton || _quickActionButton)}
       </div>

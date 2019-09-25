@@ -97,10 +97,10 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   thoughtSection: {
     display: 'grid',
     gridTemplateAreas: `". . action-buttons"
-                        "section-icon section-value quick-action"
                         "section-icon section-field quick-action"
+                        "section-icon section-value quick-action"
                         ". . ."`,
-    gridTemplateRows: '20px 1fr max-content 20px',
+    gridTemplateRows: '20px max-content 1fr 20px',
     gridTemplateColumns: '50px 1fr 50px',
     gridColumnGap: '10px',
     backgroundColor: theme.palette.gray[200],
