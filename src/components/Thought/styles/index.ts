@@ -167,4 +167,20 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       borderRadius: '5px',
     },
   },
+  notesList: {
+    gridArea: 'section-value',
+  },
+  noteItem: {
+    '&:not(:last-child)': {
+      borderBottom: '1px solid black',
+    },
+    fontWeight: 600,
+  },
+  quickAddButton: {
+    color: theme.palette.primary[500],
+    '& > svg': {
+      background: 'black',
+      borderRadius: '5px',
+    },
+  },
 });

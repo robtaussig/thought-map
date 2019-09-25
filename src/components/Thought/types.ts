@@ -30,6 +30,7 @@ export enum EditTypes {
 export interface EditProps {
   type: EditTypes;
   options?: string[];
-  onEdit: (value: any) => void;
+  onEdit: (...args: any[]) => void;
+  onCreate?: (value: string) => void;
   onChangeVisibility: (visibility: boolean) => void;
 }

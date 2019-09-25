@@ -4,6 +4,7 @@ import Category from '@material-ui/icons/Category';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 import Check from '@material-ui/icons/Check';
+import NotesIcon from '@material-ui/icons/Notes';
 import Close from '@material-ui/icons/Close';
 import LowPriority from '@material-ui/icons/LowPriority';
 import Description from '@material-ui/icons/Description';
@@ -120,6 +121,14 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     });
   };
 
+  const handleEditNote = (idx: number, value: string) => {
+    console.log(idx, value);
+  };
+
+  const handleCreateNote = (value: string) => {
+    console.log(value);
+  };
+
   const dateTimeText = `${thought.date},${thought.time}`;
 
   return (
@@ -213,6 +222,20 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           edit={{
             type: EditTypes.DateTime,
             onEdit: handleEditDateTime,
+            onChangeVisibility: console.log,
+          }}
+        />
+        <ThoughtSection
+          classes={classes}
+          Icon={NotesIcon}
+          field={'Notes'}
+          value={notes.map(note => note.text)}
+          className={'notes'}
+          visible={true}
+          edit={{
+            type: EditTypes.Text,
+            onEdit: handleEditNote,
+            onCreate: handleCreateNote,
             onChangeVisibility: console.log,
           }}
         />
