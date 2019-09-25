@@ -32,5 +32,6 @@ export interface EditProps {
   options?: string[];
   onEdit: (...args: any[]) => void;
   onCreate?: (value: string) => void;
+  onDelete?: (...args: any[]) => void;
   onChangeVisibility: (visibility: boolean) => void;
 }

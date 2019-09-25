@@ -3,15 +3,18 @@ import Edit from '@material-ui/icons/Edit';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import Add from '@material-ui/icons/Add';
 import Check from '@material-ui/icons/Check';
+import Delete from '@material-ui/icons/Delete';
 import classNames from 'classnames';
 import TextArea from '../../General/TextArea';
 import Select from '../../General/Select';
 import DateInput from '../../General/Date';
 import Input from '../../General/Input';
+import useModal from '../../../hooks/useModal';
 import {
   EditTypes,
   EditProps,
 } from '../types';
+import QuickAddModal from './QuickAddModal';
 
 interface ThoughtSectionProps {
   classes: any;
@@ -26,36 +29,41 @@ interface ThoughtSectionProps {
 
 export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, field, value, className, edit, visible, quickActionButton }) => {  
   const [editting, setEditting] = useState<boolean>(false);
+  const [edittedItems, setEdittedItems] = useState<string[]>([]);
   const lastClick = useRef<number>(0);
+  const [openModal, closeModal] = useModal();
   const rootRef = useRef<HTMLDivElement>(null);
   const [inputtedValue, setInputtedValue] = useState<string>(String(value));
 
   const handleToggleEdit = () => {
     if (editting) {
-      if (inputtedValue !== String(value)) {
-        edit.onEdit(inputtedValue);
+      if (typeof value === 'string') {
+        if (inputtedValue !== String(value)) {
+          edit.onEdit(inputtedValue);
+        }
+      } else {
+        edittedItems.forEach((item, idx) => {
+          if (item !== value[idx]) {
+            edit.onEdit(idx, item);
+          }
+        });
       }
     }
     setEditting(prev => !prev);    
   };
 
-  const handleSubmit: FormEventHandler = e => {
-    e.preventDefault();
-    edit.onEdit(inputtedValue);
-    setEditting(false);
-  };
-
-  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    edit.onEdit(e.target.value);
-    setInputtedValue(e.target.value);
-    setEditting(false);
-  };
-
   const _editComponent = useMemo(() => {
     if (typeof value === 'string') {
+      let _component;
       switch (edit.type) {
         case EditTypes.Select:
-          return (
+          const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+            edit.onEdit(e.target.value);
+            setInputtedValue(e.target.value);
+            setEditting(false);
+          };
+
+          _component = (
             <Select
               classes={classes}
               id={'section-editor'}
@@ -65,7 +73,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
             />
           );
         case EditTypes.TextArea:
-          return (
+          _component = (
             <TextArea
               classes={classes}
               id={'section-editor'}
@@ -84,7 +92,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
             const time = e.target.value;
             setInputtedValue(prev => prev.split(',').map((val, idx) => idx === 1 ? time : val).join(','));
           };
-          return (
+          _component = (
             <div>
               <DateInput classes={classes} value={inputtedDate} onChange={handleSetDate}/>
               <DateInput classes={classes} value={inputtedTime} time onChange={handleSetTime}/>
@@ -92,7 +100,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
           );
       
         default:
-          return (
+          _component = (
             <Input
               classes={classes}
               id={'section-editor'}
@@ -102,11 +110,41 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
             />
           );
       }
+
+      const handleSubmit: FormEventHandler = e => {
+        e.preventDefault();
+        edit.onEdit(inputtedValue);
+        setEditting(false);
+      };
+
+      return (<form className={classes.sectionEditForm} onSubmit={handleSubmit}>{_component}</form>);
     } else {
-      //TODO
+      return (
+        <div className={classes.sectionEditForm}>
+          {value.map((item, idx) => {
+            return (
+              <div key={`${item}-${idx}`} className={classes.editableItem}>
+                <Input
+                  classes={classes}
+                  id={'quick-item-edit'}
+                  value={edittedItems[idx]}
+                  onChange={e => {
+                    const value = e.target.value;
+                    setEdittedItems(prev => prev.map((prevItem, prevIdx) => {
+                      if (prevIdx === idx) return value;
+                      return prevItem;
+                    }));
+                  }}
+                  aria-label={`Edit ${item}`}
+                />
+                <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete/></button>
+              </div>
+            );
+          })}
+        </div>
+      );
     }
-    
-  }, [inputtedValue, edit]);
+  }, [inputtedValue, edit, edittedItems]);
 
   const handleClickValue: MouseEventHandler<Element> = e => {
     const currentClick = +new Date();
@@ -137,7 +175,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
       return (<h3 className={classes.sectionValue} onClick={handleClickValue}>{displayValue}</h3>);
     } else {
       return (
-        <ul className={classes.notesList}>
+        <ul className={classes.notesList} onClick={handleClickValue}>
           {value.map((item, idx) => {
             return (
               <li key={`${item}-${idx}`} className={classes.noteItem}>{item}</li>
@@ -150,12 +188,36 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
 
   const _quickActionButton = useMemo(() => {
     if (typeof value !== 'string') {
+
+      const handleAfterClose = () => {
+        console.log('after close');
+      };
+
+      const handleSubmit = (value: string) => {
+        edit.onCreate(value);
+        closeModal();
+      };
+
+      const handleClickAdd = () => {
+        openModal(
+          <QuickAddModal
+            classes={classes}
+            onClose={closeModal}
+            onSubmit={handleSubmit}
+          />
+          , 'Add', { className: classes.addModal, afterClose: handleAfterClose });
+      };
+
       return (
-        <button className={classes.quickAddButton} onClick={console.log}>
+        <button className={classes.quickAddButton} onClick={handleClickAdd}>
           <Add/>
         </button>
       );
     }
+  }, [value]);
+
+  useEffect(() => {
+    setEdittedItems(typeof value === 'string' ? [value] : value);
   }, [value]);
 
   return (
@@ -164,14 +226,10 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
       <div className={classes.sectionIcon}>
         <Icon/>
       </div>
-      {editting ? (
-        <form className={classes.sectionEditForm} onSubmit={handleSubmit}>
-          {_editComponent}
-        </form>
-      ) : _displayComponent}
+      {editting ? _editComponent : _displayComponent}
       <span className={classes.sectionField}>{field}</span>
       <div className={classes.sectionQuickActionButton}>
-        {quickActionButton || _quickActionButton}
+        {!editting && (quickActionButton || _quickActionButton)}
       </div>
     </section>
   );

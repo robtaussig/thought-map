@@ -11,7 +11,7 @@ import Description from '@material-ui/icons/Description';
 import PriorityHighRounded from '@material-ui/icons/PriorityHighRounded';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { handleUpdates, getTime } from './util';
-import { statuses as statusActions } from '../../actions';
+import { notes as noteActions, tags as tagActions, statuses as statusActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 import Input from '../General/Input';
 import { thoughtInformationStyles } from './styles';
@@ -122,11 +122,21 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   };
 
   const handleEditNote = (idx: number, value: string) => {
-    console.log(idx, value);
+    noteActions.editNote(db, {
+      ...notes[idx],
+      text: value,
+    });
   };
 
   const handleCreateNote = (value: string) => {
-    console.log(value);
+    noteActions.createNote(db, {
+      thoughtId: thought.id,
+      text: value,
+    });
+  };
+
+  const handleDeleteNote = (idx: number) => {
+    noteActions.deleteNote(db, notes[idx].id);
   };
 
   const dateTimeText = `${thought.date},${thought.time}`;
@@ -236,6 +246,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
             type: EditTypes.Text,
             onEdit: handleEditNote,
             onCreate: handleCreateNote,
+            onDelete: handleDeleteNote,
             onChangeVisibility: console.log,
           }}
         />

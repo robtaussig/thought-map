@@ -22,12 +22,12 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
     backgroundColor: theme.palette.gray[600],
     opacity: 0.5,
     '&#return-home': {
-      bottom: 10,
+      top: 10,
       right: 10,
     },
     '&#settings': {
-      top: 10,
-      right: 10,
+      bottom: 10,
+      left: 10,
       '& svg': {
         willChange: 'transform',
         transition: 'transform 0.3s linear',
@@ -171,10 +171,14 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridArea: 'section-value',
   },
   noteItem: {
+    fontWeight: 600,
+    paddingBottom: 10,
+    '&:not(:first-child)': {
+      paddingTop: 10,
+    },
     '&:not(:last-child)': {
       borderBottom: '1px solid black',
     },
-    fontWeight: 600,
   },
   quickAddButton: {
     color: theme.palette.primary[500],
@@ -182,5 +186,56 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       background: 'black',
       borderRadius: '5px',
     },
+  },
+  addModal: {
+
+  },
+  quickAddForm: {
+    display: 'grid',
+    gridTemplateAreas: `"input input input"
+                        ". submit cancel"`,
+    gridTemplateRows: 'max-content max-content',
+    gridTemplateColumns: '1fr max-content max-content',
+    gridGap: 10,
+    '& #quick-add': {
+      gridArea: 'input',
+      '& input': {
+        width: '100%',
+      },
+    },
+  },
+  submitQuickAddButton: {
+    gridArea: 'submit',
+    color: theme.palette.primary[500],
+    backgroundColor: 'black',
+    cursor: 'pointer',
+    fontWeight: 600,
+    border: '1px solid black',
+    padding: '2px 5px',
+    borderRadius: '4px',
+    '&:disabled': {
+      color: 'white',
+      backgroundColor: 'transparent',
+      border: '1px solid white',
+    },
+  },
+  cancelQuickAddButton: {
+    gridArea: 'cancel',
+    color: 'white',
+    padding: '2px 5px',
+  },
+  editableItem: {
+    display: 'flex',
+    marginBottom: 10,
+    '& #quick-item-edit': {
+      flex: 1,
+      '& input': {
+        height: '100%',
+      },
+    },
+  },
+  deleteItemButton: {
+    ...theme.defaults.centered,
+    color: theme.palette.red[500],
   },
 });
