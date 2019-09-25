@@ -175,10 +175,10 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
   const _displayComponent = useMemo(() => {
     if (typeof value === 'string') {
       const displayValue = edit.type === EditTypes.DateTime ? value.split(',').join(' ') : value;
-      return (<h3 className={classes.sectionValue} onClick={handleClickValue}>{displayValue}</h3>);
+      return (<h3 className={classes.sectionValue}>{displayValue}</h3>);
     } else {
       return (
-        <ul className={classes.notesList} onClick={handleClickValue}>
+        <ul className={classes.notesList}>
           {value.map((item, idx) => {
             return (
               <li key={`${item}-${idx}`} className={classes.noteItem}>{item}</li>
@@ -187,7 +187,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
         </ul>
       );
     }
-  }, [value, edit, handleClickValue]);
+  }, [value, edit]);
 
   const _quickActionButton = useMemo(() => {
     if (typeof value !== 'string') {
@@ -234,7 +234,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
         <Icon/>
       </div>
       {editting ? _editComponent : _displayComponent}
-      <span className={classes.sectionField}>{field}</span>
+      <span className={classes.sectionField} onClick={handleClickValue}>{field}</span>
       <div className={classes.sectionQuickActionButton}>
         {!editting && (quickActionButton || _quickActionButton)}
       </div>
