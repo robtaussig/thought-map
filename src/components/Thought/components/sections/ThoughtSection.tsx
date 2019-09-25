@@ -165,9 +165,19 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
         }       
       };
 
-      document.body.addEventListener('click', handleBodyClick);
+      const handleKeyDown = (e: any) => {
+        if (e.key === 'Escape') {
+          setEditting(false);
+        }
+      };
 
-      return () => document.body.removeEventListener('click', handleBodyClick);
+      document.body.addEventListener('click', handleBodyClick);
+      document.body,addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        document.body.removeEventListener('click', handleBodyClick);
+        document.body.removeEventListener('keydown', handleKeyDown);
+      };
     }
   }, [editting]);
 
@@ -234,7 +244,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
         <Icon/>
       </div>
       {editting ? _editComponent : _displayComponent}
-      <span className={classes.sectionField} onClick={handleClickValue}>{field}</span>
+      <span className={classes.sectionField} onClick={handleClickValue} title={'Double-click to edit'}>{field}</span>
       <div className={classes.sectionQuickActionButton}>
         {!editting && (quickActionButton || _quickActionButton)}
       </div>
