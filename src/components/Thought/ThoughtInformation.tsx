@@ -1,14 +1,11 @@
-import React, { useState, useMemo, useRef, FC, FormEventHandler, MouseEventHandler } from 'react';
+import React, { useMemo, FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Check from '@material-ui/icons/Check';
-import Close from '@material-ui/icons/Close';
 import { getTime } from './util';
 import { notes as noteActions, tags as tagActions, statuses as statusActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
-import Input from '../General/Input';
 import { thoughtInformationStyles } from './styles';
 import { PriorityOption } from './'
-import { Notes, Settings } from 'reducers';
+import { Settings } from 'reducers';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Picture } from 'store/rxdb/schemas/picture';
 import { Tag } from 'store/rxdb/schemas/tag';
@@ -20,6 +17,7 @@ import PrioritySection from './components/sections/PrioritySection';
 import DescriptionSection from './components/sections/DescriptionSection';
 import DateTimeSection from './components/sections/DateTimeSection';
 import NotesSection from './components/sections/NotesSection';
+import ThoughtTitle from './components/sections/ThoughtTitle';
 
 export interface ThoughtInformationProps {
   classes: any;
@@ -31,9 +29,6 @@ export interface ThoughtInformationProps {
   tagOptions: string[];
   priorityOptions: PriorityOption[];
   onUpdate: (thought: Thought) => void;
-  editState: boolean;
-  onEditState: (edit: boolean) => void;
-  stateNotes: Notes;
   stateSettings: Settings;
   statuses: StatusType[];
   pinnedPictures: Picture[];
@@ -49,17 +44,10 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   tagOptions = [],
   priorityOptions = [],
   onUpdate,
-  editState,
-  onEditState,
-  stateNotes,
   stateSettings,
   statuses,
   pinnedPictures,
 }) => {
-  const [edittingTitle, setEdittingTitle] = useState<boolean>(false);
-  const lastTitleClick = useRef<number>(0);
-  const [inputtedTitle, setInputtedTitle] = useState<string>(thought.title);
-
   const db = useLoadedDB();
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
     if (statuses && statuses.length > 0) {
@@ -81,29 +69,6 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       text: value,
       thoughtId: thought.id,
     });
-  };
-
-  const handleSubmitTitle: FormEventHandler = e => {
-    e.preventDefault();
-    onUpdate({
-      ...thought,
-      title: inputtedTitle,
-    });
-    setEdittingTitle(false);
-  };
-
-  const handleCancelTitle: MouseEventHandler<HTMLButtonElement> = e => {
-    e.preventDefault();
-    setInputtedTitle(thought.title);
-    setEdittingTitle(false);
-  };
-
-  const handleClickTitle: MouseEventHandler<Element> = e => {
-    const currentTitleClick = +new Date();
-    if (currentTitleClick - lastTitleClick.current < 500) {
-      setEdittingTitle(true);
-    }
-    lastTitleClick.current = currentTitleClick;
   };
 
   const handleEditDateTime = (datetime: any) => {
@@ -135,21 +100,11 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 
   return (
     <div className={classes.root}>
-      {edittingTitle ?
-        (
-          <form className={classes.editTitleForm} onSubmit={handleSubmitTitle}>
-            <button className={classes.submitTitleButton}><Check/></button>
-            <button className={classes.cancelTitleButton} onClick={handleCancelTitle}><Close/></button>
-            <Input
-              classes={classes}
-              id={'title'}
-              value={inputtedTitle}
-              onChange={e => setInputtedTitle(e.target.value)}
-              autoFocus
-            />
-          </form>
-        ) : 
-        (<h1 className={classes.thoughtTitle} onClick={handleClickTitle}>{thought.title}</h1>)}
+      <ThoughtTitle
+        classes={classes}
+        thought={thought}
+        onUpdate={onUpdate}
+      />
       <span className={classes.createdAt}>Created {createdText}</span>
       <span className={classes.updatedAt}>Updated {lastUpdatedText}</span>
       <div className={classes.thoughtSections}>

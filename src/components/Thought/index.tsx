@@ -39,7 +39,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   const db = useLoadedDB();
   const { history } = useApp();
   const returnHomeSVGRef = useRef<HTMLElement>(null);
-  const [editState, setEditState] = useState<boolean>(false);
   const [displaySettings, setDisplaySettings] = useState<boolean>(false);
   const thoughtId = getIdFromUrl(history, 'thought');
   const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
@@ -97,9 +96,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
           tagOptions={tagOptions}
           priorityOptions={PRIORITY_OPTIONS}
           onUpdate={handleUpdate}
-          onEditState={setEditState}
-          editState={editState}
-          stateNotes={state.notes}
           stateSettings={state.settings}
           statuses={statuses}
           pinnedPictures={pinnedPictures}
@@ -113,16 +109,14 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         onDelete={handleClickDelete}  
       />
       {!displaySettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>}
-      {!editState && (
-        <CircleButton
-          svgRef={returnHomeSVGRef}
-          classes={classes}
-          id={'settings'}
-          onClick={handleClickSettings}
-          label={'Settings'}
-          Icon={Settings}
-        />
-      )}
+      <CircleButton
+        svgRef={returnHomeSVGRef}
+        classes={classes}
+        id={'settings'}
+        onClick={handleClickSettings}
+        label={'Settings'}
+        Icon={Settings}
+      />
     </div>
   );
 };
