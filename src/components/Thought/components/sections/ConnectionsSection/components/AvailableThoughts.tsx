@@ -29,10 +29,12 @@ export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thought
       .sort(sortConnections);
   }, [thoughts, searchText]);
 
-  const handleSelectThought = (e: ChangeEvent<HTMLSelectElement>, idx: number) => {
+  const handleSelectThought = (e: ChangeEvent<HTMLSelectElement>) => {
+    const to = options.find(option => option.title === e.target.value);
+
     connectionsActions.createConnection(db, {
       from: thoughtId,
-      to: options[idx - 1].id,
+      to: to.id,
     });
   };
 
