@@ -25,6 +25,7 @@ export enum EditTypes {
   Date = 'Date',
   Time = 'Time',
   DateTime = 'DateTime',
+  Button = 'Button',
 }
 
 export interface EditProps {
@@ -34,4 +35,5 @@ export interface EditProps {
   onCreate?: (value: string) => void;
   onDelete?: (...args: any[]) => void;
   onChangeVisibility: (visibility: boolean) => void;
+  onClickItem?: (...args: any[]) => void;
 }

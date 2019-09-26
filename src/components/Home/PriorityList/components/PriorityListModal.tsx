@@ -95,7 +95,7 @@ const getStatusModifier = ({ status }: { status?: string }): number => {
   }
 };
 
-const getTypeModifier = ({ type }: { type?: string }) => {
+const getTypeModifier = ({ type = '' }: { type?: string }) => {
   switch (type.toLowerCase()) {
     case 'reminder':
       return 3;

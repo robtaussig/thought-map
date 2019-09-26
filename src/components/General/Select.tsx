@@ -1,4 +1,4 @@
-import React, { FC, ChangeEventHandler } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 import Tooltip from './Tooltip';
 
 interface SelectProps {
@@ -6,7 +6,7 @@ interface SelectProps {
   classes?: any;
   value: string;
   options: string[];
-  onChange: ChangeEventHandler<HTMLSelectElement>;
+  onChange: (event: ChangeEvent<HTMLSelectElement>, idx: number) => void;
   label?: string;
   injectedComponent?: any;
   title?: string;
@@ -29,11 +29,18 @@ export const Select: FC<SelectProps> = React.memo(({
   ...rest
 }) => {
 
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    onChange({
+      ...e,
+      target: {...e.target, value: options[e.target.value as any]},
+    }, Number(e.target.value));
+  }
+
   return (
     <label id={id} className={classes.selectLabel} title={title} {...rest}>
-      <select className={classes.selectInput} onChange={onChange} value={value} aria-label={ariaLabel || label}>
+      <select className={classes.selectInput} onChange={handleChange} value={value} aria-label={ariaLabel || label}>
         {options.map((option, idx) => {
-          return <option key={`${idx}-option`} className={classes.option} value={option}>{option}</option>;
+          return <option key={`${idx}-option`} className={classes.option} value={idx}>{option}</option>;
         })}
       </select>
       {label}

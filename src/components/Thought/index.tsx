@@ -13,10 +13,17 @@ import { thoughts as thoughtActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 import { AppState } from 'reducers';
 import { Picture } from '../../store/rxdb/schemas/picture';
+import { Thought as ThoughtType } from '~store/rxdb/schemas/types';
 
 export interface PriorityOption {
   value: number;
   label: string;
+}
+
+export interface ConnectionSummary {
+  isParent: boolean;
+  otherThought: ThoughtType;
+  connectionId: string;
 }
 
 interface ThoughtProps {
@@ -44,6 +51,21 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
   const relatedTags = useMemo(() => Object.values(state.tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, state.tags]);
   const relatedNotes = useMemo(() => Object.values(state.notes).filter(note => note.thoughtId === thoughtId), [thoughtId, state.notes]);
+  const relatedConnections: ConnectionSummary[] = useMemo(() =>
+    Object.values(state.connections)
+      .filter(({ to, from }) => {
+        return to === thoughtId || from === thoughtId;
+      })
+      .map(({ id, to, from }) => {
+        const otherThought = state.thoughts.find(({ id: otherThoughtId }) => otherThoughtId !== thoughtId && (otherThoughtId === to || otherThoughtId === from));
+        return {
+          isParent: otherThought.id === to,
+          otherThought,
+          connectionId: id,
+        };
+      })
+  , [thoughtId, state.connections, state.thoughts]);
+
   const statuses = useMemo(() => {    
     if (typeof thoughtId === 'string') {
       return (state.statusesByThought[thoughtId] || [])
@@ -52,17 +74,21 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
     }
     return [];
   }, [state.statuses, state.statusesByThought, thoughtId]);
+
   const pinnedPictures: Picture[] = useMemo(() => {
     return Object.values(state.pictures).filter(picture => {
       return picture.pinned && picture.thoughtId === thoughtId;
     });
   }, [thoughtId, state.pictures]);
+
   const handleClickHome = (): void => {
     history.push(homeUrl(history));
   };
+
   const handleUpdate = useCallback(async updatedThought => {
     await thoughtActions.editThought(db, updatedThought);
   }, []);
+
   const handleClickDelete = useCallback(() => {
     if (typeof thoughtId === 'string') {
       const onConfirm = async () => {
@@ -73,6 +99,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
       openConfirmation('Are you sure you want to delete this?', onConfirm);
     }
   }, [thoughtId]);
+
   const handleClickSettings = useCallback(() => {
     setDisplaySettings(prev => !prev);
     if (!displaySettings) {
@@ -81,6 +108,10 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
       gearClosing(returnHomeSVGRef.current);
     }
   }, [thoughtId, displaySettings]);
+
+  const plan = useMemo(() => {
+    return state.plans.find(({ id}) => id === thought.planId);
+  }, [state.plans, thought]);
 
   return (
     <div className={classes.root}>
@@ -99,6 +130,8 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
           stateSettings={state.settings}
           statuses={statuses}
           pinnedPictures={pinnedPictures}
+          connections={relatedConnections}
+          plan={plan}
         />
       }
       <ThoughtSettings

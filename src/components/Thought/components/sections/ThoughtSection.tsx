@@ -49,7 +49,11 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
         });
       }
     }
-    setEditting(prev => !prev);    
+    if (edit.type === null) {
+      if (edit.onEdit) edit.onEdit();
+    } else {
+      setEditting(prev => !prev);    
+    }
   };
 
   const _editComponent = useMemo(() => {
@@ -162,7 +166,11 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
   const handleClickValue: MouseEventHandler<Element> = e => {
     const currentClick = +new Date();
     if (currentClick - lastClick.current < 500) {
-      setEditting(true);
+      if (edit.type === null) {
+        if (edit.onEdit) edit.onEdit();
+      } else {
+        setEditting(true);
+      }
     }
     lastClick.current = currentClick;
   };
@@ -201,7 +209,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
         <ul className={classes.notesList}>
           {value.map((item, idx) => {
             return (
-              <li key={`${item}-${idx}`} className={classes.noteItem}>{item}</li>
+              <li key={`${item}-${idx}`} className={classes.noteItem} onClick={() => edit.onClickItem(item, idx)}>{item}</li>
             );
           })}
         </ul>

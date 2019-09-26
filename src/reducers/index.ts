@@ -33,10 +33,14 @@ export interface StatusesByThought {
   [thoughtId: string]: string[];
 }
 
+export interface Connections {
+  [connectionId: string]: Connection;
+}
+
 export interface AppState {
   thoughts: Thought[];
   templates: Template[];
-  connections: Connection[];
+  connections: Connections;
   pictures: Pictures;
   plans: Plan[];
   notes: Notes;
@@ -72,7 +76,7 @@ export interface SortFilterSettings {
 export const DEFAULT_STATE: AppState = {
   thoughts: [],
   templates: [],
-  connections: [],
+  connections: {},
   plans: [],
   pictures: {},
   notes: {},

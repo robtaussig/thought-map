@@ -1,16 +1,27 @@
 import React, { useMemo, FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { getTime } from './util';
-import { notes as noteActions, tags as tagActions, statuses as statusActions } from '../../actions';
+import {
+  notes as noteActions,
+  tags as tagActions,
+  statuses as statusActions,
+  connections as connectionsActions,
+  thoughts as thoughtActions,
+} from '../../actions';
+import { createWholeThought } from '../../actions/complex';
 import { useLoadedDB } from '../../hooks/useDB';
+import useApp from '../../hooks/useApp';
+import { homeUrl } from '../../lib/util';
 import { thoughtInformationStyles } from './styles';
 import { PriorityOption } from './'
 import { Settings } from 'reducers';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Picture } from 'store/rxdb/schemas/picture';
 import { Tag } from 'store/rxdb/schemas/tag';
+import { Plan } from 'store/rxdb/schemas/plan';
 import { Note as NoteType } from 'store/rxdb/schemas/note';
 import { Status as StatusType } from 'store/rxdb/schemas/status';
+import { ConnectionSummary } from './';
 import TypeSection from './components/sections/TypeSection';
 import StatusSection from './components/sections/StatusSection';
 import PrioritySection from './components/sections/PrioritySection';
@@ -18,6 +29,7 @@ import DescriptionSection from './components/sections/DescriptionSection';
 import DateTimeSection from './components/sections/DateTimeSection';
 import NotesSection from './components/sections/NotesSection';
 import TagsSection from './components/sections/TagsSection';
+import ConnectionsSection from './components/sections/ConnectionsSection';
 import ThoughtTitle from './components/sections/ThoughtTitle';
 
 export interface ThoughtInformationProps {
@@ -33,6 +45,8 @@ export interface ThoughtInformationProps {
   stateSettings: Settings;
   statuses: StatusType[];
   pinnedPictures: Picture[];
+  connections: ConnectionSummary[];
+  plan: Plan;
 }
 
 export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
@@ -48,8 +62,11 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   stateSettings,
   statuses,
   pinnedPictures,
+  connections = [],
+  plan,
 }) => {
   const db = useLoadedDB();
+  const { history } = useApp();
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
     if (statuses && statuses.length > 0) {
       return [getTime(statuses[statuses.length - 1].updated), getTime(statuses[0].created)];
@@ -110,6 +127,25 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     });
   };
 
+  const handleCreateConnection = async (value: string) => {
+    const createdThought = await createWholeThought(db, {
+      title: value,
+      type: plan && plan.defaultType || 'Task',
+      date: '',
+      time: '',
+      description: '',
+      notes: [],
+      tags: [],
+    }, thought.planId);
+
+    await connectionsActions.createConnection(db, {
+      from: thought.id,
+      to: createdThought.thought.id,
+    });
+    
+    history.push(`${homeUrl(history)}thought/${createdThought.thought.id}`);
+  };
+
   const remainingTagOptions = tagOptions.filter(value => !tags.find(({ text }) => text === value));
 
   return (
@@ -163,6 +199,12 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           onDelete={handleDeleteTag}
           onCreate={handleCreateTag}
           tagOptions={remainingTagOptions}
+        />
+        <ConnectionsSection 
+          classes={classes}
+          thoughtId={thought.id}
+          onCreate={handleCreateConnection}
+          connections={connections}
         />
       </div>
     </div>
