@@ -15,14 +15,8 @@ interface RecurringSectionProps {
 
 export const RecurringSection: FC<RecurringSectionProps> = ({ classes, thought, onEdit }) => {
 
-  const handleEdit = (e: any) => {
-    onEdit({
-      ...e,
-      target: {
-        ...e.target,
-        value: Number(e.target.value),
-      },
-    });
+  const handleEdit = (value: string) => {
+    onEdit(Number(value));
   };
 
   return (
