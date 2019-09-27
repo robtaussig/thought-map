@@ -1,4 +1,4 @@
-import React, { FC, useMemo, ChangeEvent, useState } from 'react';
+import React, { FC, useMemo, ChangeEvent, useState, Fragment } from 'react';
 import { Thought } from 'store/rxdb/schemas/thought';
 import Select from '../../../../../General/Select';
 import Input from '../../../../../General/Input';
@@ -12,6 +12,7 @@ interface AvailableThoughtsProps {
 }
 
 const CONNECT_TO = 'Connect to';
+const CONNECT_FROM = 'Connect from';
 const FILTER_THOUGHTS = 'Filter Thoughts';
 
 const sortConnections = (left: Thought, right: Thought) => {
@@ -29,20 +30,34 @@ export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thought
       .sort(sortConnections);
   }, [thoughts, searchText]);
 
-  const handleSelectThought = (e: ChangeEvent<HTMLSelectElement>) => {
-    const to = options.find(option => option.title === e.target.value);
+  const handleSelectThought = (field: string) => (e: ChangeEvent<HTMLSelectElement>) => {
+    const otherThought = options.find(option => option.title === e.target.value);
 
-    connectionsActions.createConnection(db, {
-      from: thoughtId,
-      to: to.id,
-    });
+    if (field === 'from') {
+      connectionsActions.createConnection(db, {
+        from: otherThought.id,
+        to: thoughtId,
+      });
+    } else {
+      connectionsActions.createConnection(db, {
+        from: thoughtId,
+        to: otherThought.id,
+      });
+    }
   };
 
-  const handleClickThought = (title: string, idx: number) => () => {
-    connectionsActions.createConnection(db, {
-      from: thoughtId,
-      to: options[idx].id,
-    });
+  const handleClickThought = (title: string, idx: number, field: string) => () => {
+    if (field === 'from') {
+      connectionsActions.createConnection(db, {
+        from: options[idx].id,
+        to: thoughtId,
+      });
+    } else {
+      connectionsActions.createConnection(db, {
+        from: thoughtId,
+        to: options[idx].id,
+      });
+    }
   };
 
   return (
@@ -55,22 +70,39 @@ export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thought
         onChange={e => setSearchText(e.target.value)}
         autoFocus
       />
-      {options.length > 10 ? (<Select
-        classes={classes}
-        id={'available-thoughts'}
-        aria-label={CONNECT_TO}
-        value={CONNECT_TO}
-        onChange={handleSelectThought}
-        options={[CONNECT_TO].concat(options.map(({ title }) => title))}
-      />) : options.length === 0 ? (
+      {options.length > 10 ? (
+        <Fragment>
+          <Select
+            classes={classes}
+            id={'available-thoughts'}
+            aria-label={CONNECT_TO}
+            value={CONNECT_TO}
+            onChange={handleSelectThought('to')}
+            options={[CONNECT_TO].concat(options.map(({ title }) => title))}
+          />
+          <Select
+            classes={classes}
+            id={'available-thoughts'}
+            aria-label={CONNECT_FROM}
+            value={CONNECT_FROM}
+            onChange={handleSelectThought('from')}
+            options={[CONNECT_FROM].concat(options.map(({ title }) => title))}
+          />
+        </Fragment>
+      ) : options.length === 0 ? (
         <span className={classes.noMatches}>No matches</span>
       ) : (
         <ul className={classes.thoughtList}>
           {options.map(({ title }, idx) => {
             return (
               <li key={`${title}-${idx}`} className={classes.thoughtItem}>
-                <button onClick={handleClickThought(title, idx)}>
-                  {title}
+                {title}
+                <button onClick={handleClickThought(title, idx, 'from')}>
+                  From
+                </button>
+                /
+                <button onClick={handleClickThought(title, idx, 'to')}>
+                  To
                 </button>
               </li>
             );

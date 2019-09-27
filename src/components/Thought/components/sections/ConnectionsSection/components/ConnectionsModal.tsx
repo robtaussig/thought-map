@@ -26,6 +26,7 @@ const styles = (theme: any): StyleRules => ({
   },
   currentConnectionTitle: {
     flex: 1,
+    color: 'white',
   },
   deleteConnectionButton: {
     marginLeft: 5,
@@ -51,10 +52,12 @@ const styles = (theme: any): StyleRules => ({
   thoughtItem: {
     marginTop: 10,
     paddingBottom: 10,   
+    color: 'white',
     '& button': {
       textAlign: 'left',
-      color: 'white',
       fontWeight: 600,
+      color: '#bada55',
+      margin: '0 15px',
     },
     '&:not(:last-child)': {
       borderBottom: '1px solid white',
@@ -101,9 +104,8 @@ export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, 
         .map(({ otherThought }) => otherThought.id);
 
     return state.thoughts
-      .filter(({ id }) => !otherThoughtIds.includes(id))
-      .map(thought => thought);
-  }, [state.thoughts, state.connections, connections]);
+      .filter(({ id }) => !otherThoughtIds.includes(id) && id !== thoughtId);
+  }, [state.thoughts, connections]);
 
   return (
     <div className={classes.root}>
