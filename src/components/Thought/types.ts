@@ -27,6 +27,7 @@ export enum EditTypes {
   DateTime = 'DateTime',
   Button = 'Button',
   Photo = 'Photo',
+  Number = 'Number',
 }
 
 export interface EditProps {

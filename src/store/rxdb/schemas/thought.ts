@@ -9,15 +9,17 @@ export interface Thought {
   type?: string;
   status?: string;
   priority?: number;
+  recurring?: number;
   description?: string;
   index?: number;
   created?: number;
   updated?: number;
+  _rev?: string;
 }
 
 export default ['thought', {
   "title": "Thought schema",
-  "version": 1,
+  "version": 2,
   "description": "A Thought",
   "type": "object",
   "properties": {
@@ -50,6 +52,9 @@ export default ['thought', {
     "description": {
       "type": "string",
     },
+    "recurring": {
+      "type": "number",
+    },
     "index": {
       "type": "number",
     },
@@ -68,6 +73,10 @@ export default ['thought', {
   "migrationStrategies": {
     1: (oldThought: RxDocument<Thought>) => {
       oldThought.priority = 5;
+      return oldThought;
+    },
+    2: (oldThought: RxDocument<Thought>) => {
+      oldThought.recurring = 0;
       return oldThought;
     },
   },

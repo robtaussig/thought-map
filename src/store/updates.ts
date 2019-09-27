@@ -32,7 +32,9 @@ import {
   pictures as pictureActions,
   settings as settingActions,
   statuses as statusActions,
+  thoughts as thoughtActions,
 } from '../actions';
+import { addHours, format } from 'date-fns'
 
 const matchStatusLocationIfEnabled = (db: RxDatabase) => async (status: StatusType): Promise<void> => {
   const [useLocation] = await settingActions.findSetting(db, 'field', 'useLocation');
@@ -66,9 +68,24 @@ const matchPictureLocationIfEnabled = (db: RxDatabase) => async (picture: Pictur
   }
 };
 
+const recreateThoughtIfRecurring = (db: RxDatabase) => async (thoughtId: string) => {
+  const thought = await thoughtActions.getThought(db, thoughtId);
+  if (thought.recurring) {
+    const next = addHours(new Date(), thought.recurring);
+    const date = format(next, 'yyyy-MM-dd');
+    const time = format(next, 'HH:mm');
+    const { id, _rev, updated, created, ...nextThought } = thought;
+    thoughtActions.createThought(db, {
+      ...nextThought,
+      date,
+      time,
+    });
+  }
+};
+
 const handleThoughtChange = (
   setter: Setter<ThoughtState>,
-  setLastNotification: Dispatch<SetStateAction<Notification>>
+  setLastNotification: Dispatch<SetStateAction<Notification>>,
 ) => ({ data }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const thought: ThoughtType = data.v;
@@ -394,6 +411,7 @@ const handleStatusChange = (
   setThoughts: Setter<ThoughtType[]>,
   setStatusesByThought: Setter<StatusesByThought>,
   matchStatusLocationIfEnabled: (status: StatusType) => Promise<void>,
+  handleRecurringThought: (thoughtId: string) => Promise<void>,
 ) => ({ data }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const status: StatusType = data.v;
@@ -410,9 +428,9 @@ const handleStatusChange = (
         [status.thoughtId]: [status.id].concat(prev[status.thoughtId] || []),
       }));
       matchStatusLocationIfEnabled(status);
+      if (status.text === 'completed') handleRecurringThought(status.thoughtId);
       break;
     
-    //TODO Determine whether removal of status is supported. If so, need to update thoughts here
     case 'REMOVE':
       setter(prev => {
         const next = Object.keys(prev).reduce((nextState, key) => {
@@ -476,5 +494,12 @@ export const subscribeToChanges = async (
   //@ts-ignore
   db.setting.$.subscribe(handleSettingChange(setters.setting, setLastNotification));
   //@ts-ignore
-  db.status.$.subscribe(handleStatusChange(setters.status, setLastNotification, setters.thought, setStatusesByThought, matchStatusLocationIfEnabled(db)));
+  db.status.$.subscribe(handleStatusChange(
+    setters.status,
+    setLastNotification,
+    setters.thought,
+    setStatusesByThought,
+    matchStatusLocationIfEnabled(db),
+    recreateThoughtIfRecurring(db)),
+  );
 };

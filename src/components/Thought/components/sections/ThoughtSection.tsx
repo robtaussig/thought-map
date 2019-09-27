@@ -107,6 +107,19 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
             </div>
           );
           break;
+
+        case EditTypes.Number:
+          _component = (
+            <Input
+              classes={classes}
+              id={'section-editor'}
+              value={inputtedValue}
+              onChange={e => setInputtedValue(e.target.value)}
+              type={'number'}
+              autoFocus
+            />
+          );
+          break;
       
         default:
           _component = (

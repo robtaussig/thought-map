@@ -19,6 +19,7 @@ interface InputProps {
   onChange: InputChangeHandler;
   label?: string;
   id?: string;
+  type?: string;
   setFocus?: (cb: Callback) => void;
   DeleteButton?: any;
   scrollToOnMount?: boolean;
@@ -46,6 +47,7 @@ export const Input: FC<InputProps> = React.memo(({
   placeholder,
   autoSuggest,
   tooltip,
+  type,
   ...rest
 }) => {
   const rootRef = useRef<HTMLLabelElement>(null);
@@ -130,7 +132,7 @@ export const Input: FC<InputProps> = React.memo(({
 
   return (
     <label key={`${id}-label`} ref={rootRef} id={id} className={classes.inputLabel} onClick={focusOnLabelClick ? undefined : e => e.preventDefault()} {...rest}>
-      <input key={`${id}-input`} ref={inputRef} className={classes.inputField} placeholder={placeholder} type={'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
+      <input key={`${id}-input`} ref={inputRef} className={classes.inputField} placeholder={placeholder} type={type || 'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
       {label}
       {injectedComponent}
       {DeleteButton}
