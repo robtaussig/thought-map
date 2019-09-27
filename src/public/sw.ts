@@ -1,6 +1,6 @@
 //This is the service worker with the Advanced caching
 const VERSION = "v4";
-const CACHE = "sw-cache";
+export const CACHE = "sw-cache";
 const precacheFiles = [
   'index.html',
 ];

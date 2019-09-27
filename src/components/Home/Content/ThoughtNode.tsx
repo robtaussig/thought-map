@@ -15,10 +15,10 @@ interface ThoughtNodeProps {
 }
 
 const STATUS_TO_COLOR: { [key: string]: string } = {
-  'new': 'gold',
-  'in progress': 'lightgreen',
-  'won\'t fix': 'red',
-  'completed': 'midnightblue',
+  'new': '#0282d0',
+  'in progress': '#06922c',
+  'won\'t fix': '#c71b1b',
+  'completed': '#000cb3',
 };
 
 const colorFromPriority = (priority: number): string => {

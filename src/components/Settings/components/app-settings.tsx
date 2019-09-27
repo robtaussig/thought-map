@@ -8,6 +8,7 @@ import AppConfiguration from './app-configuration';
 import Data from './data';
 import { AppState } from '../../../reducers';
 import useApp from '../../../hooks/useApp';
+import { CACHE } from '../../../public/sw';
 
 const LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY = 'updateCheckCount';
 const LOCAL_STORAGE_LAST_VERSION_KEY = 'lastVersion';
@@ -62,6 +63,7 @@ export const AppSettings: FC<AppSettingsProps> = ({ classes, state, setLastNotif
     history.push(nextUrl);
   }
   const handleCheckUpdates = () => {
+    caches.delete(CACHE);
     localStorage.setItem(LOCAL_STORAGE_LAST_VERSION_KEY, (window as any).APP_VERSION);
     localStorage.setItem(LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY, '1');
     location.reload();
