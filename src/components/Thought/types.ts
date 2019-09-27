@@ -26,6 +26,7 @@ export enum EditTypes {
   Time = 'Time',
   DateTime = 'DateTime',
   Button = 'Button',
+  Photo = 'Photo',
 }
 
 export interface EditProps {
@@ -36,4 +37,5 @@ export interface EditProps {
   onDelete?: (...args: any[]) => void;
   onChangeVisibility: (visibility: boolean) => void;
   onClickItem?: (...args: any[]) => void;
+  disableQuickAction?: boolean;
 }

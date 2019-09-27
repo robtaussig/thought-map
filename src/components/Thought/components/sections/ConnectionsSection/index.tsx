@@ -5,7 +5,6 @@ import useModal from '../../../../../hooks/useModal';
 import useApp from '../../../../../hooks/useApp';
 import { ConnectionSummary } from '../../../';
 import ConnectionsModal from './components/ConnectionsModal';
-import { homeUrl } from '../../../../../lib/util';
 
 interface ConnectionsSectionProps {
   classes: any;
@@ -29,16 +28,15 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({ classes, onCre
   const handleClickItem = (item: string, idx: number) => {
     const { id, planId } = connections[idx].otherThought;
     history.push(`/${planId ? `plan/${planId}/` : ''}thought/${id}`);
-
   };
 
   return (
     <ThoughtSection
       classes={classes}
       Icon={Link}
-      field={'Connections'}
+      field={`Connections (${connections.filter(connection => connection.otherThought.status === 'completed').length}/${connections.length})`}
       value={connections.map(({ isParent, otherThought }) => {
-        return `${isParent ? 'to' : 'from'}: ${otherThought.title}`;
+        return `${isParent ? 'to' : 'from'}: ${otherThought.title}${otherThought.status === 'completed' ? ' ✓' : ''}`;
       })}
       className={'connections'}
       visible={true}

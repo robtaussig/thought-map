@@ -5,11 +5,11 @@ import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import FullScreenImage from './FullScreenImage';
 import EditPictureDescription from './EditPictureDescription';
-import useModal from '../../../../../hooks/useModal';
-import { useLoadedDB } from '../../../../../hooks/useDB';
+import useModal from '../../../../../../hooks/useModal';
+import { useLoadedDB } from '../../../../../../hooks/useDB';
 import Close from '@material-ui/icons/Close';
 import Wallpaper from '@material-ui/icons/Wallpaper';
-import { pictures as pictureActions } from '../../../../../actions/index';
+import { pictures as pictureActions } from '../../../../../../actions/index';
 
 interface ImagesProps {
   classes: any;
@@ -41,16 +41,6 @@ export const Images: FC<ImagesProps> = ({ classes, relatedPictures, loaded, dele
       ...picture,
       pinned: true,
     };
-    const prevPinned = relatedPictures.find(prev => prev.pinned === true);
-
-    if (prevPinned) {
-      const unpinned: Picture = {
-        ...prevPinned,
-        pinned: false,
-      };
-      
-      pictureActions.editPicture(db, unpinned);
-    }
     
     pictureActions.editPicture(db, pinned);
   };

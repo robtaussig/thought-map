@@ -1,9 +1,9 @@
 import React, { FC, useState, FormEvent } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import { Picture } from '~store/rxdb/schemas/types';
-import Input from '../../../../General/Input';
-import { pictures as pictureActions } from '../../../../../actions';
-import { useLoadedDB } from '../../../../../hooks/useDB';
+import Input from '../../../../../General/Input';
+import { pictures as pictureActions } from '../../../../../../actions';
+import { useLoadedDB } from '../../../../../../hooks/useDB';
 
 interface EditPictureDescriptionProps {
   classes: any,

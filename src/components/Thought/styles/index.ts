@@ -175,8 +175,12 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       borderRadius: '5px',
     },
   },
-  notesList: {
+  itemList: {
     gridArea: 'section-value',
+  },
+  image: {
+    width: '100%',
+    height: 'auto',
   },
   noteItem: {
     fontWeight: 600,

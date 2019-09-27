@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState, FormEventHandler, ChangeEvent, MouseEventHandler } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState, FormEventHandler, ChangeEvent, MouseEventHandler, useCallback } from 'react';
 import Edit from '@material-ui/icons/Edit';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import Add from '@material-ui/icons/Add';
@@ -10,6 +10,7 @@ import Select from '../../../General/Select';
 import DateInput from '../../../General/Date';
 import Input from '../../../General/Input';
 import useModal from '../../../../hooks/useModal';
+import FullScreenImage from './PicturesSection/components/FullScreenImage';
 import {
   EditTypes,
   EditProps,
@@ -29,6 +30,7 @@ interface ThoughtSectionProps {
 
 export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, field, value, className, edit, visible, quickActionButton }) => {  
   const [editting, setEditting] = useState<boolean>(false);
+  const [fullScreenImage, setFullScreenImage] = useState<string>(null);
   const [edittedItems, setEdittedItems] = useState<string[]>([]);
   const lastClick = useRef<number>(0);
   const [openModal, closeModal] = useModal();
@@ -49,7 +51,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
         });
       }
     }
-    if (edit.type === null) {
+    if ([null, EditTypes.Photo].includes(edit.type)) {
       if (edit.onEdit) edit.onEdit();
     } else {
       setEditting(prev => !prev);    
@@ -166,7 +168,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
   const handleClickValue: MouseEventHandler<Element> = e => {
     const currentClick = +new Date();
     if (currentClick - lastClick.current < 500) {
-      if (edit.type === null) {
+      if ([null, EditTypes.Photo].includes(edit.type)) {
         if (edit.onEdit) edit.onEdit();
       } else {
         setEditting(true);
@@ -199,6 +201,14 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
     }
   }, [editting]);
 
+  const handleClickImage = (idx: number) => () => {
+    const picture = value[idx];
+    setFullScreenImage(picture);
+  };
+
+  const handleCloseFullScreenImage = useCallback(() => {
+    setFullScreenImage(null);
+  }, []);
 
   const _displayComponent = useMemo(() => {
     if (typeof value === 'string') {
@@ -206,9 +216,11 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
       return (<h3 className={classes.sectionValue}>{displayValue}</h3>);
     } else {
       return (
-        <ul className={classes.notesList}>
+        <ul className={classes.itemList}>
           {value.map((item, idx) => {
-            return (
+            return edit.type === EditTypes.Photo ?
+            // @ts-ignore
+            (<img key={`${idx}-image`} src={item} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>) : (
               <li key={`${item}-${idx}`} className={classes.noteItem} onClick={() => edit.onClickItem(item, idx)}>{item}</li>
             );
           })}
@@ -218,7 +230,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
   }, [value, edit]);
 
   const _quickActionButton = useMemo(() => {
-    if (typeof value !== 'string') {
+    if (edit.disableQuickAction !== true && typeof value !== 'string') {
 
       const handleAfterClose = () => {
         console.log('after close');
@@ -257,16 +269,19 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
   }, [value]);
 
   return (
-    <section ref={rootRef} className={classNames(classes.thoughtSection, className)}>
+    <section ref={rootRef} className={classNames(classes.thoughtSection, className)} onClick={handleClickValue}>
       <button className={classes.editToggle} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
       <div className={classes.sectionIcon}>
         <Icon/>
       </div>
-      <span className={classes.sectionField} onClick={handleClickValue} title={'Double-click to edit'}>{field}</span>
+      <span className={classes.sectionField} title={'Double-click to edit'}>{field}</span>
       {editting ? _editComponent : _displayComponent}
       <div className={classes.sectionQuickActionButton}>
         {!editting && (quickActionButton || _quickActionButton)}
       </div>
+      {fullScreenImage && (
+        <FullScreenImage onClose={handleCloseFullScreenImage} image={fullScreenImage}/>
+      )}
     </section>
   );
 };

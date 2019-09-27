@@ -1,17 +1,17 @@
 import React, { FC, useRef, useEffect, useState, useMemo } from 'react';
 import { Thought } from '~store/rxdb/schemas/types';
-import { AppState } from '../../../../reducers';
+import { AppState } from '../../../../../../reducers';
 import { withStyles } from '@material-ui/core/styles';
-import { pictures as pictureActions } from '../../../../actions/';
-import { useLoadedDB } from '../../../../hooks/useDB';
-import { useModalDynamicState } from '../../../../hooks/useModal';
-import { useNestedXReducer } from '../../../../hooks/useXReducer';
-import { useLoadingOverlay } from '../../../../hooks/useLoadingOverlay';
-import TempImages from './components/TempImages';
-import Images from './components/Images';
-import useApp from '../../../../hooks/useApp';
+import { pictures as pictureActions } from '../../../../../../actions/';
+import { useLoadedDB } from '../../../../../../hooks/useDB';
+import { useModalDynamicState } from '../../../../../../hooks/useModal';
+import { useNestedXReducer } from '../../../../../../hooks/useXReducer';
+import { useLoadingOverlay } from '../../../../../../hooks/useLoadingOverlay';
+import TempImages from './TempImages';
+import Images from './Images';
+import useApp from '../../../../../../hooks/useApp';
 import { getBase64ImageFromUrl } from './util';
-import { openConfirmation } from '../../../../lib/util';
+import { openConfirmation } from '../../../../../../lib/util';
 import { styles } from './styles';
 
 interface PictureProps {

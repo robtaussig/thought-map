@@ -31,6 +31,7 @@ import NotesSection from './components/sections/NotesSection';
 import TagsSection from './components/sections/TagsSection';
 import ConnectionsSection from './components/sections/ConnectionsSection';
 import ThoughtTitle from './components/sections/ThoughtTitle';
+import PicturesSection from './components/sections/PicturesSection';
 
 export interface ThoughtInformationProps {
   classes: any;
@@ -205,6 +206,11 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           thoughtId={thought.id}
           onCreate={handleCreateConnection}
           connections={connections}
+        />
+        <PicturesSection
+          classes={classes}
+          thought={thought}
+          pinnedPictures={pinnedPictures}
         />
       </div>
     </div>

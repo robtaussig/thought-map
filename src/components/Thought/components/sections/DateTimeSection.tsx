@@ -3,7 +3,6 @@ import ThoughtSection from './ThoughtSection';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { Thought } from '../../../../store/rxdb/schemas/thought';
 import { EditTypes } from '../../types';
-import { PriorityOption } from '../../';
 
 interface DateTimeSectionProps {
   classes: any;
