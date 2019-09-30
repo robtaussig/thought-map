@@ -47,7 +47,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     padding: 20,
     overflow: 'hidden',
     gridTemplateAreas: `"title title title"
-                        "created-at updated-at ."
+                        "created-at updated-at plan-name"
                         "sections sections sections"`,
     gridTemplateRows: 'max-content max-content 1fr',
     gridTemplateColumns: 'max-content max-content 1fr',
@@ -59,6 +59,11 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     fontSize: 24,
     color: theme.palette.primary[500],
     userSelect: 'none',
+  },
+  planName: {
+    gridArea: 'plan-name',
+    color: theme.palette.gray[300],
+    fontWeight: 600,
   },
   editTitleForm: {
     gridArea: 'title',

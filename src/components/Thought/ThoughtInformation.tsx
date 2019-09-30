@@ -159,6 +159,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       />
       <span className={classes.createdAt}>Created {createdText}</span>
       <span className={classes.updatedAt}>Updated {lastUpdatedText}</span>
+      {plan && <span className={classes.planName}>{plan.name}</span>}
       <div className={classes.thoughtSections}>
         <TypeSection
           classes={classes}
