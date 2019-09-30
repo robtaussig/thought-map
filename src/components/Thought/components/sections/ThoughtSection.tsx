@@ -26,9 +26,20 @@ interface ThoughtSectionProps {
   edit: EditProps;
   visible: boolean;
   quickActionButton?: any;
+  linkifyValues?: boolean;
 }
 
-export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowRight, field, value, className, edit, visible, quickActionButton }) => {  
+export const ThoughtSection: FC<ThoughtSectionProps> = ({
+  classes,
+  Icon = ArrowRight,
+  field,
+  value,
+  className,
+  edit,
+  visible,
+  quickActionButton,
+  linkifyValues,
+}) => {  
   const [editting, setEditting] = useState<boolean>(false);
   const [fullScreenImage, setFullScreenImage] = useState<string>(null);
   const [edittedItems, setEdittedItems] = useState<string[]>([]);
@@ -224,17 +235,30 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({ classes, Icon = ArrowR
   }, []);
 
   const _displayComponent = useMemo(() => {
+
+    const linkify = (element: any): any => {
+      if (linkifyValues) {
+        if (/(^(http|www)).*(\.([A-z]{2,})(\/.*)?$)/.test(element)) {
+          return <a href={`http://${element.replace(/^http(s?):\/\//,'')}`} target={'_blank'} style={{ color: 'black' }}>{element}</a>;
+        } else {
+          return element;
+        }
+      }
+      return element;
+    };
+
     if (typeof value === 'string') {
       const displayValue = edit.type === EditTypes.DateTime ? value.split(',').join(' ') : value;
-      return (<h3 className={classes.sectionValue}>{displayValue}</h3>);
+      return (<h3 className={classes.sectionValue}>{linkify(displayValue)}</h3>);
     } else {
       return (
         <ul className={classes.itemList}>
           {value.map((item, idx) => {
             return edit.type === EditTypes.Photo ?
             // @ts-ignore
-            (<img key={`${idx}-image`} src={item} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>) : (
-              <li key={`${item}-${idx}`} className={classes.noteItem} onClick={() => edit.onClickItem(item, idx)}>{item}</li>
+            (<img key={`${idx}-image`} src={item} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>) :
+            (
+              <li key={`${item}-${idx}`} className={classes.noteItem} onClick={edit.onClickItem ? () => edit.onClickItem(item, idx) : undefined}>{linkify(item)}</li>
             );
           })}
         </ul>

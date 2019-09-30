@@ -21,6 +21,7 @@ export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, on
       field={'Notes'}
       value={notes.map(note => note.text)}
       className={'notes'}
+      linkifyValues={true}
       visible={true}
       edit={{
         type: EditTypes.Text,
