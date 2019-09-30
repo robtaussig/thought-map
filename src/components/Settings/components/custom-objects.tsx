@@ -9,6 +9,7 @@ import { useModal } from '../../../hooks/useModal';
 import CustomStatuses from './custom-statuses';
 import CustomTypes from './custom-types';
 import CustomTags from './custom-tags';
+import DeleteTemplates from './delete-templates';
 
 interface CustomObjectsProps {
   classes: any;
@@ -100,7 +101,7 @@ export const CustomObjects: FC<CustomObjectsProps> = ({ classes, settings }) => 
   }, []);
 
   const handleClickDeleteTemplates = useCallback(() => {
-    alert('Coming soon...');
+    openModal(<DeleteTemplates onClose={closeModal}/>);
   }, []);
   
   return (
