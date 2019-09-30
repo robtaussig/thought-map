@@ -20,6 +20,7 @@ const styles = (theme: any): StyleRules => ({
   },
   form: {
     display: 'flex',
+    marginBottom: 30,
     '& button': {
       fontWeight: 600,
       cursor: 'pointer',
@@ -35,7 +36,6 @@ const styles = (theme: any): StyleRules => ({
   },
   customType: {
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'space-between',
   },
   customTypeText: {
