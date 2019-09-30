@@ -307,7 +307,9 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
 
   return (
     <section ref={rootRef} className={classNames(classes.thoughtSection, className)} onClick={handleClickValue}>
-      <button className={classes.editToggle} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
+      <button className={classNames(classes.editToggle, {
+        editting,
+      })} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
       <div className={classes.sectionIcon}>
         <Icon/>
       </div>

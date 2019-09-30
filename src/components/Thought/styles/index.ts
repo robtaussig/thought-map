@@ -101,7 +101,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridTemplateAreas: `". . action-buttons"
                         "section-icon section-field quick-action"
                         "section-icon section-value quick-action"
-                        ". . ."`,
+                        ". . submit-action-buttons"`,
     gridTemplateRows: '20px max-content 1fr 20px',
     gridTemplateColumns: '50px 1fr 50px',
     gridColumnGap: '10px',
@@ -120,7 +120,10 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     marginLeft: 'auto',
     '& > svg': {
       fontSize: 16,
-    }
+    },
+    '&.editting': {
+      gridArea: 'submit-action-buttons',
+    },
   },
   sectionIcon: {
     gridArea: 'section-icon',
