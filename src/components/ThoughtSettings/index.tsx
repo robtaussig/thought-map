@@ -4,6 +4,7 @@ import CircleButton from '../General/CircleButton';
 import Delete from '@material-ui/icons/Delete';
 import useModal from '../../hooks/useModal';
 import Template from './components/template';
+import AddToCalendar from './components/add-to-calendar';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Tag } from 'store/rxdb/schemas/tag';
 import { Note } from 'store/rxdb/schemas/note';
@@ -25,8 +26,8 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     openModal(<Template classes={classes} onClose={closeModal} thought={thought} tags={tags} notes={notes}/>, 'Template');
   };
 
-  const handleClickCustomBackground = () => {
-    openModal(<div>Custom Background</div>, 'Pick a custom background');
+  const handleClickAddToCalendar = () => {
+    openModal(<AddToCalendar classes={classes} onClose={closeModal} thought={thought} notes={notes} tags={tags}/>);
   };
 
   const handleClickHideFields = () => {
@@ -40,7 +41,7 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     }}>
       <div className={classes.settings}>
         <button className={classes.templateButton} onClick={handleClickUseAsTemplate}>Create Template</button>
-        <button className={classes.background} onClick={handleClickCustomBackground}>Custom Background</button>
+        <button className={classes.background} onClick={handleClickAddToCalendar}>Add to Calendar</button>
         <button className={classes.fields} onClick={handleClickHideFields}>Hide Fields</button>
         <div className={classes.recurring}>Recurring</div>
         {display && <CircleButton classes={classes} id={'delete-thought'} onClick={onDelete} label={'Delete Thought'} Icon={Delete}/>}
