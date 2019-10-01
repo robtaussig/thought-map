@@ -5,6 +5,7 @@ import { templates as templateActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { useModalDynamicState } from '../../../hooks/useModal';
 import Delete from '@material-ui/icons/Delete';
+import { openConfirmation } from '../../../lib/util';
 
 interface DeleteTemplatesProps {
   classes: any;
@@ -36,7 +37,7 @@ export const DeleteTemplates: FC<DeleteTemplatesProps> = ({ classes, onClose }) 
   const templates = state.templates;
 
   const deleteTemplate = (templateId: string) => {
-    templateActions.deleteTemplate(db, templateId);
+    openConfirmation('Are you sure you want to delete this template?', () => templateActions.deleteTemplate(db, templateId));
   };
 
   return (
