@@ -9,6 +9,7 @@ export const generateHtmlLinkFromThought = (thought: Thought): string => {
 
 export const generateStartFromThought = (thought: Thought): Time => {
   const date = thought.date ? new Date(thought.date) : new Date();
+  date.setHours(12, 0);
 
   const time: Time = {
     date: format(date, 'yyyy-MM-dd'),
@@ -29,6 +30,7 @@ export const generateStartFromThought = (thought: Thought): Time => {
 
 export const generateEndFromThought = (thought: Thought): Time => {
   const date = thought.date ? new Date(thought.date) : new Date();
+  date.setHours(12, 0);
   const time: Time = {
     date: format(date, 'yyyy-MM-dd'),
     timeZone: 'America/New_York',

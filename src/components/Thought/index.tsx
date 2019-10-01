@@ -110,7 +110,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   }, [thoughtId, displaySettings]);
 
   const plan = useMemo(() => {
-    return state.plans.find(({ id}) => id === thought.planId);
+    return state.plans.find(({ id}) => thought && id === thought.planId);
   }, [state.plans, thought]);
 
   return (
