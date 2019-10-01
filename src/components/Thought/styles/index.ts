@@ -54,6 +54,18 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridGap: '10px',
     color: 'white',
   },
+  circleButton: {
+    ...theme.defaults.circleButton,
+    '&#cancel-edit': {
+      top: 10,
+      left: 10,
+      opacity: 0.5,
+      border: '2px solid white',
+    },
+  },
+  placeBeforeButton: {
+
+  },
   thoughtTitle: {
     gridArea: 'title',
     fontSize: 24,
@@ -117,6 +129,9 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     '&:last-child': {
       marginBottom: 100,
     },
+    '&.drop-target': {
+      backgroundColor: theme.palette.gray[400],
+    },
   },
   editToggle: {
     gridArea: 'action-buttons',
@@ -138,6 +153,10 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridArea: 'section-value',
     fontSize: 18,
     fontWeight: 600,
+    '&.drop-target': {
+      backgroundColor: 'black',
+      color: theme.palette.primary[500],
+    },
   },
   sectionField: {
     gridArea: 'section-field',

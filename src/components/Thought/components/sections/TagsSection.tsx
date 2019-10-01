@@ -1,12 +1,8 @@
 import React, { FC } from 'react';
 import ThoughtSection from './ThoughtSection';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Style from '@material-ui/icons/Style';
-import Check from '@material-ui/icons/Check';
-import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 import { Tag } from '../../../../store/rxdb/schemas/tag';
-import { EditTypes } from '../../types';
-import classNames from 'classnames';
+import { EditTypes, SectionState } from '../../types';
 
 interface TagsSectionProps {
   classes: any;
@@ -14,9 +10,13 @@ interface TagsSectionProps {
   tagOptions: string[];
   onDelete: (idx: number) => void;
   onCreate: (value: string) => void;
+  sectionState: SectionState;
+  onLongPress: (e: any) => void;
+  onDrop: () => void;
+  onToggleVisibility: () => void;
 }
 
-export const TagsSection: FC<TagsSectionProps> = ({ classes, tags, tagOptions, onDelete, onCreate }) => {
+export const TagsSection: FC<TagsSectionProps> = ({ classes, tags, tagOptions, onDelete, onCreate, sectionState, onLongPress, onDrop, onToggleVisibility }) => {
 
   return (
     <ThoughtSection
@@ -26,6 +26,10 @@ export const TagsSection: FC<TagsSectionProps> = ({ classes, tags, tagOptions, o
       value={tags.map(({ text }) => text)}
       className={'tags'}
       visible={true}
+      sectionState={sectionState}
+      onLongPress={onLongPress}
+      onDrop={onDrop}
+      onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.Select,
         options: tagOptions,

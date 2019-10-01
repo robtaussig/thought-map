@@ -40,3 +40,9 @@ export interface EditProps {
   onClickItem?: (...args: any[]) => void;
   disableQuickAction?: boolean;
 }
+
+export enum SectionState {
+  NotEditingAnySection = -1,
+  EditingOtherSection = 0,
+  EditingSection = 1,
+}

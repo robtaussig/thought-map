@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useMemo, useRef, useState, FormEventHandler, ChangeEvent, MouseEventHandler, useCallback } from 'react';
 import Edit from '@material-ui/icons/Edit';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import Add from '@material-ui/icons/Add';
 import Check from '@material-ui/icons/Check';
@@ -15,6 +17,7 @@ import FullScreenImage from './PicturesSection/components/FullScreenImage';
 import {
   EditTypes,
   EditProps,
+  SectionState
 } from '../../types';
 import QuickAddModal from '../QuickAddModal';
 
@@ -28,6 +31,10 @@ interface ThoughtSectionProps {
   visible: boolean;
   quickActionButton?: any;
   linkifyValues?: boolean;
+  onLongPress: (e: any) => void;
+  sectionState: SectionState;
+  onDrop: () => void;
+  onToggleVisibility: () => void;
 }
 
 export const ThoughtSection: FC<ThoughtSectionProps> = ({
@@ -40,6 +47,10 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   visible,
   quickActionButton,
   linkifyValues,
+  onLongPress = () => {},
+  sectionState,
+  onDrop,
+  onToggleVisibility,
 }) => {  
   const [editting, setEditting] = useState<boolean>(false);
   const [fullScreenImage, setFullScreenImage] = useState<string>(null);
@@ -48,7 +59,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   const [openModal, closeModal] = useModal();
   const rootRef = useRef<HTMLDivElement>(null);
   const [inputtedValue, setInputtedValue] = useState<string>(String(value));
-  const handleLongPress = useLongPress(console.log);
+  const handleLongPress = useLongPress(onLongPress);
 
   const handleToggleEdit = () => {
     if (editting) {
@@ -307,6 +318,44 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     }
   }, [value]);
 
+  const _editIcons = useMemo(() => {
+    if (sectionState === SectionState.NotEditingAnySection) {
+      return (
+        <button className={classNames(classes.editToggle, {
+          editting,
+        })} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
+      );
+    }
+
+    return (
+      <button className={classNames(classes.editToggle, {
+        visible,
+      })} onClick={onToggleVisibility}>
+        {visible ? (<Visibility/>) : (<VisibilityOff/>)}
+      </button>
+    );
+  }, [editting, sectionState, quickActionButton, _quickActionButton]);
+
+  if (sectionState === SectionState.EditingOtherSection) {
+    return (
+      <section
+        ref={rootRef}
+        className={classNames(classes.thoughtSection, className, 'drop-target')}
+      >
+        {_editIcons}
+        <div className={classes.sectionIcon}>
+          <Icon/>
+        </div>
+        <span className={classes.sectionField} title={'Double-click to edit'}>{field}</span>
+        <button className={classNames(classes.sectionValue, 'drop-target')} onClick={onDrop}>
+          Place Above
+        </button>
+      </section>
+    );
+  }
+
+  if (visible === false) return null;
+
   return (
     <section
       ref={rootRef}
@@ -314,9 +363,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       onClick={handleClickValue}
       {...handleLongPress}  
     >
-      <button className={classNames(classes.editToggle, {
-        editting,
-      })} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
+      {_editIcons}
       <div className={classes.sectionIcon}>
         <Icon/>
       </div>

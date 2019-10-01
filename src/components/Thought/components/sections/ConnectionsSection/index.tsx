@@ -5,15 +5,29 @@ import useModal from '../../../../../hooks/useModal';
 import useApp from '../../../../../hooks/useApp';
 import { ConnectionSummary } from '../../../';
 import ConnectionsModal from './components/ConnectionsModal';
+import { SectionState } from '../../../types';
 
 interface ConnectionsSectionProps {
   classes: any;
   onCreate: (value: string) => void;
   connections: ConnectionSummary[];
   thoughtId: string;
+  sectionState: SectionState;
+  onLongPress: (e: any) => void;
+  onDrop: () => void;
+  onToggleVisibility: () => void;
 }
 
-export const ConnectionsSection: FC<ConnectionsSectionProps> = ({ classes, onCreate, thoughtId, connections }) => {
+export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
+  classes,
+  onCreate,
+  thoughtId,
+  connections,
+  sectionState,
+  onLongPress,
+  onDrop,
+  onToggleVisibility,
+}) => {
   const [openModal, closeModal] = useModal();
   const { history } = useApp();
   const handleEdit = () => {
@@ -40,6 +54,10 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({ classes, onCre
       })}
       className={'connections'}
       visible={true}
+      sectionState={sectionState}
+      onLongPress={onLongPress}
+      onDrop={onDrop}
+      onToggleVisibility={onToggleVisibility}
       edit={{
         type: null,
         onEdit: handleEdit,

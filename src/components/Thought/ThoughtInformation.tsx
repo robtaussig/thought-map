@@ -1,5 +1,6 @@
-import React, { useMemo, FC } from 'react';
+import React, { useMemo, FC, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Close from '@material-ui/icons/Close';
 import { getTime } from './util';
 import {
   notes as noteActions,
@@ -33,6 +34,8 @@ import ConnectionsSection from './components/sections/ConnectionsSection';
 import ThoughtTitle from './components/sections/ThoughtTitle';
 import PicturesSection from './components/sections/PicturesSection';
 import RecurringSection from './components/sections/RecurringSection';
+import CircleButton from '../General/CircleButton';
+import { SectionState } from './types';
 
 export interface ThoughtInformationProps {
   classes: any;
@@ -69,6 +72,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 }) => {
   const db = useLoadedDB();
   const { history } = useApp();
+  const [editingSection, setEditingSection] = useState<string>(null);
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
     if (statuses && statuses.length > 0) {
       return [getTime(statuses[statuses.length - 1].updated), getTime(statuses[0].created)];
@@ -150,8 +154,33 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 
   const remainingTagOptions = tagOptions.filter(value => !tags.find(({ text }) => text === value));
 
+  const deriveSectionState = (sectionType: string): SectionState => {
+
+    if (editingSection === sectionType) {
+      return SectionState.EditingSection;
+    } else if (editingSection) {
+      return SectionState.EditingOtherSection;
+    }
+
+    return SectionState.NotEditingAnySection;
+  };
+
+  const handleLongPress = (sectionType: string) => () => {
+    setEditingSection(sectionType);
+  };
+
+  const handleDrop = (sectionType: string) => () => {
+    console.log(sectionType);
+    setEditingSection(null);
+  };
+
+  const handleToggleVisibility = (sectionType: string) => () => {
+    console.log(sectionType);
+  };
+
   return (
     <div className={classes.root}>
+      {editingSection && <CircleButton classes={classes} id={'cancel-edit'} onClick={() => setEditingSection(null)} label={'Cancel Edit'} Icon={Close}/>}
       <ThoughtTitle
         classes={classes}
         thought={thought}
@@ -166,28 +195,48 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           thought={thought}
           typeOptions={typeOptions}
           onEdit={handleEditThought('type')}
+          sectionState={deriveSectionState('type')}
+          onLongPress={handleLongPress('type')}
+          onDrop={handleDrop('type')}
+          onToggleVisibility={handleToggleVisibility('type')}
         />
         <StatusSection
           classes={classes}
           thought={thought}
           statusOptions={statusOptions}
           onEdit={handleEditStatus}
+          sectionState={deriveSectionState('status')}
+          onLongPress={handleLongPress('status')}
+          onDrop={handleDrop('status')}
+          onToggleVisibility={handleToggleVisibility('status')}
         />
         <PrioritySection
           classes={classes}
           thought={thought}
           priorityOptions={priorityOptions}
           onEdit={handleEditThought('priority')}
+          sectionState={deriveSectionState('priority')}
+          onLongPress={handleLongPress('priority')}
+          onDrop={handleDrop('priority')}
+          onToggleVisibility={handleToggleVisibility('priority')}
         />
         <DescriptionSection
           classes={classes}
           thought={thought}
           onEdit={handleEditThought('description')}
+          sectionState={deriveSectionState('description')}
+          onLongPress={handleLongPress('description')}
+          onDrop={handleDrop('description')}
+          onToggleVisibility={handleToggleVisibility('description')}
         />
         <DateTimeSection
           classes={classes}
           thought={thought}
           onEdit={handleEditDateTime}
+          sectionState={deriveSectionState('datetime')}
+          onLongPress={handleLongPress('datetime')}
+          onDrop={handleDrop('datetime')}
+          onToggleVisibility={handleToggleVisibility('datetime')}
         />
         <NotesSection
           classes={classes}
@@ -195,11 +244,19 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           onEdit={handleEditNote}
           onCreate={handleCreateNote}
           onDelete={handleDeleteNote}
+          sectionState={deriveSectionState('notes')}
+          onLongPress={handleLongPress('notes')}
+          onDrop={handleDrop('notes')}
+          onToggleVisibility={handleToggleVisibility('notes')}
         />
         <RecurringSection
           classes={classes}
           thought={thought}
           onEdit={handleEditThought('recurring')}
+          sectionState={deriveSectionState('recurring')}
+          onLongPress={handleLongPress('recurring')}
+          onDrop={handleDrop('recurring')}
+          onToggleVisibility={handleToggleVisibility('recurring')}
         />
         <TagsSection
           classes={classes}
@@ -207,17 +264,29 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           onDelete={handleDeleteTag}
           onCreate={handleCreateTag}
           tagOptions={remainingTagOptions}
+          sectionState={deriveSectionState('tags')}
+          onLongPress={handleLongPress('tags')}
+          onDrop={handleDrop('tags')}
+          onToggleVisibility={handleToggleVisibility('tags')}
         />
         <ConnectionsSection 
           classes={classes}
           thoughtId={thought.id}
           onCreate={handleCreateConnection}
           connections={connections}
+          sectionState={deriveSectionState('connections')}
+          onLongPress={handleLongPress('connections')}
+          onDrop={handleDrop('connections')}
+          onToggleVisibility={handleToggleVisibility('connections')}
         />
         <PicturesSection
           classes={classes}
           thought={thought}
           pinnedPictures={pinnedPictures}
+          sectionState={deriveSectionState('pictures')}
+          onLongPress={handleLongPress('pictures')}
+          onDrop={handleDrop('pictures')}
+          onToggleVisibility={handleToggleVisibility('pictures')}
         />
       </div>
     </div>

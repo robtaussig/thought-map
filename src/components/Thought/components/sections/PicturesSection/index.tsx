@@ -5,15 +5,19 @@ import useModal from '../../../../../hooks/useModal';
 import { Picture } from '../../../../../store/rxdb/schemas/picture';
 import PicturesModal from './components/PicturesModal';
 import { Thought } from '../../../../../store/rxdb/schemas/types';
-import { EditTypes } from '../../../types';
+import { EditTypes, SectionState } from '../../../types';
 
 interface PicturesSectionProps {
   classes: any;
   thought: Thought;
   pinnedPictures: Picture[];
+  sectionState: SectionState;
+  onLongPress: (e: any) => void;
+  onDrop: () => void;
+  onToggleVisibility: () => void;
 }
 
-export const PicturesSection: FC<PicturesSectionProps> = ({ classes, thought, pinnedPictures }) => {
+export const PicturesSection: FC<PicturesSectionProps> = ({ classes, thought, pinnedPictures, sectionState, onLongPress, onDrop, onToggleVisibility }) => {
   const [openModal, closeModal] = useModal();
   const handleEdit = () => {
     openModal(
@@ -40,6 +44,10 @@ export const PicturesSection: FC<PicturesSectionProps> = ({ classes, thought, pi
       value={pinnedPictures.map(({ imgurUrl, localUrl }) => imgurUrl || localUrl)}
       className={'pictures'}
       visible={true}
+      sectionState={sectionState}
+      onLongPress={onLongPress}
+      onDrop={onDrop}
+      onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.Photo,
         onEdit: handleEdit,
