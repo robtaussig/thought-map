@@ -7,6 +7,7 @@ export interface Thought {
   date?: string;
   time?: string;
   type?: string;
+  calendarLink?: string;
   status?: string;
   priority?: number;
   recurring?: number;
@@ -19,7 +20,7 @@ export interface Thought {
 
 export default ['thought', {
   "title": "Thought schema",
-  "version": 2,
+  "version": 3,
   "description": "A Thought",
   "type": "object",
   "properties": {
@@ -41,6 +42,9 @@ export default ['thought', {
       "type": "string",
     },
     "type": {
+      "type": "string",
+    },
+    "calendarLink": {
       "type": "string",
     },
     "status": {
@@ -77,6 +81,10 @@ export default ['thought', {
     },
     2: (oldThought: RxDocument<Thought>) => {
       oldThought.recurring = 0;
+      return oldThought;
+    },
+    3: (oldThought: RxDocument<Thought>) => {
+      oldThought.calendarLink = '';
       return oldThought;
     },
   },
