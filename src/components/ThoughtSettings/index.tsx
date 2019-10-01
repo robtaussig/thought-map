@@ -34,6 +34,10 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     openModal(<div>Hide Fields</div>, 'Control Field Visibility');
   };
 
+  const handleClickCalendarLink = () => {
+    window.open(thought.calendarLink, '_blank');
+  };
+
   return (
     <div className={classes.root} style={{
       top: display ? 0 : '100%',
@@ -41,7 +45,11 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     }}>
       <div className={classes.settings}>
         <button className={classes.templateButton} onClick={handleClickUseAsTemplate}>Create Template</button>
-        {thought && !thought.calendarLink && <button className={classes.background} onClick={handleClickAddToCalendar}>Add to Calendar</button>}
+        {thought && thought.calendarLink ? (
+          <button className={classes.background} onClick={handleClickCalendarLink}>Open Calendar Link</button>
+        ) : (
+          <button className={classes.background} onClick={handleClickAddToCalendar}>Add to Calendar</button>
+        )}
         <button className={classes.fields} onClick={handleClickHideFields}>Hide Fields</button>
         <div className={classes.recurring}>Recurring</div>
         {display && <CircleButton classes={classes} id={'delete-thought'} onClick={onDelete} label={'Delete Thought'} Icon={Delete}/>}
