@@ -10,6 +10,7 @@ import Select from '../../../General/Select';
 import DateInput from '../../../General/Date';
 import Input from '../../../General/Input';
 import useModal from '../../../../hooks/useModal';
+import useLongPress from '../../../../hooks/useLongPress';
 import FullScreenImage from './PicturesSection/components/FullScreenImage';
 import {
   EditTypes,
@@ -47,6 +48,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   const [openModal, closeModal] = useModal();
   const rootRef = useRef<HTMLDivElement>(null);
   const [inputtedValue, setInputtedValue] = useState<string>(String(value));
+  const handleLongPress = useLongPress(console.log);
 
   const handleToggleEdit = () => {
     if (editting) {
@@ -306,7 +308,12 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   }, [value]);
 
   return (
-    <section ref={rootRef} className={classNames(classes.thoughtSection, className)} onClick={handleClickValue}>
+    <section
+      ref={rootRef}
+      className={classNames(classes.thoughtSection, className)}
+      onClick={handleClickValue}
+      {...handleLongPress}  
+    >
       <button className={classNames(classes.editToggle, {
         editting,
       })} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
