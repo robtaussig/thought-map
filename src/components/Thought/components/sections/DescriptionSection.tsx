@@ -12,9 +12,10 @@ interface DescriptionSectionProps {
   onLongPress: (e: any) => void;
   onDrop: () => void;
   onToggleVisibility: () => void;
+  visible: boolean;
 }
 
-export const DescriptionSection: FC<DescriptionSectionProps> = ({ classes, thought, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility }) => {
+export const DescriptionSection: FC<DescriptionSectionProps> = ({ classes, thought, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
@@ -23,7 +24,7 @@ export const DescriptionSection: FC<DescriptionSectionProps> = ({ classes, thoug
       field={'Description'}
       value={thought.description}
       className={'description'}
-      visible={true}
+      visible={visible}
       sectionState={sectionState}
       onLongPress={onLongPress}
       onDrop={onDrop}
@@ -31,7 +32,6 @@ export const DescriptionSection: FC<DescriptionSectionProps> = ({ classes, thoug
       edit={{
         type: EditTypes.TextArea,
         onEdit,
-        onChangeVisibility: console.log,
       }}
     />
   );

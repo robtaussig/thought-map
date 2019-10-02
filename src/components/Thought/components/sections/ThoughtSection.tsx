@@ -334,7 +334,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         {visible ? (<Visibility/>) : (<VisibilityOff/>)}
       </button>
     );
-  }, [editting, sectionState, quickActionButton, _quickActionButton]);
+  }, [editting, sectionState, quickActionButton, _quickActionButton, visible]);
 
   if (sectionState === SectionState.EditingOtherSection) {
     return (
@@ -346,7 +346,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         <div className={classes.sectionIcon}>
           <Icon/>
         </div>
-        <span className={classes.sectionField} title={'Double-click to edit'}>{field}</span>
+        <span className={classNames(classes.sectionField, 'drop-target')} title={'Double-click to edit'}>{field}</span>
         <button className={classNames(classes.sectionValue, 'drop-target')} onClick={onDrop}>
           Place Above
         </button>
@@ -354,7 +354,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     );
   }
 
-  if (visible === false) return null;
+  if (visible === false && sectionState !== SectionState.EditingSection) return null;
 
   return (
     <section

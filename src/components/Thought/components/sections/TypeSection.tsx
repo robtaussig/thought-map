@@ -13,9 +13,10 @@ interface TypeSectionProps {
   onLongPress: (e: any) => void;
   onDrop: () => void;
   onToggleVisibility: () => void;
+  visible: boolean;
 }
 
-export const TypeSection: FC<TypeSectionProps> = ({ classes, thought, typeOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility }) => {
+export const TypeSection: FC<TypeSectionProps> = ({ classes, thought, typeOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
@@ -24,7 +25,7 @@ export const TypeSection: FC<TypeSectionProps> = ({ classes, thought, typeOption
       field={'Type'}
       value={thought.type}
       className={'type'}
-      visible={true}
+      visible={visible}
       sectionState={sectionState}
       onLongPress={onLongPress}
       onDrop={onDrop}
@@ -33,7 +34,6 @@ export const TypeSection: FC<TypeSectionProps> = ({ classes, thought, typeOption
         type: EditTypes.Select,
         options: typeOptions,
         onEdit,
-        onChangeVisibility: console.log,
       }}
     />
   );

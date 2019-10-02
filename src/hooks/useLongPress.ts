@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-export const useLongPress = (longPressCb: (e: any) => void, timer: number = 700) => {
+export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500) => {
   const pressTimeout = useRef<NodeJS.Timer>(null);
 
   const handlePressStart = (e: any) => {

@@ -14,9 +14,10 @@ interface NotesSectionProps {
   onLongPress: (e: any) => void;
   onDrop: () => void;
   onToggleVisibility: () => void;
+  visible: boolean;
 }
 
-export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, onCreate, onDelete, sectionState, onLongPress, onDrop, onToggleVisibility }) => {
+export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, onCreate, onDelete, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
@@ -26,7 +27,7 @@ export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, on
       value={notes.map(note => note.text)}
       className={'notes'}
       linkifyValues={true}
-      visible={true}
+      visible={visible}
       sectionState={sectionState}
       onLongPress={onLongPress}
       onDrop={onDrop}
@@ -36,7 +37,6 @@ export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, on
         onEdit,
         onCreate: onCreate,
         onDelete: onDelete,
-        onChangeVisibility: console.log,
       }}
     />
   );

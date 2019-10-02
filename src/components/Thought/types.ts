@@ -1,5 +1,3 @@
-
-
 export interface EditedMap {
   [id: string]: string;
 }
@@ -36,7 +34,6 @@ export interface EditProps {
   onEdit?: (...args: any[]) => void;
   onCreate?: (value: string) => void;
   onDelete?: (...args: any[]) => void;
-  onChangeVisibility: (visibility: boolean) => void;
   onClickItem?: (...args: any[]) => void;
   disableQuickAction?: boolean;
 }
@@ -45,4 +42,12 @@ export enum SectionState {
   NotEditingAnySection = -1,
   EditingOtherSection = 0,
   EditingSection = 1,
+}
+
+export interface ComponentMap {
+  [sectionType: string]: JSX.Element;
+}
+
+export interface SectionVisibility {
+  [sectionType: string]: boolean;
 }

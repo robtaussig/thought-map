@@ -14,6 +14,7 @@ import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 import { AppState } from 'reducers';
 import { Picture } from '../../store/rxdb/schemas/picture';
 import { Thought as ThoughtType } from '~store/rxdb/schemas/types';
+import { SectionVisibility } from './types';
 
 export interface PriorityOption {
   value: number;
@@ -41,6 +42,8 @@ export const PRIORITY_OPTIONS: PriorityOption[] = [
   { value: 10, label: 'HIGH' },
 ];
 
+export const DEFAULT_SECTIONS = 'type-status-priority-description-datetime-notes-recurring-tags-connections-pictures';
+
 export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeOptions, tagOptions }) => {
   
   const db = useLoadedDB();
@@ -65,7 +68,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         };
       })
   , [thoughtId, state.connections, state.thoughts]);
-
+  const thoughtSections = thought && thought.sections ? thought.sections : DEFAULT_SECTIONS;
   const statuses = useMemo(() => {    
     if (typeof thoughtId === 'string') {
       return (state.statusesByThought[thoughtId] || [])
@@ -113,6 +116,24 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
     return state.plans.find(({ id}) => thought && id === thought.planId);
   }, [state.plans, thought]);
 
+  const sectionOrder = useMemo(() => {
+    return thoughtSections.split('-').map(section => {
+      return section.replace(/^_/, '');
+    });
+  }, [thoughtSections]);
+
+  const sectionVisibility = useMemo(() => {
+    return thoughtSections.split('-').reduce((visibility, section) => {
+      
+      if (section.startsWith('_')) {
+        visibility[section.replace(/^_/, '')] = false;
+      } else {
+        visibility[section] = true;
+      }
+      return visibility;
+    }, {} as SectionVisibility);
+  }, [thoughtSections]);
+
   return (
     <div className={classes.root}>
       {!thought &&
@@ -132,6 +153,8 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
           pinnedPictures={pinnedPictures}
           connections={relatedConnections}
           plan={plan}
+          sectionOrder={sectionOrder}
+          sectionVisibility={sectionVisibility}
         />
       }
       <ThoughtSettings

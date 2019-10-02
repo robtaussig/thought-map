@@ -16,6 +16,7 @@ interface ConnectionsSectionProps {
   onLongPress: (e: any) => void;
   onDrop: () => void;
   onToggleVisibility: () => void;
+  visible: boolean;
 }
 
 export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
@@ -27,6 +28,7 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
   onLongPress,
   onDrop,
   onToggleVisibility,
+  visible = true,
 }) => {
   const [openModal, closeModal] = useModal();
   const { history } = useApp();
@@ -53,7 +55,7 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
         return `${isParent ? 'to' : 'from'}: ${otherThought.title}${otherThought.status === 'completed' ? ' ✓' : ''}`;
       })}
       className={'connections'}
-      visible={true}
+      visible={visible}
       sectionState={sectionState}
       onLongPress={onLongPress}
       onDrop={onDrop}
@@ -62,7 +64,6 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
         type: null,
         onEdit: handleEdit,
         onCreate: onCreate,
-        onChangeVisibility: console.log,
         onClickItem: handleClickItem,
       }}
     />

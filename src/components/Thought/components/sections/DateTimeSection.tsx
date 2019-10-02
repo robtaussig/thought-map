@@ -12,10 +12,10 @@ interface DateTimeSectionProps {
   onLongPress: (e: any) => void;
   onDrop: () => void;
   onToggleVisibility: () => void;
-  
+  visible: boolean;
 }
 
-export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, thought, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility }) => {
+export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, thought, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
   const dateTimeText = `${thought.date},${thought.time}`;
 
   return (
@@ -25,7 +25,7 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, thought, on
       field={'Date/Time'}
       value={dateTimeText}
       className={'datetime'}
-      visible={true}
+      visible={visible}
       sectionState={sectionState}
       onLongPress={onLongPress}
       onDrop={onDrop}
@@ -33,7 +33,6 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, thought, on
       edit={{
         type: EditTypes.DateTime,
         onEdit,
-        onChangeVisibility: console.log,
       }}
     />
   );

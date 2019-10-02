@@ -1,4 +1,4 @@
-import React, { useMemo, FC, useState } from 'react';
+import React, { useMemo, FC, useState, useRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Close from '@material-ui/icons/Close';
 import { getTime } from './util';
@@ -35,7 +35,8 @@ import ThoughtTitle from './components/sections/ThoughtTitle';
 import PicturesSection from './components/sections/PicturesSection';
 import RecurringSection from './components/sections/RecurringSection';
 import CircleButton from '../General/CircleButton';
-import { SectionState } from './types';
+import { SectionState, ComponentMap, SectionVisibility } from './types';
+import { generateNextSectionsAfterMove, generateNextSectionsAfterToggleVisibility } from './util';
 
 export interface ThoughtInformationProps {
   classes: any;
@@ -52,6 +53,8 @@ export interface ThoughtInformationProps {
   pinnedPictures: Picture[];
   connections: ConnectionSummary[];
   plan: Plan;
+  sectionOrder: string[];
+  sectionVisibility: SectionVisibility;
 }
 
 export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
@@ -69,7 +72,14 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   pinnedPictures,
   connections = [],
   plan,
+  sectionOrder,
+  sectionVisibility,
 }) => {
+
+  const lastSectionOrder = useRef<string[]>(null);
+  lastSectionOrder.current = sectionOrder;
+  const lastSectionVisibility = useRef<SectionVisibility>(null);
+  lastSectionVisibility.current = sectionVisibility;
   const db = useLoadedDB();
   const { history } = useApp();
   const [editingSection, setEditingSection] = useState<string>(null);
@@ -169,14 +179,143 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     setEditingSection(sectionType);
   };
 
-  const handleDrop = (sectionType: string) => () => {
-    console.log(sectionType);
+  const handleDrop = (sectionType: string) => async () => {
+    const nextSections = generateNextSectionsAfterMove(lastSectionOrder, lastSectionVisibility, editingSection, sectionType);
+    await thoughtActions.editThought(db, {
+      ...thought,
+      sections: nextSections
+    });
     setEditingSection(null);
   };
 
-  const handleToggleVisibility = (sectionType: string) => () => {
-    console.log(sectionType);
+  const handleToggleVisibility = (sectionType: string) => async () => {
+    const nextSections = generateNextSectionsAfterToggleVisibility(lastSectionOrder, lastSectionVisibility, sectionType);
+    await thoughtActions.editThought(db, {
+      ...thought,
+      sections: nextSections
+    });
   };
+
+  const components: ComponentMap = {
+    type: (<TypeSection
+      key={'type'}
+      classes={classes}
+      thought={thought}
+      typeOptions={typeOptions}
+      visible={sectionVisibility['type']}
+      onEdit={handleEditThought('type')}
+      sectionState={deriveSectionState('type')}
+      onLongPress={handleLongPress('type')}
+      onDrop={handleDrop('type')}
+      onToggleVisibility={handleToggleVisibility('type')}
+    />),
+    status: (<StatusSection
+      key={'status'}
+      classes={classes}
+      thought={thought}
+      statusOptions={statusOptions}
+      onEdit={handleEditStatus}
+      visible={sectionVisibility['status']}
+      sectionState={deriveSectionState('status')}
+      onLongPress={handleLongPress('status')}
+      onDrop={handleDrop('status')}
+      onToggleVisibility={handleToggleVisibility('status')}
+    />),
+    priority: (<PrioritySection
+      key={'priority'}
+      classes={classes}
+      thought={thought}
+      visible={sectionVisibility['priority']}
+      priorityOptions={priorityOptions}
+      onEdit={handleEditThought('priority')}
+      sectionState={deriveSectionState('priority')}
+      onLongPress={handleLongPress('priority')}
+      onDrop={handleDrop('priority')}
+      onToggleVisibility={handleToggleVisibility('priority')}
+    />),
+    description: (<DescriptionSection
+      key={'description'}
+      classes={classes}
+      thought={thought}
+      visible={sectionVisibility['description']}
+      onEdit={handleEditThought('description')}
+      sectionState={deriveSectionState('description')}
+      onLongPress={handleLongPress('description')}
+      onDrop={handleDrop('description')}
+      onToggleVisibility={handleToggleVisibility('description')}
+    />),
+    datetime: (<DateTimeSection
+      key={'datetime'}
+      classes={classes}
+      thought={thought}
+      visible={sectionVisibility['datetime']}
+      onEdit={handleEditDateTime}
+      sectionState={deriveSectionState('datetime')}
+      onLongPress={handleLongPress('datetime')}
+      onDrop={handleDrop('datetime')}
+      onToggleVisibility={handleToggleVisibility('datetime')}
+    />),
+    notes: (<NotesSection
+      key={'notes'}
+      classes={classes}
+      notes={notes}
+      visible={sectionVisibility['notes']}
+      onEdit={handleEditNote}
+      onCreate={handleCreateNote}
+      onDelete={handleDeleteNote}
+      sectionState={deriveSectionState('notes')}
+      onLongPress={handleLongPress('notes')}
+      onDrop={handleDrop('notes')}
+      onToggleVisibility={handleToggleVisibility('notes')}
+    />),
+    recurring: (<RecurringSection
+      key={'recurring'}
+      classes={classes}
+      thought={thought}
+      visible={sectionVisibility['recurring']}
+      onEdit={handleEditThought('recurring')}
+      sectionState={deriveSectionState('recurring')}
+      onLongPress={handleLongPress('recurring')}
+      onDrop={handleDrop('recurring')}
+      onToggleVisibility={handleToggleVisibility('recurring')}
+    />),
+    tags: (<TagsSection
+      key={'tags'}
+      classes={classes}
+      tags={tags}
+      visible={sectionVisibility['tags']}
+      onDelete={handleDeleteTag}
+      onCreate={handleCreateTag}
+      tagOptions={remainingTagOptions}
+      sectionState={deriveSectionState('tags')}
+      onLongPress={handleLongPress('tags')}
+      onDrop={handleDrop('tags')}
+      onToggleVisibility={handleToggleVisibility('tags')}
+    />),
+    connections: (<ConnectionsSection
+      key={'connections'}
+      classes={classes}
+      thoughtId={thought.id}
+      visible={sectionVisibility['connections']}
+      onCreate={handleCreateConnection}
+      connections={connections}
+      sectionState={deriveSectionState('connections')}
+      onLongPress={handleLongPress('connections')}
+      onDrop={handleDrop('connections')}
+      onToggleVisibility={handleToggleVisibility('connections')}
+    />),
+    pictures: (<PicturesSection
+      key={'pictures'}
+      classes={classes}
+      thought={thought}
+      visible={sectionVisibility['pictures']}
+      pinnedPictures={pinnedPictures}
+      sectionState={deriveSectionState('pictures')}
+      onLongPress={handleLongPress('pictures')}
+      onDrop={handleDrop('pictures')}
+      onToggleVisibility={handleToggleVisibility('pictures')}
+    />),
+  }
 
   return (
     <div className={classes.root}>
@@ -190,104 +329,9 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       <span className={classes.updatedAt}>Updated {lastUpdatedText}</span>
       {plan && <span className={classes.planName}>{plan.name}</span>}
       <div className={classes.thoughtSections}>
-        <TypeSection
-          classes={classes}
-          thought={thought}
-          typeOptions={typeOptions}
-          onEdit={handleEditThought('type')}
-          sectionState={deriveSectionState('type')}
-          onLongPress={handleLongPress('type')}
-          onDrop={handleDrop('type')}
-          onToggleVisibility={handleToggleVisibility('type')}
-        />
-        <StatusSection
-          classes={classes}
-          thought={thought}
-          statusOptions={statusOptions}
-          onEdit={handleEditStatus}
-          sectionState={deriveSectionState('status')}
-          onLongPress={handleLongPress('status')}
-          onDrop={handleDrop('status')}
-          onToggleVisibility={handleToggleVisibility('status')}
-        />
-        <PrioritySection
-          classes={classes}
-          thought={thought}
-          priorityOptions={priorityOptions}
-          onEdit={handleEditThought('priority')}
-          sectionState={deriveSectionState('priority')}
-          onLongPress={handleLongPress('priority')}
-          onDrop={handleDrop('priority')}
-          onToggleVisibility={handleToggleVisibility('priority')}
-        />
-        <DescriptionSection
-          classes={classes}
-          thought={thought}
-          onEdit={handleEditThought('description')}
-          sectionState={deriveSectionState('description')}
-          onLongPress={handleLongPress('description')}
-          onDrop={handleDrop('description')}
-          onToggleVisibility={handleToggleVisibility('description')}
-        />
-        <DateTimeSection
-          classes={classes}
-          thought={thought}
-          onEdit={handleEditDateTime}
-          sectionState={deriveSectionState('datetime')}
-          onLongPress={handleLongPress('datetime')}
-          onDrop={handleDrop('datetime')}
-          onToggleVisibility={handleToggleVisibility('datetime')}
-        />
-        <NotesSection
-          classes={classes}
-          notes={notes}
-          onEdit={handleEditNote}
-          onCreate={handleCreateNote}
-          onDelete={handleDeleteNote}
-          sectionState={deriveSectionState('notes')}
-          onLongPress={handleLongPress('notes')}
-          onDrop={handleDrop('notes')}
-          onToggleVisibility={handleToggleVisibility('notes')}
-        />
-        <RecurringSection
-          classes={classes}
-          thought={thought}
-          onEdit={handleEditThought('recurring')}
-          sectionState={deriveSectionState('recurring')}
-          onLongPress={handleLongPress('recurring')}
-          onDrop={handleDrop('recurring')}
-          onToggleVisibility={handleToggleVisibility('recurring')}
-        />
-        <TagsSection
-          classes={classes}
-          tags={tags}
-          onDelete={handleDeleteTag}
-          onCreate={handleCreateTag}
-          tagOptions={remainingTagOptions}
-          sectionState={deriveSectionState('tags')}
-          onLongPress={handleLongPress('tags')}
-          onDrop={handleDrop('tags')}
-          onToggleVisibility={handleToggleVisibility('tags')}
-        />
-        <ConnectionsSection 
-          classes={classes}
-          thoughtId={thought.id}
-          onCreate={handleCreateConnection}
-          connections={connections}
-          sectionState={deriveSectionState('connections')}
-          onLongPress={handleLongPress('connections')}
-          onDrop={handleDrop('connections')}
-          onToggleVisibility={handleToggleVisibility('connections')}
-        />
-        <PicturesSection
-          classes={classes}
-          thought={thought}
-          pinnedPictures={pinnedPictures}
-          sectionState={deriveSectionState('pictures')}
-          onLongPress={handleLongPress('pictures')}
-          onDrop={handleDrop('pictures')}
-          onToggleVisibility={handleToggleVisibility('pictures')}
-        />
+        {sectionOrder.map(section => {
+          return components[section];
+        })}  
       </div>
     </div>
   )

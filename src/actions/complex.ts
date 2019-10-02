@@ -29,7 +29,7 @@ export const createWholeThought = async (db: RxDatabase, {
   tags,
 }: WholeThought, planId: string | boolean) => {
   const thought: Thought = {
-    title, type, date, time, description, priority: 5,
+    title, type, date, time, description, priority: 5, sections: '',
   };
   if (typeof planId === 'string') thought.planId = planId;
 

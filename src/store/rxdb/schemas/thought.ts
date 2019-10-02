@@ -9,6 +9,7 @@ export interface Thought {
   type?: string;
   calendarLink?: string;
   status?: string;
+  sections: string;
   priority?: number;
   recurring?: number;
   description?: string;
@@ -20,7 +21,7 @@ export interface Thought {
 
 export default ['thought', {
   "title": "Thought schema",
-  "version": 3,
+  "version": 4,
   "description": "A Thought",
   "type": "object",
   "properties": {
@@ -39,6 +40,9 @@ export default ['thought', {
       "type": "string",
     },
     "time": {
+      "type": "string",
+    },
+    "sections": {
       "type": "string",
     },
     "type": {
@@ -85,6 +89,10 @@ export default ['thought', {
     },
     3: (oldThought: RxDocument<Thought>) => {
       oldThought.calendarLink = '';
+      return oldThought;
+    },
+    4: (oldThought: RxDocument<Thought>) => {
+      oldThought.sections = '';
       return oldThought;
     },
   },

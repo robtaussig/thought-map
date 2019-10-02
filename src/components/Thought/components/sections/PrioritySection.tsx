@@ -15,9 +15,10 @@ interface PrioritySectionProps {
   onLongPress: (e: any) => void;
   onDrop: () => void;
   onToggleVisibility: () => void;
+  visible: boolean;
 }
 
-export const PrioritySection: FC<PrioritySectionProps> = ({ classes, thought, priorityOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility }) => {
+export const PrioritySection: FC<PrioritySectionProps> = ({ classes, thought, priorityOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
@@ -26,7 +27,7 @@ export const PrioritySection: FC<PrioritySectionProps> = ({ classes, thought, pr
       field={'Priority'}
       value={priorityOptions.find(({ value }) => value === thought.priority).label}
       className={'priority'}
-      visible={true}
+      visible={visible}
       quickActionButton={thought.priority !== 10 && (
         <button className={classes.highPriorityButton} onClick={() => onEdit(10)}><PriorityHighRounded/></button>
       )}
@@ -38,7 +39,6 @@ export const PrioritySection: FC<PrioritySectionProps> = ({ classes, thought, pr
         type: EditTypes.Select,
         options: priorityOptions.map(({ label }) => label),
         onEdit: value => onEdit(priorityOptions.find(({ label }) => label === value).value),
-        onChangeVisibility: console.log,
       }}
     />
   );

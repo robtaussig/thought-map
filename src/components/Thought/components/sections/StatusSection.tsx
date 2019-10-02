@@ -16,9 +16,10 @@ interface StatusSectionProps {
   onLongPress: (e: any) => void;
   onDrop: () => void;
   onToggleVisibility: () => void;
+  visible: boolean;
 }
 
-export const StatusSection: FC<StatusSectionProps> = ({ classes, thought, statusOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility }) => {
+export const StatusSection: FC<StatusSectionProps> = ({ classes, thought, statusOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
@@ -27,7 +28,7 @@ export const StatusSection: FC<StatusSectionProps> = ({ classes, thought, status
       field={'Status'}
       value={thought.status}
       className={'status'}
-      visible={true}
+      visible={visible}
       sectionState={sectionState}
       onLongPress={onLongPress}
       onDrop={onDrop}
@@ -45,7 +46,6 @@ export const StatusSection: FC<StatusSectionProps> = ({ classes, thought, status
         type: EditTypes.Select,
         options: statusOptions,
         onEdit,
-        onChangeVisibility: console.log,
       }}
     />
   );

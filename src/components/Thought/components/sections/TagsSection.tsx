@@ -14,9 +14,10 @@ interface TagsSectionProps {
   onLongPress: (e: any) => void;
   onDrop: () => void;
   onToggleVisibility: () => void;
+  visible: boolean;
 }
 
-export const TagsSection: FC<TagsSectionProps> = ({ classes, tags, tagOptions, onDelete, onCreate, sectionState, onLongPress, onDrop, onToggleVisibility }) => {
+export const TagsSection: FC<TagsSectionProps> = ({ classes, tags, tagOptions, onDelete, onCreate, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
@@ -25,7 +26,7 @@ export const TagsSection: FC<TagsSectionProps> = ({ classes, tags, tagOptions, o
       field={'Tags'}
       value={tags.map(({ text }) => text)}
       className={'tags'}
-      visible={true}
+      visible={visible}
       sectionState={sectionState}
       onLongPress={onLongPress}
       onDrop={onDrop}
@@ -35,7 +36,6 @@ export const TagsSection: FC<TagsSectionProps> = ({ classes, tags, tagOptions, o
         options: tagOptions,
         onCreate,
         onDelete,
-        onChangeVisibility: console.log,
       }}
     />
   );

@@ -161,6 +161,9 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   sectionField: {
     gridArea: 'section-field',
     color: theme.palette.gray[400],
+    '&.drop-target': {
+      color: theme.palette.gray[600],
+    },
   },
   sectionQuickActionButton: {
     gridArea: 'quick-action',
