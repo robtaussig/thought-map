@@ -8,7 +8,7 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500)
   const handlePressStart = (e: any) => {
     pressTimeout.current = setTimeout(() => {
       pressTimeout.current = null;
-      if ('vibrate' in navigator) navigator.vibrate(200);
+      navigator.vibrate(100);
       longPressCb(e);
     }, timer);
   };

@@ -47,7 +47,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   visible,
   quickActionButton,
   linkifyValues,
-  onLongPress = () => {},
+  onLongPress = (cb: () => void) => {},
   sectionState,
   onDrop,
   onToggleVisibility,
@@ -55,11 +55,20 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   const [editting, setEditting] = useState<boolean>(false);
   const [fullScreenImage, setFullScreenImage] = useState<string>(null);
   const [edittedItems, setEdittedItems] = useState<string[]>([]);
+  const [moved, setMoved] = useState<boolean>(false);
+  const movedTimeout = useRef<NodeJS.Timer>(null);
   const lastClick = useRef<number>(0);
   const [openModal, closeModal] = useModal();
   const rootRef = useRef<HTMLDivElement>(null);
   const [inputtedValue, setInputtedValue] = useState<string>(String(value));
-  const handleLongPress = useLongPress(onLongPress);
+  const handleLongPress = useLongPress(() => {
+    onLongPress(() => {
+      setMoved(true);
+      movedTimeout.current = setTimeout(() => {
+        setMoved(false);
+      }, 400);
+    });
+  });
 
   const handleToggleEdit = () => {
     if (editting) {
@@ -318,6 +327,12 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     }
   }, [value]);
 
+  useEffect(() => {
+    return () => {
+      if (movedTimeout.current) clearTimeout(movedTimeout.current);
+    }
+  }, []);
+
   const _editIcons = useMemo(() => {
     if (sectionState === SectionState.NotEditingAnySection) {
       return (
@@ -359,7 +374,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   return (
     <section
       ref={rootRef}
-      className={classNames(classes.thoughtSection, className)}
+      className={classNames(classes.thoughtSection, className, { moved })}
       onClick={handleClickValue}
       {...handleLongPress}  
     >

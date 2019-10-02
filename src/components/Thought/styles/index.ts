@@ -124,6 +124,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridColumnGap: '10px',
     backgroundColor: theme.palette.gray[200],
     borderRadius: '10px',
+    transition: 'background-color 0.5s ease-out',
     color: 'black',
     margin: '10px 0',
     '&:last-child': {
@@ -131,6 +132,9 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     },
     '&.drop-target': {
       backgroundColor: theme.palette.gray[400],
+    },
+    '&.moved': {
+      backgroundColor: theme.palette.primary[200],
     },
   },
   editToggle: {

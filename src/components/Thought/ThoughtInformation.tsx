@@ -77,6 +77,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 }) => {
 
   const lastSectionOrder = useRef<string[]>(null);
+  const handleMoveCB = useRef<() => void>(null);
   lastSectionOrder.current = sectionOrder;
   const lastSectionVisibility = useRef<SectionVisibility>(null);
   lastSectionVisibility.current = sectionVisibility;
@@ -175,8 +176,9 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     return SectionState.NotEditingAnySection;
   };
 
-  const handleLongPress = (sectionType: string) => () => {
+  const handleLongPress = (sectionType: string) => (onMoveCB: () => void) => {
     setEditingSection(sectionType);
+    handleMoveCB.current = onMoveCB;
   };
 
   const handleDrop = (sectionType: string) => async () => {
@@ -186,6 +188,10 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       sections: nextSections
     });
     setEditingSection(null);
+    if (handleMoveCB.current) {
+      handleMoveCB.current();
+      handleMoveCB.current = null;
+    }
   };
 
   const handleToggleVisibility = (sectionType: string) => async () => {
@@ -329,7 +335,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       <span className={classes.updatedAt}>Updated {lastUpdatedText}</span>
       {plan && <span className={classes.planName}>{plan.name}</span>}
       <div className={classes.thoughtSections}>
-        {sectionOrder.map(section => {
+        {sectionOrder.map((section, idx) => {
           return components[section];
         })}  
       </div>
