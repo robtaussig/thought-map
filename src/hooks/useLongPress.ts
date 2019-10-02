@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
@@ -21,6 +21,8 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500)
     return {
       onTouchStart: handlePressStart,
       onTouchEnd: handlePressEnd,
+      onTouchMove: handlePressEnd,
+      onContextMenu: (e: any) => e.preventDefault(),
     };
   } else {
     return {

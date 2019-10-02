@@ -376,7 +376,8 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       ref={rootRef}
       className={classNames(classes.thoughtSection, className, { moved })}
       onClick={handleClickValue}
-      {...handleLongPress}  
+      {...handleLongPress}
+      style={{ userSelect: 'none' }}
     >
       {_editIcons}
       <div className={classes.sectionIcon}>
