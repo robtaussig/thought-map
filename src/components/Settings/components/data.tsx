@@ -176,7 +176,7 @@ export const jsonDump = async (db: RxDatabase) => {
   return linkElement.click();
 };
 
-export const Data: FC<DataProps> = ({ classes, state }) => {
+export const Data: FC<DataProps> = ({ classes, state, setLoading }) => {
   const importJSONRef = useRef<HTMLInputElement>(null);
   const [side, setSide] = useState<Side>(Side.TOP);
   const { dispatch, history } = useApp();
@@ -217,6 +217,7 @@ export const Data: FC<DataProps> = ({ classes, state }) => {
 
         const importJSON = async () => {          
           (window as any).blockDBSubscriptions = true;
+          setLoading();
           await db.importDump(json);
           location.href = '/settings';
         };
@@ -232,14 +233,22 @@ export const Data: FC<DataProps> = ({ classes, state }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (readyToImport) {
+      setSide(Side.MIDDLE);
+    }
+  }, []);
+
   const handleClickDeleteDatabase = () => {
     const onConfirm = async () => {
+      setLoading();
       await handleClickExportDataJSON();
       await db.remove();
       location.href = '/settings?import=true';
     };
 
     const onReject = async () => {
+      setLoading();
       await db.remove();
       location.href = '/settings?import=true';
     };

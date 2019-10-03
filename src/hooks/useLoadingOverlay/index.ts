@@ -73,4 +73,5 @@ const loadingOverlayInlineStyle: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  zIndex: 999999999,
 };

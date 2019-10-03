@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import Home from '@material-ui/icons/Home';
 import CircleButton from '../../General/CircleButton';
@@ -9,6 +9,7 @@ import Data from './data';
 import { AppState } from '../../../reducers';
 import useApp from '../../../hooks/useApp';
 import { CACHE } from '../../../public/sw';
+import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 
 const LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY = 'updateCheckCount';
 const LOCAL_STORAGE_LAST_VERSION_KEY = 'lastVersion';
@@ -58,6 +59,8 @@ const styles = (theme: any): StyleRules => ({
 
 export const AppSettings: FC<AppSettingsProps> = ({ classes, state, setLastNotification }) => {
   const { history } = useApp();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
   const handleClickReturnHome = () => {
     const nextUrl = location.pathname.replace(/settings.*/, '');
     history.push(nextUrl);
@@ -84,10 +87,10 @@ export const AppSettings: FC<AppSettingsProps> = ({ classes, state, setLastNotif
   }, []);
 
   return (
-    <div className={classes.root}>
+    <div ref={rootRef} className={classes.root}>
       <ManagePhotos pictures={state.pictures}/>
       <AppConfiguration settings={state.settings}/>
-      <Data state={state}/>
+      <Data state={state} setLoading={setLoading}/>
       <CustomObjects settings={state.settings}/>
       <button className={classes.updateButton} onClick={handleCheckUpdates}>Check for Update (Current: {(window as any).APP_VERSION})</button>
       <CircleButton

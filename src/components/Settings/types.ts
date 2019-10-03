@@ -2,7 +2,8 @@ import { AppState } from "../../reducers";
 
 export interface DataProps {
   classes: any;
-  state: AppState
+  state: AppState;
+  setLoading: () => void;
 }
 
 export enum Side {
