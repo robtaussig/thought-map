@@ -13,6 +13,7 @@ import Close from '@material-ui/icons/Close';
 import { Searchable } from '../ThoughtSearch';
 import { useNestedXReducer } from '../../../hooks/useXReducer';
 import useApp from '../../../hooks/useApp';
+import useLongPress from '../../../hooks/useLongPress';
 import { AppState, SortFilterField } from '~reducers';
 
 interface ContentProps {
@@ -28,7 +29,12 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   const rootRef = useRef<HTMLDivElement>(null);
   const { dispatch } = useApp();
   const lastScrollPos = useRef<number>(0);
-  const [scrollingUp, setScrollingUp] = useState<boolean>(true);
+  const setSearchFocus = useRef<(shouldFocus: boolean) => void>(() => {});
+  const [showFilters, setShowFilters] = useState<boolean>(true);
+  const handleLongPress = useLongPress(() => {
+    setShowFilters(false);
+    setSearchFocus.current(true);
+  });
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
   const searchTree = useRef<Searchable>(new Searchable());
@@ -78,7 +84,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
 
   const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
     const scrollTop = e.target.scrollTop;
-    setScrollingUp(scrollTop < lastScrollPos.current);
+    setShowFilters(scrollTop < lastScrollPos.current);
     lastScrollPos.current = scrollTop;
   };
 
@@ -96,11 +102,11 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
     setMatchingThoughts(searchTerm === '' ? null : matches.map(({ id}) => id));
   }, [searchTerm]);
 
-  const isSearching = scrollingUp === false || searchTerm !== '';
+  const isSearching = showFilters === false || searchTerm !== '';
 
   return (
     <Fragment>
-      <div className={classes.flippableWrapper}>
+      <div className={classes.flippableWrapper} {...handleLongPress}>
         <div className={classNames(classes.sortByButtons, 'flippable', isSearching ? 'back' : 'front')}>
           <div className={classes.sortByNames}>
             <button className={classNames(classes.sortButton, {
@@ -132,7 +138,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           </div>
         </div>
         <form className={classNames(classes.searchWrapper, 'flippable', isSearching ? 'front' : 'back')} onSubmit={handleSubmitSearch}>
-          <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'}/>
+          <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'} setFocus={setSearchFocus => setSearchFocus.current = setSearchFocus}/>
           {searchTerm === '' ?
             (<button className={classes.searchButton}><Search/></button>) :
             (<button className={classes.searchButton} onClick={() => setSearchTerm('')}><Close/></button>)}
