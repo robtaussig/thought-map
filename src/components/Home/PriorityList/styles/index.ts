@@ -25,7 +25,7 @@ export const styles = (theme: any): StyleRules => ({
   },
   priorityList: {
     display: 'grid',
-    gridTemplateColumns: '[title] 1fr [date] 80px [status] 80px',
+    gridTemplateColumns: '[title] 1fr [date] 80px',
     gridColumnGap: '5px',
     gridRowGap: '15px',
   },

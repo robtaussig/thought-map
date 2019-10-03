@@ -28,9 +28,6 @@ export const PriorityThought: FC<PriorityThoughtProps> = ({ classes, thought, on
       <span className={classes.thoughtDate}>
         {thought.date}
       </span>
-      <span className={classes.thoughtStatus}>
-        {thought.status}
-      </span>
     </React.Fragment>
   );
 };
