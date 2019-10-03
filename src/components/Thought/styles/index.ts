@@ -251,27 +251,27 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       gridArea: 'input',
       '& input': {
         width: '100%',
+        fontSize: 20,
       },
     },
   },
   submitQuickAddButton: {
     gridArea: 'submit',
-    color: theme.palette.primary[500],
-    backgroundColor: 'black',
+    color: theme.palette.secondary[700],
     cursor: 'pointer',
     fontWeight: 600,
-    border: '1px solid black',
+    border: `1px solid ${theme.palette.secondary[700]}`,
     padding: '2px 5px',
     borderRadius: '4px',
     '&:disabled': {
-      color: 'white',
+      color: theme.palette.gray[400],
       backgroundColor: 'transparent',
-      border: '1px solid white',
+      border: `1px solid ${theme.palette.gray[400]}`,
     },
   },
   cancelQuickAddButton: {
     gridArea: 'cancel',
-    color: 'white',
+    color: theme.palette.secondary[700],
     padding: '2px 5px',
   },
   editableItem: {

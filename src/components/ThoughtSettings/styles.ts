@@ -60,9 +60,9 @@ export const styles = (theme: any): StyleRules => ({
   submitButton: {
     gridArea: 'button',
     marginLeft: 'auto',
-    border: '1px solid white',
+    border: `1px solid ${theme.palette.secondary[700]}`,
     padding: '3px 10px',
-    color: 'white',
+    color: theme.palette.secondary[700],
     width: 'unset',
   },
   color: {

@@ -93,6 +93,9 @@ const styles = (theme: any): StyleRules => ({
   tooltip: {
     justifyContent: 'center',
     overflow: 'auto',
+    '& > svg': {
+      color: theme.palette.secondary[700],
+    },
   },
   actionButtons: {
     display: 'flex',
@@ -100,7 +103,8 @@ const styles = (theme: any): StyleRules => ({
     marginTop: 30,
     '& > button': {
       backgroundColor: 'white',
-      color: 'dodgerblue',
+      color: theme.palette.secondary[700],
+      border: `1px solid ${theme.palette.secondary[700]}`,
       padding: '3px 15px',
       borderRadius: '5px',
     }

@@ -8,18 +8,19 @@ export const styles = (theme: any): StyleRules => ({
     overflow: 'auto',
     top: '50%',
     transform: 'translateY(-50%)',
-    backgroundColor: '#321587',
+    color: theme.palette.secondary[700],
     padding: 30,
-    color: theme.palette.gray[200],
+    backgroundColor: theme.palette.gray[200],
+    borderRadius: '10px',
+    '&:focus': {
+      outline: 'none',
+    },
   },
   closeButton: {
     position: 'absolute',
     top: 0,
     right: 0,
     margin: 5,
-    color: '#ECECEC',
-  },
-  '& input': {
-    fontSize: 20,
+    color: theme.palette.secondary[700],
   },
 });

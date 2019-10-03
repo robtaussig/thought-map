@@ -22,11 +22,12 @@ const styles = (theme: any): StyleRules => ({
   },
   form: {
     display: 'flex',
+    marginBottom: 20,
     '& button': {
       fontWeight: 600,
       cursor: 'pointer',
       marginLeft: 30,
-      color: 'white',
+      color: theme.palette.secondary[700],
     },
   },
   inputLabel: {

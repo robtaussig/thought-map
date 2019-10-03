@@ -10,10 +10,9 @@ export const styles = (theme: any): StyleRules => ({
     left: 0,
     right: 0,
     width: '100%',
-    color: 'white',
+    color: theme.palette.secondary[700],
     zIndex: 1,
     borderTop: '1px solid white',
-    backgroundColor: 'dodgerblue',
     fontWeight: 600,
     cursor: 'pointer',
   },
@@ -22,7 +21,7 @@ export const styles = (theme: any): StyleRules => ({
     fontSize: 24,
     paddingRight: 15,
     marginRight: 15,
-    color: theme.palette.gray[200],
+    color: theme.palette.secondary[700],
   },
   priorityList: {
     display: 'grid',
@@ -31,7 +30,7 @@ export const styles = (theme: any): StyleRules => ({
   },
   thoughtTitle: {
     '& > button': {
-      color: theme.palette.gray[200],
+      color: theme.palette.secondary[700],
       fontWeight: 600,
     },
     '&.highPriority': {

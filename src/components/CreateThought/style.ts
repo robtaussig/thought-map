@@ -44,9 +44,9 @@ export const styles = (theme: any): StyleRules => ({
     gridArea: 'submit',
     cursor: 'pointer',
     fontWeight: 600,
-    color: 'white',
+    color: theme.palette.secondary[700],
     marginTop: 20,
-    border: '1px solid white',
+    border: `1px solid ${theme.palette.secondary[700]}`,
     padding: '5px 12px',
     borderRadius: '5px',
     '&:disabled': {

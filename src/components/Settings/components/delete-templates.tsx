@@ -24,7 +24,7 @@ const styles = (theme: any): StyleRules => ({
   },
   templateText: {
     fontWeight: 600,
-    color: 'white',
+    color: theme.palette.secondary[700],
   },
   deleteTemplate: {
     color: theme.palette.red[500],
