@@ -17,34 +17,27 @@ export const styles = (theme: any): StyleRules => ({
     fontWeight: 600,
     cursor: 'pointer',
   },
-  headerContainer: {
-    marginBottom: 20,
-    display: 'flex',
-  },
   header: {
+    marginBottom: 20,
     fontSize: 24,
-    borderRight: '1px solid black',
     paddingRight: 15,
     marginRight: 15,
+    color: theme.palette.gray[200],
   },
   priorityList: {
     display: 'grid',
     gridTemplateColumns: '[title] 1fr [date] 80px [status] 80px',
     gridGap: '5px',
   },
-  createThoughtButton: {
-    borderRadius: '3px',
-    border: '1px solid white',
-    padding: '3px 8px',
-    color: 'white',
-    userSelect: 'none',
-  },
   thoughtTitle: {
+    '& > button': {
+      color: theme.palette.gray[200],
+      fontWeight: 600,
+    },
     '&.highPriority': {
       position: 'relative',
-      fontWeight: 600,
       '& > button': {
-        color: '#b12121!important',
+        color: theme.palette.red[400],
       }
     }
   },

@@ -49,8 +49,8 @@ export const Template: FC<TemplateProps> = ({ classes, onClose, thought, notes, 
 
   return (
     <div className={classes.templateSettings}>
-      <Header classes={classes} value={'Create Template'}/>
       <form className={classes.form} onSubmit={handleSubmit}>
+        <Header classes={classes} value={'Create Template'}/>
         <Input
           classes={classes}
           value={inputValue}

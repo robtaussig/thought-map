@@ -29,27 +29,36 @@ export const styles = (theme: any): StyleRules => ({
 
   },
   templateSettings: {
-    display: 'flex',
-    flexDirection: 'column',
+    
   },
   header: {
     fontSize: 20,
-    marginBottom: 20,
+    gridArea: 'header',
   },
   form: {
-    display: 'flex',
+    display: 'grid',
+    gridTemplateAreas: `"header header"
+                        "input input"
+                        ". button"`,
+    gridTemplateRows: 'max-content max-content max-content',
+    gridTemplateColumns: '1fr max-content',
+    gridRowGap: '30px',
     '& *': {
       display: 'flex',
       width: '100%',
     },
     '& span': {
       display: 'none',
-    }
-  },
-  input: {
-
+    },
+    '& #template-name': {
+      gridArea: 'input',
+      '& input': {
+        fontSize: 20,
+      },
+    },
   },
   submitButton: {
+    gridArea: 'button',
     marginLeft: 'auto',
     border: '1px solid white',
     padding: '3px 10px',

@@ -1,60 +1,28 @@
-import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, Component, FC } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, FC } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Close from '@material-ui/icons/Close';
-import { CSSProperties } from '@material-ui/styles';
-
-interface Options {
-  style?: CSSProperties;
-  className?: string;
-  afterClose?: () => void;
-}
-
-export type OpenModal = (component: any, label?: string, options?: Options) => void;
-export type CloseModal = () => void;
-export type ExpandModal = (expand: boolean) => void;
-
-interface ModalContextValue {
-  openModal: OpenModal;
-  closeModal: CloseModal;
-  expand: ExpandModal;
-  dynamicState?: any;
-}
-
-interface ModalState {
-  component: Component;
-  label: string;
-  options: Options;
-  expanded: boolean;
-}
+import { withStyles, CSSProperties } from '@material-ui/styles';
+import classNames from 'classnames';
+import {
+  OpenModal,
+  CloseModal,
+  ExpandModal,
+  ModalContextValue,
+  ModalState,
+} from './types';
+import { styles } from './styles';
 
 interface ModalProps {
   children: any;
   dynamicState?: any;
+  classes: any;
 }
 
 const ModalContext = createContext<ModalContextValue>(null);
 
 const INITIAL_STATE: ModalState[] = [{ component: null, label: 'Modal', options: {}, expanded: false }];
-const MODAL_WRAPPER_STYLE: CSSProperties = {
-  position: 'absolute',
-  display: 'flex',
-  flexDirection: 'column',
-  overflow: 'auto',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  backgroundColor: '#539aff',
-  padding: 30,
-};
 
-const CLOSE_BUTTON_STYLE: CSSProperties = {
-  position: 'absolute',
-  top: 0,
-  right: 0,
-  margin: 5,
-  color: 'white',
-};
-
-export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) => {
+export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children, dynamicState = {} }) => {
   const [modals, setModals] = useState<ModalState[]>(INITIAL_STATE);
   const modal = useMemo(() => modals[modals.length - 1], [modals]);
   const handleClose = useCallback(() => {
@@ -75,8 +43,7 @@ export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) =
     } : modal))
   }, []);
   const contextValue = useMemo(() => ({ openModal: handleOpen, closeModal: handleClose, expand: handleExpand, dynamicState }), [dynamicState]);
-  const modalStyle = {
-    ...MODAL_WRAPPER_STYLE,
+  const modalStyle = {    
     left: modal.expanded ? 0 : '10%',
     right: modal.expanded ? 0 : '10%',
     height: modal.expanded ? '100%' : undefined,
@@ -93,8 +60,8 @@ export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) =
           open={modal.component !== null}
           onClose={handleClose}
         >
-          <div className={modal.options.className} style={modalStyle}>
-            <button onClick={handleClose} style={CLOSE_BUTTON_STYLE}><Close/></button>
+          <div className={classNames(classes.root, modal.options.className)} style={modalStyle}>
+            <button className={classes.closeButton} onClick={handleClose}><Close/></button>
             {modal.component}
           </div>
         </Modal>
@@ -102,6 +69,8 @@ export const ModalProvider: FC<ModalProps> = ({ children, dynamicState = {} }) =
     </ModalContext.Provider>
   );
 };
+
+export const ModalProvider = withStyles(styles)(ModalProviderWithoutStyles);
 
 export const useModal = (): [OpenModal, CloseModal, ExpandModal] => {
   const { openModal, closeModal, expand } = useContext(ModalContext);

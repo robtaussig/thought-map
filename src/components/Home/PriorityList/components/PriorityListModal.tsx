@@ -21,17 +21,9 @@ export const PriorityListModal: FC<PriorityListModalProps> = ({ classes, thought
       .map(({ thought }) => thought);
   }, [thoughts]);
 
-  const onClickCreateThought = () => {
-    history.push('/thought/new');
-    onMinimize();
-  };
-
   return (
     <div className={classes.root}>
-      <div className={classes.headerContainer}>
-        <h1 className={classes.header}>Priorities</h1>
-        <button className={classes.createThoughtButton} onClick={onClickCreateThought}>Create Thought</button>
-      </div>
+      <h1 className={classes.header}>Priorities</h1>
       {priorityThoughts.length > 0 ?
         (<PriorityList classes={classes} thoughts={priorityThoughts} onMinimize={onMinimize}/>) :
         (<span>

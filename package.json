@@ -72,7 +72,7 @@
     "react-test-renderer": "^16.8.6",
     "sass": "^1.22.9",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3"
+    "typescript": "^3.7.0-beta"
   },
   "scripts": {
     "cleanup": "rm -rf .cache dist",

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, MouseEvent, FC, FormEventHandler, Fragment } from 'react';
 import useApp from '../../hooks/useApp';
-import { ExpandModal, CloseModal } from '../../hooks/useModal';
+import { ExpandModal, CloseModal } from '../../hooks/useModal/types';
 import { useLoadedDB } from '../../hooks/useDB';
 import useXReducer, { useNestedXReducer } from '../../hooks/useXReducer';
 import { withStyles } from '@material-ui/core/styles';
-import { styles } from './styles';
+import { styles } from './style';
 import Inputs from './Inputs';
 import { createWholeThought } from '../../actions/complex';
 import { homeUrl, getIdFromUrl } from '../../lib/util';
