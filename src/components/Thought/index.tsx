@@ -50,6 +50,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   const { history } = useApp();
   const returnHomeSVGRef = useRef<HTMLElement>(null);
   const [displaySettings, setDisplaySettings] = useState<boolean>(false);
+  const [editAllSections, setEditAllSections] = useState<boolean>(false);
   const thoughtId = getIdFromUrl(history, 'thought');
   const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
   const relatedTags = useMemo(() => Object.values(state.tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, state.tags]);
@@ -112,6 +113,15 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
     }
   }, [thoughtId, displaySettings]);
 
+  const handleEditAllSections = useCallback(() => {
+    setDisplaySettings(false);
+    setEditAllSections(true);
+  }, []);
+
+  const handleCancelEditAllSections = useCallback(() => {
+    setEditAllSections(false);
+  }, []);
+
   const plan = useMemo(() => {
     return state.plans.find(({ id}) => thought && id === thought.planId);
   }, [state.plans, thought]);
@@ -155,6 +165,8 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
           plan={plan}
           sectionOrder={sectionOrder}
           sectionVisibility={sectionVisibility}
+          cancelEditAllSections={handleCancelEditAllSections}
+          editAllSections={editAllSections}
         />
       }
       <ThoughtSettings
@@ -162,7 +174,8 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         thought={thought}
         tags={relatedTags}
         notes={relatedNotes}
-        onDelete={handleClickDelete}  
+        onDelete={handleClickDelete}
+        onEditSections={handleEditAllSections}
       />
       {!displaySettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>}
       <CircleButton

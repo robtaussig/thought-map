@@ -142,6 +142,7 @@ export const styles = (theme: any): StyleRules => ({
   },
   thoughtNodeTitle: {
     color: theme.palette.gray[500],
+    flex: 1,
   },
   thoughtNodeType: {
     marginLeft: 20,

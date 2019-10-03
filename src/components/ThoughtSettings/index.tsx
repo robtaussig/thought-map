@@ -17,9 +17,10 @@ interface ThoughtSettingsProps {
   tags: Tag[];
   notes: Note[];
   onDelete: () => void;
+  onEditSections: () => void;
 }
 
-export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, thought, tags, notes, onDelete }) => {
+export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, thought, tags, notes, onDelete, onEditSections }) => {
   const [openModal, closeModal] = useModal();
 
   const handleClickUseAsTemplate = () => {
@@ -38,6 +39,10 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     window.open(thought.calendarLink, '_blank');
   };
 
+  const handleClickEditSections = () => {
+    onEditSections();
+  };
+
   return (
     <div className={classes.root} style={{
       top: display ? 0 : '100%',
@@ -50,8 +55,7 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
         ) : (
           <button className={classes.background} onClick={handleClickAddToCalendar}>Add to Calendar</button>
         )}
-        <button className={classes.fields} onClick={handleClickHideFields}>Hide Fields</button>
-        <div className={classes.recurring}>Recurring</div>
+        <button className={classes.fields} onClick={handleClickEditSections}>Edit Sections</button>        
         {display && <CircleButton classes={classes} id={'delete-thought'} onClick={onDelete} label={'Delete Thought'} Icon={Delete}/>}
       </div>
     </div>

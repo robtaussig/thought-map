@@ -26,7 +26,8 @@ export const styles = (theme: any): StyleRules => ({
   priorityList: {
     display: 'grid',
     gridTemplateColumns: '[title] 1fr [date] 80px [status] 80px',
-    gridGap: '5px',
+    gridColumnGap: '5px',
+    gridRowGap: '15px',
   },
   thoughtTitle: {
     '& > button': {

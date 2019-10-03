@@ -55,6 +55,8 @@ export interface ThoughtInformationProps {
   plan: Plan;
   sectionOrder: string[];
   sectionVisibility: SectionVisibility;
+  cancelEditAllSections: () => void;
+  editAllSections: boolean;
 }
 
 export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
@@ -74,6 +76,8 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   plan,
   sectionOrder,
   sectionVisibility,
+  cancelEditAllSections,
+  editAllSections,
 }) => {
 
   const lastSectionOrder = useRef<string[]>(null);
@@ -166,8 +170,9 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const remainingTagOptions = tagOptions.filter(value => !tags.find(({ text }) => text === value));
 
   const deriveSectionState = (sectionType: string): SectionState => {
-
-    if (editingSection === sectionType) {
+    if (editAllSections === true) {
+      return SectionState.EditingOtherSection;
+    } else if (editingSection === sectionType) {
       return SectionState.EditingSection;
     } else if (editingSection) {
       return SectionState.EditingOtherSection;
@@ -200,6 +205,17 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       ...thought,
       sections: nextSections
     });
+  };
+
+  const handleCancelEditSection = () => {
+    setEditingSection(null);
+    cancelEditAllSections();
+  };
+
+  const handleClickRoot = (e: any) => {
+    if (!e.target.closest('SECTION') && (editAllSections || editingSection)) {
+      handleCancelEditSection();
+    }
   };
 
   const components: ComponentMap = {
@@ -324,8 +340,8 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   }
 
   return (
-    <div className={classes.root}>
-      {editingSection && <CircleButton classes={classes} id={'cancel-edit'} onClick={() => setEditingSection(null)} label={'Cancel Edit'} Icon={Close}/>}
+    <div className={classes.root} onClick={handleClickRoot}>
+      {(editAllSections || editingSection) && <CircleButton classes={classes} id={'cancel-edit'} onClick={handleCancelEditSection} label={'Cancel Edit'} Icon={Close}/>}
       <ThoughtTitle
         classes={classes}
         thought={thought}
