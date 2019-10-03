@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, MouseEventHandler, FormEventHandler } from 'react';
+import React, { FC, useState, useRef, MouseEventHandler, FormEventHandler, useEffect } from 'react';
 import Check from '@material-ui/icons/Check';
 import Close from '@material-ui/icons/Close';
 import Input from '../../../General/Input';
@@ -37,6 +37,10 @@ export const ThoughtTitle: FC<ThoughtTitleProps> = ({ classes, thought, onUpdate
     setInputtedTitle(thought.title);
     setEdittingTitle(false);
   };
+
+  useEffect(() => {
+    setInputtedTitle(thought.title);
+  }, [thought]);
 
   if (!edittingTitle) {
     return <h1 className={classes.thoughtTitle} onClick={handleClickTitle}>{thought.title}</h1>;
