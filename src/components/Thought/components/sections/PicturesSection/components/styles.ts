@@ -52,14 +52,14 @@ export const styles = (theme: any): StyleRules => ({
   },
   editPictureDescriptionButton: {
     flex: '0 0 40px',
-    color: 'white',
+    color: theme.palette.secondary[700],
     display: 'flex',
     justifyContent: 'flex-end',
   },
   pictureDescriptionButton: {
     gridArea: 'description',
     marginTop: 10,
-    color: 'white',
+    color: theme.palette.secondary[700],
     fontWeight: 600,
   },
   deleteButton: {
@@ -91,9 +91,9 @@ export const styles = (theme: any): StyleRules => ({
     alignItems: 'flex-end',
     justifyContent: 'center',
     '& > button': {
-      borderBottom: '1px solid white',
+      borderBottom: `1px solid ${theme.palette.secondary[700]}`,
       cursor: 'pointer',
-      color: 'white',
+      color: theme.palette.secondary[700],
       margin: '15px 0',
     },
   },

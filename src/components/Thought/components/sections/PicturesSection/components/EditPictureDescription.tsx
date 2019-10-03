@@ -24,7 +24,7 @@ const styles = (theme: any): StyleRules => ({
   submitButton: {
     marginTop: 10,
     marginLeft: 'auto',
-    color: 'white',
+    color: theme.palette.secondary[700],
     fontWeight: 600,
     cursor: 'pointer',
     userSelect: 'none',

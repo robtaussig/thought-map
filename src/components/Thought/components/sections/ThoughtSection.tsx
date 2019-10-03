@@ -209,7 +209,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         </div>
       );
     }
-  }, [inputtedValue, edit, edittedItems]);
+  }, [inputtedValue, edit, edittedItems, value]);
 
   const handleClickValue: MouseEventHandler<Element> = e => {
     const currentClick = +new Date();
@@ -333,6 +333,12 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (sectionState === SectionState.EditingSection) {
+      rootRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [sectionState]);
+
   const _editIcons = useMemo(() => {
     if (sectionState === SectionState.NotEditingAnySection) {
       return (
@@ -349,7 +355,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         {visible ? (<Visibility/>) : (<VisibilityOff/>)}
       </button>
     );
-  }, [editting, sectionState, quickActionButton, _quickActionButton, visible, inputtedValue]);
+  }, [editting, edittedItems, sectionState, quickActionButton, _quickActionButton, visible, inputtedValue]);
 
   if (sectionState === SectionState.EditingOtherSection) {
     return (
