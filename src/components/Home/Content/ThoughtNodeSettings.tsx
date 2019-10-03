@@ -16,6 +16,11 @@ const styles = (theme: any): StyleRules => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  title: {
+    marginBottom: 20,
+    fontWeight: 600,
+    fontSize: 20,
+  },
   button: {
     margin: '10px 0',
     padding: '5px 15px',
@@ -48,6 +53,7 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
 
   return (
     <div className={classes.root}>
+      <h1 className={classes.title}>{thought.title}</h1>
       <button className={classes.button}>Bump</button>
       <button className={classes.button}>View History</button>
       <button className={classes.button}>View Connections</button>
