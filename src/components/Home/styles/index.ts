@@ -125,6 +125,7 @@ export const styles = (theme: any): StyleRules => ({
     alignItems: 'center',
     padding: '20px 10px',
     backgroundColor: 'white',
+    userSelect: 'none',
     '& > #status-select': {
       marginLeft: 20,
       padding: '5px 0',
