@@ -9,6 +9,7 @@ import { Thought } from '~store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import Input from '../../General/Input';
 import Search from '@material-ui/icons/Search';
+import Close from '@material-ui/icons/Close';
 import { Searchable } from '../ThoughtSearch';
 import { useNestedXReducer } from '../../../hooks/useXReducer';
 import useApp from '../../../hooks/useApp';
@@ -43,7 +44,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   }));
 
   const thoughtComponents = useMemo(() => {
-    const filterCompletedThoughts = (thought: Thought) => (plan && plan.showCompleted) || (thought.status !== 'completed' && thought.status !== 'won\'t fix');
+    const filterCompletedThoughts = (thought: Thought) => searchTerm !== '' || (plan && plan.showCompleted) || (thought.status !== 'completed' && thought.status !== 'won\'t fix');
     const filterMatchedThoughts = (thought: Thought) => {
       return matchingThoughts === null || matchingThoughts.includes(thought.id);
     };
@@ -73,7 +74,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           />
         );
       });
-  }, [thoughts, plan, sortFilterSettings, matchingThoughts]);
+  }, [thoughts, plan, sortFilterSettings, matchingThoughts, searchTerm !== '']);
 
   const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
     const scrollTop = e.target.scrollTop;
@@ -132,7 +133,9 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
         </div>
         <form className={classNames(classes.searchWrapper, 'flippable', isSearching ? 'front' : 'back')} onSubmit={handleSubmitSearch}>
           <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'}/>
-          <button className={classes.searchButton}><Search/></button>
+          {searchTerm === '' ?
+            (<button className={classes.searchButton}><Search/></button>) :
+            (<button className={classes.searchButton} onClick={() => setSearchTerm('')}><Close/></button>)}
         </form>
       </div>
       <div className={classes.content} ref={rootRef} onScroll={handleScroll}>
