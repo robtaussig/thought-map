@@ -1,10 +1,13 @@
-import React, { useCallback, FC } from 'react';
+import React, { useCallback, FC, useRef } from 'react';
 import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
 import { statuses as statusActions, thoughts as thoughtActions } from '../../../actions';
 import { homeUrl } from '../../../lib/util';
 import { Thought } from 'store/rxdb/schemas/thought';
+import useLongPress from '../../../hooks/useLongPress';
+import useModal from '../../../hooks/useModal';
+import ThoughtNodeSettings from './ThoughtNodeSettings';
 
 interface ThoughtNodeProps {
   classes: any;
@@ -39,9 +42,17 @@ const styleFromPriority = (priority: number): { color?: string, fontWeight?: num
 export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought, statusOptions, typeOptions, displayField }) => {
   const { history } = useApp();
   const db = useLoadedDB();
+  const [openModal, closeModal] = useModal();
+  const blockClick = useRef<boolean>(false);
+  const handleLongPress = useLongPress(() => {
+    blockClick.current = true;
+    openModal(<ThoughtNodeSettings thought={thought} onClose={closeModal} onLoad={() => blockClick.current = false}/>);
+  });
 
   const handleClick = () => {
-    history.push(`${homeUrl(history)}thought/${thought.id}`);
+    if (blockClick.current === false) {
+      history.push(`${homeUrl(history)}thought/${thought.id}`);
+    }
   };
 
   const handleChangeStatus = useCallback(event => {
@@ -59,7 +70,7 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought,
   }, []);
 
   return (
-    <div className={classes.thoughtNode}>
+    <div className={classes.thoughtNode} {...handleLongPress}>
       <span className={classes.thoughtNodeTitle} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
       {displayField === 'type' ? (
         <Select
