@@ -349,7 +349,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         {visible ? (<Visibility/>) : (<VisibilityOff/>)}
       </button>
     );
-  }, [editting, sectionState, quickActionButton, _quickActionButton, visible]);
+  }, [editting, sectionState, quickActionButton, _quickActionButton, visible, inputtedValue]);
 
   if (sectionState === SectionState.EditingOtherSection) {
     return (
