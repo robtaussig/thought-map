@@ -11,6 +11,7 @@ export const styles = (theme: any): StyleRules => ({
     right: 0,
     width: '100%',
     color: theme.palette.secondary[700],
+    backgroundColor: theme.palette.gray[200],
     zIndex: 1,
     borderTop: '1px solid white',
     fontWeight: 600,
