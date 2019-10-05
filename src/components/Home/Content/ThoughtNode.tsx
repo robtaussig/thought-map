@@ -47,7 +47,7 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought,
   const handleLongPress = useLongPress(() => {
     blockClick.current = true;
     openModal(<ThoughtNodeSettings thought={thought} onClose={closeModal} onLoad={() => blockClick.current = false}/>);
-  });
+  }, 400);
 
   const handleClick = () => {
     if (blockClick.current === false) {
