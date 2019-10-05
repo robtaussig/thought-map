@@ -28,15 +28,11 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
   };
 
   const handleClickAddToCalendar = () => {
-    openModal(<AddToCalendar onClose={closeModal} thought={thought} notes={notes} tags={tags}/>);
+    openModal(<AddToCalendar onClose={closeModal} thoughtId={thought.id} notes={notes} tags={tags}/>);
   };
 
   const handleClickHideFields = () => {
     openModal(<div>Hide Fields</div>, 'Control Field Visibility');
-  };
-
-  const handleClickCalendarLink = () => {
-    window.open(thought.calendarLink, '_blank');
   };
 
   const handleClickEditSections = () => {
@@ -50,11 +46,7 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     }}>
       <div className={classes.settings}>
         <button className={classes.templateButton} onClick={handleClickUseAsTemplate}>Create Template</button>
-        {thought && thought.calendarLink ? (
-          <button className={classes.background} onClick={handleClickCalendarLink}>Open Calendar Link</button>
-        ) : (
-          <button className={classes.background} onClick={handleClickAddToCalendar}>Add to Calendar</button>
-        )}
+        <button className={classes.background} onClick={handleClickAddToCalendar}>Add/Manage Calendar Event</button>
         <button className={classes.fields} onClick={handleClickEditSections}>Edit Sections</button>        
         {display && <CircleButton classes={classes} id={'delete-thought'} onClick={onDelete} label={'Delete Thought'} Icon={Delete}/>}
       </div>

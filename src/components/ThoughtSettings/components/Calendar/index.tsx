@@ -2,9 +2,11 @@ import React, { FC, useEffect, useMemo, Fragment } from 'react';
 import { withStyles, StyleRules } from '@material-ui/core/styles';
 import { thoughts as thoughtActions } from '../../../../actions';
 import { Thought } from '../../../../store/rxdb/schemas/thought';
+import { AppState } from '../../../../reducers';
 import { Note } from '../../../../store/rxdb/schemas/note';
 import { Tag } from '../../../../store/rxdb/schemas/tag';
 import { useLoadedDB } from '../../../../hooks/useDB';
+import { useModalDynamicState } from '../../../../hooks/useModal';
 import Loading from '../../../Loading';
 import {
   GoogleCalendarEvent,
@@ -59,13 +61,17 @@ const styles = (theme: any): StyleRules => ({
 interface AddToCalendarProps {
   classes: any;
   onClose: () => void;
-  thought: Thought;
+  thoughtId: string;
   notes: Note[];
   tags: Tag[];
 }
 
-export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, thought, notes, tags }) => {
+export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, thoughtId, notes, tags }) => {
   const db = useLoadedDB();
+  const state: AppState = useModalDynamicState();
+  const thought = useMemo(() => {
+    return state.thoughts.find(el => el.id === thoughtId);
+  }, [thoughtId]);
   const [signedIn, actions, error] = useGoogleCalendar();
   const gogleCalendarEvent: GoogleCalendarEvent = useMemo(() => ({
     kind: 'calendar#event',
@@ -86,6 +92,10 @@ export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, though
     });
   };
 
+  const handleClickViewEvent = () => {
+    window.open(thought.calendarLink, '_blank');
+  };
+
   if (error) {
     return (
       <div className={classes.error}>
@@ -103,7 +113,7 @@ export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, though
           <h2 className={classes.header}>Google Calendar</h2>
           <button className={classes.createButton} onClick={handleClickCreate}>Create</button>
           {thought.calendarLink && (
-            <button className={classes.viewEventButton}>View Event</button>
+            <button className={classes.viewEventButton} onClick={handleClickViewEvent}>View Event</button>
           )}
         </Fragment>
       ) : (
