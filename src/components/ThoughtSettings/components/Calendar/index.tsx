@@ -1,10 +1,10 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, Fragment } from 'react';
+import { withStyles, StyleRules } from '@material-ui/core/styles';
 import { thoughts as thoughtActions } from '../../../../actions';
 import { Thought } from '../../../../store/rxdb/schemas/thought';
 import { Note } from '../../../../store/rxdb/schemas/note';
 import { Tag } from '../../../../store/rxdb/schemas/tag';
 import { useLoadedDB } from '../../../../hooks/useDB';
-import ApiCalendar from 'react-google-calendar-api';
 import Loading from '../../../Loading';
 import {
   GoogleCalendarEvent,
@@ -15,6 +15,23 @@ import {
   generateDescriptionFromThought,
   generateRemindersFromThought,
 } from './lib/util';
+import useGoogleCalendar from '../../../../hooks/useGoogleCalendar';
+
+const styles = (theme: any): StyleRules => ({
+  root: {
+
+  },
+  error: {
+    color: theme.palette.red[500],
+  },
+  errorHeader: {
+    fontSize: 20,
+    fontWeight: 600,
+  },
+  errorType: {
+    fontWeight: 600,
+  },
+});
 
 interface AddToCalendarProps {
   classes: any;
@@ -26,7 +43,7 @@ interface AddToCalendarProps {
 
 export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, thought, notes, tags }) => {
   const db = useLoadedDB();
-
+  const [signedIn, actions, error] = useGoogleCalendar();
   const gogleCalendarEvent: GoogleCalendarEvent = useMemo(() => ({
     kind: 'calendar#event',
     id: thought.id.replace(/-/g, ''),
@@ -38,42 +55,35 @@ export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, though
     reminders: generateRemindersFromThought(thought),
   }), [thought, notes, tags]);
 
-  useEffect(() => {
-    const addToCalendar = async () => {
-      if (!thought.calendarLink) {
-        const event = await ApiCalendar.createEvent(gogleCalendarEvent);
-        await thoughtActions.editThought(db, {
-          ...thought,
-          calendarLink: event.result.htmlLink
-        });
-        onClose();
-      } else {
-        alert('Already created a calendar event for this thought');
-      }
-    };
-  
-    const handleSignInChange = (sign: boolean) => {
-      if (sign) {
-        addToCalendar();
-      }
-    };
-  
-    ApiCalendar.onLoad(() => {
-      ApiCalendar.listenSign(handleSignInChange);
+  const handleClickCreate = async () => {
+    const event = await actions.createEvent(gogleCalendarEvent);
+    await thoughtActions.editThought(db, {
+      ...thought,
+      calendarLink: event.result.htmlLink
     });
+  };
 
-    if (!ApiCalendar.sign) {
-      ApiCalendar.handleAuthClick();
-    } else {
-      addToCalendar();
-    }
-  }, []);
+  if (error) {
+    return (
+      <div className={classes.error}>
+        <h2 className={classes.errorHeader}>Error</h2>
+        <h3 className={classes.errorType}>{error.error}</h3>
+        {error.details}
+      </div>
+    );
+  }
 
   return (
-    <div className={classes.addToCalendar}>
-      <Loading id={'calendar-loader'}/>
+    <div className={classes.root}>
+      {signedIn ? (
+        <Fragment>
+          <button className={classes.createButton} onClick={handleClickCreate}>Create</button>
+        </Fragment>
+      ) : (
+        <Loading id={'calendar-loader'}/>
+      )}
     </div>
   );
 };
 
-export default AddToCalendar;
+export default withStyles(styles)(AddToCalendar);

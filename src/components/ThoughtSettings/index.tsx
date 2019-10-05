@@ -28,7 +28,7 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
   };
 
   const handleClickAddToCalendar = () => {
-    openModal(<AddToCalendar classes={classes} onClose={closeModal} thought={thought} notes={notes} tags={tags}/>);
+    openModal(<AddToCalendar onClose={closeModal} thought={thought} notes={notes} tags={tags}/>);
   };
 
   const handleClickHideFields = () => {
