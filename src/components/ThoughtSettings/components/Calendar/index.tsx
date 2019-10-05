@@ -19,7 +19,9 @@ import useGoogleCalendar from '../../../../hooks/useGoogleCalendar';
 
 const styles = (theme: any): StyleRules => ({
   root: {
-
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   error: {
     color: theme.palette.red[500],
@@ -30,6 +32,27 @@ const styles = (theme: any): StyleRules => ({
   },
   errorType: {
     fontWeight: 600,
+  },
+  header: {
+    fontWeight: 600,
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  createButton: {
+    margin: '10px 0',
+    padding: '5px 0',
+    width: '70%',
+    border: `1px solid ${theme.palette.secondary[700]}`,
+    borderRadius: '7px',
+    color: theme.palette.secondary[700],
+  },
+  viewEventButton: {
+    margin: '10px 0',
+    padding: '5px 0',
+    width: '70%',
+    border: `1px solid ${theme.palette.secondary[700]}`,
+    borderRadius: '7px',
+    color: theme.palette.secondary[700],
   },
 });
 
@@ -77,7 +100,11 @@ export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, though
     <div className={classes.root}>
       {signedIn ? (
         <Fragment>
+          <h2 className={classes.header}>Google Calendar</h2>
           <button className={classes.createButton} onClick={handleClickCreate}>Create</button>
+          {thought.calendarLink && (
+            <button className={classes.viewEventButton}>View Event</button>
+          )}
         </Fragment>
       ) : (
         <Loading id={'calendar-loader'}/>
