@@ -41,7 +41,11 @@ export const useGoogleCalendar = (config: Config = DefaultConfig): [boolean, Act
       gapiRef.current = gapi;
       await gapiRef.current.client.init(config).catch(setError);
       gapiRef.current.auth2.getAuthInstance().isSignedIn.listen(setSignedIn);
-      setSignedIn(gapiRef.current.auth2.getAuthInstance().isSignedIn.get());
+      const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
+      if (!signedIn) {
+        gapiRef.current.auth2.getAuthInstance().signIn();
+      }
+      setSignedIn(isSignedIn);
     };
 
     try {
