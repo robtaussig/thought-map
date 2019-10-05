@@ -29,11 +29,9 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   const rootRef = useRef<HTMLDivElement>(null);
   const { dispatch } = useApp();
   const lastScrollPos = useRef<number>(0);
-  const setSearchFocus = useRef<(shouldFocus: boolean) => void>(() => {});
   const [showFilters, setShowFilters] = useState<boolean>(true);
   const handleLongPress = useLongPress(() => {
     setShowFilters(false);
-    setSearchFocus.current(true);
   });
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
@@ -138,7 +136,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           </div>
         </div>
         <form className={classNames(classes.searchWrapper, 'flippable', isSearching ? 'front' : 'back')} onSubmit={handleSubmitSearch}>
-          <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'} setFocus={focus => setSearchFocus.current = focus}/>
+          <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'}/>
           {searchTerm === '' ?
             (<button className={classes.searchButton}><Search/></button>) :
             (<button className={classes.searchButton} onClick={() => setSearchTerm('')}><Close/></button>)}

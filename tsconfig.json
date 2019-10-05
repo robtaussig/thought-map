@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "downlevelIteration": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "jsx": "react",
     "paths": {

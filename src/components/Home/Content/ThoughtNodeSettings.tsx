@@ -15,6 +15,7 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    userSelect: 'none',
   },
   title: {
     marginBottom: 20,

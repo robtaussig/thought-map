@@ -67,6 +67,11 @@ table {
 button {
 	background-color: transparent;
 	user-select: none;
+	cursor: pointer;
+}
+
+select:focus {
+	outline: none;
 }
 
 button:focus {outline:0;}
