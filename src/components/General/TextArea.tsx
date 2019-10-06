@@ -12,7 +12,6 @@ interface TextAreaProps {
   [rest: string]: any;
 }
 
-
 export const TextArea: FC<TextAreaProps> = React.memo(({ id, classes, value, onChange, onFocus, label, tooltip, ...rest }) => {
 
   const handleFocus: ChangeEventHandler<HTMLTextAreaElement> = e => {

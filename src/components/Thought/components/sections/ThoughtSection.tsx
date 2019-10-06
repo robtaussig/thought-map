@@ -192,6 +192,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
                     classes={classes}
                     id={'quick-item-edit'}
                     value={edittedItems[idx]}
+                    autoSuggest={edit.autoSuggest}
                     onChange={e => {
                       const value = e.target.value;
                       setEdittedItems(prev => prev.map((prevItem, prevIdx) => {
@@ -307,6 +308,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
             onClose={closeModal}
             onSubmit={handleSubmit}
             options={edit.options}
+            autoSuggest={edit.autoSuggest}
           />
           , 'Add', { className: classes.addModal, afterClose: handleAfterClose });
       };

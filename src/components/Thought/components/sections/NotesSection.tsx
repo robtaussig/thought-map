@@ -3,6 +3,8 @@ import ThoughtSection from './ThoughtSection';
 import NotesIcon from '@material-ui/icons/Notes';
 import { Note } from '../../../../store/rxdb/schemas/note';
 import { EditTypes, SectionState } from '../../types';
+import { useModalDynamicState } from '../../../../hooks/useModal';
+import { AppState } from '../../../../reducers';
 
 interface NotesSectionProps {
   classes: any;
@@ -18,6 +20,8 @@ interface NotesSectionProps {
 }
 
 export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, onCreate, onDelete, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
+  const state: AppState = useModalDynamicState();
+  const stateNotes = state.settings.useAutoSuggest ? Object.values(state.notes) : null;
 
   return (
     <ThoughtSection
@@ -37,6 +41,7 @@ export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, on
         onEdit,
         onCreate: onCreate,
         onDelete: onDelete,
+        autoSuggest: stateNotes ? stateNotes.map(note => note.text) : undefined,
       }}
     />
   );

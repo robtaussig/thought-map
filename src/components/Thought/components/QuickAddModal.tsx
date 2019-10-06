@@ -6,10 +6,11 @@ interface QuickAddModalProps {
   classes: any,
   onClose: () => void;
   onSubmit: (value: string) => void;
+  autoSuggest?: string[];
   options: string[];
 }
 
-export const QuickAddModal: FC<QuickAddModalProps> = ({ classes, onClose, onSubmit, options }) => {
+export const QuickAddModal: FC<QuickAddModalProps> = ({ classes, onClose, onSubmit, options, autoSuggest }) => {
   const [inputtedValue, setInputtedValue] = useState<string>('');
 
   const handleSubmit: FormEventHandler = e => {
@@ -39,6 +40,7 @@ export const QuickAddModal: FC<QuickAddModalProps> = ({ classes, onClose, onSubm
         value={inputtedValue}
         onChange={e => setInputtedValue(e.target.value)}
         aria-label={'Item Name'}
+        autoSuggest={autoSuggest}
         autoFocus
       />
       <button className={classes.submitQuickAddButton} disabled={inputtedValue === ''}>Submit</button>

@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useMemo, FC } from 'react';
-import Tooltip from './Tooltip';
+import React, { useEffect, useRef, useMemo, FC, Fragment } from 'react';
+import Tooltip from '../Tooltip';
+import useAutoSuggest from 'react-use-autosuggest';
+import AutoSuggestPortal from './auto-suggest-portal';
 
 type Callback = (...params: any[]) => void;
 
@@ -53,6 +55,10 @@ export const Input: FC<InputProps> = React.memo(({
   const rootRef = useRef<HTMLLabelElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const suggestions = autoSuggest ? useAutoSuggest(
+    value, autoSuggest
+  ) : [];
+  
   useEffect(() => {
     if (scrollToOnMount) {
       rootRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -86,61 +92,24 @@ export const Input: FC<InputProps> = React.memo(({
     inputRef.current.focus();
   };
 
-  const _autoSuggestComponent = useMemo(() => {
-
-    if (autoSuggest && autoSuggest.length > 0) {
-      return (
-        <ul style={{
-          position: 'fixed',
-          display: 'flex',
-          bottom: '110px',
-          left: '0px',
-          right: '0px',
-          height: '80px',
-          backgroundColor: 'black',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          opacity: 0.7,
-          overflow: 'auto',
-        }}>
-          {autoSuggest.map((suggestion, idx) => {
-            return (
-              <li
-                key={`${suggestion}-${idx}`}
-                style={{
-                  margin: '0 15px',
-                }}
-              >
-                <button
-                  style={{
-                    color: 'white',
-                  }}
-                  onClick={() => {
-                    handleClickSuggestion(suggestion);
-                  }}
-                >
-                  {suggestion.replace(' ', '...')}
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      );
-    }
-    return null;
-  }, [autoSuggest]);
-
   return (
-    <label key={`${id}-label`} ref={rootRef} id={id} className={classes.inputLabel} onClick={focusOnLabelClick ? undefined : e => e.preventDefault()} {...rest}>
-      <input key={`${id}-input`} ref={inputRef} className={classes.inputField} placeholder={placeholder} type={type || 'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
-      {label}
-      {injectedComponent}
-      {DeleteButton}
-      {_autoSuggestComponent}
-      {tooltip && (
-        <Tooltip text={tooltip}/>
+    <Fragment>
+      <label key={`${id}-label`} ref={rootRef} id={id} className={classes.inputLabel} onClick={focusOnLabelClick ? undefined : e => e.preventDefault()} {...rest}>
+        <input key={`${id}-input`} ref={inputRef} className={classes.inputField} placeholder={placeholder} type={type || 'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
+        {label}
+        {injectedComponent}
+        {DeleteButton}
+        {tooltip && (
+          <Tooltip text={tooltip}/>
+        )}
+      </label>
+      {suggestions && suggestions.length > 0 && (
+        <AutoSuggestPortal
+          suggestions={suggestions}
+          onClickSuggestion={handleClickSuggestion}
+        />
       )}
-    </label>
+    </Fragment>
   );
 });
 

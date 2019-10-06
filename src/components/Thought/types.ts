@@ -35,6 +35,7 @@ export interface EditProps {
   onCreate?: (value: string) => void;
   onDelete?: (...args: any[]) => void;
   onClickItem?: (...args: any[]) => void;
+  autoSuggest?: string[];
   disableQuickAction?: boolean;
 }
 

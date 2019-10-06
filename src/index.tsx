@@ -6,6 +6,7 @@ import { theme } from './App.style';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
+import { Portal } from './hooks/usePortal';
 (window as any).APP_VERSION = '0.6';
 
 ReactDOM.render(
@@ -13,7 +14,9 @@ ReactDOM.render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline/>
-        <App/>
+        <Portal>
+          <App/>
+        </Portal>
       </ThemeProvider>
     </BrowserRouter>
   ),
