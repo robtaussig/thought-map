@@ -8,7 +8,7 @@ import Review from './review';
 
 interface PlanSelectActionsProps {
   classes: any;
-  planId: string;
+  planId: string | boolean;
   onClose: () => void;
 }
 
@@ -55,11 +55,11 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
   const state: AppState = useModalDynamicState();
   const [currentReviewPeriod, setCurrentReviewPeriopd] = useState<ReviewPeriods>(ReviewPeriods.Week)
   const plan = state.plans.find(({ id }) => id === planId);
-  const thoughts = state.thoughts.filter(thought => thought.planId === planId);
+  const thoughts = state.thoughts.filter(thought => typeof planId === 'boolean' || thought.planId === planId);
 
   return (
     <div className={classes.root}>
-      <h1 className={classes.header}>{plan.name} ({thoughts.length} thoughts)</h1>
+      <h1 className={classes.header}>{typeof planId === 'boolean' ? 'ThoughtMap' : plan.name} ({thoughts.length} thoughts)</h1>
       <h2 className={classes.subHeader}>
         A
         {<Select
@@ -71,7 +71,6 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
       </h2>
       <Review
         classes={classes}
-        plan={plan}
         thoughts={thoughts}
         reviewPeriod={currentReviewPeriod}
         statusesByThought={state.statusesByThought}

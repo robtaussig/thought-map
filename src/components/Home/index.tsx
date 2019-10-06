@@ -29,14 +29,12 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
   const [openModal, closeModal, expandModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
   const handleLongPress = useLongPress(() => {
-    if (typeof planId === 'string') {
-      openModal(
-        <PlanSelectActions
-          planId={planId}
-          onClose={closeModal}
-        />
-      );
-    }
+    openModal(
+      <PlanSelectActions
+        planId={planId}
+        onClose={closeModal}
+      />
+    );
   }, 400);
   const handleAddThought = () => {
     setAddingThought(true);

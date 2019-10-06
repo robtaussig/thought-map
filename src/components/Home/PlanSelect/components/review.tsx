@@ -1,15 +1,23 @@
 import React, { FC } from 'react';
 import { Status } from '../../../../store/rxdb/schemas/Status';
+import { Thought } from '../../../../store/rxdb/schemas/Thought';
 import {
   ReviewPeriods,
   Stats,
   Snapshot,
-  ReviewProps,
+  StatusesByThought,
+  Statuses,
 } from '../types';
 import { differenceInCalendarDays } from 'date-fns';
 import ReviewStat from './review-stat';
 
-
+interface ReviewProps {
+  classes: any;
+  thoughts: Thought[];
+  reviewPeriod: ReviewPeriods;
+  statusesByThought: StatusesByThought;
+  statuses: Statuses;
+}
 
 const numDays = {
   [ReviewPeriods.Day]: 1,
@@ -22,10 +30,10 @@ const isWithinPeriod = (reviewPeriod: ReviewPeriods) => (status: Status) => {
   return differenceInCalendarDays(new Date(), new Date(status.created)) <= numDays[reviewPeriod];
 };
 
-export const Review: FC<ReviewProps> = ({ classes, plan, thoughts, reviewPeriod, statusesByThought, statuses }) => {
+export const Review: FC<ReviewProps> = ({ classes, thoughts, reviewPeriod, statusesByThought, statuses }) => {
 
   const stats = thoughts.reduce((next, { id }) => {
-    const thoughtStatuses = statusesByThought[id];
+    const thoughtStatuses = statusesByThought[id] || [];
     let didStart = false, didCreate = false, didComplete = false;
     thoughtStatuses
       .map(statusId => statuses[statusId])

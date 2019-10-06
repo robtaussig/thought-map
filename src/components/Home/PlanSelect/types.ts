@@ -1,6 +1,4 @@
 import { Status } from '../../../store/rxdb/schemas/Status';
-import { Plan } from '../../../store/rxdb/schemas/plan';
-import { Thought } from '../../../store/rxdb/schemas/Thought';
 
 export enum ReviewPeriods {
   Day = 'Day',
@@ -28,13 +26,4 @@ export interface Snapshot {
   new: number;
   completed: number;
   inProgress: number;
-}
-
-export interface ReviewProps {
-  classes: any;
-  plan: Plan;
-  thoughts: Thought[];
-  reviewPeriod: ReviewPeriods;
-  statusesByThought: StatusesByThought;
-  statuses: Statuses;
 }
