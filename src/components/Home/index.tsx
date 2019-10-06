@@ -7,10 +7,12 @@ import CreateThought from '../CreateThought';
 import CircleButton from '../General/CircleButton';
 import { styles } from './styles';
 import useApp from '../../hooks/useApp';
+import useLongPress from '../../hooks/useLongPress'; 
 import useModal from '../../hooks/useModal';
 import { getIdFromUrl } from '../../lib/util';
 import { AppState } from '../../reducers';
 import { Notification } from '../../types';
+import PlanSelectActions from './PlanSelect/components/actions';
 
 interface HomeProps {
   classes: any;
@@ -26,6 +28,16 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
   const [addingThought, setAddingThought] = useState<boolean>(false);
   const [openModal, closeModal, expandModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
+  const handleLongPress = useLongPress(() => {
+    if (typeof planId === 'string') {
+      openModal(
+        <PlanSelectActions
+          planId={planId}
+          onClose={closeModal}
+        />
+      );
+    }
+  }, 400);
   const handleAddThought = () => {
     setAddingThought(true);
     openModal(
@@ -54,7 +66,7 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
       <Content classes={classes} state={state} thoughts={thoughts} plan={plan} statusOptions={statusOptions} typeOptions={typeOptions}/>
       <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId} setLastNotification={setLastNotification}/>
       {!addingThought && <CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
-      {!addingThought && <CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
+      {!addingThought && <CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'} {...handleLongPress}/>}
     </div>
   );
 };
