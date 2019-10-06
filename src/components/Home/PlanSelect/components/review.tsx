@@ -76,6 +76,7 @@ export const Review: FC<ReviewProps> = ({ classes, thoughts, reviewPeriod, statu
       <ReviewStat classes={classes} field={'Started'} value={stats.started}/>
       <ReviewStat classes={classes} field={'Completed'} value={stats.completed}/>
       <ReviewStat classes={classes} field={'Started And Completed'} value={stats.startedAndCompleted}/>
+      <hr/>
       <ReviewStat classes={classes} field={'Completed to Date'} value={snapshot.completed}/>
       <ReviewStat classes={classes} field={'Unstarted'} value={snapshot.new}/>
       <ReviewStat classes={classes} field={'In Progress'} value={snapshot.inProgress}/>

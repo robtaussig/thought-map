@@ -7,7 +7,6 @@ import CreateThought from '../CreateThought';
 import CircleButton from '../General/CircleButton';
 import { styles } from './styles';
 import useApp from '../../hooks/useApp';
-import useLongPress from '../../hooks/useLongPress'; 
 import useModal from '../../hooks/useModal';
 import { getIdFromUrl } from '../../lib/util';
 import { AppState } from '../../reducers';
@@ -28,14 +27,6 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
   const [addingThought, setAddingThought] = useState<boolean>(false);
   const [openModal, closeModal, expandModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
-  const handleLongPress = useLongPress(() => {
-    openModal(
-      <PlanSelectActions
-        planId={planId}
-        onClose={closeModal}
-      />
-    );
-  }, 400);
   const handleAddThought = () => {
     setAddingThought(true);
     openModal(
@@ -63,8 +54,24 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
     <div className={classes.root}>
       <Content classes={classes} state={state} thoughts={thoughts} plan={plan} statusOptions={statusOptions} typeOptions={typeOptions}/>
       <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId} setLastNotification={setLastNotification}/>
-      {!addingThought && <CircleButton id={'edit-plan'} classes={classes} onClick={handleEditPlan} label={'Edit Plan'} Icon={Build}/>}
-      {!addingThought && <CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'} {...handleLongPress}/>}
+      {!addingThought &&
+        <CircleButton
+          id={'edit-plan'}
+          classes={classes}
+          onClick={handleEditPlan}
+          label={'Edit Plan'}
+          Icon={Build}
+          onLongPress={() => {
+            openModal(
+              <PlanSelectActions
+                planId={planId}
+                onClose={closeModal}
+              />
+            );
+          }}
+        />
+      }
+      {!addingThought && <CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
     </div>
   );
 };
