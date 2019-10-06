@@ -42,6 +42,7 @@ export enum SectionState {
   NotEditingAnySection = -1,
   EditingOtherSection = 0,
   EditingSection = 1,
+  EditingEverySection = 2,
 }
 
 export interface ComponentMap {

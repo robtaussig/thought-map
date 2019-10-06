@@ -6,13 +6,14 @@ export interface Plan {
   showCompleted?: boolean;
   archived?: boolean;
   defaultType?: string;
+  defaultSections?: string;
   created?: number;
   updated?: number;
 }
 
 export default ['plan', {
   "title": "Plan schema",
-  "version": 3,
+  "version": 4,
   "description": "A Plan",
   "type": "object",
   "properties": {
@@ -27,6 +28,9 @@ export default ['plan', {
       "type": "boolean",
     },
     "defaultType": {
+      "type": "string",
+    },
+    "defaultSections": {
       "type": "string",
     },
     "archived": {
@@ -55,6 +59,10 @@ export default ['plan', {
     },
     3: (oldPlan: RxDocument<Plan>) => {
       oldPlan.archived = false;
+      return oldPlan;
+    },
+    4: (oldPlan: RxDocument<Plan>) => {
+      oldPlan.defaultSections = '';
       return oldPlan;
     },
   },

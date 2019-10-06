@@ -69,9 +69,7 @@ interface AddToCalendarProps {
 export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, thoughtId, notes, tags }) => {
   const db = useLoadedDB();
   const state: AppState = useModalDynamicState();
-  const thought = useMemo(() => {
-    return state.thoughts.find(el => el.id === thoughtId);
-  }, [thoughtId]);
+  const thought = state.thoughts.find(el => el.id === thoughtId);
   const [signedIn, actions, error] = useGoogleCalendar();
   const gogleCalendarEvent: GoogleCalendarEvent = useMemo(() => ({
     kind: 'calendar#event',

@@ -9,7 +9,7 @@ import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
 import ThoughtSettings from '../ThoughtSettings';
 import CircleButton from '../General/CircleButton';
-import { thoughts as thoughtActions } from '../../actions';
+import { thoughts as thoughtActions, plans as planActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
 import { AppState } from 'reducers';
 import { Picture } from '../../store/rxdb/schemas/picture';
@@ -69,7 +69,17 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         };
       })
   , [thoughtId, state.connections, state.thoughts]);
-  const thoughtSections = thought && thought.sections ? thought.sections : DEFAULT_SECTIONS;
+
+  const plan = useMemo(() => {
+    return state.plans.find(({ id}) => thought && id === thought.planId);
+  }, [state.plans, thought]);
+
+  const thoughtSections = thought && thought.sections ?
+    thought.sections :
+      plan && plan.defaultSections ?
+        plan.defaultSections :
+        DEFAULT_SECTIONS;
+
   const statuses = useMemo(() => {    
     if (typeof thoughtId === 'string') {
       return (state.statusesByThought[thoughtId] || [])
@@ -116,15 +126,18 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   const handleEditAllSections = useCallback(() => {
     setDisplaySettings(false);
     setEditAllSections(true);
-  }, []);
+  }, []);  
 
   const handleCancelEditAllSections = useCallback(() => {
     setEditAllSections(false);
   }, []);
 
-  const plan = useMemo(() => {
-    return state.plans.find(({ id}) => thought && id === thought.planId);
-  }, [state.plans, thought]);
+  const handleApplySectionState = useCallback(() => {
+    planActions.editPlan(db, {
+      ...plan,
+      defaultSections: thought.sections,
+    });
+  }, [plan, thought]);
 
   const sectionOrder = useMemo(() => {
     return thoughtSections.split('-').map(section => {
@@ -176,6 +189,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         notes={relatedNotes}
         onDelete={handleClickDelete}
         onEditSections={handleEditAllSections}
+        onApplySectionState={handleApplySectionState}
       />
       {!displaySettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>}
       <CircleButton

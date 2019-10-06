@@ -31,6 +31,21 @@ export const styles = (theme: any): StyleRules => ({
   templateSettings: {
     
   },
+  applySectionState: {
+    position: 'relative',
+    '& svg': {
+      position: 'absolute',
+      right: -13,
+      top: 33,
+    }
+  },
+  sectionStateButton: {
+    width: 200,
+    margin: 20,
+    padding: '10px 20px',
+    borderRadius: 5,
+    backgroundColor: theme.palette.primary[500],
+  },
   header: {
     fontSize: 20,
     gridArea: 'header',

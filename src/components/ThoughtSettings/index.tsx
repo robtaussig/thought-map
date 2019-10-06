@@ -9,6 +9,7 @@ import { Thought } from 'store/rxdb/schemas/thought';
 import { Tag } from 'store/rxdb/schemas/tag';
 import { Note } from 'store/rxdb/schemas/note';
 import { styles } from './styles';
+import Tooltip from '../General/Tooltip';
 
 interface ThoughtSettingsProps {
   classes: any;
@@ -18,9 +19,12 @@ interface ThoughtSettingsProps {
   notes: Note[];
   onDelete: () => void;
   onEditSections: () => void;
+  onApplySectionState: () => void;
 }
 
-export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, thought, tags, notes, onDelete, onEditSections }) => {
+const APPLY_SECTION_STATE_TOOLTIP_TEXT = 'Will apply this thought\'s section structure as the default structure for all thoughts within the same plan.';
+
+export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, onApplySectionState, thought, tags, notes, onDelete, onEditSections }) => {
   const [openModal, closeModal] = useModal();
 
   const handleClickUseAsTemplate = () => {
@@ -31,8 +35,8 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     openModal(<AddToCalendar onClose={closeModal} thoughtId={thought.id} notes={notes} tags={tags}/>);
   };
 
-  const handleClickHideFields = () => {
-    openModal(<div>Hide Fields</div>, 'Control Field Visibility');
+  const handleClickApplySectionState = () => {
+    onApplySectionState();
   };
 
   const handleClickEditSections = () => {
@@ -46,8 +50,12 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, th
     }}>
       <div className={classes.settings}>
         <button className={classes.templateButton} onClick={handleClickUseAsTemplate}>Create Template</button>
-        <button className={classes.background} onClick={handleClickAddToCalendar}>Add/Manage Calendar Event</button>
-        <button className={classes.fields} onClick={handleClickEditSections}>Edit Sections</button>        
+        <button className={classes.background} onClick={handleClickAddToCalendar}>Manage Calendar</button>
+        <button className={classes.fields} onClick={handleClickEditSections}>Edit Sections</button>
+        <div className={classes.applySectionState}>
+          <button className={classes.sectionStateButton} onClick={handleClickApplySectionState}>Apply SectionState</button>
+          <Tooltip text={APPLY_SECTION_STATE_TOOLTIP_TEXT}/>
+        </div>
         {display && <CircleButton classes={classes} id={'delete-thought'} onClick={onDelete} label={'Delete Thought'} Icon={Delete}/>}
       </div>
     </div>

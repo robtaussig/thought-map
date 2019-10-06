@@ -18,9 +18,7 @@ const loadScript = async (): Promise<[any, () => void]> => {
     script.src = "https://apis.google.com/js/api.js";
     document.body.appendChild(script);
 
-    const cleanup = () => {
-      script.remove();
-    };
+    const cleanup = () => script.remove();
 
     script.onload = (): void => {
       (window as any).gapi.load('client:auth2', () => resolve([(window as any).gapi, cleanup]));
@@ -37,10 +35,14 @@ export const useGoogleCalendar = (config: Config = DefaultConfig): [boolean, Act
   useEffect(() => {
     const init = async () => {
       const [gapi, cleanup] = await loadScript();
+
       cleanupRef.current = cleanup;
       gapiRef.current = gapi;
+
       await gapiRef.current.client.init(config).catch(setError);
+
       gapiRef.current.auth2.getAuthInstance().isSignedIn.listen(setSignedIn);
+
       const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
       if (!isSignedIn) {
         gapiRef.current.auth2.getAuthInstance().signIn();

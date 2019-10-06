@@ -26,7 +26,7 @@ const styles = (theme: any): StyleRules => ({
   },
   currentConnectionTitle: {
     flex: 1,
-    color: 'white',
+    color: theme.palette.secondary[700],
   },
   deleteConnectionButton: {
     marginLeft: 5,
@@ -39,7 +39,7 @@ const styles = (theme: any): StyleRules => ({
     overflow: 'hidden',
     paddingBottom: 10,
     marginBottom: 10,
-    borderBottom: '1px solid white',
+    borderBottom: `1px solid ${theme.palette.secondary[700]}`,
   },
   noMatches: {
 
@@ -52,7 +52,7 @@ const styles = (theme: any): StyleRules => ({
   thoughtItem: {
     marginTop: 10,
     paddingBottom: 10,   
-    color: 'white',
+    color: theme.palette.secondary[700],
     '& button': {
       textAlign: 'left',
       fontWeight: 600,
@@ -60,7 +60,7 @@ const styles = (theme: any): StyleRules => ({
       margin: '0 15px',
     },
     '&:not(:last-child)': {
-      borderBottom: '1px solid white',
+      borderBottom: `1px solid ${theme.palette.secondary[700]}`,
     },
   },
   inputLabel: {

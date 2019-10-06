@@ -171,7 +171,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 
   const deriveSectionState = (sectionType: string): SectionState => {
     if (editAllSections === true) {
-      return SectionState.EditingOtherSection;
+      return SectionState.EditingEverySection;
     } else if (editingSection === sectionType) {
       return SectionState.EditingSection;
     } else if (editingSection) {

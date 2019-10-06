@@ -357,7 +357,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     );
   }, [editting, edittedItems, sectionState, quickActionButton, _quickActionButton, visible, inputtedValue]);
 
-  if (sectionState === SectionState.EditingOtherSection) {
+  if ([SectionState.EditingEverySection, SectionState.EditingOtherSection].includes(sectionState)) {
     return (
       <section
         ref={rootRef}
@@ -368,9 +368,9 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
           <Icon/>
         </div>
         <span className={classNames(classes.sectionField, 'drop-target')} title={'Double-click to edit'}>{field}</span>
-        <button className={classNames(classes.sectionValue, 'drop-target')} onClick={onDrop}>
+        {sectionState === SectionState.EditingOtherSection && (<button className={classNames(classes.sectionValue, 'drop-target')} onClick={onDrop}>
           Place Above
-        </button>
+        </button>)}
       </section>
     );
   }
