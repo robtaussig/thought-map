@@ -52,6 +52,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, ta
   const db = useLoadedDB();
   const planId = getIdFromUrl(history, 'plan');
   const plan = state.plans.find(plan => plan.id === planId);
+  const thoughtTitles = state.thoughts.map(({ title }) => title);
   const [ createdThought, createdThoughtDispatch ] = useXReducer(DEFAULT_STATE, (state, action) => {
     if (action.type === 'CREATE_FROM_TEMPLATE') return action.payload;
     return state;
@@ -112,6 +113,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, ta
           tagOptions={tagOptions}
           onReady={setReady}
           expanded={expanded}
+          thoughtTitles={thoughtTitles}
         />
         <button className={classes.submitButton} disabled={!ready}>
           Submit

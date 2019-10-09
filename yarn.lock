@@ -1142,10 +1142,6 @@
   version "12.7.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.2.tgz#c4e63af5e8823ce9cc3f0b34f7b998c2171f0c44"
 
-"@types/node@^9.6.39":
-  version "9.6.52"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.52.tgz#ddba1f1fdaf1487a0a992ee238c43f5318ba5625"
-
 "@types/prop-types@*":
   version "15.7.1"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.1.tgz#f1a11e7babb0c3cad68100be381d1e064c68f1f6"
@@ -7497,12 +7493,6 @@ react-dom@^16.8.6:
     prop-types "^15.6.2"
     scheduler "^0.15.0"
 
-react-google-calendar-api@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/react-google-calendar-api/-/react-google-calendar-api-1.0.10.tgz#25c816362690835d1042ca6d72c1b21fcf2de41d"
-  dependencies:
-    "@types/node" "^9.6.39"
-
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6, react-is@^16.9.0:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
@@ -7558,9 +7548,9 @@ react-transition-group@^4.0.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-use-autosuggest@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/react-use-autosuggest/-/react-use-autosuggest-0.6.2.tgz#5e3406c3fe334dc0ba45de343c445e2b9d53f432"
+react-use-autosuggest@0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/react-use-autosuggest/-/react-use-autosuggest-0.6.3.tgz#851b632225a61d4043a0713b52fb08bd90127833"
 
 react@^16.4.2, react@^16.8.6:
   version "16.9.0"

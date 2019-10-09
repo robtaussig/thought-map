@@ -46,7 +46,7 @@
     "react-dom": "^16.8.6",
     "react-notifications-component": "^1.1.1",
     "react-router-dom": "^5.0.0",
-    "react-use-autosuggest": "^0.6.2",
+    "react-use-autosuggest": "0.6.3",
     "rxdb": "^8.2.0",
     "rxjs": "^6.5.2",
     "uuid": "^3.3.2"
