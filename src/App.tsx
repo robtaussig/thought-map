@@ -43,7 +43,9 @@ const App: FC<AppProps> = ({ classes, history }) => {
 
   useEffect(() => {
     if (dbReadyState) {
-      initializeApplication(db, dispatch);
+      initializeApplication(db, dispatch).then(() => {
+        document.body.classList.remove('loader');
+      });
       subscribeToChanges(db, {
         thought: setThoughts,
         connection: setConnections,

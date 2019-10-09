@@ -57,7 +57,6 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   const [edittedItems, setEdittedItems] = useState<string[]>([]);
   const [moved, setMoved] = useState<boolean>(false);
   const movedTimeout = useRef<NodeJS.Timer>(null);
-  const lastClick = useRef<number>(0);
   const [openModal, closeModal] = useModal();
   const rootRef = useRef<HTMLDivElement>(null);
   const [inputtedValue, setInputtedValue] = useState<string>(String(value));
@@ -211,18 +210,6 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       );
     }
   }, [inputtedValue, edit, edittedItems, value]);
-
-  const handleClickValue: MouseEventHandler<Element> = e => {
-    const currentClick = +new Date();
-    if (currentClick - lastClick.current < 500) {
-      if ([null, EditTypes.Photo].includes(edit.type)) {
-        if (edit.onEdit) edit.onEdit();
-      } else {
-        setEditting(true);
-      }
-    }
-    lastClick.current = currentClick;
-  };
 
   useEffect(() => {
     if (editting) {
@@ -383,12 +370,11 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     <section
       ref={rootRef}
       className={classNames(classes.thoughtSection, className, { moved })}
-      onClick={handleClickValue}
       {...handleLongPress}
       style={{ userSelect: 'none' }}
     >
       {_editIcons}
-      <div className={classes.sectionIcon}>
+      <div className={classes.sectionIcon} onClick={handleToggleEdit}>
         <Icon/>
       </div>
       <span className={classes.sectionField} title={'Double-click to edit'}>{field}</span>

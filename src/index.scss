@@ -5,6 +5,10 @@ body {
 	width: 100vw;
 }
 
+body.loader {
+	height: 100vh;
+}
+
 #root {
 	width: 100%;
 }

@@ -13,6 +13,7 @@ export interface Thought {
   priority?: number;
   recurring?: number;
   description?: string;
+  goalPoints?: number;
   index?: number;
   created?: number;
   updated?: number;
@@ -21,7 +22,7 @@ export interface Thought {
 
 export default ['thought', {
   "title": "Thought schema",
-  "version": 4,
+  "version": 5,
   "description": "A Thought",
   "type": "object",
   "properties": {
@@ -50,6 +51,9 @@ export default ['thought', {
     },
     "calendarLink": {
       "type": "string",
+    },
+    "goalPoints": {
+      "type": "number",
     },
     "status": {
       "type": "string",
@@ -93,6 +97,10 @@ export default ['thought', {
     },
     4: (oldThought: RxDocument<Thought>) => {
       oldThought.sections = '';
+      return oldThought;
+    },
+    5: (oldThought: RxDocument<Thought>) => {
+      oldThought.goalPoints = 0;
       return oldThought;
     },
   },

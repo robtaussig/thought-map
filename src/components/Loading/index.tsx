@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import './style.css';
+import './style.scss';
 
 interface LoadingProps {
   id?: string;

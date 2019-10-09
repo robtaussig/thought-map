@@ -63,6 +63,8 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<A
       settings: convertSettings(settings),
     },
   });
+
+  return true;
 };
 
 export default initializeApplication;

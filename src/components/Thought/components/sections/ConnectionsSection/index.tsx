@@ -46,11 +46,13 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
     history.push(`/${planId ? `plan/${planId}/` : ''}thought/${id}`);
   };
 
+  const toConnections = connections.filter(({ isParent }) => Boolean(isParent));
+
   return (
     <ThoughtSection
       classes={classes}
       Icon={Link}
-      field={`Connections (${connections.filter(connection => connection.otherThought.status === 'completed').length}/${connections.length})`}
+      field={`Connections (${toConnections.filter(connection => connection.otherThought.status === 'completed').length}/${toConnections.length})`}
       value={connections.map(({ isParent, otherThought }) => {
         return `${isParent ? 'to' : 'from'}: ${otherThought.title}${otherThought.status === 'completed' ? ' ✓' : ''}`;
       })}
