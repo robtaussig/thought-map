@@ -141,6 +141,21 @@ export const styles = (theme: any): StyleRules => ({
       },
     },
   },
+  connectionStatus: {
+    marginLeft: 20,
+    fontSize: 11,
+    color: theme.palette.gray[300],
+  },
+  thoughtNodeTitleWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+  },
+  planName: {
+    fontSize: 10,
+    fontWeight: 600,
+    color: theme.palette.gray[300],
+  },
   thoughtNodeTitle: {
     color: theme.palette.gray[500],
     flex: 1,

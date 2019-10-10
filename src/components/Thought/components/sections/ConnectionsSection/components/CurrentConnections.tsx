@@ -18,13 +18,14 @@ export const CurrentConnections: FC<CurrentConnectionsProps> = ({ classes, conne
 
   return (
     <ul className={classes.currentConnections}>
-      {connections.map(({ otherThought, connectionId }, idx) => {
-        return (
-          <li key={`${idx}-connection`} className={classes.currentConnection}>
-            <span className={classes.currentConnectionTitle}>{otherThought.title}</span>
-            <button className={classes.deleteConnectionButton} onClick={handleDeleteConnection(connectionId)}><Delete/></button>
-          </li>
-        );
+      {connections
+        .map(({ otherThought, connectionId }, idx) => {
+          return (
+            <li key={`${idx}-connection`} className={classes.currentConnection}>
+              <span className={classes.currentConnectionTitle}>{otherThought.title}</span>
+              <button className={classes.deleteConnectionButton} onClick={handleDeleteConnection(connectionId)}><Delete/></button>
+            </li>
+          );
       })}
     </ul>
   );

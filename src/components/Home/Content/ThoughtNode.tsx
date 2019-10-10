@@ -8,6 +8,7 @@ import { Thought } from 'store/rxdb/schemas/thought';
 import useLongPress from '../../../hooks/useLongPress';
 import useModal from '../../../hooks/useModal';
 import ThoughtNodeSettings from './ThoughtNodeSettings';
+import ConnectionStatus from './ConnectionStatus';
 
 interface ThoughtNodeProps {
   classes: any;
@@ -15,6 +16,8 @@ interface ThoughtNodeProps {
   statusOptions: string[];
   typeOptions: string[];
   displayField: string;
+  connectionStatus: [number, number];
+  planName: string;
 }
 
 const STATUS_TO_COLOR: { [key: string]: string } = {
@@ -39,7 +42,15 @@ const styleFromPriority = (priority: number): { color?: string, fontWeight?: num
   return {};
 };
 
-export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought, statusOptions, typeOptions, displayField }) => {
+export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
+  classes,
+  thought,
+  statusOptions,
+  typeOptions,
+  displayField,
+  connectionStatus,
+  planName,
+}) => {
   const { history } = useApp();
   const db = useLoadedDB();
   const [openModal, closeModal] = useModal();
@@ -71,7 +82,20 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({ classes, thought,
 
   return (
     <div className={classes.thoughtNode} {...handleLongPress}>
-      <span className={classes.thoughtNodeTitle} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
+      {planName ? (
+        <div className={classes.thoughtNodeTitleWrapper}>
+          <span className={classes.planName}>{planName}</span>
+          <span className={classes.thoughtNodeTitle} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
+        </div>
+      ) : (
+        <span className={classes.thoughtNodeTitle} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
+      )}
+      {connectionStatus && (
+        <ConnectionStatus
+          classes={classes}
+          connectionStatus={connectionStatus}
+        />
+      )}
       {displayField === 'type' ? (
         <Select
           id={'status-select'}

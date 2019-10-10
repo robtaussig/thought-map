@@ -14,7 +14,7 @@ import { Searchable } from '../ThoughtSearch';
 import { useNestedXReducer } from '../../../hooks/useXReducer';
 import useApp from '../../../hooks/useApp';
 import useLongPress from '../../../hooks/useLongPress';
-import { AppState, SortFilterField } from '~reducers';
+import { AppState, SortFilterField, Connections } from '~reducers';
 
 interface ContentProps {
   classes: any;
@@ -23,6 +23,10 @@ interface ContentProps {
   statusOptions: string[];
   typeOptions: string[];
   state: AppState;
+}
+
+interface ThoughtConnections {
+  [thoughtId: string]: [number, number];
 }
 
 export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, state }) => {
@@ -47,6 +51,17 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       true
   }));
 
+  const connectionStatusByThought = useMemo(() =>
+    Object.values(state.connections).reduce((next, { from, to }) => {
+      if (thoughts.find(({ id }) => from === id)) {
+        next[from] = next[from] || [0,0];
+        const otherThought = state.thoughts.find(otherThought => otherThought.id === to);
+        next[from][1]++;
+        if (otherThought.status === 'completed') next[from][0]++;
+      }
+      return next;
+    }, {} as ThoughtConnections), [state.connections, thoughts, state.thoughts]);
+
   const thoughtComponents = useMemo(() => {
     const filterCompletedThoughts = (thought: Thought) => searchTerm !== '' || (plan && plan.showCompleted) || (thought.status !== 'completed' && thought.status !== 'won\'t fix');
     const filterMatchedThoughts = (thought: Thought) => {
@@ -62,6 +77,11 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       return 1;
     };
 
+    const planNamesById = state.plans.reduce((next, statePlan) => {
+      next[statePlan.id] = statePlan.name;
+      return next;
+    }, {} as { [planId: string]: string });
+
     return thoughts
       .filter(filterCompletedThoughts)
       .filter(filterMatchedThoughts)
@@ -75,10 +95,12 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
             statusOptions={statusOptions}
             typeOptions={typeOptions}
             displayField={sortFilterSettings.field}
+            connectionStatus={connectionStatusByThought[thought.id]}
+            planName={!plan && (planNamesById[thought.planId] || 'Uncategorized')}
           />
         );
       });
-  }, [thoughts, plan, sortFilterSettings, matchingThoughts, searchTerm !== '']);
+  }, [thoughts, plan, sortFilterSettings, matchingThoughts, searchTerm !== '', connectionStatusByThought]);
 
   const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
     const scrollTop = e.target.scrollTop;

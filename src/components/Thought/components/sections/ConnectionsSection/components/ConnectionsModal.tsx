@@ -100,7 +100,6 @@ export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, 
   const availableThoughts = useMemo(() => {
     const otherThoughtIds =
       connections
-        .filter(({ isParent }) => isParent)
         .map(({ otherThought }) => otherThought.id);
 
     return state.thoughts

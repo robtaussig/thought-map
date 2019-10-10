@@ -52,7 +52,14 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
   
   return (
     <div className={classes.root}>
-      <Content classes={classes} state={state} thoughts={thoughts} plan={plan} statusOptions={statusOptions} typeOptions={typeOptions}/>
+      <Content
+        classes={classes}
+        state={state}
+        thoughts={thoughts}
+        plan={plan}
+        statusOptions={statusOptions}
+        typeOptions={typeOptions}
+      />
       <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId} setLastNotification={setLastNotification}/>
       {!addingThought &&
         <CircleButton

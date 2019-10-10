@@ -56,9 +56,13 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
       classes={classes}
       Icon={Link}
       field={`Connections (${toConnections.filter(connection => connection.otherThought.status === 'completed').length}/${toConnections.length})`}
-      value={connections.map(({ isParent, otherThought }) => {
-        return `${isParent ? 'to' : 'from'}: ${otherThought.title}${otherThought.status === 'completed' ? ' ✓' : ''}`;
-      })}
+      value={
+        connections
+          .sort((left, right) => left.isParent ? 1 : -1)
+          .map(({ isParent, otherThought }) => {
+            return `${isParent ? 'to' : 'from'}: ${otherThought.title}${otherThought.status === 'completed' ? ' ✓' : ''}`;
+          })
+      }
       className={'connections'}
       visible={visible}
       sectionState={sectionState}
