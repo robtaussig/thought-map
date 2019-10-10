@@ -99,7 +99,7 @@ export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, though
       <div className={classes.error}>
         <h2 className={classes.errorHeader}>Error</h2>
         <h3 className={classes.errorType}>{error.error}</h3>
-        {error.details}
+        {error.details || error.message}
       </div>
     );
   }

@@ -34,7 +34,7 @@ export const useGoogleCalendar = (config: Config = DefaultConfig): [boolean, Act
 
   useEffect(() => {
     const init = async () => {
-      const [gapi, cleanup] = await loadScript();
+      const [gapi, cleanup] = await loadScript().catch(setError);
 
       cleanupRef.current = cleanup;
       gapiRef.current = gapi;
@@ -47,12 +47,20 @@ export const useGoogleCalendar = (config: Config = DefaultConfig): [boolean, Act
       if (!isSignedIn) {
         gapiRef.current.auth2.getAuthInstance().signIn();
       }
+
       setSignedIn(isSignedIn);
+
+      return true;
     };
 
     try {
-      init();
+      let timeout = setTimeout(() => {
+        setError(new Error('Connection timed out'));
+      }, 5000);
+      
+      init().then(() => clearTimeout(timeout));
     } catch(e) {
+
       setError(e);
     }
 

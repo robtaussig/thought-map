@@ -25,7 +25,7 @@ interface ThoughtSectionProps {
   classes: any;
   Icon: any;
   field: string;
-  value: string | string[];
+  value: string | (string | [string, string])[];
   className: string;
   edit: EditProps;
   visible: boolean;
@@ -54,7 +54,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
 }) => {  
   const [editting, setEditting] = useState<boolean>(false);
   const [fullScreenImage, setFullScreenImage] = useState<string>(null);
-  const [edittedItems, setEdittedItems] = useState<string[]>([]);
+  const [edittedItems, setEdittedItems] = useState<(string | [string, string])[]>([]);
   const [moved, setMoved] = useState<boolean>(false);
   const movedTimeout = useRef<NodeJS.Timer>(null);
   const [openModal, closeModal] = useModal();
@@ -190,7 +190,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
                   <Input
                     classes={classes}
                     id={'quick-item-edit'}
-                    value={edittedItems[idx]}
+                    value={edittedItems[idx] as string}
                     autoSuggest={edit.autoSuggest}
                     onChange={e => {
                       const value = e.target.value;
@@ -237,7 +237,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
 
   const handleClickImage = (idx: number) => () => {
     const picture = value[idx];
-    setFullScreenImage(picture);
+    setFullScreenImage(picture[0]);
   };
 
   const handleCloseFullScreenImage = useCallback(() => {
@@ -265,8 +265,12 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         <ul className={classes.itemList}>
           {value.map((item, idx) => {
             return edit.type === EditTypes.Photo ?
-            // @ts-ignore
-            (<img key={`${idx}-image`} src={item} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>) :
+            (<div key={`${idx}-image`} className={classes.imageWrapper}>
+              {/* 
+              // @ts-ignore */}
+              <img src={item[0]} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>
+              <span className={classes.imageDescription}>{item[1]}</span>
+            </div>) :
             (
               <li key={`${item}-${idx}`} className={classes.noteItem} onClick={edit.onClickItem ? () => edit.onClickItem(item, idx) : undefined}>{linkify(item)}</li>
             );

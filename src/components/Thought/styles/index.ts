@@ -212,6 +212,15 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   itemList: {
     gridArea: 'section-value',
   },
+  imageWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: 10,
+  },
+  imageDescription: {
+    fontSize: 12,
+    color: theme.palette.gray[400],
+  },
   image: {
     width: '100%',
     height: 'auto',

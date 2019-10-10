@@ -42,7 +42,7 @@ export const PicturesSection: FC<PicturesSectionProps> = ({ classes, thought, pi
       classes={classes}
       Icon={CameraAlt}
       field={`Pictures`}
-      value={pinnedPictures.map(({ imgurUrl, localUrl }) => imgurUrl || localUrl)}
+      value={pinnedPictures.map(({ imgurUrl, localUrl, description }) => [(imgurUrl || localUrl), description])}
       className={'pictures'}
       visible={visible}
       sectionState={sectionState}
