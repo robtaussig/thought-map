@@ -12,24 +12,32 @@ interface CreatePlanProps {
 
 const styles = (theme: any): StyleRules => ({
   root: {
-    display: 'flex',
-    margin: '30px 0',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gridTemplateAreas: `"input input"
+                        ". submit"`,
+    gridTemplateRows: 'max-content max-content',
+    gridTemplateColumns: '1fr max-content',
+    gridGap: 10,
   },
   submitButton: {
-    flex: 0,
-    color: 'white',
-    fontWeight: 600,
+    gridArea: 'submit',
+    color: theme.palette.secondary[700],
     cursor: 'pointer',
-    marginLeft: 30,
-    '&:active': {
-      opacity: 0.7,
-    }
+    fontWeight: 600,
+    border: `1px solid ${theme.palette.secondary[700]}`,
+    padding: '2px 5px',
+    borderRadius: '4px',
+    '&:disabled': {
+      color: theme.palette.gray[400],
+      backgroundColor: 'transparent',
+      border: `1px solid ${theme.palette.gray[400]}`,
+    },
   },
   inputLabel: {
-    flex: 1,
+    gridArea: 'input',
     '& input': {
       width: '100%',
+      fontSize: 20,
     },
   },
 });
@@ -60,7 +68,7 @@ export const CreatePlan: FC<CreatePlanProps> = ({ classes, onClose }) => {
         autoFocus={true}
         placeholder={'Name'}
       />
-      <button className={classes.submitButton}>Create</button>
+      <button className={classes.submitButton} disabled={inputtedValue === ''}>Create</button>
     </form>
   );
 };
