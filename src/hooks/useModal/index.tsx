@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, FC } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, FC, useEffect } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Close from '@material-ui/icons/Close';
 import { withStyles, CSSProperties } from '@material-ui/styles';
@@ -19,14 +19,18 @@ interface ModalProps {
 }
 
 const ModalContext = createContext<ModalContextValue>(null);
+const DEFAULT_MODAL: ModalState = { component: null, label: 'Modal', options: {}, expanded: false };
 
-const INITIAL_STATE: ModalState[] = [{ component: null, label: 'Modal', options: {}, expanded: false }];
+const INITIAL_STATE: ModalState[] = [DEFAULT_MODAL];
 
 export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children, dynamicState = {} }) => {
   const [modals, setModals] = useState<ModalState[]>(INITIAL_STATE);
-  const modal = useMemo(() => modals[modals.length - 1], [modals]);
+  const modal = useMemo(() => modals[modals.length - 1] || DEFAULT_MODAL, [modals]);
+
   const handleClose = useCallback(() => {
     setModals(prev => {
+      if (prev.length === 0) return prev;
+
       if (prev[prev.length - 1].options && prev[prev.length - 1].options.afterClose) {
         prev[prev.length - 1].options.afterClose();
       }
@@ -50,6 +54,12 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children, 
     maxHeight: modal.expanded ? '100%' : '80%',
     ...(modal.options.style || {})
   };
+
+  useEffect(() => {
+    window.addEventListener('popstate', handleClose);
+
+    return () => window.removeEventListener('popstate', handleClose);
+  }, []);
 
   return (
     <ModalContext.Provider value={contextValue}>
