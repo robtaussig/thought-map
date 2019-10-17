@@ -8,8 +8,9 @@ import { Thought } from 'store/rxdb/schemas/thought';
 interface PriorityListProps {
   classes: any;
   thoughts: Thought[];
+  onClose?: () => void;
 }
-export const PriorityList: FC<PriorityListProps> = ({ classes, thoughts = [] }) => {
+export const PriorityList: FC<PriorityListProps> = ({ classes, onClose, thoughts = [] }) => {
   const [openModal, closeModal] = useModal();
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const hasInitialized = useRef<boolean>(false);
@@ -21,7 +22,13 @@ export const PriorityList: FC<PriorityListProps> = ({ classes, thoughts = [] }) 
 
   const openPriorityList = () => {
     setIsMinimized(false);
-    openModal(<PriorityListModal classes={classes} onMinimize={handleMinimize} thoughts={thoughts}/>);
+    openModal(
+      <PriorityListModal classes={classes} onMinimize={handleMinimize} thoughts={thoughts} onClose={onClose}/>,
+      'Priorities',
+      {
+        afterClose: onClose,
+      }
+    );
   };
 
   useEffect(() => {

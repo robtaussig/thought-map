@@ -6,6 +6,7 @@ import CreatePlan from './components/create';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Plan } from 'store/rxdb/schemas/plan';
 import { Notification } from '../../../types';
+import PriorityList from '../../Home/PriorityList/';
 
 interface PlanSelectProps {
   classes: any;
@@ -18,21 +19,28 @@ interface PlanSelectProps {
 const HOME_NAME = 'ThoughtMap';
 const SHOW_ARCHIVED = 'Show Archived';
 const HIDE_ARCHIVED = 'Hide Archived';
+const PRIORITIES = 'Priorities';
 
 export const CREATE_NEW_PLAN = 'Create Plan';
 
 export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, planId, setLastNotification }) => {
   const [currentPlan, setCurrentPlan] = useState<string>(HOME_NAME);
   const [showArchived, setShowArchived] = useState<boolean>(false);
+  const [showPriorities, setShowPriorities] = useState<boolean>(false);
   const [openModal, closeModal] = useModal();
   const lastPlan = useRef<string>(HOME_NAME);
   const planOptions = [
+    PRIORITIES,
     HOME_NAME,
     ...[...new Set(plans.filter(hideOrShowArchived(showArchived)).map(toName))],
     showArchived ? HIDE_ARCHIVED : SHOW_ARCHIVED,
     CREATE_NEW_PLAN
   ];
   const { history, dispatch } = useApp();
+
+  const onClosePriorityList = useCallback(() => {
+    setShowPriorities(false);
+  }, []);
 
   const handleChange = useCallback(e => {
     const value = e.target.value;
@@ -62,6 +70,11 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
       case HOME_NAME:
         history.push('/');
         break;
+
+      case PRIORITIES:
+          setShowPriorities(true);
+          setCurrentPlan(lastPlan.current);
+        break;
     
       default:
         const plan = plans.find(({ name }) => name === value);
@@ -82,14 +95,17 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
   }, [planId, plans]);
 
   return (
-    <Select
-      id={'plans'}
-      classes={classes}
-      value={currentPlan}
-      options={planOptions}
-      onChange={handleChange}
-      ariaLabel={'Select Plan'}
-    />
+    <>
+      <Select
+        id={'plans'}
+        classes={classes}
+        value={currentPlan}
+        options={planOptions}
+        onChange={handleChange}
+        ariaLabel={'Select Plan'}
+      />
+      {showPriorities && <PriorityList thoughts={thoughts} onClose={onClosePriorityList}/>}
+    </>
   );
 };
 

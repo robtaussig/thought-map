@@ -7,10 +7,11 @@ import useApp from '../../../../hooks/useApp';
 interface PriorityListModalProps {
   classes: any;
   thoughts: Thought[];
-  onMinimize: () => void;
+  onMinimize?: () => void;
+  onClose?: () => void;
 }
 
-export const PriorityListModal: FC<PriorityListModalProps> = ({ classes, thoughts, onMinimize }) => {
+export const PriorityListModal: FC<PriorityListModalProps> = ({ classes, thoughts, onMinimize = () => {} }) => {
   const { history } = useApp();
   const priorityThoughts = useMemo(() => {
     const thoughtsWithPriority = thoughts.map(assignThoughtPriority);
@@ -40,9 +41,10 @@ const assignThoughtPriority = (thought: Thought): { thought: Thought, priority: 
   const lastUpdatedModifier = getLastUpdatedModifier(thought);
   const statusModifier = getStatusModifier(thought);
   const typeModifier = getTypeModifier(thought);
+  const goalModifier = getGoalModifier(thought);
 
   return {
-    priority: dateModifier + priorityModifier + lastUpdatedModifier + statusModifier + typeModifier,
+    priority: dateModifier + priorityModifier + lastUpdatedModifier + statusModifier + typeModifier + goalModifier,
     thought,
   };
 };
@@ -98,6 +100,11 @@ const getTypeModifier = ({ type = '' }: { type?: string }) => {
     default:
       return 0;
   }
+};
+
+const getGoalModifier = ({ goalPoints = 0}): number => {
+
+  return Math.min(10, goalPoints);
 };
 
 export default PriorityListModal;

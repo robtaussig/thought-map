@@ -163,7 +163,7 @@ const styles = (theme: any): StyleRules => ({
 const RELOAD_BEFORE_IMPORT_TEXT = 'Would you like to back up your current data first (cancel will proceed without backup)? The page will reload.';
 const CONTINUE_DELETE_TEXT = 'Are you sure you want to delete your data?';
 const DIAGNOSIS_TOOLTIP_TEXT = 'Sometimes bugs magically appear and result in corrupted and/or orphaned data, and other unforeseeable consequences. This tool will scan your database and fix these issues automatically if possible and suggest actions where not.';
-const DELETE_DATA_TOOLTIP = 'Before you can import data from a JSON file, you must first delete your data. You will be asked whether you want to create a backup before continuing.';
+const DELETE_DATA_TOOLTIP = 'You may need to delete your data before importing from JSON. You will be asked whether you want to create a backup before continuing.';
 
 export const jsonDump = async (db: RxDatabase) => {
   const json = await db.dump();
@@ -272,15 +272,14 @@ export const Data: FC<DataProps> = ({ classes, state, setLoading }) => {
         top: side === Side.TOP ? '100%' : 0,
       }}>
         <h1 className={classes.header}>Data</h1>
-        {readyToImport ? (<label className={classes.uploadInput}>
+        <label className={classes.uploadInput}>
           <span>Import Data from JSON</span>
           <input ref={importJSONRef} type="file" accept="json/*" id="file-input"/>
-        </label>) : (
-          <div className={classes.buttonWrapper}>
+        </label>
+        <div className={classes.buttonWrapper}>
             <button className={classes.tooltipButton} onClick={handleClickDeleteDatabase}>Delete Data</button>
             <Tooltip className={'tooltip'} text={DELETE_DATA_TOOLTIP}/>
           </div>
-        )}
         <button className={classes.button} onClick={handleClickExportDataJSON}>Export Data to JSON</button>
         <div className={classes.buttonWrapper}>
           <button className={classes.tooltipButton} onClick={handleClickRunDiagnosis}>Run diagnosis</button>
