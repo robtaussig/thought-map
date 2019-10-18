@@ -2,6 +2,10 @@ import React, { FC, useEffect } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
+import { useLoadedDB } from '../../../hooks/useDB';
+import useApp from '../../../hooks/useApp';
+import { thoughts as thoughtActions } from '../../../actions';
+import { openConfirmation, homeUrl } from '../../../lib/util';
 
 interface ThoughtNodeSettingsProps {
   classes: any,
@@ -47,18 +51,37 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, thought, onClose, onLoad }) => {
+  const db = useLoadedDB();
+  const { history } = useApp();
 
   useEffect(() => {
     onLoad();
   }, []);
 
+  const handleClickBump = () => {
+    thoughtActions.editThought(db, {
+      ...thought
+    });
+  };
+
+  const handleClickDelete = () => {
+    openConfirmation('Are you sure you want to delete this thought?', () => {
+      thoughtActions.deleteThought(db, thought.id);
+      onClose();
+    });
+  };
+
+  const handleClickViewConnections = () => {
+    history.push(`${homeUrl(history)}thought/${thought.id}/connections`);
+  };
+
   return (
     <div className={classes.root}>
       <h1 className={classes.title}>{thought.title}</h1>
-      <button className={classes.button}>Bump</button>
+      <button className={classes.button} onClick={handleClickBump}>Bump</button>
       <button className={classes.button}>View History</button>
-      <button className={classes.button}>View Connections</button>
-      <button className={classNames(classes.button, 'delete')}>Delete</button>
+      <button className={classes.button} onClick={handleClickViewConnections}>View Connections</button>
+      <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete}>Delete</button>
     </div>
   );
 };

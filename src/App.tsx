@@ -13,6 +13,7 @@ import PriorityList from './components/Home/PriorityList';
 import Settings from './components/Settings';
 import Thought from './components/Thought';
 import Notifications from './components/Notifications';
+import Connections from './components/Connections';
 import { ModalProvider } from './hooks/useModal';
 import Div100vh from 'react-div-100vh';
 import {
@@ -97,8 +98,14 @@ const App: FC<AppProps> = ({ classes, history }) => {
               <Route path={'/settings'}>
                 {dbReadyState && <Settings state={state} typeOptions={typeOptions} setLastNotification={setLastNotification}/>}
               </Route>
+              <Route path={'/thought/:id/connections'}>
+                {dbReadyState && <Connections state={state}/>}
+              </Route>
               <Route path={'/thought/:id'}>
                 {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
+              </Route>
+              <Route path={'/plan/:id/thought/:thoughtId/connections'}>
+                {dbReadyState && <Connections state={state}/>}
               </Route>
               <Route path={'/plan/:id/thought/:thoughtId'}>
                 {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
