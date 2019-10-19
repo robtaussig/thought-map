@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import CircleButton from '../General/CircleButton';
 import Delete from '@material-ui/icons/Delete';
 import useModal from '../../hooks/useModal';
+import useApp from '../../hooks/useApp';
+import { homeUrl } from '../../lib/util';
 import Template from './components/template';
 import AddToCalendar from './components/Calendar';
 import { Thought } from 'store/rxdb/schemas/thought';
@@ -26,7 +28,7 @@ const APPLY_SECTION_STATE_TOOLTIP_TEXT = 'Will apply this thought\'s section str
 
 export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, onApplySectionState, thought, tags, notes, onDelete, onEditSections }) => {
   const [openModal, closeModal] = useModal();
-
+  const { history } = useApp();
   const handleClickUseAsTemplate = () => {
     openModal(<Template classes={classes} onClose={closeModal} thought={thought} tags={tags} notes={notes}/>, 'Template');
   };
@@ -43,15 +45,20 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, on
     onEditSections();
   };
 
+  const handleClickViewConnections = () => {
+    history.push(`${homeUrl(history)}thought/${thought.id}/connections`);
+  };
+
   return (
     <div className={classes.root} style={{
       top: display ? 0 : '100%',
       visibility: display ? 'visible' : 'hidden',
     }}>
       <div className={classes.settings}>
-        <button className={classes.templateButton} onClick={handleClickUseAsTemplate}>Create Template</button>
-        <button className={classes.background} onClick={handleClickAddToCalendar}>Manage Calendar</button>
-        <button className={classes.fields} onClick={handleClickEditSections}>Edit Sections</button>
+        <button onClick={handleClickUseAsTemplate}>Create Template</button>
+        <button onClick={handleClickViewConnections}>View Connections</button>
+        <button onClick={handleClickAddToCalendar}>Manage Calendar</button>
+        <button onClick={handleClickEditSections}>Edit Sections</button>
         <div className={classes.applySectionState}>
           <button className={classes.sectionStateButton} onClick={handleClickApplySectionState}>Apply SectionState</button>
           <Tooltip text={APPLY_SECTION_STATE_TOOLTIP_TEXT}/>

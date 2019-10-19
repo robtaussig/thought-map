@@ -25,9 +25,6 @@ export const styles = (theme: any): StyleRules => ({
       backgroundColor: theme.palette.primary[500],
     },
   },
-  templateButton: {
-
-  },
   templateSettings: {
     
   },
@@ -81,12 +78,6 @@ export const styles = (theme: any): StyleRules => ({
     width: 'unset',
   },
   color: {
-
-  },
-  background: {
-
-  },
-  fields: {
 
   },
   recurring: {
