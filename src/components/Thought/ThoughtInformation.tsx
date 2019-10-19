@@ -352,7 +352,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     const handleScroll = (e: any) => {
 
       const scrollTop = e.target.scrollTop;
-      setIsScrollingDown(scrollTop < lastScrollPos.current);
+      setIsScrollingDown(scrollTop > lastScrollPos.current);
       lastScrollPos.current = scrollTop;
     };
 
