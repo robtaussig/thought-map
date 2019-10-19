@@ -7,11 +7,13 @@ interface Handlers {
 }
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+const isMobileIOS = /iPhone/.test(navigator.userAgent);
 
 export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500, combinedHandlers: Handlers = {}) => {
   const pressTimeout = useRef<NodeJS.Timer>(null);
 
   const handlePressStart = (e: any) => {
+    
     combinedHandlers.onStart && combinedHandlers.onStart(e);
     pressTimeout.current = setTimeout(() => {
       pressTimeout.current = null;
@@ -28,7 +30,14 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
     if (pressTimeout.current) clearTimeout(pressTimeout.current);
   };
 
-  if (isMobile) {
+  if (isMobileIOS) {
+    return {
+      onMouseDown: handlePressStart,
+      onMouseUp: handlePressEnd,
+      onMouseMove: handlePressEnd,
+      onContextMenu: (e: any) => e.preventDefault(),
+    };
+  } else if (isMobile) {
     return {
       onTouchStart: handlePressStart,
       onTouchEnd: handlePressEnd,
