@@ -1,11 +1,12 @@
 import React, { FC, useMemo, useState, useEffect, useRef } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { withStyles, StyleRules, CSSProperties } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Connections } from '../../../reducers';
+import NodeComponent from './NodeComponent';
 import Grapher, {
-  GraphType,
   ThoughtsById,
 } from '../lib/grapher';
+import { Node } from '../lib/types';
 
 interface ConnectionGraphProps {
   classes: any;
@@ -17,20 +18,42 @@ interface ConnectionGraphProps {
 
 const styles = (theme: any): StyleRules => ({
   root: {
-
+    height: '100%',
+    padding: 10,
+    backgroundColor: theme.palette.gray[700],
   },
   canvas: {
-
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  nodeComponent: {
+    ...theme.defaults.centered,
+    '&:after': {
+      content: "''",
+      backgroundColor: theme.palette.primary[500],
+      borderRadius: '50%',
+      height: 20,
+      width: 20,
+    },
+    '&.origin': {
+      '&:after': {
+        backgroundColor: theme.palette.secondary[300],
+        height: 25,
+        width: 25,
+      },
+    },
+  },
+  nodeTitle: {
+    fontWeight: 600,
+    color: theme.palette.gray[200],
   },
 });
 
 export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, thoughts, connections }) => {
   const grapher = useRef(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [graph, setGraph] = useState<GraphType>({
-    vertices: [],
-    edges: [],
-  });
+  const [tree, setTree] = useState<Node[]>([]);
 
   const getGrapher = (): Grapher => {
     if (grapher.current === null) {
@@ -49,17 +72,48 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
 
   useEffect(() => {
     getGrapher()
-      .update(thought, thoughtsById, connections)
-      .generate(setGraph);
-  }, [thought, thoughtsById, connections]);
+      .update(thought, connections)
+      .generate(setTree);
+  }, [thought, connections]);
 
   useEffect(() => {
-    Grapher.draw(canvasRef.current, graph);
-  }, [graph]);
+    Grapher.draw(canvasRef.current, tree);
+  }, [tree]);
+
+  const [columns, rows, _nodes]: any[] = useMemo(() => {
+    const maxY = Math.max(...tree.map(({ y }) => y));
+    const maxX = Math.max(...tree.map(({ x }) => x));
+
+    return [maxX, maxY, tree.map(({ x, y, vertex }) => {
+      const nodeThought = thoughtsById[vertex.id];
+
+      return (
+        <NodeComponent
+          classes={classes}
+          key={nodeThought.id}
+          x={x}
+          y={y}
+          columns={maxX}
+          rows={maxY}
+          thought={nodeThought}
+          isOrigin={thought.id === nodeThought.id}
+        />
+      )
+    })];
+  }, [tree, thoughtsById]);
+
+  const style: CSSProperties = useMemo(() => {
+    return {
+      display: 'grid',
+      gridTemplateRows: `repeat(${rows + 1}, ${100 / (rows + 1)}%)`,
+      gridTemplateColumns: `repeat(${columns + 1}, ${100 / (columns + 1)}%)`,
+    };
+  }, [columns, rows]);
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={style}>      
       <canvas className={classes.canvas} ref={canvasRef}/>
+      {_nodes}
     </div>
   );
 };
