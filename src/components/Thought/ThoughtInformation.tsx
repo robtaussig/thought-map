@@ -1,6 +1,7 @@
-import React, { useMemo, FC, useState, useRef } from 'react';
+import React, { useMemo, FC, useState, useRef, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Close from '@material-ui/icons/Close';
+import Link from '@material-ui/icons/Link';
 import { getTime } from './util';
 import {
   notes as noteActions,
@@ -82,12 +83,14 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 
   const lastSectionOrder = useRef<string[]>(null);
   const handleMoveCB = useRef<() => void>(null);
+  const sectionsWrapper = useRef<HTMLDivElement>(null);
   lastSectionOrder.current = sectionOrder;
   const lastSectionVisibility = useRef<SectionVisibility>(null);
   lastSectionVisibility.current = sectionVisibility;
   const db = useLoadedDB();
   const { history } = useApp();
   const [editingSection, setEditingSection] = useState<string>(null);
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState<boolean>(false);
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
     if (statuses && statuses.length > 0) {
       return [getTime(statuses[statuses.length - 1].updated), getTime(statuses[0].created)];
@@ -210,6 +213,10 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const handleCancelEditSection = () => {
     setEditingSection(null);
     cancelEditAllSections();
+  };
+
+  const handleClickViewConnections = () => {
+    history.push(`${homeUrl(history)}thought/${thought.id}/connections`);
   };
 
   const handleClickRoot = (e: any) => {
@@ -338,6 +345,32 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       onToggleVisibility={handleToggleVisibility('pictures')}
     />),
   }
+  
+  const checkIsScrolledToBottom = () => {
+    return sectionsWrapper.current.scrollTop + sectionsWrapper.current.clientHeight === sectionsWrapper.current.scrollHeight;
+  };
+
+  useEffect(() => {
+    
+    const handleScroll = () => {
+      const atBottom = checkIsScrolledToBottom();
+      if (!isScrolledToBottom && atBottom) {
+        setIsScrolledToBottom(true);
+      } else if (isScrolledToBottom && !atBottom) {
+        setIsScrolledToBottom(false);
+      }
+    };
+
+    sectionsWrapper.current.addEventListener('scroll', handleScroll);
+
+    return () => sectionsWrapper.current.removeEventListener('scroll', handleScroll);
+  }, [isScrolledToBottom, connections]);
+
+  useEffect(() => {
+    if (checkIsScrolledToBottom()) {
+      setIsScrolledToBottom(true);
+    }
+  }, []);
 
   return (
     <div className={classes.root} onClick={handleClickRoot}>
@@ -350,11 +383,18 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       <span className={classes.createdAt}>Created {createdText}</span>
       <span className={classes.updatedAt}>Updated {lastUpdatedText}</span>
       {plan && <span className={classes.planName}>{plan.name}</span>}
-      <div className={classes.thoughtSections}>
+      <div ref={sectionsWrapper} className={classes.thoughtSections}>
         {sectionOrder.map((section, idx) => {
           return components[section];
-        })}  
+        })}
       </div>
+      <CircleButton
+        classes={classes}
+        id={isScrolledToBottom && connections.length > 0 ? 'visibile-connections-button' : 'hidden-connections-button'}
+        onClick={handleClickViewConnections}
+        label={'Connections'}
+        Icon={Link}
+      />
     </div>
   )
 });

@@ -62,6 +62,16 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       opacity: 0.5,
       border: '2px solid white',
     },
+    '&#visibile-connections-button': {
+      bottom: 10,
+      right: 10,
+      transition: 'all 0.1s linear',
+    },
+    '&#hidden-connections-button': {
+      bottom: -100,
+      right: 10,
+      transition: 'all 0.1s linear',
+    },
   },
   placeBeforeButton: {
 
