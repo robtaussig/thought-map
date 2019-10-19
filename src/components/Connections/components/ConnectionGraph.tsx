@@ -30,10 +30,17 @@ const styles = (theme: any): StyleRules => ({
     ...theme.defaults.centered,
     '&:after': {
       content: "''",
-      backgroundColor: theme.palette.primary[500],
+      backgroundColor: theme.palette.gray[300],
       borderRadius: '50%',
-      height: 20,
-      width: 20,
+      height: 15,
+      width: 15,
+    },
+    '&.completed': {
+      '&:after': {
+        backgroundColor: theme.palette.primary[500],
+        height: 20,
+        width: 20,
+      },
     },
     '&.origin': {
       '&:after': {

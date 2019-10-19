@@ -53,18 +53,22 @@ export const NodeComponent: FC<NodeComponentProps> = ({
       <button
         className={classNames(classes.nodeComponent, {
           origin: isOrigin,
+          completed: thought.status === 'completed',
         })}
         style={nodeStyle}
+        aria-label={thought.title}
         onClick={handleClick}
       />
-      <span
+      <button
         className={classNames(classes.nodeTitle, {
           origin: isOrigin,
         })}
         style={titleStyle}
+        onClick={handleClick}
+        aria-label={thought.title}
       >
         {thought.title}
-      </span>
+      </button>
     </>
   );
 };
