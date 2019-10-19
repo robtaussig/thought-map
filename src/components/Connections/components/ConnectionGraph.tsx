@@ -55,6 +55,7 @@ const styles = (theme: any): StyleRules => ({
     fontWeight: 600,
     color: theme.palette.gray[200],
     textShadow: '0px 0px 30px black',
+    overflow: 'auto',
   },
 });
 

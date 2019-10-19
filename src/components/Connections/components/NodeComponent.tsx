@@ -43,16 +43,23 @@ export const NodeComponent: FC<NodeComponentProps> = ({
     gridColumn: x + 1,
   };
 
-  const titleStyle = x > (columns / 2) ? {
+  const testShift = (((window.innerWidth / (columns + 1)) / 2) - 20) * -1;
+
+  const titleToLeft = x > (columns / 2);
+  const titleStyle = titleToLeft ? {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
+    marginLeft: 10,
+    marginRight: testShift,
     gridRow: y + 1,
     gridColumn:  `1 / ${x + 1}`,
   } : {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    marginRight: 10,
+    marginLeft: testShift,
     gridRow: y + 1,
     gridColumn: `${x + 2} / -1`,
   };
