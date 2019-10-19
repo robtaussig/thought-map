@@ -19,13 +19,11 @@ interface ConnectionGraphProps {
 const styles = (theme: any): StyleRules => ({
   root: {
     height: '100%',
-    padding: 10,
-    backgroundColor: theme.palette.gray[700],
   },
   canvas: {
     position: 'absolute',
-    width: 'calc(100% - 20px)',
-    height: 'calc(100% - 20px)',
+    width: '100%',
+    height: '100%',
     zIndex: -1,
   },
   nodeComponent: {
@@ -78,8 +76,8 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
   }, [thought, connections]);
 
   useEffect(() => {
-    Grapher.draw(canvasRef.current, tree);
-  }, [tree]);
+    getGrapher().draw(canvasRef.current, tree, thoughtsById);
+  }, [tree, thoughtsById]);
 
   const [columns, rows, _nodes]: any[] = useMemo(() => {
     const maxY = Math.max(...tree.map(({ y }) => y));
@@ -113,7 +111,12 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
 
   return (
     <div className={classes.root} style={style}>      
-      <canvas className={classes.canvas} ref={canvasRef}/>
+      <canvas
+        className={classes.canvas}
+        ref={canvasRef}
+        height={window.innerHeight}
+        width={window.innerWidth}  
+      />
       {_nodes}
     </div>
   );

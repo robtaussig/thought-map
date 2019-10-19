@@ -33,7 +33,6 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   const titleStyle = x > (columns / 2) ? {
     display: 'flex',
     justifyContent: 'flex-end',
-    marginRight: 20,
     alignItems: 'center',
     gridRow: y + 1,
     gridColumn:  `1 / ${x + 1}`,
@@ -41,7 +40,6 @@ export const NodeComponent: FC<NodeComponentProps> = ({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginLeft: 20,
     gridRow: y + 1,
     gridColumn: `${x + 2} / -1`,
   };

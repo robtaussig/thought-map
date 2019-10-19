@@ -1,10 +1,12 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
+import { useModalDynamicState } from '../../../hooks/useModal';
 import useApp from '../../../hooks/useApp';
 import { thoughts as thoughtActions } from '../../../actions';
+import { AppState } from '../../../reducers';
 import { openConfirmation, homeUrl } from '../../../lib/util';
 
 interface ThoughtNodeSettingsProps {
@@ -52,6 +54,7 @@ const styles = (theme: any): StyleRules => ({
 
 export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, thought, onClose, onLoad }) => {
   const db = useLoadedDB();
+  const state: AppState = useModalDynamicState();
   const { history } = useApp();
 
   useEffect(() => {
@@ -59,6 +62,7 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
   }, []);
 
   const handleClickBump = () => {
+    onClose();
     thoughtActions.editThought(db, {
       ...thought
     });
@@ -72,15 +76,20 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
   };
 
   const handleClickViewConnections = () => {
+    onClose();
     history.push(`${homeUrl(history)}thought/${thought.id}/connections`);
   };
+
+  const hasConnections = useMemo(() => {
+    return Object.values(state.connections).some(({ from, to }) => [from, to].includes(thought.id));
+  }, [state.connections, thought]);
 
   return (
     <div className={classes.root}>
       <h1 className={classes.title}>{thought.title}</h1>
       <button className={classes.button} onClick={handleClickBump}>Bump</button>
       <button className={classes.button}>View History</button>
-      <button className={classes.button} onClick={handleClickViewConnections}>View Connections</button>
+      {hasConnections && <button className={classes.button} onClick={handleClickViewConnections}>View Connections</button>}
       <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete}>Delete</button>
     </div>
   );
