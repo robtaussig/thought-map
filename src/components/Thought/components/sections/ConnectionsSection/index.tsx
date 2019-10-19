@@ -60,7 +60,8 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
         connections
           .sort((left, right) => left.isParent ? 1 : -1)
           .map(({ isParent, otherThought }) => {
-            return `${isParent ? 'to' : 'from'}: ${otherThought.title}${otherThought.status === 'completed' ? ' ✓' : ''}`;
+            const isCompleted = otherThought.status === 'completed';
+            return (<span className={isCompleted ? 'completed' : 'incomplete'}>{isParent ? 'to' : 'from'}: {otherThought.title}</span>);
           })
       }
       className={'connections'}

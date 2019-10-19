@@ -25,7 +25,7 @@ interface ThoughtSectionProps {
   classes: any;
   Icon: any;
   field: string;
-  value: string | (string | [string, string])[];
+  value: string | any[];
   className: string;
   edit: EditProps;
   visible: boolean;

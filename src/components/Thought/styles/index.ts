@@ -244,6 +244,9 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     '&:not(:last-child)': {
       borderBottom: '1px solid black',
     },
+    '& .completed': {
+      color: theme.palette.secondary[500],
+    }
   },
   quickAddButton: {
     color: theme.palette.primary[500],
