@@ -2,6 +2,9 @@ import React, { FC } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import useApp from '../../../hooks/useApp';
+import useLongPress from '../../../hooks/useLongPress';
+import ConnectionsModal from '../../Thought/components/sections/ConnectionsSection/components/ConnectionsModal';
+import useModal from '../../../hooks/useModal';
 import { homeUrl } from '../../../lib/util';
 
 interface NodeComponentProps {
@@ -24,7 +27,17 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   isOrigin,
 }) => {
   const { history } = useApp();
+  const [openModal, closeModal] = useModal();
+  const onLongPress = () => {
+    openModal(
+      <ConnectionsModal
+        onClose={closeModal}
+        thoughtId={thought.id}
+      />
+    );
+  };
 
+  const handleLongPress = useLongPress(onLongPress);
   const nodeStyle = {
     gridRow: y + 1,
     gridColumn: x + 1,
@@ -58,6 +71,7 @@ export const NodeComponent: FC<NodeComponentProps> = ({
         style={nodeStyle}
         aria-label={thought.title}
         onClick={handleClick}
+        {...handleLongPress}
       />
       <button
         className={classNames(classes.nodeTitle, {
@@ -65,6 +79,7 @@ export const NodeComponent: FC<NodeComponentProps> = ({
         })}
         style={titleStyle}
         onClick={handleClick}
+        {...handleLongPress}
         aria-label={thought.title}
       >
         {thought.title}

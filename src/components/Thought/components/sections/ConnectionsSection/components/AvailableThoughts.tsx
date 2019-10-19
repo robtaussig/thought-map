@@ -1,14 +1,19 @@
 import React, { FC, useMemo, ChangeEvent, useState, Fragment } from 'react';
 import { Thought } from 'store/rxdb/schemas/thought';
+import Add from '@material-ui/icons/Add';
 import Select from '../../../../../General/Select';
 import Input from '../../../../../General/Input';
 import { useLoadedDB } from '../../../../../../hooks/useDB';
+import { Plan } from '../../../../../../store/rxdb/schemas/plan';
 import { connections as connectionsActions } from '../../../../../../actions';
+import { createWholeThought } from '../../../../../../actions/complex';
 
 interface AvailableThoughtsProps {
   classes: any;
   thoughts: Thought[];
   thoughtId: string;
+  plan: Plan;
+  onCreate: () => void;
 }
 
 const CONNECT_TO = 'Connect to';
@@ -19,7 +24,7 @@ const sortConnections = (left: Thought, right: Thought) => {
   return left.title > right.title ? 1 : -1;
 };
 
-export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thoughts, thoughtId }) => {
+export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thoughts, thoughtId, plan, onCreate }) => {
   const db = useLoadedDB();
   const [searchText, setSearchText] = useState<string>('');
 
@@ -60,6 +65,25 @@ export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thought
     }
   };
 
+  const handleCreateConnection = async () => {
+    const createdThought = await createWholeThought(db, {
+      title: searchText,
+      type: plan && plan.defaultType || 'Task',
+      date: '',
+      time: '',
+      description: '',
+      notes: [],
+      tags: [],
+    }, plan.id);
+
+    await connectionsActions.createConnection(db, {
+      from: thoughtId,
+      to: createdThought.thought.id,
+    });
+
+    onCreate();
+  };
+
   return (
     <div className={classes.availableThoughts}>
       <Input
@@ -69,6 +93,15 @@ export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thought
         value={searchText}
         onChange={e => setSearchText(e.target.value)}
         autoFocus
+        injectedComponent={
+          <button
+            className={classes.submitButton}
+            onClick={handleCreateConnection}
+            disabled={searchText === ''}
+          >
+            <Add/>
+          </button>
+        }
       />
       {options.length > 10 ? (
         <Fragment>

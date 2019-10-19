@@ -3,6 +3,7 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import { ConnectionSummary } from '../../../../';
 import { useModalDynamicState } from '../../../../../../hooks/useModal';
 import { AppState } from '../../../../../../reducers';
+import { Plan } from '../../../../../../store/rxdb/schemas/plan';
 import AvailableThoughts from './AvailableThoughts';
 import CurrentConnections from './CurrentConnections';
 
@@ -65,9 +66,27 @@ const styles = (theme: any): StyleRules => ({
   },
   inputLabel: {
     '&#filter-thoughts': {
+      display: 'flex',
+      alignItems: 'center',
       '& input': {
         width: '100%',
+        flex: 1,
       },
+    },
+  },
+  submitButton: {
+    flex: '0 0 20px',
+    marginLeft: 5,
+    color: theme.palette.gray[200],
+    backgroundColor: theme.palette.secondary[500],
+    borderRadius: 5,
+    height: 20,
+    '& > svg': {
+      height: 20,
+      width: 20,
+    },
+    '&:disabled': {
+      backgroundColor: theme.palette.gray[400],
     },
   },
   selectLabel: {
@@ -81,7 +100,8 @@ const styles = (theme: any): StyleRules => ({
 
 export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, thoughtId }) => {
   const state: AppState = useModalDynamicState();
-
+  const thought = state.thoughts.find(({ id }) => id === thoughtId);
+  const plan: Plan = state.plans.find(({ id }) => thought.planId === id);
   const connections: ConnectionSummary[] = useMemo(() =>
     Object.values(state.connections)
       .filter(({ to, from }) => {
@@ -112,6 +132,8 @@ export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, 
         classes={classes}
         thoughts={availableThoughts}
         thoughtId={thoughtId}
+        plan={plan}
+        onCreate={onClose}
       />
       <CurrentConnections
         classes={classes}
