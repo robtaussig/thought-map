@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import CheckBox from '../../General/CheckBox';
+import Input from '../../General/Input';
 import { openConfirmation } from '../../../lib/util';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { plans as planActions, thoughts as thoughtActions } from '../../../actions';
@@ -15,6 +16,7 @@ interface DeletePlanProps {
 
 export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, afterDelete }) => {
   const [withThoughts, setWithThoughts] = useState<boolean>(false);
+  const [inputtedPlanName, setInputtedPlanName] = useState<string>('');
   const db = useLoadedDB();
 
   const handleClickDelete = async () => {
@@ -47,9 +49,20 @@ export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, after
   
   return (
     <section className={classes.deletePlanSection}>
-      <button className={classes.deletePlanButton} onClick={handleClickDelete}>
+      <button
+        className={classes.deletePlanButton}
+        onClick={handleClickDelete}
+        disabled={withThoughts && inputtedPlanName !== plan.name}  
+      >
         Delete
       </button>
+      {withThoughts && <Input
+        id={'confirm-delete-plan'}
+        label={'Enter Plan name to confirm deletion of all associated thoughts'}
+        classes={classes}
+        value={inputtedPlanName}
+        onChange={e => setInputtedPlanName(e.target.value)}
+      />}
       <CheckBox
         id={'with-thoughts'}
         title={'Delete all thoughts associated with this plan'}
@@ -57,7 +70,7 @@ export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, after
         isChecked={withThoughts}
         value={'Delete associated thoughts'}
         onChange={e => setWithThoughts(e.target.checked)}
-        label={'Delete associated thoughts'}
+        label={withThoughts ? '' : 'Delete associated thoughts'}
       />
     </section>
   );

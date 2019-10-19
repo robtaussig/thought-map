@@ -50,6 +50,12 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
         borderBottom: `1px solid ${theme.palette.primary[500]}`,
       },
     },
+    '&#confirm-delete-plan': {
+      display: 'flex',
+      flexDirection: 'column-reverse',
+      color: theme.palette.gray[200],
+      flex: 1,
+    },
   },
   selectLabel: {
     display: 'flex',
@@ -92,7 +98,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
       gridArea: 'archive-plan',
     },
     '&#with-thoughts': {
-      
+      marginLeft: 20,
     },
   },
   deletePlanSection: {
@@ -103,11 +109,13 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
   },
   deletePlanButton: {
     marginRight: 20,
-    border: `1px solid ${theme.palette.red[500]}`,
     backgroundColor: theme.palette.red[500],
     color: 'white',
     borderRadius: '4px',
     padding: '15px 30px',
+    '&:disabled': {
+      backgroundColor: theme.palette.gray[300],
+    },
   },
   circleButton: {
     ...theme.defaults.circleButton,
