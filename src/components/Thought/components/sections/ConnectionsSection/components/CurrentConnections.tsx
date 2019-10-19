@@ -19,10 +19,10 @@ export const CurrentConnections: FC<CurrentConnectionsProps> = ({ classes, conne
   return (
     <ul className={classes.currentConnections}>
       {connections
-        .map(({ otherThought, connectionId }, idx) => {
+        .map(({ otherThought, connectionId, isParent }, idx) => {
           return (
             <li key={`${idx}-connection`} className={classes.currentConnection}>
-              <span className={classes.currentConnectionTitle}>{otherThought.title}</span>
+              <span className={classes.currentConnectionTitle}>{isParent ? 'To' : 'From'}: {otherThought.title}</span>
               <button className={classes.deleteConnectionButton} onClick={handleDeleteConnection(connectionId)}><Delete/></button>
             </li>
           );
