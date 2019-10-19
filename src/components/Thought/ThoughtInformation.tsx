@@ -90,7 +90,8 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const db = useLoadedDB();
   const { history } = useApp();
   const [editingSection, setEditingSection] = useState<string>(null);
-  const [isScrolledToBottom, setIsScrolledToBottom] = useState<boolean>(false);
+  const [isScrollingDown, setIsScrollingDown] = useState<boolean>(false);
+  const lastScrollPos = useRef<number>(0);
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
     if (statuses && statuses.length > 0) {
       return [getTime(statuses[statuses.length - 1].updated), getTime(statuses[0].created)];
@@ -345,30 +346,27 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       onToggleVisibility={handleToggleVisibility('pictures')}
     />),
   }
-  
-  const checkIsScrolledToBottom = () => {
-    return sectionsWrapper.current.scrollTop + sectionsWrapper.current.clientHeight === sectionsWrapper.current.scrollHeight;
-  };
 
   useEffect(() => {
     
-    const handleScroll = () => {
-      const atBottom = checkIsScrolledToBottom();
-      if (!isScrolledToBottom && atBottom) {
-        setIsScrolledToBottom(true);
-      } else if (isScrolledToBottom && !atBottom) {
-        setIsScrolledToBottom(false);
-      }
+    const handleScroll = (e: any) => {
+
+      const scrollTop = e.target.scrollTop;
+      setIsScrollingDown(scrollTop < lastScrollPos.current);
+      lastScrollPos.current = scrollTop;
     };
 
     sectionsWrapper.current.addEventListener('scroll', handleScroll);
 
     return () => sectionsWrapper.current.removeEventListener('scroll', handleScroll);
-  }, [isScrolledToBottom, connections]);
+  }, [isScrollingDown, connections]);
 
   useEffect(() => {
+    const checkIsScrolledToBottom = () => {
+      return sectionsWrapper.current.clientHeight === sectionsWrapper.current.scrollHeight;
+    };
     if (checkIsScrolledToBottom()) {
-      setIsScrolledToBottom(true);
+      setIsScrollingDown(true);
     }
   }, []);
 
@@ -390,7 +388,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       </div>
       <CircleButton
         classes={classes}
-        id={isScrolledToBottom && connections.length > 0 ? 'visibile-connections-button' : 'hidden-connections-button'}
+        id={isScrollingDown && connections.length > 0 ? 'visibile-connections-button' : 'hidden-connections-button'}
         onClick={handleClickViewConnections}
         label={'Connections'}
         Icon={Link}
