@@ -35,7 +35,7 @@ const styles = (theme: any): StyleRules => ({
       height: 15,
       width: 15,
     },
-    '&.completed': {
+    '&.completed:not(.origin)': {
       '&:after': {
         backgroundColor: theme.palette.primary[500],
         height: 20,
