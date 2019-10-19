@@ -24,8 +24,9 @@ const styles = (theme: any): StyleRules => ({
   },
   canvas: {
     position: 'absolute',
-    width: '100%',
-    height: '100%',
+    width: 'calc(100% - 20px)',
+    height: 'calc(100% - 20px)',
+    zIndex: -1,
   },
   nodeComponent: {
     ...theme.defaults.centered,

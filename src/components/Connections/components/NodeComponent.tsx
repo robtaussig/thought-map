@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
+import useApp from '../../../hooks/useApp';
+import { homeUrl } from '../../../lib/util';
 
 interface NodeComponentProps {
   classes: any;
@@ -21,6 +23,7 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   thought,
   isOrigin,
 }) => {
+  const { history } = useApp();
 
   const nodeStyle = {
     gridRow: y + 1,
@@ -43,16 +46,19 @@ export const NodeComponent: FC<NodeComponentProps> = ({
     gridColumn: `${x + 2} / -1`,
   };
 
+  const handleClick = () => {
+    history.push(`${homeUrl(history)}thought/${thought.id}`);
+  };
+
   return (
     <>
-      <div
+      <button
         className={classNames(classes.nodeComponent, {
           origin: isOrigin,
         })}
         style={nodeStyle}
-      >
-        
-      </div>
+        onClick={handleClick}
+      />
       <span
         className={classNames(classes.nodeTitle, {
           origin: isOrigin,
