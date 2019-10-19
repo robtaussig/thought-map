@@ -79,7 +79,7 @@ export class Graph {
     const fromVertex = this.vertices.find(({ id }) => id === from);
     const toVertex = this.vertices.find(({ id }) => id === to);
     
-    fromVertex.addNext(toVertex);
-    toVertex.addPrev(fromVertex);
+    fromVertex.addPrev(toVertex);
+    toVertex.addNext(fromVertex);
   }
 }

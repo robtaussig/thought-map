@@ -17,7 +17,7 @@ export const getDepth = (vertex: Vertex, visited: Visited, depth: number = 0): n
 export const getTree = (vertices: Vertex[]): Node[] => {
   const sorted = Graph.topologicalSort(vertices);
 
-  return sorted.reverse().map((vertex, vertexIdx) => {
+  return sorted.map((vertex, vertexIdx) => {
     return {
       vertex,
       y: vertexIdx,

@@ -39,7 +39,15 @@ export default class Grapher {
 
   generate = (setter: (state: Node[]) => void) => {
     const relations = findRelations(this.origin, this.graph);
-    const tree = getTree(relations);
+  
+    const oneWayRelations = relations.map(relation => {
+      relation.next = relation.prev;
+      relation.prev = [];
+      return relation;
+    });
+  
+    const tree = getTree(oneWayRelations);
+
     setter(tree);
   }
 }
