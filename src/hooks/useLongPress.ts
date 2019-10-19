@@ -16,7 +16,9 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
     pressTimeout.current = setTimeout(() => {
       pressTimeout.current = null;
       combinedHandlers.onCancel && combinedHandlers.onCancel(e);
-      navigator.vibrate(100);
+      if ('vibrate' in navigator) {
+        navigator.vibrate(100);
+      }
       longPressCb(e);
     }, timer);
   };
