@@ -31,7 +31,7 @@ export default class Grapher {
     
     this.ctx.beginPath();
     this.ctx.lineWidth = 4;
-    this.ctx.strokeStyle = completed ? '#bada559c' : '#c7c7c763';
+    this.ctx.strokeStyle = completed ? '#bada5555' : '#c7c7c763';
     this.ctx.moveTo(fromXPx, fromYPx);
     this.ctx.lineTo(toXPx, toYPx);
     this.ctx.stroke();
