@@ -85,7 +85,7 @@ export default class Grapher {
     return this;
   }
 
-  generate = (setter: (state: Node[]) => void) => {
+  generate = (setter: (state: Node[], ) => void, thoughtsById: ThoughtsById) => {
     const relations = findRelations(this.origin, this.graph);
   
     const oneWayRelations = relations.map(relation => {
@@ -94,6 +94,8 @@ export default class Grapher {
       return relation;
     })
       .sort((a, b) => {
+        if (thoughtsById[a.id].status === 'completed' && thoughtsById[b.id].status !== 'completed') return -1;
+        if (thoughtsById[b.id].status === 'completed' && thoughtsById[a.id].status !== 'completed') return 1;
         if (a.id > b.id) return 1;
         return -1;
       });

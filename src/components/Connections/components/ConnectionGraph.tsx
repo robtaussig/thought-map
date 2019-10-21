@@ -82,8 +82,8 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
   useEffect(() => {
     getGrapher()
       .update(thought, connections)
-      .generate(setTree);
-  }, [thought, connections]);
+      .generate(setTree, thoughtsById);
+  }, [thought, thoughtsById, connections]);
 
   useEffect(() => {
     getGrapher().draw(canvasRef.current, tree, thoughtsById);
