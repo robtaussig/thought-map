@@ -92,7 +92,11 @@ export default class Grapher {
       relation.next = relation.prev;
       relation.prev = [];
       return relation;
-    });
+    })
+      .sort((a, b) => {
+        if (a.id > b.id) return 1;
+        return -1;
+      });
   
     const tree = getTree(oneWayRelations);
 
