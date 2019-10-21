@@ -30,8 +30,8 @@ export default class Grapher {
     const toYPx = (toY / (maxY + 1)) * canvas.height + midYPx;
     
     this.ctx.beginPath();
-    this.ctx.lineWidth = 4;
-    this.ctx.strokeStyle = completed ? '#bada5555' : '#c7c7c763';
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeStyle = completed ? '#8fc84a' : '#676767';
     this.ctx.moveTo(fromXPx, fromYPx);
     this.ctx.lineTo(toXPx, toYPx);
     this.ctx.stroke();

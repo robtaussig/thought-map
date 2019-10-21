@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { CSSProperties } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import useApp from '../../../hooks/useApp';
@@ -46,23 +47,25 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   const testShift = (((window.innerWidth / (columns + 1)) / 2) - 20) * -1;
 
   const titleToLeft = x > (columns / 2);
-  const titleStyle = titleToLeft ? {
+  const titleStyle: CSSProperties = {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginLeft: 10,
-    marginRight: testShift,
     gridRow: y + 1,
-    gridColumn:  `1 / ${x + 1}`,
-  } : {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginRight: 10,
-    marginLeft: testShift,
-    gridRow: y + 1,
-    gridColumn: `${x + 2} / -1`,
+    borderBottom: '1px solid #ffffff29',
+    borderStyle: 'dotted',
   };
+
+  if (titleToLeft) {
+    titleStyle.gridColumn = `1 / ${x + 1}`;
+    titleStyle.marginRight = testShift;
+    titleStyle.marginLeft = 10;
+  } else {
+    titleStyle.gridColumn = `${x + 2} / -1`;
+    titleStyle.justifyContent = 'flex-start';
+    titleStyle.marginLeft = testShift;
+    titleStyle.marginRight = 10;
+  }
 
   const handleClick = () => {
     history.push(`${homeUrl(history)}thought/${thought.id}`);
