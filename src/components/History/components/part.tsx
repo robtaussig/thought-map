@@ -37,7 +37,7 @@ const generatePartStyle = (part: StatusUpdate, row: number, col: number, colCoun
     margin: '0 5px',
   };
 
-  const textToTheLeft = col > colCount / 2;
+  const textToTheLeft = colCount > 3 && col > colCount / 2;
   if (textToTheLeft) {
     style.gridColumn = `1 / ${col}`;
     style.textAlign = 'right';
@@ -80,7 +80,7 @@ export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIn
         isEnd,
         isSelected,
       })} style={style} onClick={() => console.log(groupIndex)}/>
-      {part && isStart ? (
+      {part && (
         <button className={classNames(classes.partText, {
           isSelected,
         })} style={partStyle}
@@ -88,12 +88,6 @@ export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIn
         >
           {partText}
         </button>
-      ) : (
-        <span className={classNames(classes.partText, {
-          isSelected,
-        })} style={partStyle}>
-          {partText}
-        </span>
       )}
     </>
   );

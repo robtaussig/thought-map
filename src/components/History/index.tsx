@@ -111,7 +111,7 @@ export const History: FC<HistoryProps> = ({ classes, state, statusOptions }) => 
   }, [statusUpdates, relatedThoughtIds]);
 
   const gridStyle: CSSProperties = useMemo(() => {
-    const columnCount = groupedByThought[0] ? groupedByThought[0][0].thoughtIndex[1] + 1 : 1;
+    const columnCount = Math.max(groupedByThought[0] ? groupedByThought[0][0].thoughtIndex[1] + 1 : 0, 2);
     const rowCount = groupedByThought[0] ? groupedByThought[0][0].statusUpdateIndex[1] + 1: 1;
 
     return {

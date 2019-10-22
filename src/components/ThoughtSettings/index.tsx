@@ -49,6 +49,10 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, on
     history.push(`${homeUrl(history)}thought/${thought.id}/connections`);
   };
 
+  const handleClickViewHistory = () => {
+    history.push(`${homeUrl(history)}thought/${thought.id}/history`);
+  };
+
   return (
     <div className={classes.root} style={{
       top: display ? 0 : '100%',
@@ -57,6 +61,7 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({ classes, display, on
       <div className={classes.settings}>
         <button onClick={handleClickUseAsTemplate}>Create Template</button>
         <button onClick={handleClickViewConnections}>View Connections</button>
+        <button onClick={handleClickViewHistory}>View History</button>
         <button onClick={handleClickAddToCalendar}>Manage Calendar</button>
         <button onClick={handleClickEditSections}>Edit Sections</button>
         <div className={classes.applySectionState}>
