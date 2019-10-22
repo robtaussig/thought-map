@@ -4,6 +4,8 @@ import {
 } from '../types';
 import { CSSProperties } from '@material-ui/styles';
 import classNames from 'classnames';
+import useApp from '../../../hooks/useApp';
+import { homeUrl } from '../../../lib/util';
 import { format } from 'date-fns';
 
 interface PartProps {
@@ -51,6 +53,7 @@ const generatePartStyle = (part: StatusUpdate, row: number, col: number, colCoun
 };
 
 export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIndex, isSelected }) => {
+  const { history } = useApp();
 
   const style = {
     gridRow: `${row} / span 1`,
@@ -63,6 +66,10 @@ export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIn
   const partText = part ? generatePartText(part, isStart, isEnd) : null;
   const partStyle = part ? generatePartStyle(part, row, col, colCount, isStart) : {};
 
+  const handleClickTitle = () => {
+    history.push(`${homeUrl(history)}thought/${part.thoughtId}`);
+  };
+
   return (
     <>
       <div className={classNames(classes.statusUpdate, {
@@ -73,7 +80,15 @@ export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIn
         isEnd,
         isSelected,
       })} style={style} onClick={() => console.log(groupIndex)}/>
-      {part && (
+      {part && isStart ? (
+        <button className={classNames(classes.partText, {
+          isSelected,
+        })} style={partStyle}
+          onClick={handleClickTitle}
+        >
+          {partText}
+        </button>
+      ) : (
         <span className={classNames(classes.partText, {
           isSelected,
         })} style={partStyle}>
