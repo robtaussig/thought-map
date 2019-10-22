@@ -17,8 +17,8 @@ const styles = (theme: any): StyleRules => ({
       position: 'absolute',
       top: 0,
       bottom: 0,
-      left: '48%',
-      right: '48%',
+      left: 'calc(50% - 2px)',
+      right: 'calc(50% - 2px)',
     },
     '&.isSelected': {
       '&:before': {
@@ -43,10 +43,8 @@ const styles = (theme: any): StyleRules => ({
         backgroundColor: theme.palette.secondary[300],
         borderRadius: '50%',
         position: 'absolute',
-        height: 30,
-        width: 30,
-        maxHeight: '80%',
-        maxWidth: '80%',
+        height: 12,
+        width: 12,
         left: '50%',
         top: '50%',
         transform: 'translate(-50%, -50%)',

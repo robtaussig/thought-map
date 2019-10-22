@@ -116,7 +116,9 @@ export const History: FC<HistoryProps> = ({ classes, state, statusOptions }) => 
 
     return {
       display: 'grid',
-      gridTemplateColumns: `repeat(${columnCount}, ${100 / columnCount}%)`,
+      gridTemplateColumns: columnCount > 2 ?
+        `repeat(${columnCount}, ${100 / columnCount}%)` :
+        '50px 1fr',
       gridTemplateRows: `repeat(${rowCount}, ${100 / rowCount}%)`,
       height: '100%',
       width: '100%',
