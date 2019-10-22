@@ -21,18 +21,20 @@ export class Vertex {
 export class Graph {
   vertices: Vertex[] = []
 
-  static dfs = (vertex: Vertex, visited: Visited = {}, processVertex = (vertex: Vertex) => {}) => {
+  static dfs = (vertex: Vertex, visited: Visited = {}, processVertex = (vertex: Vertex) => {}, findOnlyDescendents: boolean = false) => {
     visited[vertex.id] = true;
     vertex.next.forEach(child => {
       if (!visited[child.id]) {
-        Graph.dfs(child, visited, processVertex);
+        Graph.dfs(child, visited, processVertex, findOnlyDescendents);
       }
     });
-    vertex.prev.forEach(child => {
-      if (!visited[child.id]) {
-        Graph.dfs(child, visited, processVertex);
-      }
-    });
+    if (findOnlyDescendents !== true) {
+      vertex.prev.forEach(child => {
+        if (!visited[child.id]) {
+          Graph.dfs(child, visited, processVertex, findOnlyDescendents);
+        }
+      });
+    }
     processVertex(vertex);
   }
 

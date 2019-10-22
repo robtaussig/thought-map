@@ -26,14 +26,14 @@ export const getTree = (vertices: Vertex[]): Node[] => {
   });
 };
 
-export const findRelations = (origin: string, graph: Graph): Vertex[] => {
+export const findRelations = (origin: string, graph: Graph, findOnlyDescendents: boolean = false): Vertex[] => {
   const descendents: Vertex[] = [];
   const visited: Visited = {};
   const node = graph.vertices.find(vertex => vertex.id === origin);
   if (node) {
     Graph.dfs(node, visited, child => {
       descendents.push(child);
-    });
+    }, findOnlyDescendents);
   }
   
   return descendents;

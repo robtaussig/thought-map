@@ -14,6 +14,7 @@ import Settings from './components/Settings';
 import Thought from './components/Thought';
 import Notifications from './components/Notifications';
 import Connections from './components/Connections';
+import History from './components/History';
 import { ModalProvider } from './hooks/useModal';
 import Div100vh from 'react-div-100vh';
 import {
@@ -101,6 +102,15 @@ const App: FC<AppProps> = ({ classes, history }) => {
               <Route path={'/thought/:id/connections'}>
                 {dbReadyState && <Connections state={state}/>}
               </Route>
+              <Route path={'/plan/:id/history'}>
+                {dbReadyState && <History state={state} statusOptions={statusOptions}/>}
+              </Route>
+              <Route path={'/thought/:id/history'}>
+                {dbReadyState && <History state={state} statusOptions={statusOptions}/>}
+              </Route>
+              <Route path={'/plan/:id/thought/:id/history'}>
+                {dbReadyState && <History state={state} statusOptions={statusOptions}/>}
+              </Route>
               <Route path={'/thought/:id'}>
                 {dbReadyState && <Thought state={state} statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
               </Route>
@@ -115,7 +125,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
               </Route>
               <Route path={'/plan/:id'}>
                 {dbReadyState && <Home state={state} statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions} tagOptions={tagOptions}/>}
-              </Route>
+              </Route>              
             </Switch> 
           </Div100vh>
         </ModalProvider>  

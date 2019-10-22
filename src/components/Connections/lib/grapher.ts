@@ -85,7 +85,12 @@ export default class Grapher {
     return this;
   }
 
-  generate = (setter: (state: Node[], ) => void, thoughtsById: ThoughtsById) => {
+  getDescendents = (setter: (state: string[]) => void) => {
+    const relations = findRelations(this.origin, this.graph, true);
+    setter(relations.map(({ id }) => id));
+  }
+
+  generate = (setter: (state: Node[]) => void, thoughtsById: ThoughtsById) => {
     const relations = findRelations(this.origin, this.graph);
   
     const oneWayRelations = relations.map(relation => {

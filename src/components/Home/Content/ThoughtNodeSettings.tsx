@@ -80,6 +80,11 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
     history.push(`${homeUrl(history)}thought/${thought.id}/connections`);
   };
 
+  const handleClickViewHistory = () => {
+    onClose();
+    history.push(`${homeUrl(history)}thought/${thought.id}/history`);
+  };
+
   const hasConnections = useMemo(() => {
     return Object.values(state.connections).some(({ from, to }) => [from, to].includes(thought.id));
   }, [state.connections, thought]);
@@ -88,7 +93,7 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
     <div className={classes.root}>
       <h1 className={classes.title}>{thought.title}</h1>
       <button className={classes.button} onClick={handleClickBump}>Bump</button>
-      <button className={classes.button}>View History</button>
+      <button className={classes.button} onClick={handleClickViewHistory}>View History</button>
       {hasConnections && <button className={classes.button} onClick={handleClickViewConnections}>View Connections</button>}
       <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete}>Delete</button>
     </div>
