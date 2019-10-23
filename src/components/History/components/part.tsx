@@ -5,6 +5,7 @@ import {
 import { CSSProperties } from '@material-ui/styles';
 import classNames from 'classnames';
 import useApp from '../../../hooks/useApp';
+import useLongPress from '../../../hooks/useLongPress';
 import { homeUrl } from '../../../lib/util';
 import { format } from 'date-fns';
 
@@ -16,6 +17,7 @@ interface PartProps {
   colCount: number;
   groupIndex?: [number, number];
   isSelected: boolean;
+  onLongPress?: (part: StatusUpdate) => void;
 }
 
 const parseDate = (timestamp: number): string => {
@@ -52,8 +54,11 @@ const generatePartStyle = (part: StatusUpdate, row: number, col: number, colCoun
   return style;
 };
 
-export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIndex, isSelected }) => {
+export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIndex, isSelected, onLongPress }) => {
   const { history } = useApp();
+  const handleLongPress = useLongPress(() => {
+    onLongPress(part);
+  }, 300);
 
   const style = {
     gridRow: `${row} / span 1`,
@@ -72,14 +77,14 @@ export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIn
 
   return (
     <>
-      <div className={classNames(classes.statusUpdate, {
+      <button className={classNames(classes.statusUpdate, {
         new: part && part.status === 'new',
         completed: part && part.status === 'completed',
         path: part === null,
         isStart,
         isEnd,
         isSelected,
-      })} style={style} onClick={() => console.log(groupIndex)}/>
+      })} style={style} {...handleLongPress}/>
       {part && (
         <button className={classNames(classes.partText, {
           isSelected,

@@ -1,11 +1,14 @@
 import React, { FC } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import { Group } from '../types';
+import { Group, StatusUpdate } from '../types';
 import Part from './part';
+import PartQuickOptions from './quick-options';
+import useModal from '../../../hooks/useModal';
 
 interface ThoughtGroupProps {
   classes: any;
   group: Group;
+  statusOptions: string[];
 }
 
 const styles = (theme: any): StyleRules => ({
@@ -80,11 +83,22 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const ThoughtGroup: FC<ThoughtGroupProps> = React.memo(({ classes, group }) => {
+export const ThoughtGroup: FC<ThoughtGroupProps> = React.memo(({ classes, group, statusOptions }) => {
   const parts = group[0].statusUpdateIndex[1] + 1;
   const thoughtIndex = group[0].thoughtIndex[0];
   const thoughtCount = group[0].thoughtIndex[1] + 1;
   const isSelected = Boolean(group[0].isSelectedThought);
+  const [openModal, closeModal] = useModal();
+  const handleLongPress = (part: StatusUpdate) => {
+    openModal(
+      <PartQuickOptions
+        group={group}
+        part={part}
+        onClose={closeModal}
+        statusOptions={statusOptions}
+      />
+    );
+  };
 
   return (
     <>
@@ -104,6 +118,7 @@ export const ThoughtGroup: FC<ThoughtGroupProps> = React.memo(({ classes, group 
               colCount={thoughtCount}
               groupIndex={[group.indexOf(part), group.length - 1]}
               isSelected={isSelected}
+              onLongPress={handleLongPress}
             />
           );
         } else if (index > group[0].statusUpdateIndex[0] &&

@@ -72,6 +72,7 @@ export const History: FC<HistoryProps> = ({ classes, state, statusOptions }) => 
 
                                     return {
                                       thoughtId: relatedThoughtId,
+                                      statusId,
                                       status: status.text,
                                       completionIndex: [completionIndex, statusOptions.length - 1],
                                       thoughtTitle: thought.title,
@@ -130,7 +131,7 @@ export const History: FC<HistoryProps> = ({ classes, state, statusOptions }) => 
     <div className={classes.root} style={gridStyle}>
       {groupedByThought.map((group, idx) => {
         return (
-          <ThoughtGroup key={`${idx}-thought-group`} group={group}/>
+          <ThoughtGroup key={`${idx}-thought-group`} group={group} statusOptions={statusOptions}/>
         );
       })}
     </div>
