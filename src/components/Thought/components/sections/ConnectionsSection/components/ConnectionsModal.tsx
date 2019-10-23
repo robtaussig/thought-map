@@ -57,7 +57,7 @@ const styles = (theme: any): StyleRules => ({
     '& button': {
       textAlign: 'left',
       fontWeight: 600,
-      color: '#bada55',
+      color: theme.palette.secondary[500],
       margin: '0 15px',
     },
     '&:not(:last-child)': {

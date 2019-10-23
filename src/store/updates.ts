@@ -75,10 +75,15 @@ const recreateThoughtIfRecurring = (db: RxDatabase) => async (thoughtId: string)
     const date = format(next, 'yyyy-MM-dd');
     const time = format(next, 'HH:mm');
     const { id, _rev, updated, created, ...nextThought } = thought;
-    thoughtActions.createThought(db, {
+    const newThought = await thoughtActions.createThought(db, {
       ...nextThought,
+      status: 'new',
       date,
       time,
+    });
+    statusActions.createStatus(db, {
+      thoughtId: newThought.id,
+      text: 'new',
     });
   }
 };
