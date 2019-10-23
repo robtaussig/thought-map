@@ -43,6 +43,13 @@ const styles = (theme: any): StyleRules => ({
         width: 20,
       },
     },
+    '&.inProgress:not(.origin)': {
+      '&:after': {
+        backgroundColor: '#ffb811',
+        height: 20,
+        width: 20,
+      },
+    },
     '&.origin': {
       '&:after': {
         backgroundColor: theme.palette.secondary[300],
@@ -56,6 +63,9 @@ const styles = (theme: any): StyleRules => ({
     color: theme.palette.gray[200],
     textShadow: '0px 0px 30px black',
     overflow: 'auto',
+    '&.origin': {
+      color: theme.palette.secondary[300],
+    },
   },
 });
 

@@ -21,6 +21,7 @@ export default class Grapher {
     maxY: number,
     canvas: any,
     completed: boolean,
+    inProgress: boolean,
   ) => {
     const midXPx = (0.5 / (maxX + 1)) * canvas.width;
     const midYPx = (0.5 / (maxY + 1)) * canvas.height;
@@ -31,7 +32,10 @@ export default class Grapher {
     
     this.ctx.beginPath();
     this.ctx.lineWidth = 2;
-    this.ctx.strokeStyle = completed ? '#8fc84a' : '#676767';
+    this.ctx.strokeStyle = completed ?
+      '#8fc84a' : inProgress ?
+      '#ffb811' :
+      '#676767';
     this.ctx.moveTo(fromXPx, fromYPx);
     this.ctx.lineTo(toXPx, toYPx);
     this.ctx.stroke();
@@ -59,8 +63,9 @@ export default class Grapher {
       to.forEach(toId => {
         const toNode = nodeMap[toId];
         const completed = thoughtsById[toId].status === 'completed';
+        const inProgress = !completed && thoughtsById[toId].status !== 'new';
 
-        this.drawEdge([x, y], [toNode.x, toNode.y], maxX, maxY, canvas, completed);
+        this.drawEdge([x, y], [toNode.x, toNode.y], maxX, maxY, canvas, completed, inProgress);
       });
     });
   }

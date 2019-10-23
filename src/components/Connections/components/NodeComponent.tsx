@@ -38,7 +38,7 @@ export const NodeComponent: FC<NodeComponentProps> = ({
     );
   };
 
-  const handleLongPress = useLongPress(onLongPress);
+  const handleLongPress = useLongPress(onLongPress, 300);
   const nodeStyle = {
     gridRow: y + 1,
     gridColumn: x + 1,
@@ -77,6 +77,7 @@ export const NodeComponent: FC<NodeComponentProps> = ({
         className={classNames(classes.nodeComponent, {
           origin: isOrigin,
           completed: thought.status === 'completed',
+          inProgress: !['completed', 'new'].includes(thought.status),
         })}
         style={nodeStyle}
         aria-label={thought.title}
