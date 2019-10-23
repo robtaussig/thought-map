@@ -37,7 +37,7 @@ const generatePartStyle = (part: StatusUpdate, row: number, col: number, colCoun
     margin: '0 5px',
   };
 
-  const textToTheLeft = colCount > 3 && col > colCount / 2;
+  const textToTheLeft = colCount > 3 && col > colCount / 2 || (colCount === 3 && col > 1) ;
   if (textToTheLeft) {
     style.gridColumn = `1 / ${col}`;
     style.textAlign = 'right';

@@ -119,9 +119,10 @@ export const History: FC<HistoryProps> = ({ classes, state, statusOptions }) => 
       gridTemplateColumns: columnCount > 2 ?
         `repeat(${columnCount}, ${100 / columnCount}%)` :
         '50px 1fr',
-      gridTemplateRows: `repeat(${rowCount}, ${100 / rowCount}%)`,
+      gridTemplateRows: `repeat(${rowCount}, minmax(max-content, ${100 / rowCount}%))`,
       height: '100%',
       width: '100%',
+      overflow: 'auto',
     };
   }, [groupedByThought]);
 

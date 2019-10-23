@@ -72,6 +72,7 @@ const styles = (theme: any): StyleRules => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    textAlign: 'left',
     '&.isSelected': {
       color: theme.palette.secondary[400],
       fontWeight: 600,
