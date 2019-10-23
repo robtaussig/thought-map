@@ -18,6 +18,7 @@ const styles = (theme: any): StyleRules => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
+    userSelect: 'none',
   },
   thoughtTitle: {
     fontWeight: 600,
