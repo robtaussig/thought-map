@@ -1,6 +1,6 @@
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Connections } from '../../../reducers';
-import { Graph, Vertex } from './graph';
+import { Graph } from './graph';
 import { Visited, Node } from './types';
 import { findRelations, getTree } from './util';
 
@@ -54,7 +54,9 @@ export default class Grapher {
       maxX = Math.max(maxX, x);
       maxY = Math.max(maxY, y);
       vertex.next.forEach(child => {
-        next[child.id].to.push(vertex.id);
+        if (next[child.id]) {
+          next[child.id].to.push(vertex.id);
+        }
       });
       return next;
     }, {} as { [id: string]: { x: number, y: number, to: string[] }});
@@ -73,6 +75,12 @@ export default class Grapher {
   update = (thought: Thought, connections: Connections): Grapher => {
     if (!thought) return this;
     this.origin = thought.id;
+
+    if (!this.visited[thought.id]) {
+      this.visited[thought.id] = true;
+      this.graph.addVertex(thought.id);
+    }
+
     Object.entries(connections).forEach(([ connectionId, { from, to }]) => {
       if (!this.visited[from]) {
         this.visited[from] = true;
