@@ -90,6 +90,7 @@ export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIn
           isSelected,
         })} style={partStyle}
           onClick={handleClickTitle}
+          {...handleLongPress}
         >
           {partText}
         </button>

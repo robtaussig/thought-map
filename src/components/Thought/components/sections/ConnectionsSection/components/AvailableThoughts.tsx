@@ -130,13 +130,15 @@ export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thought
             return (
               <li key={`${title}-${idx}`} className={classes.thoughtItem}>
                 {title}
-                <button onClick={handleClickThought(title, idx, 'from')}>
-                  From
-                </button>
-                /
-                <button onClick={handleClickThought(title, idx, 'to')}>
-                  To
-                </button>
+                <div className={classes.buttonsWrapper}>
+                  <button onClick={handleClickThought(title, idx, 'from')}>
+                    From
+                  </button>
+                  <span className={classes.buttonsDivider}>/</span>
+                  <button onClick={handleClickThought(title, idx, 'to')}>
+                    To
+                  </button>
+                </div>
               </li>
             );
           })}

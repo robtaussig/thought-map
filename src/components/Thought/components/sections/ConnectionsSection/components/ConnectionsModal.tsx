@@ -54,14 +54,20 @@ const styles = (theme: any): StyleRules => ({
     marginTop: 10,
     paddingBottom: 10,   
     color: theme.palette.secondary[700],
-    '& button': {
-      textAlign: 'left',
-      fontWeight: 600,
-      color: theme.palette.secondary[500],
-      margin: '0 15px',
-    },
+    display: 'flex',
+    flexDirection: 'column',
     '&:not(:last-child)': {
       borderBottom: `1px solid ${theme.palette.secondary[700]}`,
+    },
+  },
+  buttonsDivider: {
+    margin: '0 15px',
+  },
+  buttonsWrapper: {
+    marginTop: 10,
+    '& button': {
+      fontWeight: 600,
+      color: theme.palette.secondary[500],
     },
   },
   inputLabel: {
