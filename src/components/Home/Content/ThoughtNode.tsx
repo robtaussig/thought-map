@@ -30,11 +30,11 @@ const STATUS_TO_COLOR: { [key: string]: string } = {
 };
 
 const colorFromPriority = (priority: number): string => {
-  if (priority === 10) return 'red';
+  if (priority > 7) return 'red';
 };
 
 const styleFromPriority = (priority: number): { color?: string, fontWeight?: number } => {
-  if (priority === 10) {
+  if (priority > 7) {
     return {
       color: colorFromPriority(priority),
       fontWeight: 600,

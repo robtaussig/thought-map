@@ -37,9 +37,16 @@ interface ThoughtProps {
 
 export const PRIORITY_OPTIONS: PriorityOption[] = [
   { value: 0, label: 'NOT RELEVANT (HIDE)' },
-  { value: 1, label: 'LOW' },
-  { value: 5, label: 'MEDIUM' },
-  { value: 10, label: 'HIGH' },
+  { value: 1, label: 'LOW (1)' },
+  { value: 2, label: 'LOW (2)' },
+  { value: 3, label: 'LOW (3)' },
+  { value: 4, label: 'LOW (4)' },
+  { value: 5, label: 'MEDIUM (5)' },
+  { value: 6, label: 'MEDIUM (6)' },
+  { value: 7, label: 'MEDIUM (7)' },
+  { value: 8, label: 'HIGH (8)' },
+  { value: 9, label: 'HIGH (9)' },
+  { value: 10, label: 'HIGH (10)' },
 ];
 
 export const DEFAULT_SECTIONS = 'type-status-priority-description-datetime-notes-recurring-tags-connections-pictures';

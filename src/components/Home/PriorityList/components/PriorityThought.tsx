@@ -21,7 +21,7 @@ export const PriorityThought: FC<PriorityThoughtProps> = ({ classes, thought, on
   return (
     <React.Fragment>
       <span className={classNames(classes.thoughtTitle, {
-        highPriority: thought.priority === 10,
+        highPriority: thought.priority > 7,
       })}>
         <button className={classes.thoughtTitleButton} onClick={handleClick}>{thought.title}</button>
       </span>

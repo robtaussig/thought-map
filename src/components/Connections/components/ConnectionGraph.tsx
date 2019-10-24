@@ -13,6 +13,7 @@ interface ConnectionGraphProps {
   thought: Thought;
   thoughts: Thought[];
   connections: Connections;
+  statusOptions: string[];
 }
 
 
@@ -69,7 +70,7 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, thoughts, connections }) => {
+export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, thoughts, connections, statusOptions }) => {
   const grapher = useRef(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [tree, setTree] = useState<Node[]>([]);
@@ -116,6 +117,7 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
           rows={maxY}
           thought={nodeThought}
           isOrigin={thought.id === nodeThought.id}
+          statusOptions={statusOptions}
         />
       )
     })];

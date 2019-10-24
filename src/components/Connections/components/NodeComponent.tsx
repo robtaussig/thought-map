@@ -4,7 +4,7 @@ import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import useApp from '../../../hooks/useApp';
 import useLongPress from '../../../hooks/useLongPress';
-import ConnectionsModal from '../../Thought/components/sections/ConnectionsSection/components/ConnectionsModal';
+import ConnectionsQuickOptions from './ConnectionsQuickOptions';
 import useModal from '../../../hooks/useModal';
 import { homeUrl } from '../../../lib/util';
 
@@ -16,6 +16,7 @@ interface NodeComponentProps {
   rows: number;
   thought: Thought;
   isOrigin: boolean;
+  statusOptions: string[];
 }
 
 export const NodeComponent: FC<NodeComponentProps> = ({
@@ -26,14 +27,16 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   rows,
   thought,
   isOrigin,
+  statusOptions,
 }) => {
   const { history } = useApp();
   const [openModal, closeModal] = useModal();
   const onLongPress = () => {
     openModal(
-      <ConnectionsModal
+      <ConnectionsQuickOptions
         onClose={closeModal}
         thoughtId={thought.id}
+        statusOptions={statusOptions}
       />
     );
   };
