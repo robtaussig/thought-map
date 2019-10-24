@@ -11,6 +11,7 @@ interface ConnectionsModalProps {
   classes: any,
   onClose: () => void;
   thoughtId: string;
+  autoFocus?: boolean;
 }
 
 const styles = (theme: any): StyleRules => ({
@@ -104,7 +105,7 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, thoughtId }) => {
+export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, thoughtId, autoFocus }) => {
   const state: AppState = useModalDynamicState();
   const thought = state.thoughts.find(({ id }) => id === thoughtId);
   const plan: Plan = state.plans.find(({ id }) => thought.planId === id);
@@ -140,6 +141,7 @@ export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, 
         thoughtId={thoughtId}
         plan={plan}
         onCreate={onClose}
+        autoFocus={autoFocus}
       />
       <CurrentConnections
         classes={classes}

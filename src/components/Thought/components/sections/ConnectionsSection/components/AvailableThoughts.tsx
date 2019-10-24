@@ -14,6 +14,7 @@ interface AvailableThoughtsProps {
   thoughtId: string;
   plan: Plan;
   onCreate: () => void;
+  autoFocus?: boolean;
 }
 
 const CONNECT_TO = 'Connect to';
@@ -24,7 +25,7 @@ const sortConnections = (left: Thought, right: Thought) => {
   return left.title > right.title ? 1 : -1;
 };
 
-export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thoughts, thoughtId, plan, onCreate }) => {
+export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thoughts, thoughtId, plan, onCreate, autoFocus = true }) => {
   const db = useLoadedDB();
   const [searchText, setSearchText] = useState<string>('');
 
@@ -92,7 +93,7 @@ export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thought
         aria-label={FILTER_THOUGHTS}
         value={searchText}
         onChange={e => setSearchText(e.target.value)}
-        autoFocus
+        autoFocus={autoFocus}
         injectedComponent={
           <button
             className={classes.submitButton}

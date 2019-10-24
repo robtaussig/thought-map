@@ -18,6 +18,7 @@ const styles = (theme: any): StyleRules => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'hidden',
   },
   header: {
     fontSize: 20,
@@ -27,12 +28,13 @@ const styles = (theme: any): StyleRules => ({
   modalContent: {
     display: 'flex',
     flexDirection: 'column',
-    height: 150,
+    minHeight: 150,
     overflow: 'auto',
     justifyContent: 'center',
   },
   nav: {
     paddingBottom: 20,
+    marginBottom: 10,
     borderBottom: `1px solid ${theme.palette.secondary[500]}`,
   },
   navItems: {
@@ -94,6 +96,7 @@ export const ConnectionsQuickOptions: FC<ConnectionsQuickOptionsProps> = ({ clas
         {currentView === ViewOptions.Connections && <ConnectionsModal
           onClose={onClose}
           thoughtId={thoughtId}
+          autoFocus={false}
         />}
         {currentView === ViewOptions.Statuses && <StatusesModal
           onClose={onClose}
