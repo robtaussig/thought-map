@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import { Group, StatusUpdate } from '../types';
 import Part from './part';
-import PartQuickOptions from './quick-options';
+import ConnectionsQuickOptions from '../../Connections/components/ConnectionsQuickOptions';
 import useModal from '../../../hooks/useModal';
 
 interface ThoughtGroupProps {
@@ -89,10 +89,9 @@ export const ThoughtGroup: FC<ThoughtGroupProps> = React.memo(({ classes, group,
   const [openModal, closeModal] = useModal();
   const handleLongPress = (part: StatusUpdate) => {
     openModal(
-      <PartQuickOptions
-        group={group}
-        part={part}
+      <ConnectionsQuickOptions
         onClose={closeModal}
+        thoughtId={group[0].thoughtId}
         statusOptions={statusOptions}
       />
     );
