@@ -100,6 +100,11 @@ export const theme = responsiveFontSizes(
         justifyContent: 'center',
         alignItems: 'center',
       },
+      textEllipsis: {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+      },
       castShadow: {
         heavy: CAST_SHADOW_HEAVY,
         light: CAST_SHADOW_LIGHT,

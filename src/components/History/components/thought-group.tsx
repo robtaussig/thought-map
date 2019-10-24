@@ -72,9 +72,7 @@ const styles = (theme: any): StyleRules => ({
     zIndex: 99,
     color: theme.palette.gray[100],
     textShadow: '0px 0px 4px black',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    ...theme.defaults.textEllipsis,
     textAlign: 'left',
     '&.isSelected': {
       color: theme.palette.secondary[400],
