@@ -96,7 +96,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   }, [thoughtId, state.pictures]);
 
   const handleClickHome = (): void => {
-    history.push(homeUrl(history));
+    history.push(`${homeUrl(history)}?from=${thoughtId}`);
   };
 
   const handleUpdate = useCallback(async updatedThought => {

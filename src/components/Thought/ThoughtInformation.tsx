@@ -2,6 +2,7 @@ import React, { useMemo, FC, useState, useRef, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Close from '@material-ui/icons/Close';
 import Link from '@material-ui/icons/Link';
+import History from '@material-ui/icons/History';
 import { getTime } from './util';
 import {
   notes as noteActions,
@@ -220,6 +221,10 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     history.push(`${homeUrl(history)}thought/${thought.id}/connections`);
   };
 
+  const handleClickViewHistory = () => {
+    history.push(`${homeUrl(history)}thought/${thought.id}/history`);
+  };
+
   const handleClickRoot = (e: any) => {
     if (!e.target.closest('SECTION') && (editAllSections || editingSection)) {
       handleCancelEditSection();
@@ -386,6 +391,13 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           return components[section];
         })}
       </div>
+      <CircleButton
+        classes={classes}
+        id={isScrollingDown && connections.length > 0 ? 'visibile-history-button' : 'hidden-history-button'}
+        onClick={handleClickViewHistory}
+        label={'History'}
+        Icon={History}
+      />
       <CircleButton
         classes={classes}
         id={isScrollingDown && connections.length > 0 ? 'visibile-connections-button' : 'hidden-connections-button'}

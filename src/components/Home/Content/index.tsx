@@ -23,13 +23,14 @@ interface ContentProps {
   statusOptions: string[];
   typeOptions: string[];
   state: AppState;
+  from: string;
 }
 
 interface ThoughtConnections {
   [thoughtId: string]: [number, number];
 }
 
-export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, state }) => {
+export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, state, from }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const { dispatch } = useApp();
   const lastScrollPos = useRef<number>(0);
@@ -97,6 +98,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
             displayField={sortFilterSettings.field}
             connectionStatus={connectionStatusByThought[thought.id]}
             planName={!plan && (planNamesById[thought.planId] || 'Uncategorized')}
+            arrivedFrom={from === thought.id}
           />
         );
       });

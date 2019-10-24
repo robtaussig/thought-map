@@ -72,6 +72,16 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       right: 10,
       transition: 'all 0.1s linear',
     },
+    '&#visibile-history-button': {
+      bottom: 10,
+      right: 'calc(50% - 55px)',
+      transition: 'all 0.1s linear',
+    },
+    '&#hidden-history-button': {
+      bottom: -100,
+      right: 'calc(50% - 55px)',
+      transition: 'all 0.1s linear',
+    },
   },
   placeBeforeButton: {
 
@@ -167,6 +177,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridArea: 'section-value',
     fontSize: 18,
     fontWeight: 600,
+    ...theme.defaults.textEllipsis,
     '&.drop-target': {
       backgroundColor: 'black',
       color: theme.palette.primary[500],
@@ -221,6 +232,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   },
   itemList: {
     gridArea: 'section-value',
+    overflow: 'hidden',
   },
   imageWrapper: {
     display: 'flex',
@@ -238,6 +250,8 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   noteItem: {
     fontWeight: 600,
     paddingBottom: 10,
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
     '&:not(:first-child)': {
       paddingTop: 10,
     },

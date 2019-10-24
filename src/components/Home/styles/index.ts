@@ -159,6 +159,10 @@ export const styles = (theme: any): StyleRules => ({
   thoughtNodeTitle: {
     color: theme.palette.gray[500],
     flex: 1,
+    '&.arrivedFrom': {
+      fontWeight: 600,
+      color: theme.palette.secondary[300],
+    },
   },
   thoughtNodeType: {
     marginLeft: 20,

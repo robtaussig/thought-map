@@ -8,7 +8,7 @@ import CircleButton from '../General/CircleButton';
 import { styles } from './styles';
 import useApp from '../../hooks/useApp';
 import useModal from '../../hooks/useModal';
-import { getIdFromUrl } from '../../lib/util';
+import { getIdFromUrl, getSearchParam } from '../../lib/util';
 import { AppState } from '../../reducers';
 import { Notification } from '../../types';
 import PlanSelectActions from './PlanSelect/components/actions';
@@ -27,6 +27,7 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
   const [addingThought, setAddingThought] = useState<boolean>(false);
   const [openModal, closeModal, expandModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
+  const from = getSearchParam(history, 'from');
   const handleAddThought = () => {
     setAddingThought(true);
     openModal(
@@ -59,6 +60,7 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
         plan={plan}
         statusOptions={statusOptions}
         typeOptions={typeOptions}
+        from={from}
       />
       <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId} setLastNotification={setLastNotification}/>
       {!addingThought &&

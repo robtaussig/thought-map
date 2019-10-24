@@ -1,4 +1,4 @@
-import React, { useCallback, FC, useRef } from 'react';
+import React, { useCallback, FC, useRef, useEffect } from 'react';
 import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
@@ -9,6 +9,7 @@ import useLongPress from '../../../hooks/useLongPress';
 import useModal from '../../../hooks/useModal';
 import ThoughtNodeSettings from './ThoughtNodeSettings';
 import ConnectionStatus from './ConnectionStatus';
+import classNames from 'classnames';
 
 interface ThoughtNodeProps {
   classes: any;
@@ -18,6 +19,7 @@ interface ThoughtNodeProps {
   displayField: string;
   connectionStatus: [number, number];
   planName: string;
+  arrivedFrom: boolean;
 }
 
 const STATUS_TO_COLOR: { [key: string]: string } = {
@@ -50,9 +52,11 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
   displayField,
   connectionStatus,
   planName,
+  arrivedFrom,
 }) => {
   const { history } = useApp();
   const db = useLoadedDB();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [openModal, closeModal] = useModal();
   const blockClick = useRef<boolean>(false);
   const handleLongPress = useLongPress(() => {
@@ -80,15 +84,25 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
     });
   }, []);
 
+  useEffect(() => {
+    if (arrivedFrom) {
+      wrapperRef.current.scrollIntoView({ behavior: 'auto', block: 'center' });
+    }
+  }, []);
+
   return (
-    <div className={classes.thoughtNode} {...handleLongPress}>
+    <div ref={wrapperRef} className={classes.thoughtNode} {...handleLongPress}>
       {planName ? (
         <div className={classes.thoughtNodeTitleWrapper}>
           <span className={classes.planName}>{planName}</span>
-          <span className={classes.thoughtNodeTitle} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
+          <span className={classNames(classes.thoughtNodeTitle, {
+            arrivedFrom,
+          })} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
         </div>
       ) : (
-        <span className={classes.thoughtNodeTitle} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
+        <span className={classNames(classes.thoughtNodeTitle, {
+          arrivedFrom,
+        })} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
       )}
       {connectionStatus && (
         <ConnectionStatus
