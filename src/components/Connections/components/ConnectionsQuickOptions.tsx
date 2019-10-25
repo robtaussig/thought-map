@@ -24,22 +24,21 @@ const styles = (theme: any): StyleRules => ({
   header: {
     fontSize: 20,
     fontWeight: 600,
-    marginBottom: 20,
   },
   modalContent: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: 200,
+    minHeight: 250,
     overflow: 'auto',
     justifyContent: 'center',
   },
   nav: {
-    paddingBottom: 20,
     borderBottom: `1px solid ${theme.palette.secondary[500]}`,
-    overflow: 'auto',
+    margin: '20px 0',
   },
   navItems: {
     display: 'flex',
+    overflow: 'auto',
   },
   navItem: {
     color: theme.palette.gray[400],

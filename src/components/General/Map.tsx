@@ -56,7 +56,9 @@ export const MapComponent: FC<MapComponentProps> = ({ classes, longitude, latitu
     
     mapRef.current = new Map({
       interactions: defaultInteractions({
-        onFocusOnly: true
+        onFocusOnly: true,
+        dragPan: false,
+        mouseWheelZoom: false,
       }),
       target: `map-container-${randomId.current}`,
       layers: [
@@ -73,7 +75,7 @@ export const MapComponent: FC<MapComponentProps> = ({ classes, longitude, latitu
   }, [longitude, latitude]);
 
   return (
-    <div id={`map-container-${randomId.current}`} className={classes.root} style={{ height }}/>
+    <div tabIndex={1} id={`map-container-${randomId.current}`} className={classes.root} style={{ height }}/>
   );
 };
 
