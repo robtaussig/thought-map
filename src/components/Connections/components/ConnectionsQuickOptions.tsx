@@ -20,6 +20,7 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
+    height: 500,
   },
   header: {
     fontSize: 20,
@@ -28,7 +29,6 @@ const styles = (theme: any): StyleRules => ({
   modalContent: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: 250,
     overflow: 'auto',
     justifyContent: 'center',
     flex: 1,
@@ -37,7 +37,7 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     overflow: 'auto',
     borderBottom: `1px solid ${theme.palette.secondary[500]}`,
-    margin: '20px 0',
+    flex: '0 0 40px',
   },
   navItem: {
     color: theme.palette.gray[400],
