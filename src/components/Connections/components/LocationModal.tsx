@@ -17,7 +17,6 @@ const styles = (theme: any): StyleRules => ({
     height: '100%',
   },
   mapSection: {
-    height: 250,
     '&:not(:last-child)': {
       marginBottom: 20,
     },

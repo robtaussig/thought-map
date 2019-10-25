@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import 'ol/ol.css';
 import {Map, View } from 'ol';
+import {defaults as defaultInteractions} from 'ol/interaction';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import {fromLonLat} from 'ol/proj';
@@ -54,6 +55,9 @@ export const MapComponent: FC<MapComponentProps> = ({ classes, longitude, latitu
     });
     
     mapRef.current = new Map({
+      interactions: defaultInteractions({
+        onFocusOnly: true
+      }),
       target: `map-container-${randomId.current}`,
       layers: [
         new TileLayer({
