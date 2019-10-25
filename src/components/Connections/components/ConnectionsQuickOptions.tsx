@@ -17,14 +17,20 @@ interface ConnectionsQuickOptionsProps {
 
 const styles = (theme: any): StyleRules => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
     overflow: 'hidden',
     height: 500,
+    display: 'grid',
+    gridTemplateAreas: `"header"
+                        "nav-items"
+                        "content"`,
+    gridTemplateRows: 'max-content max-content 1fr',
+    gridTemplateColumns: '1fr',
+    gridRowGap: '10px',
   },
   header: {
     fontSize: 20,
     fontWeight: 600,
+    gridArea: 'header',
   },
   modalContent: {
     display: 'flex',
@@ -32,12 +38,13 @@ const styles = (theme: any): StyleRules => ({
     overflow: 'auto',
     justifyContent: 'center',
     flex: 1,
+    gridArea: 'content',
   },
   navItems: {
     display: 'flex',
     overflow: 'auto',
     borderBottom: `1px solid ${theme.palette.secondary[500]}`,
-    flex: '0 0 40px',
+    gridArea: 'nav-items',
   },
   navItem: {
     color: theme.palette.gray[400],
