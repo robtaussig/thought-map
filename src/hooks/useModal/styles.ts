@@ -12,6 +12,7 @@ export const styles = (theme: any): StyleRules => ({
     padding: 30,
     backgroundColor: theme.palette.gray[200],
     borderRadius: '10px',
+    userSelect: 'none',
     '&:focus': {
       outline: 'none',
     },

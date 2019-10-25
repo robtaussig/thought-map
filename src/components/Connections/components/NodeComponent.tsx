@@ -13,7 +13,6 @@ interface NodeComponentProps {
   x: number;
   y: number;
   columns: number;
-  rows: number;
   thought: Thought;
   isOrigin: boolean;
   statusOptions: string[];
@@ -24,7 +23,6 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   x,
   y,
   columns,
-  rows,
   thought,
   isOrigin,
   statusOptions,

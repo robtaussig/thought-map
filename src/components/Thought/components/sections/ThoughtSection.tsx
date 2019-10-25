@@ -250,6 +250,10 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       if (linkifyValues) {
         if (/(^(http|www)).*(\.([A-z]{2,})(\/.*)?$)/.test(element)) {
           return <a href={`http://${element.replace(/^http(s?):\/\//,'')}`} target={'_blank'} style={{ color: 'black' }}>{element}</a>;
+        } else if (/^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/.test(element)) {
+          return <a href={`tel:${element}`} style={{ color: 'black' }}>{element}</a>;
+        } else if (/^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/.test(element)) {
+          return <a href={`mailto:${element}`} style={{ color: 'black' }}>{element}</a>;
         } else {
           return element;
         }

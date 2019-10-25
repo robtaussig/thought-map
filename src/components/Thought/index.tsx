@@ -55,7 +55,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   
   const db = useLoadedDB();
   const { history } = useApp();
-  const returnHomeSVGRef = useRef<HTMLElement>(null);
+  const settingsGearButtonSVGRef = useRef<HTMLElement>(null);
   const [displaySettings, setDisplaySettings] = useState<boolean>(false);
   const [editAllSections, setEditAllSections] = useState<boolean>(false);
   const thoughtId = getIdFromUrl(history, 'thought');
@@ -124,9 +124,9 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   const handleClickSettings = useCallback(() => {
     setDisplaySettings(prev => !prev);
     if (!displaySettings) {
-      gearOpening(returnHomeSVGRef.current);
+      gearOpening(settingsGearButtonSVGRef.current);
     } else {
-      gearClosing(returnHomeSVGRef.current);
+      gearClosing(settingsGearButtonSVGRef.current);
     }
   }, [thoughtId, displaySettings]);
 
@@ -200,7 +200,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
       />
       {!displaySettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>}
       <CircleButton
-        svgRef={returnHomeSVGRef}
+        svgRef={settingsGearButtonSVGRef}
         classes={classes}
         id={'settings'}
         onClick={handleClickSettings}

@@ -3,6 +3,7 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import ConnectionsModal from '../../Thought/components/sections/ConnectionsSection/components/ConnectionsModal';
 import StatusesModal from './StatusesModal';
 import VisibilityModal from './VisibilityModal';
+import LocationModal from './LocationModal';
 import { useModalDynamicState } from '../../../hooks/useModal';
 import { AppState } from '../../../reducers';
 import classNames from 'classnames';
@@ -28,14 +29,14 @@ const styles = (theme: any): StyleRules => ({
   modalContent: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: 150,
+    minHeight: 200,
     overflow: 'auto',
     justifyContent: 'center',
   },
   nav: {
     paddingBottom: 20,
-    marginBottom: 10,
     borderBottom: `1px solid ${theme.palette.secondary[500]}`,
+    overflow: 'auto',
   },
   navItems: {
     display: 'flex',
@@ -64,6 +65,7 @@ enum ViewOptions {
   Connections = 'Connections',
   Statuses = 'Status',
   Visibility = 'Visibility',
+  Location = 'Location',
 }
 
 export const ConnectionsQuickOptions: FC<ConnectionsQuickOptionsProps> = ({ classes, onClose, thoughtId, statusOptions }) => {
@@ -76,7 +78,7 @@ export const ConnectionsQuickOptions: FC<ConnectionsQuickOptionsProps> = ({ clas
       <h1 className={classes.header}>{thought.title}</h1>
       <nav className={classes.nav}>
         <ul className={classes.navItems}>
-          {[ViewOptions.Connections, ViewOptions.Statuses, ViewOptions.Visibility].map(option => {
+          {[ViewOptions.Connections, ViewOptions.Statuses, ViewOptions.Visibility, ViewOptions.Location].map(option => {
             return (
               <li key={option} className={classNames(classes.navItem, {
                 active: currentView === option,
@@ -104,6 +106,10 @@ export const ConnectionsQuickOptions: FC<ConnectionsQuickOptionsProps> = ({ clas
           statusOptions={statusOptions}
         />}
         {currentView === ViewOptions.Visibility && <VisibilityModal
+          onClose={onClose}
+          thought={thought}
+        />}
+        {currentView === ViewOptions.Location && <LocationModal
           onClose={onClose}
           thought={thought}
         />}

@@ -23,6 +23,7 @@ const styles = (theme: any): StyleRules => ({
   },
   rangeForm: {
     display: 'flex',
+    margin: '10px 0',
   },
   updateButton: {
     flex: 0,
@@ -45,15 +46,29 @@ const styles = (theme: any): StyleRules => ({
 export const VisibilityModal: FC<VisibilityModalProps> = ({ classes, thought, onClose }) => {
   const db = useLoadedDB();
   const [priority, setPriority] = useState<number>(thought.priority);
-  const handleChangeRange = (event: any) => {
+  const [goalPoints, setGoalPoints] = useState<number>(thought.goalPoints);
+
+  const handleChangePriority = (event: any) => {
     setPriority(Number(event.target.value));
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmitPriority = (event: any) => {
     event.preventDefault();
     thoughtActions.editThought(db, {
       ...thought,
       priority,
+    });
+  };
+
+  const handleChangeGoalPoints = (event: any) => {
+    setGoalPoints(Number(event.target.value));
+  };
+
+  const handleSubmitGoalPoints = (event: any) => {
+    event.preventDefault();
+    thoughtActions.editThought(db, {
+      ...thought,
+      goalPoints,
     });
   };
   
@@ -67,7 +82,7 @@ export const VisibilityModal: FC<VisibilityModalProps> = ({ classes, thought, on
     <div className={classes.root}>
       <form
         className={classes.rangeForm}
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitPriority}
       >
         <Range
           classes={classes}
@@ -76,7 +91,26 @@ export const VisibilityModal: FC<VisibilityModalProps> = ({ classes, thought, on
           value={priority}
           min={0}
           max={10}
-          onChange={handleChangeRange}
+          onChange={handleChangePriority}
+        />
+        <button
+          className={classes.updateButton}
+        >
+          Update
+        </button>
+      </form>
+      <form
+        className={classes.rangeForm}
+        onSubmit={handleSubmitGoalPoints}
+      >
+        <Range
+          classes={classes}
+          name={'Goal Points'}
+          label={'Goal Points'}
+          value={goalPoints}
+          min={0}
+          max={10}
+          onChange={handleChangeGoalPoints}
         />
         <button
           className={classes.updateButton}

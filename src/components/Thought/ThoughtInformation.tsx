@@ -393,17 +393,17 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       </div>
       <CircleButton
         classes={classes}
-        id={isScrollingDown && connections.length > 0 ? 'visibile-history-button' : 'hidden-history-button'}
-        onClick={handleClickViewHistory}
-        label={'History'}
-        Icon={History}
-      />
-      <CircleButton
-        classes={classes}
         id={isScrollingDown && connections.length > 0 ? 'visibile-connections-button' : 'hidden-connections-button'}
         onClick={handleClickViewConnections}
         label={'Connections'}
         Icon={Link}
+      />
+      <CircleButton
+        classes={classes}
+        id={isScrollingDown ? 'visibile-history-button' : 'hidden-history-button'}
+        onClick={handleClickViewHistory}
+        label={'History'}
+        Icon={History}
       />
     </div>
   )

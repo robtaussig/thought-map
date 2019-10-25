@@ -62,22 +62,22 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       opacity: 0.5,
       border: '2px solid white',
     },
-    '&#visibile-connections-button': {
+    '&#visibile-history-button': {
       bottom: 10,
       right: 10,
       transition: 'all 0.1s linear',
     },
-    '&#hidden-connections-button': {
+    '&#hidden-history-button': {
       bottom: -100,
       right: 10,
       transition: 'all 0.1s linear',
     },
-    '&#visibile-history-button': {
+    '&#visibile-connections-button': {
       bottom: 10,
       right: 'calc(50% - 55px)',
       transition: 'all 0.1s linear',
     },
-    '&#hidden-history-button': {
+    '&#hidden-connections-button': {
       bottom: -100,
       right: 'calc(50% - 55px)',
       transition: 'all 0.1s linear',

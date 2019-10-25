@@ -114,7 +114,6 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
           x={x}
           y={y}
           columns={maxX}
-          rows={maxY}
           thought={nodeThought}
           isOrigin={thought.id === nodeThought.id}
           statusOptions={statusOptions}

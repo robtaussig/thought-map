@@ -84,7 +84,7 @@ export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIn
         isStart,
         isEnd,
         isSelected,
-      })} style={style} {...handleLongPress}/>
+      })} onClick={handleClickTitle} style={style} {...handleLongPress}/>
       {part && (
         <button className={classNames(classes.partText, {
           isSelected,
