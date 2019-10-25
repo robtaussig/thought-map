@@ -31,14 +31,13 @@ const styles = (theme: any): StyleRules => ({
     minHeight: 250,
     overflow: 'auto',
     justifyContent: 'center',
-  },
-  nav: {
-    borderBottom: `1px solid ${theme.palette.secondary[500]}`,
-    margin: '20px 0',
+    flex: 1,
   },
   navItems: {
     display: 'flex',
     overflow: 'auto',
+    borderBottom: `1px solid ${theme.palette.secondary[500]}`,
+    margin: '20px 0',
   },
   navItem: {
     color: theme.palette.gray[400],
@@ -75,24 +74,22 @@ export const ConnectionsQuickOptions: FC<ConnectionsQuickOptionsProps> = ({ clas
   return (
     <div className={classes.root}>
       <h1 className={classes.header}>{thought.title}</h1>
-      <nav className={classes.nav}>
-        <ul className={classes.navItems}>
-          {[ViewOptions.Connections, ViewOptions.Statuses, ViewOptions.Visibility, ViewOptions.Location].map(option => {
-            return (
-              <li key={option} className={classNames(classes.navItem, {
-                active: currentView === option,
-              })}>
-                <button
-                  className={classes.navButton}
-                  onClick={() => setCurrentView(option)}
-                >
-                  {option}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      <ul className={classes.navItems}>
+        {[ViewOptions.Connections, ViewOptions.Statuses, ViewOptions.Visibility, ViewOptions.Location].map(option => {
+          return (
+            <li key={option} className={classNames(classes.navItem, {
+              active: currentView === option,
+            })}>
+              <button
+                className={classes.navButton}
+                onClick={() => setCurrentView(option)}
+              >
+                {option}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
       <section className={classes.modalContent}>
         {currentView === ViewOptions.Connections && <ConnectionsModal
           onClose={onClose}
