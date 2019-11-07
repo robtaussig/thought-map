@@ -81,7 +81,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
         thoughtMap.current.isRoot(thought.id));
     };
     const filterHiddenThoughts = (thought: Thought) => {
-      return !plan && (thought.hideFromHomeScreen !== true);
+      return Boolean(plan) || (thought.hideFromHomeScreen !== true);
     };
 
     const sortBySortRule = (left: Thought, right: Thought): number => {
