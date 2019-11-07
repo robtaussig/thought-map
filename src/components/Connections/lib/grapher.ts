@@ -81,20 +81,23 @@ export default class Grapher {
       this.graph.addVertex(thought.id);
     }
 
-    Object.entries(connections).forEach(([ connectionId, { from, to }]) => {
-      if (!this.visited[from]) {
-        this.visited[from] = true;
-        this.graph.addVertex(from);
-      }
+    Object.entries(connections)
+      .forEach(([ connectionId, { from, to }]) => {
+        if (!this.visited[from]) {
+          this.visited[from] = true;
+          this.graph.addVertex(from);
+        }
 
-      if (!this.visited[to]) {
-        this.visited[to] = true;
-        this.graph.addVertex(to);
-      }
+        if (!this.visited[to]) {
+          this.visited[to] = true;
+          this.graph.addVertex(to);
+        }
 
-      this.graph.addEdge(to, from);
-    });
+        this.graph.addEdge(to, from);
+      });
     
+    //Force one-way relation
+    this.graph.vertices.find(({ id }) => id === thought.id).prev = new Set();
     return this;
   }
 
