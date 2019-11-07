@@ -54,8 +54,12 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       true
   }));
 
-  const connectionStatusByThought = useMemo(() =>
-    Object.values(state.connections).reduce((next, { from, to }) => {
+  const connectionStatusByThought = useMemo(() => {
+    thoughtMap.current
+      .updateThoughts(state.thoughts)
+      .updateConnections(Object.values(state.connections));
+
+    return Object.values(state.connections).reduce((next, { from, to }) => {
       if (thoughts.find(({ id }) => from === id)) {
         next[from] = next[from] || [0,0];
         const otherThought = state.thoughts.find(otherThought => otherThought.id === to);
@@ -63,13 +67,10 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
         if (otherThought.status === 'completed') next[from][0]++;
       }
       return next;
-    }, {} as ThoughtConnections), [state.connections, thoughts, state.thoughts]);
+    }, {} as ThoughtConnections);
+  }, [state.connections, thoughts, state.thoughts]);
 
   const thoughtComponents = useMemo(() => {
-    thoughtMap.current
-      .updateThoughts(thoughts)
-      .updateConnections(Object.values(state.connections));
-    
     const filterCompletedThoughts = (thought: Thought) => searchTerm !== '' || (plan && plan.showCompleted) || (thought.status !== 'completed' && thought.status !== 'won\'t fix');
     const filterMatchedThoughts = (thought: Thought) => {
       return matchingThoughts === null || matchingThoughts.includes(thought.id);
