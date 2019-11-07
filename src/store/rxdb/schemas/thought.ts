@@ -14,6 +14,7 @@ export interface Thought {
   recurring?: number;
   description?: string;
   goalPoints?: number;
+  hideFromHomeScreen?: boolean;
   index?: number;
   created?: number;
   updated?: number;
@@ -22,7 +23,7 @@ export interface Thought {
 
 export default ['thought', {
   "title": "Thought schema",
-  "version": 5,
+  "version": 6,
   "description": "A Thought",
   "type": "object",
   "properties": {
@@ -67,6 +68,9 @@ export default ['thought', {
     "recurring": {
       "type": "number",
     },
+    "hideFromHomeScreen": {
+      "type": "boolean",
+    },
     "index": {
       "type": "number",
     },
@@ -101,6 +105,10 @@ export default ['thought', {
     },
     5: (oldThought: RxDocument<Thought>) => {
       oldThought.goalPoints = 0;
+      return oldThought;
+    },
+    6: (oldThought: RxDocument<Thought>) => {
+      oldThought.hideFromHomeScreen = false;
       return oldThought;
     },
   },

@@ -24,6 +24,21 @@ export const styles = (theme: any): StyleRules => ({
       borderRadius: 5,
       backgroundColor: theme.palette.primary[500],
     },
+    '& #hide-from-home-screen': {
+      width: 200,
+      margin: 20,
+      padding: '10px 20px',
+      borderRadius: 5,
+      backgroundColor: theme.palette.secondary[800],
+      color: theme.palette.gray[100],
+      ...theme.defaults.centered,
+      justifyContent: 'space-between',
+      '& > input': {
+        ...theme.defaults.centered,
+        marginRight: 15,
+        marginTop: 2,
+      },
+    },
   },
   templateSettings: {
     

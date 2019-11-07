@@ -146,6 +146,13 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
     });
   }, [plan, thought]);
 
+  const handleChangeHideFromHomeScreen = useCallback(checked => {
+    handleUpdate({
+      ...thought,
+      hideFromHomeScreen: checked,
+    });
+  }, [thought]);
+
   const sectionOrder = useMemo(() => {
     return thoughtSections.split('-').map(section => {
       return section.replace(/^_/, '');
@@ -197,6 +204,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         onDelete={handleClickDelete}
         onEditSections={handleEditAllSections}
         onApplySectionState={handleApplySectionState}
+        onChangeHideFromHomeScreen={handleChangeHideFromHomeScreen}
       />
       {!displaySettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>}
       <CircleButton

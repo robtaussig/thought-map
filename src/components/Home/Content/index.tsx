@@ -80,6 +80,9 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
         ((matchingThoughts !== null && matchingThoughts.includes(thought.id)) ||
         thoughtMap.current.isRoot(thought.id));
     };
+    const filterHiddenThoughts = (thought: Thought) => {
+      return !plan && (thought.hideFromHomeScreen !== true);
+    };
 
     const sortBySortRule = (left: Thought, right: Thought): number => {
       if (sortFilterSettings.field) {
@@ -96,10 +99,15 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       return next;
     }, {} as { [planId: string]: string });
 
+    const combinedFilters = (thought: Thought): boolean => {
+      return filterCompletedThoughts(thought) &&
+        filterMatchedThoughts(thought) &&
+        filterChildrenThoughts(thought) &&
+        filterHiddenThoughts(thought);
+    };
+
     return thoughts
-      .filter(filterCompletedThoughts)
-      .filter(filterMatchedThoughts)
-      .filter(filterChildrenThoughts)
+      .filter(combinedFilters)
       .sort(sortBySortRule)
       .map(thought => {
         return (
