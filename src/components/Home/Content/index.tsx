@@ -76,7 +76,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       return matchingThoughts === null || matchingThoughts.includes(thought.id);
     };
     const filterChildrenThoughts = (thought: Thought) => {
-      return !plan.groupThoughts ||
+      return (!(plan?.groupThoughts ?? true)) ||
         ((matchingThoughts !== null && matchingThoughts.includes(thought.id)) ||
         thoughtMap.current.isRoot(thought.id));
     };
