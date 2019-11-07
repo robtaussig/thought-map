@@ -14,6 +14,7 @@ import { plans as planActions, thoughts as thoughtActions } from '../../../actio
 import { planSettingsStyles } from '../styles';
 import { Plan } from 'store/rxdb/schemas/plan';
 import { Thought } from 'store/rxdb/schemas/thought';
+import { GROUP_THOUGHTS_TOOLTIP_TEXT } from '../constants';
 
 interface PlanSettingsProps {
   classes: any;
@@ -75,6 +76,13 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
     planActions.editPlan(db, editedPlan);
   };
 
+  const handleCheckGroupThoughts: ChangeEventHandler<HTMLInputElement> = e => {
+    const editedPlan = Object.assign({}, plan, {
+      groupThoughts: e.target.checked,
+    });
+    planActions.editPlan(db, editedPlan);
+  };
+
   const handleAddThought: ChangeEventHandler<HTMLSelectElement> = e => {
     const { value } = e.target;
     const [oneIndex] = value.split(' - ');
@@ -123,17 +131,26 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
         id={'show-completed'}
         classes={classes}
         isChecked={Boolean(plan.showCompleted)}
-        value={'Show All Thoughts'}
+        value={'Show Completed'}
         onChange={handleCheckShowAll}
-        label={'Show All Thoughts'}
+        label={'Show Completed'}
+      />
+      <CheckBox
+        id={'group-thoughts'}
+        classes={classes}
+        isChecked={Boolean(plan.groupThoughts)}
+        value={'Group Thoughts'}
+        onChange={handleCheckGroupThoughts}
+        label={'Group Thoughts'}
+        tooltip={GROUP_THOUGHTS_TOOLTIP_TEXT}
       />
       <CheckBox
         id={'archive-plan'}
         classes={classes}
         isChecked={Boolean(plan.archived)}
-        value={'Archive Plan'}
+        value={'Archive'}
         onChange={handleCheckArchive}
-        label={'Archive Plan'}
+        label={'Archive'}
       />
       <Select
         id={'add-thoughts'}

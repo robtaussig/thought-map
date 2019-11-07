@@ -108,7 +108,7 @@ export default class Grapher {
   
     const oneWayRelations = relations.map(relation => {
       relation.next = relation.prev;
-      relation.prev = [];
+      relation.prev = new Set();
       return relation;
     })
       .sort((a, b) => {

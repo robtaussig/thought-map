@@ -3,9 +3,9 @@ import { Visited, Node } from './types';
 
 export const getDepth = (vertex: Vertex, visited: Visited, depth: number = 0): number => {
   visited[vertex.id] = true;
-  if (vertex.next.length === 0) return depth;
+  if (vertex.next.size === 0) return depth;
 
-  return Math.max(...vertex.next.map(child => {
+  return Math.max(...[...vertex.next].map(child => {
     if (!visited[child.id]) {
       return getDepth(child, visited, depth + 1);
     } else {

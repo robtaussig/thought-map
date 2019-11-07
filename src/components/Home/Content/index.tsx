@@ -15,6 +15,7 @@ import { useNestedXReducer } from '../../../hooks/useXReducer';
 import useApp from '../../../hooks/useApp';
 import useLongPress from '../../../hooks/useLongPress';
 import { AppState, SortFilterField, Connections } from '~reducers';
+import { Graph } from './lib/graph';
 
 interface ContentProps {
   classes: any;
@@ -32,6 +33,7 @@ interface ThoughtConnections {
 
 export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, state, from }) => {
   const rootRef = useRef<HTMLDivElement>(null);
+  const thoughtMap = useRef<Graph>(new Graph());
   const { dispatch } = useApp();
   const lastScrollPos = useRef<number>(0);
   const [showFilters, setShowFilters] = useState<boolean>(true);
@@ -64,10 +66,20 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
     }, {} as ThoughtConnections), [state.connections, thoughts, state.thoughts]);
 
   const thoughtComponents = useMemo(() => {
+    thoughtMap.current
+      .updateThoughts(thoughts)
+      .updateConnections(Object.values(state.connections));
+    
     const filterCompletedThoughts = (thought: Thought) => searchTerm !== '' || (plan && plan.showCompleted) || (thought.status !== 'completed' && thought.status !== 'won\'t fix');
     const filterMatchedThoughts = (thought: Thought) => {
       return matchingThoughts === null || matchingThoughts.includes(thought.id);
     };
+    const filterChildrenThoughts = (thought: Thought) => {
+      return !plan.groupThoughts ||
+        ((matchingThoughts !== null && matchingThoughts.includes(thought.id)) ||
+        thoughtMap.current.isRoot(thought.id));
+    };
+
     const sortBySortRule = (left: Thought, right: Thought): number => {
       if (sortFilterSettings.field) {
         const leftIsBigger = left[sortFilterSettings.field] &&
@@ -86,6 +98,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
     return thoughts
       .filter(filterCompletedThoughts)
       .filter(filterMatchedThoughts)
+      .filter(filterChildrenThoughts)
       .sort(sortBySortRule)
       .map(thought => {
         return (
@@ -102,7 +115,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           />
         );
       });
-  }, [thoughts, plan, sortFilterSettings, matchingThoughts, searchTerm !== '', connectionStatusByThought]);
+  }, [thoughts, plan, sortFilterSettings, matchingThoughts, searchTerm !== '', connectionStatusByThought, state.connections]);
 
   const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
     const scrollTop = e.target.scrollTop;

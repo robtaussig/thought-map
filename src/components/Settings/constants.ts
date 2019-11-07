@@ -1,0 +1,1 @@
+export const GROUP_THOUGHTS_TOOLTIP_TEXT = 'If checked, connected thoughts will be grouped under the "root" thought, which is the thought that that has no "from" connections';

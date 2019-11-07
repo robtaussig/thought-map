@@ -15,12 +15,12 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     display: 'grid',
     paddingBottom: '80px',
     margin: 20,
-    gridTemplateAreas: `"plan-name plan-name"
-                        "archive-plan show-completed"
-                        "add-thoughts add-thoughts"
-                        "remove-thoughts remove-thoughts"
-                        "default-type default-type"
-                        "delete-plan delete-plan"`,
+    gridTemplateAreas: `"plan-name plan-name plan-name"
+                        "group-thoughts archive-plan show-completed"
+                        "add-thoughts add-thoughts add-thoughts"
+                        "remove-thoughts remove-thoughts remove-thoughts"
+                        "default-type default-type default-type"
+                        "delete-plan delete-plan delete-plan"`,
     gridTemplateRows: '50px 50px 50px 50px 50px 1fr',
     gridTemplateColumns: 'max-content 1fr',
     gridRowGap: '20px',
@@ -93,6 +93,9 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     color: theme.palette.gray[300],
     '&#show-completed': {
       gridArea: 'show-completed',
+    },
+    '&#group-thoughts': {
+      gridArea: 'group-thoughts',
     },
     '&#archive-plan': {
       gridArea: 'archive-plan',

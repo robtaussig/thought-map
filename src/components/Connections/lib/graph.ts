@@ -1,8 +1,8 @@
 import { Visited } from './types';
 
 export class Vertex {
-  next: Vertex[] = [];
-  prev: Vertex[] = [];
+  next: Set<Vertex> = new Set();
+  prev: Set<Vertex> = new Set();
   public id: string;
 
   constructor(id: string) {
@@ -10,28 +10,28 @@ export class Vertex {
   }
 
   addNext(vertex: Vertex) {
-    if (vertex && this.next.indexOf(vertex) === -1) this.next.push(vertex);
+    this.next.add(vertex);
   }
 
   addPrev(vertex: Vertex) {
-    if (vertex && this.prev.indexOf(vertex) === -1) this.prev.push(vertex);
+    this.prev.add(vertex);
   }
 }
 
 export class Graph {
   vertices: Vertex[] = []
 
-  static dfs = (vertex: Vertex, visited: Visited = {}, processVertex = (vertex: Vertex) => {}, findOnlyDescendents: boolean = false) => {
+  static dfs = (vertex: Vertex, visited: Visited = {}, processVertex = (vertex: Vertex) => {}, findOnlyNext: boolean = false) => {
     visited[vertex.id] = true;
     vertex.next.forEach(child => {
       if (!visited[child.id]) {
-        Graph.dfs(child, visited, processVertex, findOnlyDescendents);
+        Graph.dfs(child, visited, processVertex, findOnlyNext);
       }
     });
-    if (findOnlyDescendents !== true) {
+    if (findOnlyNext !== true) {
       vertex.prev.forEach(child => {
         if (!visited[child.id]) {
-          Graph.dfs(child, visited, processVertex, findOnlyDescendents);
+          Graph.dfs(child, visited, processVertex, findOnlyNext);
         }
       });
     }
@@ -71,9 +71,12 @@ export class Graph {
     return null;
   }
   
-  addVertex = (id: string): void => {
+  addVertex = (id: string): Vertex => {
     if (!this.vertices.find(vertex => vertex.id === id)) {
-      this.vertices.push(new Vertex(id));
+      const vertex = new Vertex(id);
+      this.vertices.push(vertex);
+
+      return vertex;
     }
   }
 

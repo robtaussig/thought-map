@@ -4,6 +4,7 @@ export interface Plan {
   id?: string;
   name: string;
   showCompleted?: boolean;
+  groupThoughts?: boolean;
   archived?: boolean;
   defaultType?: string;
   defaultSections?: string;
@@ -13,7 +14,7 @@ export interface Plan {
 
 export default ['plan', {
   "title": "Plan schema",
-  "version": 4,
+  "version": 5,
   "description": "A Plan",
   "type": "object",
   "properties": {
@@ -25,6 +26,9 @@ export default ['plan', {
       "type": "string",
     },
     "showCompleted": {
+      "type": "boolean",
+    },
+    "groupThoughts": {
       "type": "boolean",
     },
     "defaultType": {
@@ -63,6 +67,10 @@ export default ['plan', {
     },
     4: (oldPlan: RxDocument<Plan>) => {
       oldPlan.defaultSections = '';
+      return oldPlan;
+    },
+    5: (oldPlan: RxDocument<Plan>) => {
+      oldPlan.groupThoughts = true;
       return oldPlan;
     },
   },
