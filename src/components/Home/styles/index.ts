@@ -155,6 +155,14 @@ export const styles = (theme: any): StyleRules => ({
     fontSize: 10,
     fontWeight: 600,
     color: theme.palette.gray[300],
+    '& > span': {
+      marginLeft: 10,
+    },
+  },
+  dateTime: {
+    fontSize: 10,
+    fontWeight: 600,
+    color: theme.palette.secondary[600],
   },
   thoughtNodeTitle: {
     color: theme.palette.gray[500],

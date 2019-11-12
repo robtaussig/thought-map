@@ -44,6 +44,16 @@ const styleFromPriority = (priority: number): { color?: string, fontWeight?: num
   return {};
 };
 
+const generateDateTimeString = (thought: Thought): string => {
+  if (thought.date && thought.time) {
+    return `${thought.date} @ ${thought.time}`;
+  } else if (thought.date) {
+    return thought.date;
+  } else if (thought.time) {
+    return `Today @ ${thought.time}`;
+  }
+};
+
 export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
   classes,
   thought,
@@ -92,18 +102,16 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
 
   return (
     <div ref={wrapperRef} className={classes.thoughtNode} {...handleLongPress}>
-      {planName ? (
-        <div className={classes.thoughtNodeTitleWrapper}>
-          <span className={classes.planName}>{planName}</span>
-          <span className={classNames(classes.thoughtNodeTitle, {
-            arrivedFrom,
-          })} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
-        </div>
-      ) : (
+      <div className={classes.thoughtNodeTitleWrapper}>
+        {planName ? (
+          <span className={classes.planName}>{planName}<span className={classes.dateTime}>{generateDateTimeString(thought)}</span></span>
+        ) : (
+          <span className={classes.dateTime}>{generateDateTimeString(thought)}</span>
+        )}
         <span className={classNames(classes.thoughtNodeTitle, {
           arrivedFrom,
         })} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
-      )}
+      </div>
       {connectionStatus && (
         <ConnectionStatus
           classes={classes}

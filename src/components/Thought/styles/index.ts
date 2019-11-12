@@ -156,6 +156,11 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     '&.moved': {
       backgroundColor: theme.palette.primary[200],
     },
+    '&.description': {
+      '& > h3': {
+        whiteSpace: 'unset',
+      },
+    },
   },
   editToggle: {
     gridArea: 'action-buttons',

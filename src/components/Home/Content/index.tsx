@@ -1,6 +1,7 @@
 import './style.scss';
 import React, { useRef, FC, Fragment, useState, useMemo, EventHandler, FormEventHandler, useEffect } from 'react';
 import ThoughtNode from './ThoughtNode';
+import BlankThoughtNode from './BlankThoughtNode';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import UnfoldMore from '@material-ui/icons/UnfoldMore';
@@ -70,7 +71,18 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
     }, {} as ThoughtConnections);
   }, [state.connections, thoughts, state.thoughts]);
 
+
   const thoughtComponents = useMemo(() => {
+    if (thoughts.length === 0) {
+      return new Array(10).fill(null).map((_, idx) => {
+        return (
+          <BlankThoughtNode
+            key={`${idx}-blank-thought`}
+          />
+        );
+      });
+    }
+
     const filterCompletedThoughts = (thought: Thought) => searchTerm !== '' || (plan && plan.showCompleted) || (thought.status !== 'completed' && thought.status !== 'won\'t fix');
     const filterMatchedThoughts = (thought: Thought) => {
       return matchingThoughts === null || matchingThoughts.includes(thought.id);
