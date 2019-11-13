@@ -30,14 +30,7 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
     if (pressTimeout.current) clearTimeout(pressTimeout.current);
   };
 
-  if (isMobileIOS) {
-    return {
-      onMouseDown: handlePressStart,
-      onMouseUp: handlePressEnd,
-      onMouseMove: handlePressEnd,
-      onContextMenu: (e: any) => e.preventDefault(),
-    };
-  } else if (isMobile) {
+  if (isMobile) {
     return {
       onTouchStart: handlePressStart,
       onTouchEnd: handlePressEnd,
