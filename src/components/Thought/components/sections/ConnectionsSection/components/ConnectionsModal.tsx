@@ -18,10 +18,16 @@ const styles = (theme: any): StyleRules => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'auto',
+    '& > label': {
+      marginBottom: 5,
+    },
   },
   currentConnections: {
     display: 'flex',
     flexDirection: 'column',
+    flex: 1,
+    overflow: 'auto',
   },
   currentConnection: {
     display: 'flex',
@@ -34,14 +40,6 @@ const styles = (theme: any): StyleRules => ({
     marginLeft: 5,
     color: theme.palette.red[500],
     ...theme.defaults.centered,
-  },
-  availableThoughts: {
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
-    paddingBottom: 10,
-    marginBottom: 10,
-    borderBottom: `1px solid ${theme.palette.secondary[700]}`,
   },
   noMatches: {
 

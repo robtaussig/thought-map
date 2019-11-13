@@ -86,7 +86,7 @@ export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thought
   };
 
   return (
-    <div className={classes.availableThoughts}>
+    <>
       <Input
         classes={classes}
         id={'filter-thoughts'}
@@ -145,7 +145,7 @@ export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thought
           })}
         </ul>
       )}
-    </div>
+    </>
   );
 };
 

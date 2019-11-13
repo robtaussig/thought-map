@@ -7,7 +7,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
 import { Portal } from './hooks/usePortal';
-(window as any).APP_VERSION = '0.6';
+(window as any).APP_VERSION = '0.7';
 
 ReactDOM.render(
   (
