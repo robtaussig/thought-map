@@ -164,7 +164,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       tags: [],
     }, thought.planId);
 
-    await connectionsActions.createConnection(db, {
+    connectionsActions.createConnection(db, {
       from: thought.id,
       to: createdThought.thought.id,
     });

@@ -113,7 +113,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   const handleClickDelete = useCallback(() => {
     if (typeof thoughtId === 'string') {
       const onConfirm = async () => {
-        await thoughtActions.deleteThought(db, thoughtId);
+        thoughtActions.deleteThought(db, thoughtId);
         history.push(homeUrl(history));
       };
   
