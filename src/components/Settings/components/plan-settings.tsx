@@ -32,6 +32,8 @@ interface AddOrRemovableThoughts {
   label: string;
 }
 
+const SETTINGS_PATH_REGEX = /settings.*/;
+
 export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, typeOptions, connections }) => {
   const { history } = useApp();
   const db = useLoadedDB();
@@ -52,7 +54,7 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
   }, [thoughts, plan]);
 
   const handleClickReturnHome = () => {
-    const nextUrl = location.pathname.replace(/settings.*/, '');
+    const nextUrl = location.pathname.replace(SETTINGS_PATH_REGEX, '');
     history.push(nextUrl);
   }
 

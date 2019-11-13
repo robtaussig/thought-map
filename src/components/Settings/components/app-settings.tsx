@@ -58,12 +58,14 @@ const styles = (theme: any): StyleRules => ({
   }
 });
 
+const SETTINGS_PATH_REGEX = /settings.*/;
+
 export const AppSettings: FC<AppSettingsProps> = ({ classes, state, setLastNotification }) => {
   const { history } = useApp();
   const rootRef = useRef<HTMLDivElement>(null);
   const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
   const handleClickReturnHome = () => {
-    const nextUrl = location.pathname.replace(/settings.*/, '');
+    const nextUrl = location.pathname.replace(SETTINGS_PATH_REGEX, '');
     history.push(nextUrl);
   }
   const handleCheckUpdates = () => {

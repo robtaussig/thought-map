@@ -35,8 +35,9 @@ export const useXReducer = <T>(defaultState: T, mergedReducer: Reducer<T, Action
   return useReducer(reducer, defaultState);
 };
 
+const ACTION_TYPE_REGEX = /^@SET_/;
 export const actionTypeToKey = (actionType: string): (string | undefined) => {
-  if (/^@SET_/.test(actionType)) {
+  if (ACTION_TYPE_REGEX.test(actionType)) {
     return actionType.split('_')[1];
   }
 };

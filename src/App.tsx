@@ -21,9 +21,6 @@ import {
   AppProps,
   Notification,
 } from './types';
-import { disableTouchStartIfSafari } from './lib/util';
-
-disableTouchStartIfSafari();
 
 const STATUS_OPTIONS: string[] = ['new', 'in progress', 'won\'t fix', 'completed'];
 const TYPE_OPTIONS: string[] = ['Task', 'Todo', 'Reminder', 'Misc', 'Collection'];

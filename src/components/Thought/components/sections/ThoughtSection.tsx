@@ -37,6 +37,11 @@ interface ThoughtSectionProps {
   onToggleVisibility: () => void;
 }
 
+const HTTP_REGEX = /(^(http|www)).*(\.([A-z]{2,})(\/.*)?$)/;
+const HTTPS_REGEX = /^http(s?):\/\//;
+const TEL_REGEX = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/;
+const EMAIL_REGEX = /^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/;
+
 export const ThoughtSection: FC<ThoughtSectionProps> = ({
   classes,
   Icon = ArrowRight,
@@ -244,15 +249,14 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     setFullScreenImage(null);
   }, []);
 
-  const _displayComponent = useMemo(() => {
-
+  const _displayComponent = useMemo(() => {    
     const linkify = (element: any): any => {
       if (linkifyValues) {
-        if (/(^(http|www)).*(\.([A-z]{2,})(\/.*)?$)/.test(element)) {
-          return <a href={`http://${element.replace(/^http(s?):\/\//,'')}`} target={'_blank'} style={{ color: 'black' }}>{element}</a>;
-        } else if (/^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/.test(element)) {
+        if (HTTP_REGEX.test(element)) {
+          return <a href={`http://${element.replace(HTTPS_REGEX,'')}`} target={'_blank'} style={{ color: 'black' }}>{element}</a>;
+        } else if (TEL_REGEX.test(element)) {
           return <a href={`tel:${element}`} style={{ color: 'black' }}>{element}</a>;
-        } else if (/^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/.test(element)) {
+        } else if (EMAIL_REGEX.test(element)) {
           return <a href={`mailto:${element}`} style={{ color: 'black' }}>{element}</a>;
         } else {
           return element;

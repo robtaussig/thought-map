@@ -79,6 +79,7 @@ const styles = (theme: any): StyleRules => ({
 });
 
 const IMGUR_CLIENT_ID = 'f1b9f4565330211';
+const BASE64_REGEX = /^data.*base64/;
 
 export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
   const [side, setSide] = useState<Side>(Side.TOP);
@@ -113,7 +114,7 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
           },
           method: 'POST',
           body: JSON.stringify({
-              image: image.localUrl.replace(/^data.*base64/,''),
+              image: image.localUrl.replace(BASE64_REGEX,''),
           }),
       })
       const rjson = await res.json();

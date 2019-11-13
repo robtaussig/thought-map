@@ -50,6 +50,8 @@ export const PRIORITY_OPTIONS: PriorityOption[] = [
   { value: 10, label: 'HIGH (10)' },
 ];
 
+const SECTION_DELIMITER_REGEX = /^_/;
+
 export const DEFAULT_SECTIONS = 'type-status-priority-description-datetime-notes-recurring-tags-connections-pictures';
 
 export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeOptions, tagOptions }) => {
@@ -158,7 +160,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
 
   const sectionOrder = useMemo(() => {
     return thoughtSections.split('-').map(section => {
-      return section.replace(/^_/, '');
+      return section.replace(SECTION_DELIMITER_REGEX, '');
     });
   }, [thoughtSections]);
 
@@ -166,7 +168,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
     return thoughtSections.split('-').reduce((visibility, section) => {
       
       if (section.startsWith('_')) {
-        visibility[section.replace(/^_/, '')] = false;
+        visibility[section.replace(SECTION_DELIMITER_REGEX, '')] = false;
       } else {
         visibility[section] = true;
       }

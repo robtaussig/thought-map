@@ -72,11 +72,3 @@ export const getSearchParam = (history: History, key: string) => {
   const searchParams = new URLSearchParams(search);
   return searchParams.get(key);
 };
-
-export const disableTouchStartIfSafari = () => {
-  if (/iPhone/.test(navigator.userAgent)) {
-    // document.addEventListener('touchmove', e => {
-    //   e.preventDefault();
-    // }, { passive: false });
-  }
-};

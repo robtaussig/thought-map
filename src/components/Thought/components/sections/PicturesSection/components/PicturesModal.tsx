@@ -21,6 +21,7 @@ interface PictureProps {
 }
 
 const IMGUR_CLIENT_ID = 'f1b9f4565330211';
+const BASE64_REGEX = /^data.*base64/;
 
 export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -72,7 +73,7 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
           },
           method: 'POST',
           body: JSON.stringify({
-              image: base64.replace(/^data.*base64/,''),
+              image: base64.replace(BASE64_REGEX,''),
           }),
       })
       const rjson = await res.json();

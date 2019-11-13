@@ -66,6 +66,8 @@ interface AddToCalendarProps {
   tags: Tag[];
 }
 
+const DASH_REGEX = /-/g;
+
 export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, thoughtId, notes, tags }) => {
   const db = useLoadedDB();
   const state: AppState = useModalDynamicState();
@@ -73,7 +75,7 @@ export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, though
   const [signedIn, actions, error] = useGoogleCalendar();
   const gogleCalendarEvent: GoogleCalendarEvent = useMemo(() => ({
     kind: 'calendar#event',
-    id: thought.id.replace(/-/g, ''),
+    id: thought.id.replace(DASH_REGEX, ''),
     status: 'confirmed',
     summary: thought.title,
     description: generateDescriptionFromThought(thought),
