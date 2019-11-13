@@ -1,20 +1,27 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useRef } from 'react';
 import CheckBox from '../../General/CheckBox';
 import Input from '../../General/Input';
 import { openConfirmation } from '../../../lib/util';
 import { useLoadedDB } from '../../../hooks/useDB';
-import { plans as planActions, thoughts as thoughtActions } from '../../../actions';
+import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import { plans as planActions, thoughts as thoughtActions, connections as connectionActions } from '../../../actions';
 import { Plan } from 'store/rxdb/schemas/plan';
 import { Thought } from 'store/rxdb/schemas/thought';
+import { Connection } from 'store/rxdb/schemas/types';
 
 interface DeletePlanProps {
   classes: any;
   plan: Plan;
   thoughts: Thought[];
   afterDelete: () => void;
+  connections: {
+    [connectionId: string]: Connection;
+  }
 }
 
-export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, afterDelete }) => {
+export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, afterDelete, connections }) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
   const [withThoughts, setWithThoughts] = useState<boolean>(false);
   const [inputtedPlanName, setInputtedPlanName] = useState<string>('');
   const db = useLoadedDB();
@@ -38,17 +45,25 @@ export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, after
             });
           });
 
-      await Promise.all(thoughtsToDelete.map(thought => thoughtActions.deleteThought(db, thought.id)));
+      const connectionsToDelete = Object.entries(connections)
+        .filter(([_, { from, to }]) => thoughtsToDelete.find(({ id }) => id === from || id === to))
+        .map(([id]) => id);
+      
+      (window as any).blockDBSubscriptions = true;
+      setLoading();
+      await Promise.all(connectionsToDelete.map(connectionId => connectionActions.deleteConnection(db, connectionId)));
+      await Promise.all(thoughtsToDelete.map(thought => thoughtActions.deleteThought(db, thought.id).catch(console.error)));
       await Promise.all(thoughtsToEdit.map(thought => thoughtActions.editThought(db, thought)));
-      planActions.deletePlan(db, plan.id);
+      await planActions.deletePlan(db, plan.id);
       afterDelete();
+      (window as any).blockDBSubscriptions = false;
     };
   
     openConfirmation(message, onDelete);
   };
   
   return (
-    <section className={classes.deletePlanSection}>
+    <section ref={rootRef} className={classes.deletePlanSection}>
       <button
         className={classes.deletePlanButton}
         onClick={handleClickDelete}

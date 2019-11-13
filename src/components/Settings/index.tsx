@@ -59,6 +59,7 @@ export const Settings: FC<SettingsProps> = ({ classes, state, typeOptions, setLa
             plan={plan}
             thoughts={state.thoughts}
             typeOptions={typeOptions}
+            connections={state.connections}
           /> :
           <Loading id={'thought-loader'}/>
       ) : (

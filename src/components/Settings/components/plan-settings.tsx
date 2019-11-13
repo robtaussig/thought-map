@@ -14,6 +14,7 @@ import { plans as planActions, thoughts as thoughtActions } from '../../../actio
 import { planSettingsStyles } from '../styles';
 import { Plan } from 'store/rxdb/schemas/plan';
 import { Thought } from 'store/rxdb/schemas/thought';
+import { Connection } from 'store/rxdb/schemas/connection';
 import { GROUP_THOUGHTS_TOOLTIP_TEXT } from '../constants';
 
 interface PlanSettingsProps {
@@ -21,6 +22,9 @@ interface PlanSettingsProps {
   plan: Plan;
   thoughts: Thought[];
   typeOptions: string[];
+  connections: {
+    [connectionId: string]: Connection
+  }
 }
 
 interface AddOrRemovableThoughts {
@@ -28,7 +32,7 @@ interface AddOrRemovableThoughts {
   label: string;
 }
 
-export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, typeOptions }) => {
+export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, typeOptions, connections }) => {
   const { history } = useApp();
   const db = useLoadedDB();
   const [inputtedName, setInputtedName] = useState<string>(plan.name);
@@ -181,6 +185,7 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
         plan={plan}
         thoughts={thoughts}
         afterDelete={handleReturnHomeAfterDelete}
+        connections={connections}
       />
       <CircleButton
         classes={classes}
