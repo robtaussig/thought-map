@@ -15,6 +15,7 @@ import { AppState } from 'reducers';
 import { Picture } from '../../store/rxdb/schemas/picture';
 import { Thought as ThoughtType } from '~store/rxdb/schemas/types';
 import { SectionVisibility } from './types';
+import { useLoadingOverlay } from '../../hooks/useLoadingOverlay';
 
 export interface PriorityOption {
   value: number;
@@ -52,7 +53,8 @@ export const PRIORITY_OPTIONS: PriorityOption[] = [
 export const DEFAULT_SECTIONS = 'type-status-priority-description-datetime-notes-recurring-tags-connections-pictures';
 
 export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeOptions, tagOptions }) => {
-  
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
   const db = useLoadedDB();
   const { history } = useApp();
   const settingsGearButtonSVGRef = useRef<HTMLElement>(null);
@@ -113,7 +115,8 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   const handleClickDelete = useCallback(() => {
     if (typeof thoughtId === 'string') {
       const onConfirm = async () => {
-        thoughtActions.deleteThought(db, thoughtId);
+        setLoading();
+        await thoughtActions.deleteThought(db, thoughtId);
         history.push(homeUrl(history));
       };
   
@@ -172,7 +175,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   }, [thoughtSections]);
 
   return (
-    <div className={classes.root}>
+    <div ref={rootRef} className={classes.root}>
       {!thought &&
         <Loading id={'thought-loader'}/>}
       {thought && 
