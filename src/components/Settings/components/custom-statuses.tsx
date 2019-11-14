@@ -60,7 +60,7 @@ export const CustomStatuses: FC<CustomStatusesProps> = ({ classes, onClose }) =>
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setInputtedValue('');
-    const next = customStatuses.concat(inputtedValue);
+    const next = customStatuses.concat(inputtedValue.trim());
     settingsActions.createSetting(db, {
       field: 'customStatuses',
       value: next,

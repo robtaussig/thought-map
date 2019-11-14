@@ -57,7 +57,7 @@ export const CustomTypes: FC<CustomTypesProps> = ({ classes, onClose }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setInputtedValue('');
-    const next = customTypes.concat(inputtedValue);
+    const next = customTypes.concat(inputtedValue.trim());
     settingsActions.createSetting(db, {
       field: 'customTypes',
       value: next,

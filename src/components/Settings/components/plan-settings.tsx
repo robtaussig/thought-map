@@ -62,7 +62,7 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
 
   const handleClickSubmitChanges = async () => {
     const editedPlan = Object.assign({}, plan, {
-      name: inputtedName,
+      name: inputtedName.trim(),
     });
     await planActions.editPlan(db, editedPlan);
     setHasChange(false);

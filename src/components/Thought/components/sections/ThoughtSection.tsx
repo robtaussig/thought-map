@@ -296,7 +296,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       };
 
       const handleSubmit = (value: string) => {
-        edit.onCreate(value);
+        edit.onCreate(value.trim());
         closeModal();
       };
 
@@ -382,7 +382,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     <section
       ref={rootRef}
       className={classNames(classes.thoughtSection, className, { moved })}
-      {...handleLongPress}
+      {...(editting ? {} : handleLongPress)}
       style={{ userSelect: 'none' }}
     >
       {_editIcons}

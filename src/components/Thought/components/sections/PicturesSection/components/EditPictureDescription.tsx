@@ -40,7 +40,7 @@ export const EditPictureDescription: FC<EditPictureDescriptionProps> = ({ classe
     if (disableSubmit === false) {
       await pictureActions.editPicture(db, {
         ...picture,
-        description: inputtedValue,
+        description: inputtedValue.trim(),
       });
       onClose();
     }

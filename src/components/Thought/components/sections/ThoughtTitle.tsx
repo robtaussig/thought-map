@@ -27,7 +27,7 @@ export const ThoughtTitle: FC<ThoughtTitleProps> = ({ classes, thought, onUpdate
     e.preventDefault();
     onUpdate({
       ...thought,
-      title: inputtedTitle,
+      title: inputtedTitle.trim(),
     });
     setEdittingTitle(false);
   };

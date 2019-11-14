@@ -50,7 +50,7 @@ export const CreatePlan: FC<CreatePlanProps> = ({ classes, onClose }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const plan = await planActions.createPlan(db, {
-      name: inputtedValue,
+      name: inputtedValue.trim(),
     });
 
     history.push(`/plan/${plan.id}/`);

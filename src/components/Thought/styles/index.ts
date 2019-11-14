@@ -172,6 +172,11 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     },
     '&.editting': {
       gridArea: 'submit-action-buttons',
+      marginTop: -15,
+      color: theme.palette.secondary[500],
+      '& > svg': {
+        fontSize: 30,
+      },
     },
   },
   sectionIcon: {

@@ -15,7 +15,7 @@ export const QuickAddModal: FC<QuickAddModalProps> = ({ classes, onClose, onSubm
 
   const handleSubmit: FormEventHandler = e => {
     e.preventDefault();
-    onSubmit(inputtedValue);
+    onSubmit(inputtedValue.trim());
   };
 
   const handleClickCancel: MouseEventHandler = e => {

@@ -58,7 +58,7 @@ export const CustomTags: FC<CustomTagsProps> = ({ classes, onClose }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setInputtedValue('');
-    const next = customTags.concat(inputtedValue);
+    const next = customTags.concat(inputtedValue.trim());
     settingsActions.createSetting(db, {
       field: 'customTags',
       value: next,
