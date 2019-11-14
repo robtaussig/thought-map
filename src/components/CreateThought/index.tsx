@@ -41,50 +41,20 @@ interface CreateThoughtProps {
   classes: any;
   typeOptions: string[];
   tagOptions: string[];
-  onExpand: ExpandModal;
   onClose: CloseModal;
 }
 
-export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, tagOptions, onExpand, onClose }) => {
+export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, tagOptions, onClose }) => {
   const { history } = useApp();
   const state: AppState = useModalDynamicState();
   const [ready, setReady] = useState<boolean>(false);
   const db = useLoadedDB();
   const planId = getIdFromUrl(history, 'plan');
-  const plan = state.plans.find(plan => plan.id === planId);
   const thoughtTitles = state.thoughts.map(({ title }) => title);
   const [ createdThought, createdThoughtDispatch ] = useXReducer(DEFAULT_STATE, (state, action) => {
     if (action.type === 'CREATE_FROM_TEMPLATE') return action.payload;
     return state;
   });
-  const [ type, setType ] = useNestedXReducer('type', createdThought, createdThoughtDispatch);
-
-  const handleCreateFromTemplate = useCallback(({ template }: Template) => {
-    const { thought, notes, tags } = template;
-
-    const thoughtFromTemplate = {
-      title: thought.title,
-      typeOptions: typeOptions,
-      type: thought.type,
-      date: thought.date,
-      time: thought.time,
-      description: thought.description,
-      notes: notes.map((note: Note) => note.text),
-      tags: tags.map((tag: Tag) => tag.text),
-      tagOptions: tagOptions,
-    };
-
-    createdThoughtDispatch({
-      type: 'CREATE_FROM_TEMPLATE',
-      payload: thoughtFromTemplate,
-    });
-  }, []);
-
-  useEffect(() => {
-    if (plan && plan.defaultType) setType(plan.defaultType);
-  }, [plan]);
-
-  const [expanded, setExpanded] = useState<boolean>(false);
 
   const handleSubmit: FormEventHandler = async (e) => {
     e.preventDefault();
@@ -94,17 +64,10 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, ta
       history.push(`${homeUrl(history)}thought/${response.thought.id}`);
     }
   };
-
-  const handleExpand = (e: MouseEvent) => {
-    onExpand(true);
-    setExpanded(true);
-  };
   
   return (
     <Fragment>
-      <form className={classNames(classes.form, {
-        [classes.expanded]: expanded,
-      })} onSubmit={handleSubmit}>
+      <form className={classNames(classes.form)} onSubmit={handleSubmit}>
         <Inputs
           classes={classes}
           createdThought={createdThought}
@@ -112,7 +75,6 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, ta
           typeOptions={typeOptions}
           tagOptions={tagOptions}
           onReady={setReady}
-          expanded={expanded}
           thoughtTitles={thoughtTitles}
         />
         <button className={classes.submitButton} disabled={!ready}>

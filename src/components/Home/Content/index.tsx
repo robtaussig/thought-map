@@ -17,6 +17,7 @@ import useApp from '../../../hooks/useApp';
 import useLongPress from '../../../hooks/useLongPress';
 import { AppState, SortFilterField, Connections } from '~reducers';
 import { Graph } from './lib/graph';
+import { ThoughtConnections } from './types';
 
 interface ContentProps {
   classes: any;
@@ -26,10 +27,6 @@ interface ContentProps {
   typeOptions: string[];
   state: AppState;
   from: string;
-}
-
-interface ThoughtConnections {
-  [thoughtId: string]: [number, number];
 }
 
 export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, state, from }) => {
@@ -130,9 +127,12 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
             statusOptions={statusOptions}
             typeOptions={typeOptions}
             displayField={sortFilterSettings.field}
-            connectionStatus={connectionStatusByThought[thought.id]}
+            thoughts={thoughts}
             planName={!plan && (planNamesById[thought.planId] || 'Uncategorized')}
             arrivedFrom={from === thought.id}
+            connectionStatusByThought={connectionStatusByThought}
+            thoughtMap={thoughtMap}
+            left={0}
           />
         );
       });

@@ -141,10 +141,25 @@ export const styles = (theme: any): StyleRules => ({
       },
     },
   },
+  expandedThoughtNode: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  nextThought: {
+    
+  },
   connectionStatus: {
     marginLeft: 20,
     fontSize: 11,
     color: theme.palette.gray[300],
+    display: 'flex',
+    alignItems: 'center',
+    '& > button': {
+      ...theme.defaults.centered,
+      '& > svg': {
+        fontSize: 16,
+      },
+    },
   },
   thoughtNodeTitleWrapper: {
     display: 'flex',

@@ -25,14 +25,13 @@ interface HomeProps {
 export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNotification, typeOptions, tagOptions }) => {
   const { history } = useApp();
   const [addingThought, setAddingThought] = useState<boolean>(false);
-  const [openModal, closeModal, expandModal] = useModal();
+  const [openModal, closeModal] = useModal();
   const planId = getIdFromUrl(history, 'plan');
   const from = getSearchParam(history, 'from');
   const handleAddThought = () => {
     setAddingThought(true);
     openModal(
       <CreateThought
-        onExpand={expandModal}
         onClose={closeModal}
         typeOptions={typeOptions}
         tagOptions={tagOptions}

@@ -1,4 +1,4 @@
-import React, { useCallback, FC, useRef, useEffect } from 'react';
+import React, { useCallback, FC, useRef, useEffect, useState, useMemo, MutableRefObject } from 'react';
 import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
@@ -10,6 +10,8 @@ import useModal from '../../../hooks/useModal';
 import ThoughtNodeSettings from './ThoughtNodeSettings';
 import ConnectionStatus from './ConnectionStatus';
 import classNames from 'classnames';
+import { ThoughtConnections } from './types';
+import { Graph } from './lib/graph';
 
 interface ThoughtNodeProps {
   classes: any;
@@ -17,9 +19,13 @@ interface ThoughtNodeProps {
   statusOptions: string[];
   typeOptions: string[];
   displayField: string;
-  connectionStatus: [number, number];
   planName: string;
   arrivedFrom: boolean;
+  thoughts: Thought[];
+  connectionStatusByThought: ThoughtConnections;
+  thoughtMap: MutableRefObject<Graph>;
+  left: number;
+  isLastChild?: boolean;
 }
 
 const STATUS_TO_COLOR: { [key: string]: string } = {
@@ -60,12 +66,17 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
   statusOptions,
   typeOptions,
   displayField,
-  connectionStatus,
   planName,
   arrivedFrom,
+  thoughts,
+  connectionStatusByThought,
+  thoughtMap,
+  left,
+  isLastChild,
 }) => {
   const { history } = useApp();
   const db = useLoadedDB();
+  const [showConnections, setShowConnections] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [openModal, closeModal] = useModal();
   const blockClick = useRef<boolean>(false);
@@ -73,6 +84,11 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
     blockClick.current = true;
     openModal(<ThoughtNodeSettings thought={thought} onClose={closeModal} onLoad={() => blockClick.current = false}/>);
   }, 400);
+
+  const connectionStatus = connectionStatusByThought[thought.id];
+  const nextThoughts = useMemo(() => {
+    return thoughtMap.current.children(thought.id)
+  }, []);
 
   const handleClick = () => {
     if (blockClick.current === false) {
@@ -100,8 +116,23 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
     }
   }, []);
 
-  return (
-    <div ref={wrapperRef} className={classes.thoughtNode} {...handleLongPress}>
+  useEffect(() => {
+    if (showConnections) {
+      wrapperRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [showConnections]);
+
+  const _mainThoughtNode = (
+    <div
+      ref={wrapperRef}
+      style={{
+        marginLeft: left * 15,
+        borderLeft: left === 0 ? undefined : '1px solid gray',
+        borderBottom: (showConnections || isLastChild) ? '1px solid gray' : undefined,
+      }}
+      className={classes.thoughtNode}
+      {...handleLongPress}
+    >
       <div className={classes.thoughtNodeTitleWrapper}>
         {planName ? (
           <span className={classes.planName}>{planName}<span className={classes.dateTime}>{generateDateTimeString(thought)}</span></span>
@@ -116,6 +147,8 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
         <ConnectionStatus
           classes={classes}
           connectionStatus={connectionStatus}
+          expanded={showConnections}
+          onToggle={setShowConnections}
         />
       )}
       {displayField === 'type' ? (
@@ -140,6 +173,35 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
       )}
     </div>
   );
+
+  if (showConnections) {
+    return (
+      <div className={classes.expandedThoughtNode}>
+        {_mainThoughtNode}
+        {nextThoughts.map((thoughtId, idx) => {
+          return (
+            <ThoughtNode
+              key={`${thoughtId}-next-thought`}
+              classes={classes}
+              thought={thoughts.find(({ id }) => id === thoughtId)}
+              statusOptions={statusOptions}
+              typeOptions={typeOptions}
+              displayField={displayField}
+              connectionStatusByThought={connectionStatusByThought}
+              thoughtMap={thoughtMap}
+              thoughts={thoughts}
+              planName={planName}
+              arrivedFrom={false}
+              left={left + 1}
+              isLastChild={idx === nextThoughts.length - 1}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+
+  return _mainThoughtNode;
 });
 
 export default ThoughtNode;
