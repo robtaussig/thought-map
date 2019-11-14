@@ -125,6 +125,7 @@ const handleThoughtChange = (
     default:
       break;
   }
+  if ((window as any).blockNotifications) return;
   setLastNotification(notification);  
 };
 
@@ -169,6 +170,7 @@ const handleConnectionChange = (
     default:
       break;
   }
+  if ((window as any).blockNotifications) return;
   setLastNotification(notification);  
 };
 
@@ -213,6 +215,7 @@ const handleNoteChange = (
     default:
       break;
   }
+  if ((window as any).blockNotifications) return;
   setLastNotification(notification);  
 };
 
@@ -258,6 +261,7 @@ const handlePictureChange = (
     default:
       break;
   }
+  if ((window as any).blockNotifications) return;
   setLastNotification(notification);  
 };
 
@@ -304,6 +308,7 @@ const handleSettingChange = (
     default:
       break;
   }
+  if ((window as any).blockNotifications) return;
   setLastNotification(notification);  
 };
 
@@ -348,6 +353,7 @@ const handleTagChange = (
     default:
       break;
   }
+  if ((window as any).blockNotifications) return;
   setLastNotification(notification);  
 };
 
@@ -377,6 +383,7 @@ const handlePlanChange = (
     default:
       break;
   }
+  if ((window as any).blockNotifications) return;
   setLastNotification(notification);  
 };
 
@@ -407,6 +414,7 @@ const handleTemplateChange = (
     default:
       break;
   }
+  if ((window as any).blockNotifications) return;
   setLastNotification(notification);  
 };
 
@@ -473,6 +481,7 @@ const handleStatusChange = (
     default:
       break;
   }
+  if ((window as any).blockNotifications) return;
   if (notification) setLastNotification(notification);
 };
 

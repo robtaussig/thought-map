@@ -4,8 +4,9 @@ import { CSSProperties } from '@material-ui/styles';
 
 type SetLoading = (text?: string) => void;
 type StopLoading = () => void;
+type UpdateText = (text: string) => void;
 
-export const useLoadingOverlay = (containerRef: MutableRefObject<HTMLDivElement>): [SetLoading, StopLoading] => {
+export const useLoadingOverlay = (containerRef: MutableRefObject<HTMLDivElement>): [SetLoading, StopLoading, UpdateText] => {
   const textNode = useRef<any>(null);
 
   const loadingOverlayElement = useMemo(() => {
@@ -51,7 +52,20 @@ export const useLoadingOverlay = (containerRef: MutableRefObject<HTMLDivElement>
     containerRef.current.removeChild((loadingOverlayElement));
   }, []);
 
-  return [setLoading, stopLoading];
+  const updateText = useCallback((text: string) => {
+    if (textNode.current) {
+      textNode.current.remove();
+    }
+    textNode.current = document.createElement('span');
+    textNode.current.innerText = text;
+    Object.entries(textNodeInlineStyle).forEach(([key, value]: [string, any]) => {
+      textNode.current.style[(key as any)] = value;
+    });
+
+    loadingOverlayElement.appendChild(textNode.current);
+  }, []);
+
+  return [setLoading, stopLoading, updateText];
 };
 
 const textNodeInlineStyle: CSSProperties = {

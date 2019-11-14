@@ -21,7 +21,7 @@ interface DeletePlanProps {
 
 export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, afterDelete, connections }) => {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
+  const [setLoading, stopLoading, updateLoading] = useLoadingOverlay(rootRef);
   const [withThoughts, setWithThoughts] = useState<boolean>(false);
   const [inputtedPlanName, setInputtedPlanName] = useState<string>('');
   const db = useLoadedDB();
@@ -49,14 +49,21 @@ export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, after
         .filter(([_, { from, to }]) => thoughtsToDelete.find(({ id }) => id === from || id === to))
         .map(([id]) => id);
       
-      (window as any).blockDBSubscriptions = true;
-      setLoading();
+      (window as any).blockNotifications = true;
+      setLoading('Deleting connections');
       await Promise.all(connectionsToDelete.map(connectionId => connectionActions.deleteConnection(db, connectionId)));
-      await Promise.all(thoughtsToDelete.map(thought => thoughtActions.deleteThought(db, thought.id).catch(console.error)));
+      updateLoading('Deleting thoughts');
+      await Promise.all(thoughtsToDelete.map(thought => thoughtActions.deleteThought(db, thought.id).catch(console.error)));      
+      updateLoading('Recategorizing thoughts')
       await Promise.all(thoughtsToEdit.map(thought => thoughtActions.editThought(db, thought)));
+      updateLoading('Deleting plan');
       await planActions.deletePlan(db, plan.id);
-      afterDelete();
-      (window as any).blockDBSubscriptions = false;
+      updateLoading('Plan successfully deleted');
+
+      setTimeout(() => {
+        afterDelete();
+      }, 300);      
+      (window as any).blockNotifications = false;
     };
   
     openConfirmation(message, onDelete);

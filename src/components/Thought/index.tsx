@@ -56,7 +56,7 @@ export const DEFAULT_SECTIONS = 'type-status-priority-description-datetime-notes
 
 export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeOptions, tagOptions }) => {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
+  const [setLoading, stopLoading, updateLoading] = useLoadingOverlay(rootRef);
   const db = useLoadedDB();
   const { history } = useApp();
   const settingsGearButtonSVGRef = useRef<HTMLElement>(null);
@@ -116,9 +116,10 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
 
   const handleClickDelete = useCallback(() => {
     if (typeof thoughtId === 'string') {
-      const onConfirm = async () => {
-        setLoading();
+      const onConfirm = async () => {        
+        setLoading('Deleting thought');
         await thoughtActions.deleteThought(db, thoughtId);
+        updateLoading('Thought deleted');
         history.push(homeUrl(history));
       };
   
