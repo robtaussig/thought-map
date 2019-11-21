@@ -67,7 +67,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
     const statusIds = statusesByThought[thought.id];
     if (statusIds) {
       const statuses = statusIds.map(id => statusesById[id]);
-      const sortedStatuses = statuses.sort((left, right) => left.created - right.created);
+      const sortedStatuses = statuses.sort((left, right) => right.created - left.created);
       const latestStatus = sortedStatuses[0];
   
       return {
