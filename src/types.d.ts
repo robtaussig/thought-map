@@ -11,7 +11,6 @@ import {
   Setting as SettingType,
   Status as StatusType
 } from './store/rxdb/schemas/types';
-import { Action, Setter } from './hooks/useXReducer';
 
 export interface Classes {
   [className: string]: string;
@@ -24,10 +23,6 @@ export interface AppProps extends RouteComponentProps {
 
 export interface Notification {
   message: string;
-}
-
-export interface Setters {
-  [key: string]: Setter<any>;
 }
 
 export enum Operation {

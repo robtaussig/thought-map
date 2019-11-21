@@ -1,4 +1,4 @@
-import { Dispatch } from 'react';
+import { Dispatch } from '@reduxjs/toolkit';
 import { Settings as SettingsType, setSettings } from '../reducers/settings';
 import { Thoughts as ThoughtsType, setThoughts } from '../reducers/thoughts'; 
 import { Connections as ConnectionsType, setConnections } from '../reducers/connections'; 
@@ -22,9 +22,8 @@ import {
   settings as settingActions,
   statuses as statusActions,
 } from '../actions';
-import { Action } from '../hooks/useXReducer';
 
-export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>) => {
+export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<any>) => {
   const setSettingsAction = (settings: SettingsType) => dispatch(setSettings(settings));
   const setThoughtsAction = (thoughts: ThoughtsType) => dispatch(setThoughts(thoughts));
   const setConnectionsAction = (connections: ConnectionsType) => dispatch(setConnections(connections));
@@ -63,8 +62,24 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<A
     next[field] = value;
     return next;
   }, {} as SettingsType);
+
+  const thoughtsWithStatuses = thoughts.map(thought => {
+    const statusIds = statusesByThought[thought.id];
+    if (statusIds) {
+      const statuses = statusIds.map(id => statusesById[id]);
+      const sortedStatuses = statuses.sort((left, right) => left.created - right.created);
+      const latestStatus = sortedStatuses[0];
   
-  setThoughtsAction(thoughts);
+      return {
+        ...thought,
+        updated: latestStatus.created,
+        status: latestStatus.text,
+      };
+    }
+    return thought;
+  });
+  
+  setThoughtsAction(thoughtsWithStatuses);
   setConnectionsAction(connectionsById);
   setPlansAction(plans);
   setNotesAction(notesById);

@@ -15,7 +15,6 @@ export interface ModalContextValue {
   openModal: OpenModal;
   closeModal: CloseModal;
   expand: ExpandModal;
-  dynamicState?: any;
 }
 
 export interface ModalState {

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, FC, useEffect } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Close from '@material-ui/icons/Close';
-import { withStyles, CSSProperties } from '@material-ui/styles';
+import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import {
   OpenModal,
@@ -14,7 +14,6 @@ import { styles } from './styles';
 
 interface ModalProps {
   children: any;
-  dynamicState?: any;
   classes: any;
 }
 
@@ -23,7 +22,7 @@ const DEFAULT_MODAL: ModalState = { component: null, label: 'Modal', options: {}
 
 const INITIAL_STATE: ModalState[] = [DEFAULT_MODAL];
 
-export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children, dynamicState = {} }) => {
+export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }) => {
   const [modals, setModals] = useState<ModalState[]>(INITIAL_STATE);
   const modal = useMemo(() => modals[modals.length - 1] || DEFAULT_MODAL, [modals]);
 
@@ -46,7 +45,7 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children, 
       expanded: expand,
     } : modal))
   }, []);
-  const contextValue = useMemo(() => ({ openModal: handleOpen, closeModal: handleClose, expand: handleExpand, dynamicState }), [dynamicState]);
+  const contextValue = useMemo(() => ({ openModal: handleOpen, closeModal: handleClose, expand: handleExpand }), []);
   const modalStyle = {    
     left: modal.expanded ? 0 : '10%',
     right: modal.expanded ? 0 : '10%',
@@ -87,11 +86,5 @@ export const useModal = (): [OpenModal, CloseModal, ExpandModal] => {
 
   return [openModal, closeModal, expand];
 };
-
-export const useModalDynamicState = (): any => {
-  const { dynamicState } = useContext(ModalContext);
-
-  return dynamicState;
-}
 
 export default useModal;

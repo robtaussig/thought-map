@@ -1,8 +1,6 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { Status } from '../../store/rxdb/schemas/status';
 import { insert, remove, update } from '../../reducers/statuses';
-import { updateStatus as updateThoughtStatus } from '../../reducers/thoughts';
-import { insert as insertStatusByThought, remove as removeStatusByThought } from '../../reducers/statusesByThought';
 import { Notification, RxChangeEvent } from '../../types';
 
 export const handleStatusChange = (
@@ -18,8 +16,6 @@ export const handleStatusChange = (
   switch (data.op) {
     case 'INSERT':
       dispatch(insert(status));
-      dispatch(insertStatusByThought(status));
-      dispatch(updateThoughtStatus(status));
       matchStatusLocationIfEnabled(status);
       if (status.text === 'completed') {
         handleRecurringThought(status.thoughtId);
@@ -28,7 +24,6 @@ export const handleStatusChange = (
     
     case 'REMOVE':
       dispatch(remove(status));
-      dispatch(removeStatusByThought(status));
       break;
 
     case 'UPDATE':
