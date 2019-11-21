@@ -4,7 +4,7 @@ import Close from '@material-ui/icons/Close';
 import CircleButton from '../../../components/General/CircleButton';
 import classNames from 'classnames';
 import { openConfirmation } from '../../../lib/util';
-import { Pictures } from '../../../reducers';
+import { Pictures } from '../../../reducers/pictures';
 import { Picture } from '../../../store/rxdb/schemas/picture';
 import { pictures as pictureActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';

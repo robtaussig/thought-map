@@ -11,11 +11,20 @@ import ThoughtSettings from '../ThoughtSettings';
 import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions, plans as planActions } from '../../actions';
 import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
-import { AppState } from 'reducers';
 import { Picture } from '../../store/rxdb/schemas/picture';
 import { Thought as ThoughtType } from '~store/rxdb/schemas/types';
 import { SectionVisibility } from './types';
 import { useLoadingOverlay } from '../../hooks/useLoadingOverlay';
+import { thoughtSelector } from '../../reducers/thoughts';
+import { tagSelector } from '../../reducers/tags';
+import { noteSelector } from '../../reducers/notes';
+import { connectionSelector } from '../../reducers/connections';
+import { planSelector } from '../../reducers/plans';
+import { statusesByThoughtSelector } from '../../reducers/statusesByThought';
+import { statusSelector } from '../../reducers/statuses';
+import { pictureSelector } from '../../reducers/pictures';
+import { settingSelector } from '../../reducers/settings';
+import { useSelector } from 'react-redux';
 
 export interface PriorityOption {
   value: number;
@@ -30,7 +39,6 @@ export interface ConnectionSummary {
 
 interface ThoughtProps {
   classes: any;
-  state: AppState;
   statusOptions: string[];
   typeOptions: string[];
   tagOptions: string[];
@@ -54,7 +62,7 @@ const SECTION_DELIMITER_REGEX = /^_/;
 
 export const DEFAULT_SECTIONS = 'type-status-priority-description-datetime-notes-recurring-tags-connections-pictures';
 
-export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeOptions, tagOptions }) => {
+export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions, tagOptions }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const [setLoading, stopLoading, updateLoading] = useLoadingOverlay(rootRef);
   const db = useLoadedDB();
@@ -63,27 +71,38 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
   const [displaySettings, setDisplaySettings] = useState<boolean>(false);
   const [editAllSections, setEditAllSections] = useState<boolean>(false);
   const thoughtId = getIdFromUrl(history, 'thought');
-  const thought = useMemo(() => state.thoughts.find(thought => thought.id === thoughtId), [thoughtId, state.thoughts]);
-  const relatedTags = useMemo(() => Object.values(state.tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, state.tags]);
-  const relatedNotes = useMemo(() => Object.values(state.notes).filter(note => note.thoughtId === thoughtId), [thoughtId, state.notes]);
+  const thoughts = useSelector(thoughtSelector);
+  const tags = useSelector(tagSelector);
+  const notes = useSelector(noteSelector);
+  const connections = useSelector(connectionSelector);
+  const plans = useSelector(planSelector);
+  const statusesByThought = useSelector(statusesByThoughtSelector);
+  const statuses = useSelector(statusSelector);
+  const pictures = useSelector(pictureSelector);
+  const settings = useSelector(settingSelector);
+
+
+  const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
+  const relatedTags = useMemo(() => Object.values(tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, tags]);
+  const relatedNotes = useMemo(() => Object.values(notes).filter(note => note.thoughtId === thoughtId), [thoughtId, notes]);
   const relatedConnections: ConnectionSummary[] = useMemo(() =>
-    Object.values(state.connections)
+    Object.values(connections)
       .filter(({ to, from }) => {
         return to === thoughtId || from === thoughtId;
       })
       .map(({ id, to, from }) => {
-        const otherThought = state.thoughts.find(({ id: otherThoughtId }) => otherThoughtId !== thoughtId && (otherThoughtId === to || otherThoughtId === from));
+        const otherThought = thoughts.find(({ id: otherThoughtId }) => otherThoughtId !== thoughtId && (otherThoughtId === to || otherThoughtId === from));
         return {
           isParent: otherThought.id === to,
           otherThought,
           connectionId: id,
         };
       })
-  , [thoughtId, state.connections, state.thoughts]);
+  , [thoughtId, connections, thoughts]);
 
   const plan = useMemo(() => {
-    return state.plans.find(({ id}) => thought && id === thought.planId);
-  }, [state.plans, thought]);
+    return plans.find(({ id}) => thought && id === thought.planId);
+  }, [plans, thought]);
 
   const thoughtSections = thought && thought.sections ?
     thought.sections :
@@ -91,20 +110,20 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
         plan.defaultSections :
         DEFAULT_SECTIONS;
 
-  const statuses = useMemo(() => {    
+  const thoughtStatuses = useMemo(() => {    
     if (typeof thoughtId === 'string') {
-      return (state.statusesByThought[thoughtId] || [])
-        .map(statusId => state.statuses[statusId])
+      return (statusesByThought[thoughtId] || [])
+        .map(statusId => statuses[statusId])
         .filter(Boolean);
     }
     return [];
-  }, [state.statuses, state.statusesByThought, thoughtId]);
+  }, [statuses, statusesByThought, thoughtId]);
 
   const pinnedPictures: Picture[] = useMemo(() => {
-    return Object.values(state.pictures).filter(picture => {
+    return Object.values(pictures).filter(picture => {
       return picture.pinned && picture.thoughtId === thoughtId;
     });
-  }, [thoughtId, state.pictures]);
+  }, [thoughtId, pictures]);
 
   const handleClickHome = (): void => {
     history.push(`${homeUrl(history)}?from=${thoughtId}`);
@@ -191,8 +210,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, state, statusOptions, typeO
           tagOptions={tagOptions}
           priorityOptions={PRIORITY_OPTIONS}
           onUpdate={handleUpdate}
-          stateSettings={state.settings}
-          statuses={statuses}
+          statuses={thoughtStatuses}
           pinnedPictures={pinnedPictures}
           connections={relatedConnections}
           plan={plan}

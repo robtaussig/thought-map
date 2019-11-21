@@ -7,11 +7,13 @@ import NavBar from './components/nav-bar';
 import PlanSettings from './components/plan-settings';
 import AppSettings from './components/app-settings';
 import { rootStyles } from './styles';
-import { AppState } from '../../reducers';
+import { useSelector } from 'react-redux';
+import { planSelector } from '../../reducers/plans';
+import { thoughtSelector } from '../../reducers/thoughts';
+import { connectionSelector } from '../../reducers/connections';
 
 interface SettingsProps {
   classes: any;
-  state: AppState;
   typeOptions: string[];
   setLastNotification: (notification: { message: string }) => void;
 }
@@ -23,11 +25,16 @@ interface NavBarItem {
   disabled?: boolean;
 }
 
-export const Settings: FC<SettingsProps> = ({ classes, state, typeOptions, setLastNotification }) => {
+export const Settings: FC<SettingsProps> = ({ classes, typeOptions, setLastNotification }) => {
   const { history } = useApp();
   const planId = getIdFromUrl(history, 'plan');
   const type = getSearchParam(history, 'type');
-  const plan = useMemo(() => state.plans.find(({ id }) => id === planId), [state.plans, planId]);
+
+  const plans = useSelector(planSelector);
+  const thoughts = useSelector(thoughtSelector);
+  const connections = useSelector(connectionSelector);
+
+  const plan = useMemo(() => plans.find(({ id }) => id === planId), [plans, planId]);
   const handleClick = useCallback(type => () => {
     history.push(`?type=${type}`);
   }, []);
@@ -57,13 +64,13 @@ export const Settings: FC<SettingsProps> = ({ classes, state, typeOptions, setLa
         plan ? 
           <PlanSettings
             plan={plan}
-            thoughts={state.thoughts}
+            thoughts={thoughts}
             typeOptions={typeOptions}
-            connections={state.connections}
+            connections={connections}
           /> :
           <Loading id={'thought-loader'}/>
       ) : (
-        <AppSettings state={state} setLastNotification={setLastNotification}/>
+        <AppSettings setLastNotification={setLastNotification}/>
       )}
     </div>
   );

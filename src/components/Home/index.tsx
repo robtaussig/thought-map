@@ -9,23 +9,25 @@ import { styles } from './styles';
 import useApp from '../../hooks/useApp';
 import useModal from '../../hooks/useModal';
 import { getIdFromUrl, getSearchParam } from '../../lib/util';
-import { AppState } from '../../reducers';
 import { Notification } from '../../types';
 import PlanSelectActions from './PlanSelect/components/actions';
+import { planSelector } from '../../reducers/plans';
+import { thoughtSelector } from '../../reducers/thoughts';
+import { useSelector } from 'react-redux';
 
 interface HomeProps {
   classes: any;
-  state: AppState;
   statusOptions: string[];
   setLastNotification: (notification: Notification) => void;
   typeOptions: string[];
-  tagOptions: string[];
 }
 
-export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNotification, typeOptions, tagOptions }) => {
+export const Home: FC<HomeProps> = ({ classes, statusOptions, setLastNotification, typeOptions }) => {
   const { history } = useApp();
   const [addingThought, setAddingThought] = useState<boolean>(false);
   const [openModal, closeModal] = useModal();
+  const plans = useSelector(planSelector);
+  const thoughts = useSelector(thoughtSelector);
   const planId = getIdFromUrl(history, 'plan');
   const from = getSearchParam(history, 'from');
   const handleAddThought = () => {
@@ -34,34 +36,32 @@ export const Home: FC<HomeProps> = ({ classes, state, statusOptions, setLastNoti
       <CreateThought
         onClose={closeModal}
         typeOptions={typeOptions}
-        tagOptions={tagOptions}
       />, 'Create Thought', {
         afterClose: () => setAddingThought(false),
       }
     );
   }
   const handleEditPlan = useCallback(() => planId ? history.push(`/plan/${planId}/settings?type=plan`) : history.push(`/settings`), [planId]);
-  const plan = state.plans.find(plan => plan.id === planId);
-  const thoughts = useMemo(() => {
+  const plan = plans.find(plan => plan.id === planId);
+  const planThoughts = useMemo(() => {
     if (planId) {
-      return state.thoughts.filter(thought => thought.planId === planId);
+      return thoughts.filter(thought => thought.planId === planId);
     } else {
-      return state.thoughts;
+      return thoughts;
     }
-  }, [planId, state.thoughts]);
+  }, [planId, thoughts]);
   
   return (
     <div className={classes.root}>
       <Content
         classes={classes}
-        state={state}
-        thoughts={thoughts}
+        thoughts={planThoughts}
         plan={plan}
         statusOptions={statusOptions}
         typeOptions={typeOptions}
         from={from}
       />
-      <PlanSelect classes={classes} plans={state.plans} thoughts={thoughts} planId={planId} setLastNotification={setLastNotification}/>
+      <PlanSelect classes={classes} plans={plans} thoughts={planThoughts} planId={planId} setLastNotification={setLastNotification}/>
       {!addingThought &&
         <CircleButton
           id={'edit-plan'}

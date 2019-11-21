@@ -1,7 +1,5 @@
 import React, { FC, useMemo, useState, FormEvent } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import { AppState } from '../../../reducers';
-import { useModalDynamicState } from '../../../hooks/useModal';
 import { openConfirmation } from '../../../lib/util';
 import Input from '../../General/Input';
 import { settings as settingsActions, statuses as statusActions, thoughts as thoughtActions } from '../../../actions';
@@ -9,6 +7,9 @@ import { useLoadedDB } from '../../../hooks/useDB';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Status } from '../../../store/rxdb/schemas/status';
 import Delete from '@material-ui/icons/Delete';
+import { useSelector } from 'react-redux';
+import { settingSelector } from '../../../reducers/settings';
+import { thoughtSelector } from '../../../reducers/thoughts';
 
 interface CustomStatusesProps {
   classes: any;
@@ -50,12 +51,13 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const CustomStatuses: FC<CustomStatusesProps> = ({ classes, onClose }) => {
-  const state: AppState = useModalDynamicState();
   const [inputtedValue, setInputtedValue] = useState<string>('');
   const db = useLoadedDB();
+  const settings = useSelector(settingSelector);
+  const thoughts = useSelector(thoughtSelector);
   const customStatuses = useMemo(() => {
-    return Array.isArray(state.settings.customStatuses) ? state.settings.customStatuses : [];
-  }, [state.settings]);
+    return Array.isArray(settings.customStatuses) ? settings.customStatuses : [];
+  }, [settings]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -80,7 +82,7 @@ export const CustomStatuses: FC<CustomStatusesProps> = ({ classes, onClose }) =>
     if (badStatuses.length > 0) {
       const confirmAndDelete = async () => {
         const thoughtsToDecrement = [...new Set(badStatuses.map(({ thoughtId }) => thoughtId))]
-          .map(thoughtId => state.thoughts.find(thought => thought.id === thoughtId));
+          .map(thoughtId => thoughts.find(thought => thought.id === thoughtId));
         const convertThought = async (thought: Thought) => {
           return thoughtActions.editThought(db, {
             ...thought,

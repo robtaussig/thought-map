@@ -36,7 +36,7 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
     showArchived ? HIDE_ARCHIVED : SHOW_ARCHIVED,
     CREATE_NEW_PLAN
   ];
-  const { history, dispatch } = useApp();
+  const { history } = useApp();
 
   const onClosePriorityList = useCallback(() => {
     setShowPriorities(false);

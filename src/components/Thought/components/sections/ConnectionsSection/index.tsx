@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
 import ThoughtSection from '../ThoughtSection';
 import Link from '@material-ui/icons/Link';
-import useModal, { useModalDynamicState } from '../../../../../hooks/useModal';
+import useModal from '../../../../../hooks/useModal';
 import useApp from '../../../../../hooks/useApp';
-import { AppState } from '../../../../../reducers';
 import { ConnectionSummary } from '../../../';
 import ConnectionsModal from './components/ConnectionsModal';
 import { SectionState } from '../../../types';
+import { useSelector } from 'react-redux';
+import { thoughtSelector } from '../../../../../reducers/thoughts';
 
 interface ConnectionsSectionProps {
   classes: any;
@@ -32,8 +33,8 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
   visible = true,
 }) => {
   const [openModal, closeModal] = useModal();
-  const state: AppState = useModalDynamicState();
-  const thoughtTitles = state.thoughts.map(({ title }) => title);
+  const thoughts = useSelector(thoughtSelector);
+  const thoughtTitles = thoughts.map(({ title }) => title);
   const { history } = useApp();
   const handleEdit = () => {
     openModal(

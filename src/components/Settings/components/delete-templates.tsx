@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { AppState } from '../../../reducers';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import { templates as templateActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';
-import { useModalDynamicState } from '../../../hooks/useModal';
 import Delete from '@material-ui/icons/Delete';
 import { openConfirmation } from '../../../lib/util';
+import { useSelector } from 'react-redux';
+import { templateSelector } from '../../../reducers/templates';
 
 interface DeleteTemplatesProps {
   classes: any;
@@ -32,9 +32,8 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const DeleteTemplates: FC<DeleteTemplatesProps> = ({ classes, onClose }) => {
-  const state: AppState = useModalDynamicState();
   const db = useLoadedDB();
-  const templates = state.templates;
+  const templates = useSelector(templateSelector);
 
   const deleteTemplate = (templateId: string) => {
     openConfirmation('Are you sure you want to delete this template?', () => templateActions.deleteTemplate(db, templateId));

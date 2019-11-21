@@ -4,8 +4,8 @@ import ConnectionsModal from '../../Thought/components/sections/ConnectionsSecti
 import StatusesModal from './StatusesModal';
 import VisibilityModal from './VisibilityModal';
 import LocationModal from './LocationModal';
-import { useModalDynamicState } from '../../../hooks/useModal';
-import { AppState } from '../../../reducers';
+import { useSelector } from 'react-redux';
+import { thoughtSelector } from '../../../reducers/thoughts';
 import classNames from 'classnames';
 
 interface ConnectionsQuickOptionsProps {
@@ -75,8 +75,8 @@ enum ViewOptions {
 
 export const ConnectionsQuickOptions: FC<ConnectionsQuickOptionsProps> = ({ classes, onClose, thoughtId, statusOptions }) => {
   const [currentView, setCurrentView] = useState<ViewOptions>(ViewOptions.Connections);
-  const state: AppState = useModalDynamicState();
-  const thought = state.thoughts.find(({ id }) => id === thoughtId);
+  const thoughts = useSelector(thoughtSelector);
+  const thought = thoughts.find(({ id }) => id === thoughtId);
 
   return (
     <div className={classes.root}>

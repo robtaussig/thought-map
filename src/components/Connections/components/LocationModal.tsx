@@ -2,9 +2,10 @@ import React, { FC } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import Map from '../../General/Map';
 import { Thought } from '../../../store/rxdb/schemas/thought';
-import { useModalDynamicState } from '../../../hooks/useModal';
-import { AppState } from '../../../reducers';
 import { format } from 'date-fns';
+import { useSelector } from 'react-redux';
+import { statusesByThoughtSelector } from '../../../reducers/statusesByThought';
+import { statusSelector } from '../../../reducers/statuses';
 
 interface LocationModalProps {
   classes: any;
@@ -27,10 +28,11 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const LocationModal: FC<LocationModalProps> = ({ classes, thought, onClose }) => {
-  const state: AppState = useModalDynamicState();
-  const statusIds = state.statusesByThought[thought.id];
+  const statusesByThought = useSelector(statusesByThoughtSelector);
+  const stateStatuses = useSelector(statusSelector);
+  const statusIds = statusesByThought[thought.id];
   const statuses = statusIds.map(statusId => {
-    return state.statuses[statusId];
+    return stateStatuses[statusId];
   });
 
   return (

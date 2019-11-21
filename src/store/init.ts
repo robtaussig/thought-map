@@ -1,9 +1,15 @@
 import { Dispatch } from 'react';
-import { ACTION_TYPES } from '../reducers';
-import { intoMap, convertSettings, thoughtStatuses } from '../lib/util';
-import {
-  Status as StatusType,
-} from './rxdb/schemas/types';
+import { Settings as SettingsType, setSettings } from '../reducers/settings';
+import { Thoughts as ThoughtsType, setThoughts } from '../reducers/thoughts'; 
+import { Connections as ConnectionsType, setConnections } from '../reducers/connections'; 
+import { Notes as NotesType, setNotes } from '../reducers/notes'; 
+import { Tags as TagsType, setTags } from '../reducers/tags'; 
+import { Plans as PlansType, setPlans } from '../reducers/plans'; 
+import { Templates as TemplatesType, setTemplates } from '../reducers/templates'; 
+import { Pictures as PicturesType, setPictures } from '../reducers/pictures';
+import { Statuses as StatusesType, setStatuses } from '../reducers/statuses';
+import { StatusesByThought as StatusesByThoughtType, setStatusesByThought } from '../reducers/statusesByThought';
+import { intoMap } from '../lib/util';
 import { RxDatabase } from 'rxdb';
 import {
   thoughts as thoughtActions,
@@ -19,6 +25,17 @@ import {
 import { Action } from '../hooks/useXReducer';
 
 export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<Action>) => {
+  const setSettingsAction = (settings: SettingsType) => dispatch(setSettings(settings));
+  const setThoughtsAction = (thoughts: ThoughtsType) => dispatch(setThoughts(thoughts));
+  const setConnectionsAction = (connections: ConnectionsType) => dispatch(setConnections(connections));
+  const setNotesAction = (notes: NotesType) => dispatch(setNotes(notes));
+  const setTagsAction = (tags: TagsType) => dispatch(setTags(tags));
+  const setPlansAction = (plans: PlansType) => dispatch(setPlans(plans));
+  const setTemplatesAction = (templates: TemplatesType) => dispatch(setTemplates(templates));
+  const setPicturesAction = (pictures: PicturesType) => dispatch(setPictures(pictures));
+  const setStatusesAction = (statuses: StatusesType) => dispatch(setStatuses(statuses));
+  const setStatusesByThoughtAction = (statusesByThought: StatusesByThoughtType) => dispatch(setStatusesByThought(statusesByThought));
+
   const [ thoughts, connections, plans, notes, tags, templates, pictures, settings, statuses ] = await Promise.all([
     thoughtActions.getThoughts(db),
     connectionActions.getConnections(db),
@@ -32,37 +49,31 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<A
   ]);
 
   const statusesById = intoMap(statuses);
-  const statusesByThought = thoughtStatuses(statuses);
+  const notesById = intoMap(notes);
+  const tagsById = intoMap(tags);
+  const picturesById = intoMap(pictures);
+  const connectionsById = intoMap(connections);
+  const statusesByThought = statuses.reduce((next, { id, thoughtId }) => {
+    next[thoughtId] = next[thoughtId] || [];
+    next[thoughtId].push(id);
+    return next;
+  }, {} as StatusesByThoughtType)
 
-  const thoughtWithLatestStatus = thoughts.map(thought => {
-    if (statusesByThought[thought.id]) {
-      const statusId = statusesByThought[thought.id][0];
-      const statusText = (statusesById[statusId] as StatusType).text;
-
-      return {
-        ...thought,
-        status: statusText,
-      };
-    }
-
-    return thought;
-  });
+  const settingsMap = settings.reduce((next, { field, value }) => {
+    next[field] = value;
+    return next;
+  }, {} as SettingsType);
   
-  dispatch({
-    type: ACTION_TYPES.INITIALIZE_APPLICATION,
-    payload: {
-      thoughts: thoughtWithLatestStatus,
-      connections: intoMap(connections),
-      plans,
-      notes: intoMap(notes),
-      tags: intoMap(tags),
-      pictures: intoMap(pictures),
-      statuses: statusesById,
-      statusesByThought: statusesByThought,
-      templates,
-      settings: convertSettings(settings),
-    },
-  });
+  setThoughtsAction(thoughts);
+  setConnectionsAction(connectionsById);
+  setPlansAction(plans);
+  setNotesAction(notesById);
+  setTagsAction(tagsById);
+  setTemplatesAction(templates);
+  setPicturesAction(picturesById);
+  setSettingsAction(settingsMap);
+  setStatusesAction(statusesById);
+  setStatusesByThoughtAction(statusesByThought);
 
   return true;
 };

@@ -12,12 +12,16 @@ import Input from '../../General/Input';
 import Search from '@material-ui/icons/Search';
 import Close from '@material-ui/icons/Close';
 import { Searchable } from '../ThoughtSearch';
-import { useNestedXReducer } from '../../../hooks/useXReducer';
-import useApp from '../../../hooks/useApp';
 import useLongPress from '../../../hooks/useLongPress';
-import { AppState, SortFilterField, Connections } from '~reducers';
 import { Graph } from './lib/graph';
 import { ThoughtConnections } from './types';
+import { useSelector, useDispatch } from 'react-redux';
+import { noteSelector } from '../../../reducers/notes';
+import { tagSelector } from '../../../reducers/tags';
+import { thoughtSelector } from '../../../reducers/thoughts';
+import { connectionSelector } from '../../../reducers/connections';
+import { planSelector } from '../../../reducers/plans';
+import { sortFilterSettingsSelector, sortBy, SortFilterField } from '../../../reducers/sortFilterSettings';
 
 interface ContentProps {
   classes: any;
@@ -25,14 +29,13 @@ interface ContentProps {
   plan: Plan;
   statusOptions: string[];
   typeOptions: string[];
-  state: AppState;
   from: string;
 }
 
-export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, state, from }) => {
+export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, from }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const thoughtMap = useRef<Graph>(new Graph());
-  const { dispatch } = useApp();
+  const dispatch = useDispatch();
   const lastScrollPos = useRef<number>(0);
   const [showFilters, setShowFilters] = useState<boolean>(true);
   const handleLongPress = useLongPress(() => {
@@ -41,32 +44,30 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
   const searchTree = useRef<Searchable>(new Searchable());
-  const [notes] = useNestedXReducer('notes', state, dispatch);
-  const [tags] = useNestedXReducer('tags', state, dispatch);
-  const [sortFilterSettings, setSortFilterSettings] = useNestedXReducer('sortFilterSettings', state, dispatch);
+  const notes = useSelector(noteSelector);
+  const tags = useSelector(tagSelector);
+  const stateThoughts = useSelector(thoughtSelector);
+  const stateConnections = useSelector(connectionSelector);
+  const plans = useSelector(planSelector);
+  const sortFilterSettings = useSelector(sortFilterSettingsSelector);
 
-  const handleSortBy = (name: SortFilterField) => () => setSortFilterSettings(({ field, desc }) => ({
-    field: field === name && desc === false ? null : name,
-    desc: field === name ?
-      desc === false ? null : !desc :
-      true
-  }));
+  const handleSortBy = (name: SortFilterField) => () => dispatch(sortBy(name));
 
   const connectionStatusByThought = useMemo(() => {
     thoughtMap.current
-      .updateThoughts(state.thoughts)
-      .updateConnections(Object.values(state.connections));
+      .updateThoughts(stateThoughts)
+      .updateConnections(Object.values(stateConnections));
 
-    return Object.values(state.connections).reduce((next, { from, to }) => {
+    return Object.values(stateConnections).reduce((next, { from, to }) => {
       if (thoughts.find(({ id }) => from === id)) {
         next[from] = next[from] || [0,0];
-        const otherThought = state.thoughts.find(otherThought => otherThought.id === to);
+        const otherThought = stateThoughts.find(otherThought => otherThought.id === to);
         next[from][1]++;
         if (otherThought.status === 'completed') next[from][0]++;
       }
       return next;
     }, {} as ThoughtConnections);
-  }, [state.connections, thoughts, state.thoughts]);
+  }, [stateConnections, thoughts, stateThoughts]);
 
 
   const thoughtComponents = useMemo(() => {
@@ -103,7 +104,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       return 1;
     };
 
-    const planNamesById = state.plans.reduce((next, statePlan) => {
+    const planNamesById = plans.reduce((next, statePlan) => {
       next[statePlan.id] = statePlan.name;
       return next;
     }, {} as { [planId: string]: string });
@@ -136,7 +137,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           />
         );
       });
-  }, [thoughts, plan, sortFilterSettings, matchingThoughts, searchTerm !== '', connectionStatusByThought, state.connections]);
+  }, [thoughts, plan, sortFilterSettings, matchingThoughts, searchTerm !== '', connectionStatusByThought, stateConnections]);
 
   const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
     const scrollTop = e.target.scrollTop;
@@ -166,10 +167,10 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
         <div className={classNames(classes.sortByButtons, 'flippable', isSearching ? 'back' : 'front')}>
           <div className={classes.sortByNames}>
             <button className={classNames(classes.sortButton, {
-              selected: sortFilterSettings.field === 'title'
-            })} onClick={handleSortBy('title')}>
+              selected: sortFilterSettings.field === SortFilterField.Title
+            })} onClick={handleSortBy(SortFilterField.Title)}>
               Name
-              {sortFilterSettings.field === 'title' ?
+              {sortFilterSettings.field === SortFilterField.Title ?
                 (sortFilterSettings.desc ? <ExpandMore/> : <ExpandLess/>) :
                 <UnfoldMore/>
               }
@@ -177,17 +178,17 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           </div>
           <div className={classes.sortByStatus}>
           <button className={classNames(classes.sortButton, {
-            selected: sortFilterSettings.field === 'status'
-          })} onClick={handleSortBy('status')}>
+            selected: sortFilterSettings.field === SortFilterField.Status
+          })} onClick={handleSortBy(SortFilterField.Status)}>
             Status
           </button>
           /
           <button className={classNames(classes.sortButton, {
-            selected: sortFilterSettings.field === 'type'
-          })} onClick={handleSortBy('type')}>
+            selected: sortFilterSettings.field === SortFilterField.Type
+          })} onClick={handleSortBy(SortFilterField.Type)}>
             Type
           </button>
-          {['status', 'type'].includes(sortFilterSettings.field) ?
+          {[SortFilterField.Status, SortFilterField.Type].includes(sortFilterSettings.field) ?
             (sortFilterSettings.desc ? <ExpandMore/> : <ExpandLess/>) :
             <UnfoldMore/>
           }

@@ -9,7 +9,6 @@ import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
 import useApp from '../../../hooks/useApp';
 import { getSearchParam } from '../../../lib/util';
-import { useNestedXReducer } from '../../../hooks/useXReducer';
 import { useModal } from '../../../hooks/useModal';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Plan } from '../../../store/rxdb/schemas/plan';
@@ -176,12 +175,12 @@ export const jsonDump = async (db: RxDatabase) => {
   return linkElement.click();
 };
 
-export const Data: FC<DataProps> = ({ classes, state, setLoading }) => {
+export const Data: FC<DataProps> = ({ classes, setLoading }) => {
   const importJSONRef = useRef<HTMLInputElement>(null);
   const [side, setSide] = useState<Side>(Side.TOP);
-  const { dispatch, history } = useApp();
+  const { history } = useApp();
   const readyToImport = getSearchParam(history, 'import');
-  const [_notificationDisabled, setNotificationDisabled] = useNestedXReducer('notificationDisabled', state, dispatch);
+  
   const rootRef = useRef(null);
   const [openModal, closeModal] = useModal();
   const db = useLoadedDB();

@@ -1,8 +1,5 @@
-import { AppState } from "../../reducers";
-
 export interface DataProps {
   classes: any;
-  state: AppState;
   setLoading: () => void;
 }
 

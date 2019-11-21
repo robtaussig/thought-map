@@ -1,6 +1,5 @@
 import React, { FC, useMemo, useRef, useState, useEffect } from 'react';
 import { withStyles, StyleRules, CSSProperties } from '@material-ui/styles';
-import { AppState } from '../../reducers';
 import { getIdFromUrl } from '../../lib/util';
 import useApp from '../../hooks/useApp';
 import ThoughtGroup from './components/thought-group';
@@ -11,10 +10,15 @@ import {
   StatusUpdate,
   Group,
 } from './types';
+import { useSelector } from 'react-redux';
+import { planSelector } from '../../reducers/plans';
+import { thoughtSelector } from '../../reducers/thoughts';
+import { connectionSelector } from '../../reducers/connections';
+import { statusesByThoughtSelector } from '../../reducers/statusesByThought';
+import { statusSelector } from '../../reducers/statuses';
 
 interface HistoryProps {
   classes: any;
-  state: AppState;
   statusOptions: string[];
 }
 
@@ -24,11 +28,15 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const History: FC<HistoryProps> = ({ classes, state, statusOptions }) => {
+export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
   const { history } = useApp();
   const grapher = useRef(null);
   const [relatedThoughtIds, setRelatedThoughtIds] = useState<string[]>([]);
-
+  const plans = useSelector(planSelector);
+  const thoughts = useSelector(thoughtSelector);
+  const connections = useSelector(connectionSelector);
+  const stateStatusesByThought = useSelector(statusesByThoughtSelector);
+  const statuses = useSelector(statusSelector);
   const getGrapher = (): Grapher => {
     if (grapher.current === null) {
       grapher.current = new Grapher();
@@ -39,35 +47,32 @@ export const History: FC<HistoryProps> = ({ classes, state, statusOptions }) => 
   const isPlanHistory = /thought/.test(history.location.pathname) === false;
   const planId = getIdFromUrl(history, 'plan');
   const thoughtId = getIdFromUrl(history, 'thought');
-  const plan = useMemo(() => {
-    return state.plans.find(({ id }) => id === planId);
-  }, [state.plans, planId]);
   const thought = useMemo(() => {
-    return state.thoughts.find(({ id }) => id === thoughtId);
-  }, [state.thoughts, thoughtId]);
+    return thoughts.find(({ id }) => id === thoughtId);
+  }, [thoughts, thoughtId]);
   const thoughtsById = useMemo(() => {
-    return state.thoughts.reduce((byId, thought) => {
+    return thoughts.reduce((byId, thought) => {
       byId[thought.id] = thought;
       return byId;
     }, {} as ThoughtsById);
-  }, [state.thoughts]);
+  }, [thoughts]);
 
   useEffect(() => {
     if (isPlanHistory) {
 
     } else {
       getGrapher()
-        .update(thought, state.connections)
+        .update(thought, connections)
         .getDescendents(setRelatedThoughtIds);
     }
-  }, [state.connections, state.thoughts, planId, thoughtId, isPlanHistory, thoughtsById]);
+  }, [connections, thoughts, planId, thoughtId, isPlanHistory, thoughtsById]);
 
   const statusUpdates = useMemo(() => {
     return relatedThoughtIds.reduce((next, relatedThoughtId) => {
-      const thought = state.thoughts.find(({ id }) => id === relatedThoughtId);
-      const statusesByThought: StatusUpdate[] = state.statusesByThought[relatedThoughtId]
+      const thought = thoughts.find(({ id }) => id === relatedThoughtId);
+      const statusesByThought: StatusUpdate[] = stateStatusesByThought[relatedThoughtId]
                                   .map(statusId => {
-                                    const status = state.statuses[statusId];
+                                    const status = statuses[statusId];
                                     const completionIndex = statusOptions.indexOf(status.text);
 
                                     return {
@@ -88,7 +93,7 @@ export const History: FC<HistoryProps> = ({ classes, state, statusOptions }) => 
         if (a.created > b.created) return 1;
         return -1;
       });
-  }, [state.statusesByThought, state.statuses, relatedThoughtIds]);
+  }, [stateStatusesByThought, statuses, relatedThoughtIds]);
 
   const groupedByThought: Group[] = useMemo(() => {
     return statusUpdates.reduce((next, statusUpdate, statusUpdateIndex) => {

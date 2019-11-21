@@ -3,19 +3,21 @@ import { Setting } from '../store/rxdb/schemas/setting';
 import { Status } from '../store/rxdb/schemas/status';
 import { SettingState } from '../types';
 
-interface Mappable {
+export interface Mappable {
   id?: string;
 }
 
-interface MappedCollection {
+export interface MappedCollection {
   [id: string]: Mappable;
 }
 
-export const intoMap = (items: Mappable[]) => {
+export const intoMap = <t extends Mappable>(items: t[]) => {
   return items.reduce((all, each) => {
     all[each.id] = each;
     return all;
-  }, {} as MappedCollection);
+  }, {} as {
+    [id: string]: t
+  });
 };
 
 export const convertSettings = (settings: Setting[]): SettingState => {

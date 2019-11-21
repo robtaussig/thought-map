@@ -1,12 +1,12 @@
 import React, { FC, useMemo, useState, FormEvent } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import { AppState } from '../../../reducers';
-import { useModalDynamicState } from '../../../hooks/useModal';
 import Input from '../../General/Input';
 import { settings as settingsActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Delete from '@material-ui/icons/Delete';
 import { openConfirmation } from '../../../lib/util';
+import { useSelector } from 'react-redux';
+import { settingSelector } from '../../../reducers/settings';
 
 interface CustomTypesProps {
   classes: any;
@@ -47,12 +47,12 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const CustomTypes: FC<CustomTypesProps> = ({ classes, onClose }) => {
-  const state: AppState = useModalDynamicState();
+  const settings = useSelector(settingSelector);
   const [inputtedValue, setInputtedValue] = useState<string>('');
   const db = useLoadedDB();
   const customTypes = useMemo(() => {
-    return Array.isArray(state.settings.customTypes) ? state.settings.customTypes : [];
-  }, [state.settings]);
+    return Array.isArray(settings.customTypes) ? settings.customTypes : [];
+  }, [settings]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

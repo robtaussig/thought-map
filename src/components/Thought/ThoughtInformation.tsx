@@ -17,7 +17,6 @@ import useApp from '../../hooks/useApp';
 import { homeUrl } from '../../lib/util';
 import { thoughtInformationStyles } from './styles';
 import { PriorityOption } from './'
-import { Settings } from 'reducers';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Picture } from 'store/rxdb/schemas/picture';
 import { Tag } from 'store/rxdb/schemas/tag';
@@ -50,7 +49,6 @@ export interface ThoughtInformationProps {
   tagOptions: string[];
   priorityOptions: PriorityOption[];
   onUpdate: (thought: Thought) => void;
-  stateSettings: Settings;
   statuses: StatusType[];
   pinnedPictures: Picture[];
   connections: ConnectionSummary[];
@@ -71,7 +69,6 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   tagOptions = [],
   priorityOptions = [],
   onUpdate,
-  stateSettings,
   statuses,
   pinnedPictures,
   connections = [],

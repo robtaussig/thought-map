@@ -2,11 +2,9 @@ import React, { FC, useEffect, useMemo, Fragment } from 'react';
 import { withStyles, StyleRules } from '@material-ui/core/styles';
 import { thoughts as thoughtActions } from '../../../../actions';
 import { Thought } from '../../../../store/rxdb/schemas/thought';
-import { AppState } from '../../../../reducers';
 import { Note } from '../../../../store/rxdb/schemas/note';
 import { Tag } from '../../../../store/rxdb/schemas/tag';
 import { useLoadedDB } from '../../../../hooks/useDB';
-import { useModalDynamicState } from '../../../../hooks/useModal';
 import Loading from '../../../Loading';
 import {
   GoogleCalendarEvent,
@@ -18,6 +16,8 @@ import {
   generateRemindersFromThought,
 } from './lib/util';
 import useGoogleCalendar from '../../../../hooks/useGoogleCalendar';
+import { useSelector } from 'react-redux';
+import { thoughtSelector } from '../../../../reducers/thoughts';
 
 const styles = (theme: any): StyleRules => ({
   root: {
@@ -70,8 +70,8 @@ const DASH_REGEX = /-/g;
 
 export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, thoughtId, notes, tags }) => {
   const db = useLoadedDB();
-  const state: AppState = useModalDynamicState();
-  const thought = state.thoughts.find(el => el.id === thoughtId);
+  const thoughts = useSelector(thoughtSelector);
+  const thought = thoughts.find(el => el.id === thoughtId);
   const [signedIn, actions, error] = useGoogleCalendar();
   const gogleCalendarEvent: GoogleCalendarEvent = useMemo(() => ({
     kind: 'calendar#event',

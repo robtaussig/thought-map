@@ -1,15 +1,13 @@
 import React, { useEffect, Fragment, FC, Dispatch } from 'react';
 import Input from '../General/Input';
 import Select from '../General/Select';
-import { useNestedXReducer, Action } from '../../hooks/useXReducer';
 import { CreatedThought } from './';
 
 interface InputsProps {
   classes: any;
   createdThought: CreatedThought;
-  dispatch: Dispatch<Action>;
+  setCreatedThought: (setter: ((prev: CreatedThought) => CreatedThought)) => void;
   typeOptions: string[];
-  tagOptions: string[];
   onReady: (ready: boolean) => void;
   thoughtTitles: string[];
 }
@@ -17,16 +15,21 @@ interface InputsProps {
 export const Inputs: FC<InputsProps> = React.memo(({
   classes,
   createdThought,
-  dispatch,
+  setCreatedThought,
   typeOptions,
-  tagOptions,
   thoughtTitles,
   onReady,
 }) => {
-  const [title, setTitle] = useNestedXReducer('title', createdThought, dispatch);
-  const [type, setType] = useNestedXReducer('type', createdThought, dispatch);
+  const setTitle = (value: string) => setCreatedThought(prev => ({
+    ...prev,
+    title: value,
+  }));
+  const setType = (value: string) => setCreatedThought(prev => ({
+    ...prev,
+    type: value,
+  }));
 
-  const isReady = validateInputs(title);
+  const isReady = validateInputs(createdThought.title);
 
   useEffect(() => {
     onReady(isReady);
@@ -34,8 +37,8 @@ export const Inputs: FC<InputsProps> = React.memo(({
 
   return (
     <Fragment>
-      <Input classes={classes} id={'title'} value={title} onChange={e => setTitle(e.target.value)} autoSuggest={thoughtTitles} autoFocus/>
-      <Select classes={classes} id={'type'} value={type} options={typeOptions} onChange={e => setType(e.target.value)}/>
+      <Input classes={classes} id={'title'} value={createdThought.title} onChange={e => setTitle(e.target.value)} autoSuggest={thoughtTitles} autoFocus/>
+      <Select classes={classes} id={'type'} value={createdThought.type} options={typeOptions} onChange={e => setType(e.target.value)}/>
     </Fragment>
   );
 });

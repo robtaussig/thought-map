@@ -1,11 +1,13 @@
 import React, { FC, useMemo } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import { ConnectionSummary } from '../../../../';
-import { useModalDynamicState } from '../../../../../../hooks/useModal';
-import { AppState } from '../../../../../../reducers';
 import { Plan } from '../../../../../../store/rxdb/schemas/plan';
 import AvailableThoughts from './AvailableThoughts';
 import CurrentConnections from './CurrentConnections';
+import { useSelector } from 'react-redux';
+import { thoughtSelector } from '../../../../../../reducers/thoughts';
+import { planSelector } from '../../../../../../reducers/plans';
+import { connectionSelector } from '../../../../../../reducers/connections';
 
 interface ConnectionsModalProps {
   classes: any,
@@ -104,32 +106,35 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, thoughtId, autoFocus }) => {
-  const state: AppState = useModalDynamicState();
-  const thought = state.thoughts.find(({ id }) => id === thoughtId);
-  const plan: Plan = state.plans.find(({ id }) => thought.planId === id);
+  const thoughts = useSelector(thoughtSelector);
+  const plans = useSelector(planSelector);
+  const stateConnections = useSelector(connectionSelector);
+  
+  const thought = thoughts.find(({ id }) => id === thoughtId);
+  const plan: Plan = plans.find(({ id }) => thought.planId === id);
   const connections: ConnectionSummary[] = useMemo(() =>
-    Object.values(state.connections)
+    Object.values(stateConnections)
       .filter(({ to, from }) => {
         return to === thoughtId || from === thoughtId;
       })
       .map(({ id, to, from }) => {
-        const otherThought = state.thoughts.find(({ id: otherThoughtId }) => otherThoughtId !== thoughtId && (otherThoughtId === to || otherThoughtId === from));
+        const otherThought = thoughts.find(({ id: otherThoughtId }) => otherThoughtId !== thoughtId && (otherThoughtId === to || otherThoughtId === from));
         return {
           isParent: otherThought.id === to,
           otherThought,
           connectionId: id,
         };
       })
-  , [thoughtId, state.connections, state.thoughts]);
+  , [thoughtId, stateConnections, thoughts]);
 
   const availableThoughts = useMemo(() => {
     const otherThoughtIds =
       connections
         .map(({ otherThought }) => otherThought.id);
 
-    return state.thoughts
+    return thoughts
       .filter(({ id }) => !otherThoughtIds.includes(id) && id !== thoughtId);
-  }, [state.thoughts, connections]);
+  }, [thoughts, connections]);
 
   return (
     <div className={classes.root}>

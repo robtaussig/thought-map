@@ -3,21 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
 import { theme } from './App.style';
+import { Provider as ReduxProvider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
 import { Portal } from './hooks/usePortal';
+import store from './store';
+
 (window as any).APP_VERSION = '0.7';
 
 ReactDOM.render(
   (
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline/>
-        <Portal>
-          <App/>
-        </Portal>
-      </ThemeProvider>
+      <ReduxProvider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline/>
+          <Portal>
+            <App/>
+          </Portal>
+        </ThemeProvider>
+      </ReduxProvider>
     </BrowserRouter>
   ),
   document.getElementById('root')

@@ -3,11 +3,11 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
-import { useModalDynamicState } from '../../../hooks/useModal';
 import useApp from '../../../hooks/useApp';
 import { thoughts as thoughtActions } from '../../../actions';
-import { AppState } from '../../../reducers';
 import { openConfirmation, homeUrl } from '../../../lib/util';
+import { useSelector } from 'react-redux';
+import { connectionSelector } from '../../../reducers/connections';
 
 interface ThoughtNodeSettingsProps {
   classes: any,
@@ -54,8 +54,8 @@ const styles = (theme: any): StyleRules => ({
 
 export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, thought, onClose, onLoad }) => {
   const db = useLoadedDB();
-  const state: AppState = useModalDynamicState();
   const { history } = useApp();
+  const connections = useSelector(connectionSelector);
 
   useEffect(() => {
     onLoad();
@@ -86,8 +86,8 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
   };
 
   const hasConnections = useMemo(() => {
-    return Object.values(state.connections).some(({ from, to }) => [from, to].includes(thought.id));
-  }, [state.connections, thought]);
+    return Object.values(connections).some(({ from, to }) => [from, to].includes(thought.id));
+  }, [connections, thought]);
 
   return (
     <div className={classes.root}>

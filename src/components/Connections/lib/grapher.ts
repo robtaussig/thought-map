@@ -1,5 +1,5 @@
 import { Thought } from '../../../store/rxdb/schemas/thought';
-import { Connections } from '../../../reducers';
+import { Connections } from '../../../reducers/connections';
 import { Graph } from './graph';
 import { Visited, Node } from './types';
 import { findRelations, getTree } from './util';

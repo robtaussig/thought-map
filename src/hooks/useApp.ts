@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import { Context } from '../store';
 
 export const useApp = () => {
-  const { history, dispatch } = useContext(Context);
+  const { history } = useContext(Context);
 
-  return { history, dispatch };
+  return { history };
 };
 
 export default useApp;

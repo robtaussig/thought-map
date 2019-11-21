@@ -1,14 +1,17 @@
-import { createContext, Dispatch } from 'react';
+import { createContext } from 'react';
 import { History } from 'history';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from '../reducers/';
 
-type Action = {
-  type: any,
-  payload: any,
-}
+const store = configureStore({
+  reducer: rootReducer,
+});
+
+export type AppDispatch = typeof store.dispatch;
+export default store;
 
 interface AppContext {
   history?: History;
-  dispatch?: Dispatch<Action>;
 }
 
 export const Context = createContext<AppContext>({});

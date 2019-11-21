@@ -1,10 +1,13 @@
 import React, { FC, useState } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import { useModalDynamicState } from '../../../../hooks/useModal';
 import Select from '../../../General/Select';
-import { AppState } from '../../../../reducers';
 import { ReviewPeriods } from '../types';
 import Review from './review';
+import { useSelector } from 'react-redux';
+import { planSelector } from '../../../../reducers/plans';
+import { thoughtSelector } from '../../../../reducers/thoughts';
+import { statusesByThoughtSelector } from '../../../../reducers/statusesByThought';
+import { statusSelector } from '../../../../reducers/statuses';
 
 interface PlanSelectActionsProps {
   classes: any;
@@ -52,10 +55,13 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId, onClose }) => {
-  const state: AppState = useModalDynamicState();
-  const [currentReviewPeriod, setCurrentReviewPeriopd] = useState<ReviewPeriods>(ReviewPeriods.Week)
-  const plan = state.plans.find(({ id }) => id === planId);
-  const thoughts = state.thoughts.filter(thought => typeof planId === 'boolean' || thought.planId === planId);
+  const [currentReviewPeriod, setCurrentReviewPeriopd] = useState<ReviewPeriods>(ReviewPeriods.Week);
+  const plans = useSelector(planSelector);
+  const stateThoughts = useSelector(thoughtSelector);
+  const statusesByThought = useSelector(statusesByThoughtSelector);
+  const statuses = useSelector(statusSelector);
+  const plan = plans.find(({ id }) => id === planId);
+  const thoughts = stateThoughts.filter(thought => typeof planId === 'boolean' || thought.planId === planId);
 
   return (
     <div className={classes.root}>
@@ -73,8 +79,8 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
         classes={classes}
         thoughts={thoughts}
         reviewPeriod={currentReviewPeriod}
-        statusesByThought={state.statusesByThought}
-        statuses={state.statuses}
+        statusesByThought={statusesByThought}
+        statuses={statuses}
       />
     </div>
   );

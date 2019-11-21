@@ -6,17 +6,18 @@ import ManagePhotos from './manage-photos';
 import CustomObjects from './custom-objects';
 import AppConfiguration from './app-configuration';
 import Data from './data';
-import { AppState } from '../../../reducers';
 import useApp from '../../../hooks/useApp';
 import { CACHE } from '../../../public/sw';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import { useSelector } from 'react-redux';
+import { pictureSelector } from '../../../reducers/pictures';
+import { settingSelector } from '../../../reducers/settings';
 
 const LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY = 'updateCheckCount';
 const LOCAL_STORAGE_LAST_VERSION_KEY = 'lastVersion';
 
 interface AppSettingsProps {
   classes: any;
-  state: AppState;
   setLastNotification: (notification: { message: string }) => void;
 }
 
@@ -60,10 +61,12 @@ const styles = (theme: any): StyleRules => ({
 
 const SETTINGS_PATH_REGEX = /settings.*/;
 
-export const AppSettings: FC<AppSettingsProps> = ({ classes, state, setLastNotification }) => {
+export const AppSettings: FC<AppSettingsProps> = ({ classes, setLastNotification }) => {
   const { history } = useApp();
   const rootRef = useRef<HTMLDivElement>(null);
   const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
+  const pictures = useSelector(pictureSelector);
+  const settings = useSelector(settingSelector);
   const handleClickReturnHome = () => {
     const nextUrl = location.pathname.replace(SETTINGS_PATH_REGEX, '');
     history.push(nextUrl);
@@ -91,10 +94,10 @@ export const AppSettings: FC<AppSettingsProps> = ({ classes, state, setLastNotif
 
   return (
     <div ref={rootRef} className={classes.root}>
-      <ManagePhotos pictures={state.pictures}/>
-      <AppConfiguration settings={state.settings}/>
-      <Data state={state} setLoading={setLoading}/>
-      <CustomObjects settings={state.settings}/>
+      <ManagePhotos pictures={pictures}/>
+      <AppConfiguration settings={settings}/>
+      <Data setLoading={setLoading}/>
+      <CustomObjects settings={settings}/>
       <button className={classes.updateButton} onClick={handleCheckUpdates}>Check for Update (Current: {(window as any).APP_VERSION})</button>
       <CircleButton
         classes={classes}

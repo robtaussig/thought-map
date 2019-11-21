@@ -4,16 +4,20 @@ import { styles } from './styles';
 import useModal from '../../../hooks/useModal';
 import PriorityListModal from './components/PriorityListModal';
 import { Thought } from 'store/rxdb/schemas/thought';
+import { thoughtSelector } from '../../../reducers/thoughts';
+import { useSelector } from 'react-redux';
 
 interface PriorityListProps {
   classes: any;
-  thoughts: Thought[];
+  thoughts?: Thought[];
   onClose?: () => void;
 }
-export const PriorityList: FC<PriorityListProps> = ({ classes, onClose, thoughts = [] }) => {
+export const PriorityList: FC<PriorityListProps> = ({ classes, onClose, thoughts }) => {
   const [openModal, closeModal] = useModal();
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const hasInitialized = useRef<boolean>(false);
+  const stateThoughts = useSelector(thoughtSelector);
+  const thoughtsToUse = thoughts || stateThoughts;
 
   const handleMinimize = () => {
     setIsMinimized(true);
@@ -23,7 +27,7 @@ export const PriorityList: FC<PriorityListProps> = ({ classes, onClose, thoughts
   const openPriorityList = () => {
     setIsMinimized(false);
     openModal(
-      <PriorityListModal classes={classes} onMinimize={handleMinimize} thoughts={thoughts} onClose={onClose}/>,
+      <PriorityListModal classes={classes} onMinimize={handleMinimize} thoughts={thoughtsToUse} onClose={onClose}/>,
       'Priorities',
       {
         afterClose: onClose,
@@ -32,11 +36,11 @@ export const PriorityList: FC<PriorityListProps> = ({ classes, onClose, thoughts
   };
 
   useEffect(() => {
-    if (thoughts.length > 0 && hasInitialized.current === false) {
+    if (thoughtsToUse.length > 0 && hasInitialized.current === false) {
       openPriorityList();
       hasInitialized.current = true;
     }
-  }, [thoughts]);
+  }, [thoughtsToUse]);
 
   return isMinimized ? (
     <button className={classes.prioritiesButton} onClick={openPriorityList}>
