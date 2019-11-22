@@ -24,21 +24,17 @@ interface HomeProps {
 
 export const Home: FC<HomeProps> = ({ classes, statusOptions, setLastNotification, typeOptions }) => {
   const { history } = useApp();
-  const [addingThought, setAddingThought] = useState<boolean>(false);
   const [openModal, closeModal] = useModal();
   const plans = useSelector(planSelector);
   const thoughts = useSelector(thoughtSelector);
   const planId = getIdFromUrl(history, 'plan');
   const from = getSearchParam(history, 'from');
   const handleAddThought = () => {
-    setAddingThought(true);
     openModal(
       <CreateThought
         onClose={closeModal}
         typeOptions={typeOptions}
-      />, 'Create Thought', {
-        afterClose: () => setAddingThought(false),
-      }
+      />, 'Create Thought'
     );
   }
   const handleEditPlan = useCallback(() => planId ? history.push(`/plan/${planId}/settings?type=plan`) : history.push(`/settings`), [planId]);
@@ -62,24 +58,27 @@ export const Home: FC<HomeProps> = ({ classes, statusOptions, setLastNotificatio
         from={from}
       />
       <PlanSelect classes={classes} plans={plans} thoughts={planThoughts} planId={planId} setLastNotification={setLastNotification}/>
-      {!addingThought &&
-        <CircleButton
-          id={'edit-plan'}
-          classes={classes}
-          onClick={handleEditPlan}
-          label={'Edit Plan'}
-          Icon={Build}
-          onLongPress={() => {
-            openModal(
-              <PlanSelectActions
-                planId={planId}
-                onClose={closeModal}
-              />
-            );
-          }}
-        />
-      }
-      {!addingThought && <CircleButton id={'add-thought'} classes={classes} onClick={handleAddThought} label={'Add Thought'}/>}
+      <CircleButton
+        id={'edit-plan'}
+        classes={classes}
+        onClick={handleEditPlan}
+        label={'Edit Plan'}
+        Icon={Build}
+        onLongPress={() => {
+          openModal(
+            <PlanSelectActions
+              planId={planId}
+              onClose={closeModal}
+            />
+          );
+        }}
+      />
+      <CircleButton
+        id={'add-thought'}
+        classes={classes}
+        onClick={handleAddThought}
+        label={'Add Thought'}
+      />
     </div>
   );
 };
