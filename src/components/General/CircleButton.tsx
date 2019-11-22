@@ -1,15 +1,12 @@
-import React, { useRef, FC, useCallback } from 'react';
+import React, { useRef, FC, ChangeEvent } from 'react';
 import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
-import useLongPress from '../../hooks/useLongPress';
-import { motion } from 'framer-motion';
-
-type CircleButtonTapEvent = MouseEvent | TouchEvent | PointerEvent;
+import useLongPress from '../../hooks/useLongPress'; 
 
 interface CircleButtonProps {
   classes?: any;
   id?: string;
-  onClick: (event: any) => void;
+  onClick: (event?: ChangeEvent) => void;
   onLongPress?: () => void;
   label?: string;
   disabled?: boolean;
@@ -19,7 +16,7 @@ interface CircleButtonProps {
   [rest: string]: any;
 }
 
-export const CircleButton: FC<CircleButtonProps> = ({
+export const CircleButton: FC<CircleButtonProps> = React.memo(({
   classes,
   id = 'add-button',
   onClick,
@@ -28,47 +25,54 @@ export const CircleButton: FC<CircleButtonProps> = ({
   Icon = Add,
   title,
   svgRef,
-  onLongPress = () => {},
-  ...rest
-}) => {
-  const blockLongPress = useRef<boolean>(false);
-  const longPressHandler = useCallback(() => {
-    if (blockLongPress.current === false) {
-      onLongPress();
-    }
-  }, []);
-  const handleLongPress = useLongPress(longPressHandler, 400);
+  onLongPress,
+  ...rest }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const isCancelled = useRef<boolean>(null);
 
-  const handleTap = (e: CircleButtonTapEvent) => {
-    blockLongPress.current = true;
-    // onClick(e);
+  const handleInteractionStart = (): void => {
+    isCancelled.current = false;
+    !disabled && buttonRef.current.classList.add('touched');
+  };
+  const handleInteractionEnd = (e: (React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>)): void => {
+    buttonRef.current.classList.remove('touched');
+    e.preventDefault();
+    if (!disabled && isCancelled.current === false) {
+      onClick();
+    }
+  };
+  const handleCancelInteraction = (): void => {
+    isCancelled.current = true;
+    buttonRef.current.classList.remove('touched');
   };
 
-  return (
-    <motion.button
-      whileHover={{
-        scale: 1.1,
-        transition: { duration: 0.1 },
-      }}
-      whileTap={{
-        scale: 0.9,
-        transition: { duration: 0.1 },
-      }}
-      onTap={handleTap}
+  const handleLongPress = onLongPress ? useLongPress(onLongPress, 400, {
+    onStart: handleInteractionStart,
+    onEnd: handleInteractionEnd,
+    onCancel: handleCancelInteraction,
+  }) : {};
 
+  return (
+    <button
       id={id}
+      ref={buttonRef}
       title={title}
       style={{ userSelect: 'none' }}
       className={classes.circleButton}
+      onTouchStart={handleInteractionStart}
+      onTouchEnd={handleInteractionEnd}
+      onMouseDown={handleInteractionStart}
+      onMouseUp={handleInteractionEnd}
+      onMouseMove={handleCancelInteraction}
+      onTouchMove={handleCancelInteraction}
       aria-label={label}
       disabled={disabled}
       {...handleLongPress}
-      onTouchEnd={onClick}
       {...rest}
     >
       {disabled ? <SentimentDissatisfied/> : <Icon ref={svgRef}/>}
-    </motion.button>
+    </button>
   );
-};
+});
 
 export default CircleButton;
