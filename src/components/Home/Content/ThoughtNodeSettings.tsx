@@ -8,6 +8,7 @@ import { thoughts as thoughtActions } from '../../../actions';
 import { openConfirmation, homeUrl } from '../../../lib/util';
 import { useSelector } from 'react-redux';
 import { connectionSelector } from '../../../reducers/connections';
+import { format } from 'date-fns';
 
 interface ThoughtNodeSettingsProps {
   classes: any,
@@ -85,6 +86,14 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
     history.push(`${homeUrl(history)}thought/${thought.id}/history`);
   };
 
+  const handleClickStage = () => {
+    const today = format(new Date(), 'yyyy-MM-dd');
+    thoughtActions.editThought(db, {
+      ...thought,
+      stagedOn: today,
+    });
+  };
+
   const hasConnections = useMemo(() => {
     return Object.values(connections).some(({ from, to }) => [from, to].includes(thought.id));
   }, [connections, thought]);
@@ -93,6 +102,7 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
     <div className={classes.root}>
       <h1 className={classes.title}>{thought.title}</h1>
       <button className={classes.button} onClick={handleClickBump}>Bump</button>
+      <button className={classes.button} onClick={handleClickStage}>Stage</button>
       <button className={classes.button} onClick={handleClickViewHistory}>View History</button>
       {hasConnections && <button className={classes.button} onClick={handleClickViewConnections}>View Connections</button>}
       <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete}>Delete</button>

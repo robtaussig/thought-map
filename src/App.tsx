@@ -11,6 +11,7 @@ import Home from './components/Home';
 import PriorityList from './components/Home/PriorityList';
 import Settings from './components/Settings';
 import Thought from './components/Thought';
+import Stage from './components/Stage';
 import Notifications from './components/Notifications';
 import Connections from './components/Connections';
 import History from './components/History';
@@ -72,6 +73,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
           <Div100vh id={'app'} ref={rootRef} className={classes.root}>
             <Notifications lastNotification={lastNotification} />
             <PriorityList/>
+            <Stage/>
             <Switch>
               <Route exact path={'/'}>
                 {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}

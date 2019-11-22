@@ -10,6 +10,7 @@ import statusesByThought from './statusesByThought';
 import tags from './tags';
 import templates from './templates';
 import thoughts from './thoughts';
+import stage from './stage';
 
 const rootReducer = combineReducers({
   connections,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   tags,
   templates,
   thoughts,
+  stage,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

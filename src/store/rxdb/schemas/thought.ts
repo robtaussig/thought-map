@@ -12,6 +12,7 @@ export interface Thought {
   sections: string;
   priority?: number;
   recurring?: number;
+  stagedOn?: string;
   description?: string;
   goalPoints?: number;
   hideFromHomeScreen?: boolean;
@@ -23,7 +24,7 @@ export interface Thought {
 
 export default ['thought', {
   "title": "Thought schema",
-  "version": 6,
+  "version": 7,
   "description": "A Thought",
   "type": "object",
   "properties": {
@@ -71,6 +72,9 @@ export default ['thought', {
     "hideFromHomeScreen": {
       "type": "boolean",
     },
+    "stagedOn": {
+      "type": "string",
+    },
     "index": {
       "type": "number",
     },
@@ -109,6 +113,10 @@ export default ['thought', {
     },
     6: (oldThought: RxDocument<Thought>) => {
       oldThought.hideFromHomeScreen = false;
+      return oldThought;
+    },
+    7: (oldThought: RxDocument<Thought>) => {
+      oldThought.stagedOn = '';
       return oldThought;
     },
   },
