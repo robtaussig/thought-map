@@ -9,7 +9,7 @@ type CircleButtonTapEvent = MouseEvent | TouchEvent | PointerEvent;
 interface CircleButtonProps {
   classes?: any;
   id?: string;
-  onClick: (event: CircleButtonTapEvent) => void;
+  onClick: (event: any) => void;
   onLongPress?: () => void;
   label?: string;
   disabled?: boolean;
@@ -41,7 +41,7 @@ export const CircleButton: FC<CircleButtonProps> = ({
 
   const handleTap = (e: CircleButtonTapEvent) => {
     blockLongPress.current = true;
-    onClick(e);
+    // onClick(e);
   };
 
   return (
@@ -62,7 +62,8 @@ export const CircleButton: FC<CircleButtonProps> = ({
       className={classes.circleButton}
       aria-label={label}
       disabled={disabled}
-      // {...handleLongPress}
+      {...handleLongPress}
+      onTouchEnd={onClick}
       {...rest}
     >
       {disabled ? <SentimentDissatisfied/> : <Icon ref={svgRef}/>}
