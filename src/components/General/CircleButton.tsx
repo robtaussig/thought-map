@@ -62,7 +62,7 @@ export const CircleButton: FC<CircleButtonProps> = ({
       className={classes.circleButton}
       aria-label={label}
       disabled={disabled}
-      {...handleLongPress}
+      // {...handleLongPress}
       {...rest}
     >
       {disabled ? <SentimentDissatisfied/> : <Icon ref={svgRef}/>}
