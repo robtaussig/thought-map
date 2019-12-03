@@ -13,8 +13,8 @@ export const ConnectionStatus: FC<ConnectionStatusProps> = ({ classes, connectio
   const [completed, total] = connectionStatus;
 
   return (
-    <div className={classes.connectionStatus}>
-      <button onClick={() => onToggle(!expanded)}>{expanded ? (<ExpandLess/>) : (<ExpandMore/>)}</button>
+    <div className={classes.connectionStatus} onClick={() => onToggle(!expanded)}>
+      <span>{expanded ? (<ExpandMore/>) : (<ExpandLess/>)}</span>
       <span>{completed} / {total}</span>
     </div>
   );

@@ -154,7 +154,7 @@ export const styles = (theme: any): StyleRules => ({
     color: theme.palette.gray[300],
     display: 'flex',
     alignItems: 'center',
-    '& > button': {
+    '& > span': {
       ...theme.defaults.centered,
       '& > svg': {
         fontSize: 16,

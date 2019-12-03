@@ -88,7 +88,7 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
   const connectionStatus = connectionStatusByThought[thought.id];
   const nextThoughts = useMemo(() => {
     return thoughtMap.current.children(thought.id)
-  }, []);
+  }, [connectionStatus]);
 
   const handleClick = () => {
     if (blockClick.current === false) {
@@ -181,7 +181,7 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
         {nextThoughts.map((thoughtId, idx) => {
           return (
             <ThoughtNode
-              key={`${thoughtId}-next-thought`}
+              key={`${thought.id}-${thoughtId}-next-thought`}
               classes={classes}
               thought={thoughts.find(({ id }) => id === thoughtId)}
               statusOptions={statusOptions}
