@@ -115,7 +115,7 @@ export const useGoogleCalendar = (autoSignIn: boolean = true, config: Config = D
   const actions: Actions = useMemo(() => {
 
     const createEvent = (event: any, calendarId: string = 'primary'): any => {
-      return gapiRef.current.client.calendar.events.insert({
+      return gapiRef.current && gapiRef.current.client.calendar.events.insert({
         'calendarId': calendarId,
         'resource': event,
       });
