@@ -133,7 +133,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       time: time || '',
     };
     
-    if (signedIn && autoCreateCalendarEvent) {
+    if (signedIn && autoCreateCalendarEvent && !thought.calendarLink) {
       const gogleCalendarEvent: GoogleCalendarEvent = {
         kind: 'calendar#event',
         id: nextThought.id.replace(DASH_REGEX, ''),
