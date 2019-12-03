@@ -67,48 +67,50 @@ const loadScript = async (): Promise<[any, () => void]> => {
   });
 };
 
-export const useGoogleCalendar = (config: Config = DefaultConfig): [boolean, Actions, any] => {
+export const useGoogleCalendar = (autoSignIn: boolean = true, config: Config = DefaultConfig): [boolean, Actions, any] => {
   const [signedIn, setSignedIn] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
   const gapiRef = useRef<any>(null);
   const cleanupRef = useRef<() => void>(null);
 
   useEffect(() => {
-    const init = async () => {
-      const [gapi, cleanup] = await loadScript().catch(setError);
-
-      cleanupRef.current = cleanup;
-      gapiRef.current = gapi;
-
-      await gapiRef.current.client.init(config).catch(setError);
-
-      gapiRef.current.auth2.getAuthInstance().isSignedIn.listen(setSignedIn);
-
-      const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
-      if (!isSignedIn) {
-        gapiRef.current.auth2.getAuthInstance().signIn();
+    if (autoSignIn) {
+      const init = async () => {
+        const [gapi, cleanup] = await loadScript().catch(setError);
+  
+        cleanupRef.current = cleanup;
+        gapiRef.current = gapi;
+  
+        await gapiRef.current.client.init(config).catch(setError);
+  
+        gapiRef.current.auth2.getAuthInstance().isSignedIn.listen(setSignedIn);
+  
+        const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
+        if (!isSignedIn) {
+          gapiRef.current.auth2.getAuthInstance().signIn();
+        }
+  
+        setSignedIn(isSignedIn);
+  
+        return true;
+      };
+  
+      try {
+        let timeout = setTimeout(() => {
+          setError(new Error('Connection timed out'));
+        }, 5000);
+        
+        init().then(() => clearTimeout(timeout));
+      } catch(e) {
+  
+        setError(e);
       }
-
-      setSignedIn(isSignedIn);
-
-      return true;
-    };
-
-    try {
-      let timeout = setTimeout(() => {
-        setError(new Error('Connection timed out'));
-      }, 5000);
-      
-      init().then(() => clearTimeout(timeout));
-    } catch(e) {
-
-      setError(e);
+  
+      return () => {
+        if (cleanupRef.current) cleanupRef.current();
+      };
     }
-
-    return () => {
-      if (cleanupRef.current) cleanupRef.current();
-    };
-  }, []);
+  }, [autoSignIn]);
 
   const actions: Actions = useMemo(() => {
 

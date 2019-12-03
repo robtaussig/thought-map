@@ -38,6 +38,15 @@ import RecurringSection from './components/sections/RecurringSection';
 import CircleButton from '../General/CircleButton';
 import { SectionState, ComponentMap, SectionVisibility } from './types';
 import { generateNextSectionsAfterMove, generateNextSectionsAfterToggleVisibility } from './util';
+import useGoogleCalendar, { GoogleCalendarEvent, Actions } from '../../hooks/useGoogleCalendar';
+import {
+  generateDescriptionFromThought,
+  generateStartFromThought,
+  generateEndFromThought,
+  generateRemindersFromThought,
+} from '../ThoughtSettings/components/Calendar/lib/util';
+
+const DASH_REGEX = /-/g;
 
 export interface ThoughtInformationProps {
   classes: any;
@@ -57,6 +66,7 @@ export interface ThoughtInformationProps {
   sectionVisibility: SectionVisibility;
   cancelEditAllSections: () => void;
   editAllSections: boolean;
+  autoCreateCalendarEvent: boolean;
 }
 
 export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
@@ -77,6 +87,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   sectionVisibility,
   cancelEditAllSections,
   editAllSections,
+  autoCreateCalendarEvent,
 }) => {
 
   const lastSectionOrder = useRef<string[]>(null);
@@ -98,7 +109,34 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     return [getTime(thought.created), getTime(thought.updated)];
   }, [thought, statuses]);
 
+  const [signedIn, actions, error]: [boolean, Actions, any] = useGoogleCalendar(autoCreateCalendarEvent);
+
+  const createCalendarEvent = async (thought: Thought) => {
+    const gogleCalendarEvent: GoogleCalendarEvent = {
+      kind: 'calendar#event',
+      id: thought.id.replace(DASH_REGEX, ''),
+      status: 'confirmed',
+      summary: thought.title,
+      description: generateDescriptionFromThought(thought),
+      start: generateStartFromThought(thought),
+      end: generateEndFromThought(thought),
+      reminders: generateRemindersFromThought(thought),
+    };
+
+    const event = await actions.createEvent(gogleCalendarEvent);
+    thoughtActions.editThought(db, {
+      ...thought,
+      calendarLink: event.result.htmlLink
+    });
+  };
+
   const handleEditThought = (field: string) => (value: any) => {
+    if (value && ['date', 'time'].includes(field)) {
+      signedIn && createCalendarEvent({
+        ...thought,
+        [field]: value,
+      });
+    }
     onUpdate({
       ...thought,
       [field]: value,

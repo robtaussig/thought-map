@@ -194,7 +194,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Automatically create calendar events'}
           isChecked={autoCreateCalendarEvent}
           onChange={handleChangeAutoCreateCalendarEvent}
-          tooltip={'If enabled, calendar events will be created automatically whenever a thought is created with a date/time'}  
+          tooltip={'If enabled, calendar events will be created automatically whenever a thought\'s date/time is modified'}  
         />
         <CheckBox
           classes={classes}

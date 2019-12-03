@@ -80,7 +80,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   const statuses = useSelector(statusSelector);
   const pictures = useSelector(pictureSelector);
   const settings = useSelector(settingSelector);
-
+  const autoCreateCalendarEvent = Boolean(settings && settings.autoCreateCalendarEvent);
 
   const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
   const relatedTags = useMemo(() => Object.values(tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, tags]);
@@ -218,6 +218,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
           sectionVisibility={sectionVisibility}
           cancelEditAllSections={handleCancelEditAllSections}
           editAllSections={editAllSections}
+          autoCreateCalendarEvent={autoCreateCalendarEvent}
         />
       }
       <ThoughtSettings
