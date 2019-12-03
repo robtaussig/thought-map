@@ -111,27 +111,26 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
 
   const [signedIn, actions, error]: [boolean, Actions, any] = useGoogleCalendar(autoCreateCalendarEvent);
 
-  const createCalendarEvent = async (thought: Thought) => {
-    const gogleCalendarEvent: GoogleCalendarEvent = {
-      kind: 'calendar#event',
-      id: thought.id.replace(DASH_REGEX, ''),
-      status: 'confirmed',
-      summary: thought.title,
-      description: generateDescriptionFromThought(thought),
-      start: generateStartFromThought(thought),
-      end: generateEndFromThought(thought),
-      reminders: generateRemindersFromThought(thought),
-    };
-
-    const event = await actions.createEvent(gogleCalendarEvent);
-    thoughtActions.editThought(db, {
-      ...thought,
-      calendarLink: event.result.htmlLink
-    });
-  };
-
   const handleEditThought = (field: string) => (value: any) => {
     if (value && ['date', 'time'].includes(field)) {
+      const createCalendarEvent = async (thought: Thought) => {
+        const gogleCalendarEvent: GoogleCalendarEvent = {
+          kind: 'calendar#event',
+          id: thought.id.replace(DASH_REGEX, ''),
+          status: 'confirmed',
+          summary: thought.title,
+          description: generateDescriptionFromThought(thought),
+          start: generateStartFromThought(thought),
+          end: generateEndFromThought(thought),
+          reminders: generateRemindersFromThought(thought),
+        };
+    
+        const event = await actions.createEvent(gogleCalendarEvent);
+        thoughtActions.editThought(db, {
+          ...thought,
+          calendarLink: event.result.htmlLink
+        });
+      };
       signedIn && createCalendarEvent({
         ...thought,
         [field]: value,
