@@ -50,7 +50,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
   const plan = plans.find(plan => plan.id === planId);
   const [createdThought, setCreatedThought] = useState<CreatedThought>({
     ...DEFAULT_STATE,
-    type: plan ? plan.defaultType : DEFAULT_STATE.type
+    type: (plan && plan.defaultType) || DEFAULT_STATE.type
   });
   const thoughtTitles = thoughts.map(({ title }) => title);
 
