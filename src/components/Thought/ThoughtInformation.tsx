@@ -112,7 +112,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const [signedIn, actions, error]: [boolean, Actions, any] = useGoogleCalendar(autoCreateCalendarEvent);
 
   const handleEditThought = (field: string) => (value: any) => {
-    if (value && ['date', 'time'].includes(field)) {
+    if (signedIn && value && ['date', 'time'].includes(field)) {
       const createCalendarEvent = async (thought: Thought) => {
         const gogleCalendarEvent: GoogleCalendarEvent = {
           kind: 'calendar#event',
@@ -128,18 +128,22 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
         const event = await actions.createEvent(gogleCalendarEvent);
         thoughtActions.editThought(db, {
           ...thought,
+          [field]: value,
           calendarLink: event.result.htmlLink
         });
       };
-      signedIn && createCalendarEvent({
+      
+
+      createCalendarEvent({
+        ...thought,
+        [field]: value,
+      });
+    } else {
+      onUpdate({
         ...thought,
         [field]: value,
       });
     }
-    onUpdate({
-      ...thought,
-      [field]: value,
-    });
   };
   
   const handleEditStatus = (value: string) => {
