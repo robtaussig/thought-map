@@ -112,38 +112,10 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const [signedIn, actions, error]: [boolean, Actions, any] = useGoogleCalendar(autoCreateCalendarEvent);
 
   const handleEditThought = (field: string) => (value: any) => {
-    if (signedIn && value && ['date', 'time'].includes(field)) {
-      const createCalendarEvent = async (thought: Thought) => {
-        const gogleCalendarEvent: GoogleCalendarEvent = {
-          kind: 'calendar#event',
-          id: thought.id.replace(DASH_REGEX, ''),
-          status: 'confirmed',
-          summary: thought.title,
-          description: generateDescriptionFromThought(thought),
-          start: generateStartFromThought(thought),
-          end: generateEndFromThought(thought),
-          reminders: generateRemindersFromThought(thought),
-        };
-    
-        const event = await actions.createEvent(gogleCalendarEvent);
-        thoughtActions.editThought(db, {
-          ...thought,
-          [field]: value,
-          calendarLink: event.result.htmlLink
-        });
-      };
-      
-
-      createCalendarEvent({
-        ...thought,
-        [field]: value,
-      });
-    } else {
-      onUpdate({
-        ...thought,
-        [field]: value,
-      });
-    }
+    onUpdate({
+      ...thought,
+      [field]: value,
+    });
   };
   
   const handleEditStatus = (value: string) => {
@@ -153,13 +125,34 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     });
   };
 
-  const handleEditDateTime = (datetime: any) => {
+  const handleEditDateTime = async (datetime: any) => {
     const [date, time] = datetime.split(',');
-    onUpdate({
+    const nextThought: Thought = {
       ...thought,
       date: date || '',
       time: time || '',
-    });
+    };
+    
+    if (signedIn && autoCreateCalendarEvent) {
+      const gogleCalendarEvent: GoogleCalendarEvent = {
+        kind: 'calendar#event',
+        id: nextThought.id.replace(DASH_REGEX, ''),
+        status: 'confirmed',
+        summary: nextThought.title,
+        description: generateDescriptionFromThought(nextThought),
+        start: generateStartFromThought(nextThought),
+        end: generateEndFromThought(nextThought),
+        reminders: generateRemindersFromThought(nextThought),
+      };
+  
+      const event = await actions.createEvent(gogleCalendarEvent);
+      onUpdate({
+        ...nextThought,
+        calendarLink: event.result.htmlLink
+      });
+    } else {
+      onUpdate(nextThought);
+    }
   };
 
   const handleEditNote = (idx: number, value: string) => {
