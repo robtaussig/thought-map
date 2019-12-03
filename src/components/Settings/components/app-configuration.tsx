@@ -90,7 +90,6 @@ const styles = (theme: any): StyleRules => ({
 
 export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings }) => {
   const [side, setSide] = useState<Side>(Side.TOP);
-
   const rootRef = useRef(null);
   const db = useLoadedDB();
   const handleClickClose = useCallback(() => {
@@ -107,6 +106,13 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
   const handleChangeUseAutoSuggest = useCallback(e => {
     settingsActions.editSetting(db, {
       field: 'useAutoSuggest',
+      value: e.target.checked,
+    });
+  }, []);
+
+  const handleChangeAutoCreateCalendarEvent = useCallback(e => {
+    settingsActions.editSetting(db, {
+      field: 'autoCreateCalendarEvent',
       value: e.target.checked,
     });
   }, []);
@@ -152,6 +158,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
   const useAutoSuggest = Boolean(settings && settings.useAutoSuggest);
   const useLocation = Boolean(settings && settings.useLocation);
   const usePushNotifications = Boolean(settings && settings.usePushNotifications);
+  const autoCreateCalendarEvent = Boolean(settings && settings.autoCreateCalendarEvent);
 
   return (
     <Fragment>
@@ -180,6 +187,14 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           isChecked={useAutoSuggest}
           onChange={handleChangeUseAutoSuggest}
           tooltip={'If enabled, certain inputs will produce suggestions that draw from previous entries. Suggestions will be a combination of word completions and word sequences, and will be displayed as an overlay. This is different from any browser/device-based auto-suggestions which don\'t necessarily consider context.'}  
+        />
+        <CheckBox
+          classes={classes}
+          value={'Automatically create calendar events'}
+          label={'Automatically create calendar events'}
+          isChecked={autoCreateCalendarEvent}
+          onChange={handleChangeAutoCreateCalendarEvent}
+          tooltip={'If enabled, calendar events will be created automatically whenever a thought is created with a date/time'}  
         />
         <CheckBox
           classes={classes}

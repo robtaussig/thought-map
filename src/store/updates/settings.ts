@@ -1,5 +1,6 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { Setting } from '../../store/rxdb/schemas/setting';
+import SettingModel from '../../models/settings';
 import { insert, remove, update } from '../../reducers/settings';
 import { Notification, RxChangeEvent } from '../../types';
 
@@ -13,7 +14,7 @@ export const handleSettingChange = (
 
   switch (data.op) {
     case 'INSERT':
-      dispatch(insert(setting));
+      dispatch(insert(SettingModel.parseSetting(setting)));
       notification = { message: 'Setting created' };
       break;
     
@@ -23,7 +24,7 @@ export const handleSettingChange = (
       break;
 
     case 'UPDATE':
-      dispatch(update(setting));
+      dispatch(update(SettingModel.parseSetting(setting)));
       notification = { message: 'Setting updated' };
       break;
   

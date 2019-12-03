@@ -7,15 +7,12 @@ import { Tag } from '../../../../store/rxdb/schemas/tag';
 import { useLoadedDB } from '../../../../hooks/useDB';
 import Loading from '../../../Loading';
 import {
-  GoogleCalendarEvent,
-} from './types';
-import {
   generateStartFromThought,
   generateEndFromThought,
   generateDescriptionFromThought,
   generateRemindersFromThought,
 } from './lib/util';
-import useGoogleCalendar from '../../../../hooks/useGoogleCalendar';
+import useGoogleCalendar, { GoogleCalendarEvent } from '../../../../hooks/useGoogleCalendar';
 import { useSelector } from 'react-redux';
 import { thoughtSelector } from '../../../../reducers/thoughts';
 

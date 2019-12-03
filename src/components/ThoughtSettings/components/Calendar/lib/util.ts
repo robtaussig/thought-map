@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import { Thought } from '../../../../../store/rxdb/schemas/thought';
-import { Time } from '../types';
+import { Time } from '../../../../../hooks/useGoogleCalendar';
 
 export const generateHtmlLinkFromThought = (thought: Thought): string => {
 
