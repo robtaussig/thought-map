@@ -16,7 +16,8 @@ const styles = (theme: any): StyleRules => ({
   },
   navItem: {
     flex: 1,
-    fontSize: 24,
+    fontSize: 20,
+    fontWeight: 600,
     backgroundColor: theme.palette.gray[200],
     '&.current': {
       backgroundColor: theme.palette.primary[500],
