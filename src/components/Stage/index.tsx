@@ -1,24 +1,53 @@
-import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { withStyles, StyleRules } from '@material-ui/styles';
-import { stageSelector } from '../../reducers/stage';
+import React, { FC, useMemo, useState, useEffect } from 'react';
+import { withStyles } from '@material-ui/styles';
+import StagingItems from './components/staging-items';
+import NavBar from '../Settings/components/nav-bar';
+import { useSelector, useDispatch } from 'react-redux';
+import { stageSelector, refresh } from '../../reducers/stage';
+import { styles } from './style';
 
 interface StageProps {
   classes: any,
 }
 
-const styles = (theme: any): StyleRules => ({
-  root: {
-
-  },
-});
-
 export const Stage: FC<StageProps> = ({ classes }) => {
   const stage = useSelector(stageSelector);
+  const dispatch = useDispatch();
+  const [isStaging, setIsStaging] = useState<boolean>(true);
+  const navItems = useMemo(() => {
+    return [
+      {
+        value: `Stage (${stage.current.length})`,
+        current: isStaging,
+        onClick: () => setIsStaging(true),
+        disabled: false,
+      },
+      {
+        value: `Backlog (${stage.backlog.length})`,
+        current: !isStaging,
+        onClick: () => setIsStaging(false),
+        disabled: false,
+      },
+    ];
+  }, [stage, isStaging]);
 
-  console.log(stage);
+  useEffect(() => {
+    dispatch(refresh());
+  }, []);
 
-  return null;
+  return (
+    <div className={classes.root}>
+      <NavBar
+        items={navItems}
+        id={'staging-nav'}
+      />
+      <StagingItems
+        classes={classes}
+        isStaging={isStaging}
+        items={isStaging ? stage.current : stage.backlog}
+      />
+    </div>
+  );
 };
 
 export default withStyles(styles)(Stage);

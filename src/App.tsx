@@ -11,6 +11,7 @@ import Home from './components/Home';
 import PriorityList from './components/Home/PriorityList';
 import Settings from './components/Settings';
 import Thought from './components/Thought';
+import StagingButton from './components/Stage/components/button';
 import Stage from './components/Stage';
 import Notifications from './components/Notifications';
 import Connections from './components/Connections';
@@ -73,7 +74,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
           <Div100vh id={'app'} ref={rootRef} className={classes.root}>
             <Notifications lastNotification={lastNotification} />
             <PriorityList/>
-            <Stage/>
+            <StagingButton/>
             <Switch>
               <Route exact path={'/'}>
                 {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}
@@ -107,7 +108,10 @@ const App: FC<AppProps> = ({ classes, history }) => {
               </Route>
               <Route path={'/plan/:id'}>
                 {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}
-              </Route>              
+              </Route>
+              <Route path={'/stage'}>
+                {dbReadyState && <Stage/>}  
+              </Route>           
             </Switch> 
           </Div100vh>
         </ModalProvider>  

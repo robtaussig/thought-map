@@ -87,6 +87,7 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
   };
 
   const handleClickStage = () => {
+    onClose();
     const today = format(new Date(), 'yyyy-MM-dd');
     thoughtActions.editThought(db, {
       ...thought,

@@ -9,18 +9,27 @@ export const stageSelector: Selector<RootState, Stage> = state => state.stage;
 export interface Stage {
   current: string[];
   backlog: string[];
+  origin: string;
 }
 
 const initialState: Stage = {
   current: [],
   backlog: [],
+  origin: format(new Date(), 'yyyy-MM-dd'),
 };
 
 const stage = createSlice({
   name: 'stage',
   initialState,
   reducers: {
-    
+    refresh(state) {
+      const today = format(new Date(), 'yyyy-MM-dd');
+      if (today !== state.origin) {
+        state.origin = today;
+        state.backlog = state.current;
+        state.current = [];
+      }
+    },
   },
   extraReducers: {
     [insertThought as any]: (state, action: PayloadAction<Thought>) => {
@@ -78,7 +87,7 @@ const stage = createSlice({
 });
 
 export const {
-
+  refresh
 } = stage.actions;
 
 export default stage.reducer;

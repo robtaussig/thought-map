@@ -5,6 +5,7 @@ import { withStyles, StyleRules } from '@material-ui/core/styles';
 interface NavBarProps {
   classes: any;
   items: any[];
+  id?: string;
 }
 
 const styles = (theme: any): StyleRules => ({
@@ -28,10 +29,10 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const NavBar: FC<NavBarProps> = ({ classes, items }) => {
+export const NavBar: FC<NavBarProps> = ({ classes, items, id = 'nav' }) => {
 
   return (
-    <nav className={classes.root}>
+    <nav className={classes.root} id={id}>
       {items.map(({ current, value, onClick, ...props }, idx) => {
         return (
           <button
