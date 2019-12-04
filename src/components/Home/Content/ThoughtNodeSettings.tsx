@@ -4,6 +4,7 @@ import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
 import useApp from '../../../hooks/useApp';
+import Tooltip from '../../General/Tooltip';
 import { thoughts as thoughtActions } from '../../../actions';
 import { openConfirmation, homeUrl } from '../../../lib/util';
 import { useSelector } from 'react-redux';
@@ -29,18 +30,31 @@ const styles = (theme: any): StyleRules => ({
     fontWeight: 600,
     fontSize: 20,
   },
-  button: {
+  buttonWrapper: {
+    border: `1px solid ${theme.palette.secondary[700]}`,
     margin: '10px 0',
-    padding: '5px 15px',
     width: '70%',
     borderRadius: '5px',
+    display: 'flex',
+    position: 'relative',
+    justifyContent: 'center',
+    '& .tooltip': {
+      position: 'absolute',
+      justifyContent: 'center',
+      right: -30,
+      '& > svg': {
+        color: theme.palette.secondary[700],
+      },
+    },
+  },
+  button: {
+    width: '100%',
+    padding: '5px 15px',
     color: theme.palette.secondary[700],
     fontWeight: 600,
-    border: `1px solid ${theme.palette.secondary[700]}`,
     transition: 'all 0.3s linear',
     '&.delete': {
       color: theme.palette.red[500],
-      border: `1px solid ${theme.palette.red[500]}`,
     },
     '&:active': {
       color: theme.palette.gray[200],
@@ -52,6 +66,9 @@ const styles = (theme: any): StyleRules => ({
     },
   },
 });
+
+const BUMP_TOOLTIP_TEXT = 'Bumping a thought will update it so that it will be displayed at the top (when sorted by last updated), without changing any other fields. This can be useful to increase the visibility of a thought that becomes buried over time as new thoughts rise to the top.';
+const STAGE_TOOLTIP_TEXT = 'Staging a thought flags it as being relevant on the day it is staged. All staged thoughts are collected and displayed on the \'Stage\', which can be viewed by clicking on the bookmark button. Thoughts that were staged on a previous day are placed in the \'Backlog\'. Thoughts are unstaged as soon as they are completed.';
 
 export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, thought, onClose, onLoad }) => {
   const db = useLoadedDB();
@@ -102,11 +119,23 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
   return (
     <div className={classes.root}>
       <h1 className={classes.title}>{thought.title}</h1>
-      <button className={classes.button} onClick={handleClickBump}>Bump</button>
-      <button className={classes.button} onClick={handleClickStage}>Stage</button>
-      <button className={classes.button} onClick={handleClickViewHistory}>View History</button>
-      {hasConnections && <button className={classes.button} onClick={handleClickViewConnections}>View Connections</button>}
-      <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete}>Delete</button>
+      <div className={classes.buttonWrapper}>
+        <button className={classes.button} onClick={handleClickBump}>Bump</button>
+        <Tooltip className={'tooltip'} text={BUMP_TOOLTIP_TEXT}/>
+      </div>
+      <div className={classes.buttonWrapper}>
+        <button className={classes.button} onClick={handleClickStage}>Stage</button>
+        <Tooltip className={'tooltip'} text={STAGE_TOOLTIP_TEXT}/>
+      </div>
+      <div className={classes.buttonWrapper}>
+        <button className={classes.button} onClick={handleClickViewHistory}>View History</button>        
+      </div>
+      {hasConnections && <div className={classes.buttonWrapper}>
+        <button className={classes.button} onClick={handleClickViewConnections}>View Connections</button>
+      </div>}
+      <div className={classes.buttonWrapper}>
+        <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete}>Delete</button>        
+      </div>
     </div>
   );
 };
