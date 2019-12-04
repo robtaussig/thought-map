@@ -70,7 +70,7 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
   const statusUpdates = useMemo(() => {
     return relatedThoughtIds.reduce((next, relatedThoughtId) => {
       const thought = thoughts.find(({ id }) => id === relatedThoughtId);
-      const statusesByThought: StatusUpdate[] = stateStatusesByThought[relatedThoughtId]
+      const statusesByThought: StatusUpdate[] = (stateStatusesByThought[relatedThoughtId] || [])
                                   .map(statusId => {
                                     const status = statuses[statusId];
                                     const completionIndex = statusOptions.indexOf(status.text);
