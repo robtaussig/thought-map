@@ -145,10 +145,16 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
         reminders: generateRemindersFromThought(nextThought),
       };
   
-      const event = await actions.createEvent(gogleCalendarEvent);
+      const event: any = await Promise.race([
+        new Promise(resolve => setTimeout(() => resolve(null), 5000)),
+        new Promise(resolve => actions
+          .createEvent(gogleCalendarEvent)
+          .then(resolve)
+          .catch(() => resolve(null))),
+      ])
       onUpdate({
         ...nextThought,
-        calendarLink: event.result.htmlLink
+        calendarLink: event?.result?.htmlLink ?? '',
       });
     } else {
       onUpdate(nextThought);
