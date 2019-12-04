@@ -94,19 +94,20 @@ export const useGoogleCalendar = (autoSignIn: boolean = true, config: Config = D
   
         return true;
       };
-  
-      try {
-        let timeout = setTimeout(() => {
-          setError(new Error('Connection timed out'));
-        }, 5000);
-        
-        init().then(() => clearTimeout(timeout));
-      } catch(e) {
-  
-        setError(e);
-      }
+      let unmounted = false;
+      let timeout = setTimeout(() => {
+        if (unmounted === false) setError(new Error('Connection timed out'));
+      }, 5000);
+      
+      init()
+        .then(() => clearTimeout(timeout))
+        .catch(err => {
+          clearTimeout(timeout);
+          if (unmounted === false) setError(err);
+        });
   
       return () => {
+        unmounted = true;
         if (cleanupRef.current) cleanupRef.current();
       };
     }
