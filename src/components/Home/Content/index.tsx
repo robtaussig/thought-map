@@ -137,7 +137,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           />
         );
       });
-  }, [thoughts, plan, sortFilterSettings, matchingThoughts, searchTerm !== '', connectionStatusByThought, stateConnections]);
+  }, [thoughts, plan, plans, sortFilterSettings, matchingThoughts, searchTerm !== '', connectionStatusByThought, stateConnections]);
 
   const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
     const scrollTop = e.target.scrollTop;
