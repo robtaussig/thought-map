@@ -26,7 +26,7 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
       right: 10,
     },
     '&#settings': {
-      bottom: 10,
+      top: 10,
       left: 10,
       '& svg': {
         willChange: 'transform',
@@ -74,12 +74,12 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     },
     '&#visibile-connections-button': {
       bottom: 10,
-      right: 'calc(50% - 55px)',
+      left: 10,
       transition: 'all 0.1s linear',
     },
     '&#hidden-connections-button': {
       bottom: -100,
-      right: 'calc(50% - 55px)',
+      left: 10,
       transition: 'all 0.1s linear',
     },
   },

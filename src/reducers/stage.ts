@@ -46,7 +46,7 @@ const stage = createSlice({
       const isCurrent = state.current.includes(action.payload.id);
       const isBacklog = state.backlog.includes(action.payload.id);
 
-      if (action.payload.stagedOn) {
+      if (action.payload.status !== 'completed' && action.payload.stagedOn) {
         const today = format(new Date(), 'yyyy-MM-dd');
         if (action.payload.stagedOn === today) {
           if (!isCurrent) {
@@ -74,7 +74,7 @@ const stage = createSlice({
       const today = format(new Date(), 'yyyy-MM-dd');
       
       action.payload.forEach(thought => {
-        if (thought.stagedOn) {
+        if (thought.status !== 'completed' && thought.stagedOn) {
           if (thought.stagedOn === today) {
             state.current.push(thought.id);
           } else {

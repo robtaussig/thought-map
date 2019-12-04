@@ -430,7 +430,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       </div>
       <CircleButton
         classes={classes}
-        id={isScrollingDown && connections.length > 0 ? 'visibile-connections-button' : 'hidden-connections-button'}
+        id={isScrollingDown ? 'visibile-connections-button' : 'hidden-connections-button'}
         onClick={handleClickViewConnections}
         label={'Connections'}
         Icon={Link}
