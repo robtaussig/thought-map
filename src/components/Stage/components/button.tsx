@@ -4,7 +4,7 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import { stageSelector } from '../../../reducers/stage';
 import useApp from '../../../hooks/useApp';
 import CircleButton from '../../General/CircleButton';
-import BookMark from '@material-ui/icons/BookMark';
+import Bookmark from '@material-ui/icons/Bookmark';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
 interface StagingButtonProps {
@@ -57,7 +57,7 @@ export const StagingButton: FC<StagingButtonProps> = ({ classes }) => {
         id={stage.backlog.length > 0 ? 'backlog-button' : 'staging-button'}
         classes={classes}
         label={'Staging'}
-        Icon={BookMark}
+        Icon={Bookmark}
       />
     );
   }
