@@ -321,6 +321,10 @@ const VALID_SETTINGS: ValidSettings = {
     values: null,
     reason: 'customTags must be an array of strings',
   },
+  autoCreateCalendarEvent: {
+    values: booleanValues,
+    reason: 'useLocation must be a boolean',
+  },
 };
 
 const formatResults = (
