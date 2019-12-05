@@ -4,33 +4,38 @@ export const styles = (theme: any): StyleRules => ({
   root: {
     height: '100%',
     width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
     overflow: 'hidden',
+    gridTemplateAreas: `"nav-bar"
+                        "grid-items"`,
+    gridTemplateRows: '80px 1fr',
     backgroundColor: theme.palette.gray[700],
     '& #staging-nav': {
-      flex: '0 0 80px',
+      gridArea: 'nav-bar',
     },
   },
   stagingItems: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
+    gridArea: 'grid-items',
+    gridTemplateColumns: '1fr',
+    gridAutoRows: 'max-content',
+    display: 'grid',
+    gridAutoFlow: 'row',
     overflow: 'auto',
+    gridRowGap: '10px',
+    margin: 10,
+    marginBottom: 125,
   },
   stagedItem: {
     display: 'flex',
-    minHeight: 20,
-    margin: 10,
     alignItems: 'center',
-    backgroundColor: theme.palette.gray[200],
+    backgroundColor: theme.palette.gray[100],
     borderRadius: '5px',
-    '&:not(:last-child)': {
-      marginBottom: 0,
-    },
     '& button': {
       height: '100%',
       ...theme.defaults.centered,
+    },
+    '&.from': {
+      backgroundColor: theme.palette.secondary[200],
     },
   },
   stagedItemTitle: {

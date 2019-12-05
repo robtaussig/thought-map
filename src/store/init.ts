@@ -46,7 +46,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
     settingActions.getSettings(db),
     statusActions.getStatuses(db),
   ]);
-
+  
   const statusesById = intoMap(statuses);
   const notesById = intoMap(notes);
   const tagsById = intoMap(tags);
@@ -72,7 +72,6 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
   
       return {
         ...thought,
-        updated: latestStatus.created,
         status: latestStatus.text,
       };
     }

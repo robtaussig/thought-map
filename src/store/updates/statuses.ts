@@ -20,6 +20,7 @@ export const handleStatusChange = (
       if (status.text === 'completed') {
         handleRecurringThought(status.thoughtId);
       }
+      notification = { message: 'Thought updated' };
       break;
     
     case 'REMOVE':

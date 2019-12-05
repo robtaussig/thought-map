@@ -3,6 +3,8 @@ import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 import useLongPress from '../../hooks/useLongPress'; 
 
+const EMPTY_LONG_PRESS = () => {};
+
 interface CircleButtonProps {
   classes?: any;
   id?: string;
@@ -46,11 +48,11 @@ export const CircleButton: FC<CircleButtonProps> = React.memo(({
     buttonRef.current.classList.remove('touched');
   };
 
-  const handleLongPress = onLongPress ? useLongPress(onLongPress, 400, {
+  const handleLongPress = useLongPress(onLongPress || EMPTY_LONG_PRESS, 400, {
     onStart: handleInteractionStart,
     onEnd: handleInteractionEnd,
     onCancel: handleCancelInteraction,
-  }) : {};
+  });
 
   return (
     <button
@@ -67,7 +69,7 @@ export const CircleButton: FC<CircleButtonProps> = React.memo(({
       onTouchMove={handleCancelInteraction}
       aria-label={label}
       disabled={disabled}
-      {...handleLongPress}
+      {...(onLongPress ? handleLongPress : {})}
       {...rest}
     >
       {disabled ? <SentimentDissatisfied/> : <Icon ref={svgRef}/>}

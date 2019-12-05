@@ -7,7 +7,6 @@ interface Handlers {
 }
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-const isMobileIOS = /iPhone/.test(navigator.userAgent);
 
 export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500, combinedHandlers: Handlers = {}) => {
   const pressTimeout = useRef<NodeJS.Timer>(null);

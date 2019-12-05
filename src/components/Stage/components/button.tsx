@@ -48,23 +48,25 @@ export const StagingButton: FC<StagingButtonProps> = ({ classes }) => {
   const [hideButton, setHideButton] = useState<boolean>(false);
   const { history } = useApp();
   const isStaging = history.location.pathname === STAGING_PATH_NAME;
-  const handleClick = async () => {
+  const handleClick = async (_: any, withThought?: boolean) => {
     if (isStaging) {
       history.goBack();
     } else {
-      if (canStage) {
+      let thoughtQuery = '';
+      if (withThought && canStage) {
         const thoughtId = getIdFromUrl(history, 'thought');
         if (typeof thoughtId === 'string') {
           const thought = thoughts.find(({ id }) => id === thoughtId);
-          if (thought) {
+          if (thought && thought.status !== 'completed') {
             await thoughtActions.editThought(db, {
               ...thought,
               stagedOn: format(new Date(), 'yyyy-MM-dd'),
             });
+            thoughtQuery = `?from=${thoughtId}`;
           }
         }
       }
-      history.push(STAGING_PATH_NAME);
+      history.push(`${STAGING_PATH_NAME}${thoughtQuery}`);
     }
   };
 
@@ -99,6 +101,7 @@ export const StagingButton: FC<StagingButtonProps> = ({ classes }) => {
         classes={classes}
         label={'Staging'}
         Icon={Bookmark}
+        onLongPress={() => handleClick(null, true)}
       />
     );
   }

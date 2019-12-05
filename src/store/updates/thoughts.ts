@@ -23,8 +23,7 @@ export const handleThoughtChange = (
       break;
 
     case 'UPDATE':
-      dispatch(update(thought));
-      notification = { message: 'Thought updated' };
+      dispatch(update(thought));      
       break;
   
     default:
