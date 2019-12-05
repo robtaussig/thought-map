@@ -3,7 +3,6 @@ import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home';
-import Settings from '@material-ui/icons/Settings';
 import { thoughtHomeStyles } from './styles';
 import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
@@ -18,13 +17,14 @@ import { useLoadingOverlay } from '../../hooks/useLoadingOverlay';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { tagSelector } from '../../reducers/tags';
 import { noteSelector } from '../../reducers/notes';
+import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
 import { connectionSelector } from '../../reducers/connections';
 import { planSelector } from '../../reducers/plans';
 import { statusesByThoughtSelector } from '../../reducers/statusesByThought';
 import { statusSelector } from '../../reducers/statuses';
 import { pictureSelector } from '../../reducers/pictures';
 import { settingSelector } from '../../reducers/settings';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 export interface PriorityOption {
   value: number;
@@ -66,9 +66,9 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   const rootRef = useRef<HTMLDivElement>(null);
   const [setLoading, stopLoading, updateLoading] = useLoadingOverlay(rootRef);
   const db = useLoadedDB();
+  const dispatch = useDispatch();
   const { history } = useApp();
-  const settingsGearButtonSVGRef = useRef<HTMLElement>(null);
-  const [displaySettings, setDisplaySettings] = useState<boolean>(false);
+  const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const [editAllSections, setEditAllSections] = useState<boolean>(false);
   const thoughtId = getIdFromUrl(history, 'thought');
   const thoughts = useSelector(thoughtSelector);
@@ -81,6 +81,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   const pictures = useSelector(pictureSelector);
   const settings = useSelector(settingSelector);
   const autoCreateCalendarEvent = Boolean(settings && settings.autoCreateCalendarEvent);
+  const setDisplaySettings = (display: boolean) => dispatch(toggle(display));
 
   const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
   const relatedTags = useMemo(() => Object.values(tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, tags]);
@@ -145,15 +146,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
       openConfirmation('Are you sure you want to delete this?', onConfirm);
     }
   }, [thoughtId]);
-
-  const handleClickSettings = useCallback(() => {
-    setDisplaySettings(prev => !prev);
-    if (!displaySettings) {
-      gearOpening(settingsGearButtonSVGRef.current);
-    } else {
-      gearClosing(settingsGearButtonSVGRef.current);
-    }
-  }, [thoughtId, displaySettings]);
 
   const handleEditAllSections = useCallback(() => {
     setDisplaySettings(false);
@@ -222,7 +214,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
         />
       }
       <ThoughtSettings
-        display={displaySettings}
+        display={displayThoughtSettings}
         thought={thought}
         tags={relatedTags}
         notes={relatedNotes}
@@ -231,25 +223,9 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
         onApplySectionState={handleApplySectionState}
         onChangeHideFromHomeScreen={handleChangeHideFromHomeScreen}
       />
-      {!displaySettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>}
-      <CircleButton
-        svgRef={settingsGearButtonSVGRef}
-        classes={classes}
-        id={'settings'}
-        onClick={handleClickSettings}
-        label={'Settings'}
-        Icon={Settings}
-      />
+      {!displayThoughtSettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>}
     </div>
   );
 };
-
-const gearOpening = (element: HTMLElement): void => {
-  element.classList.add('gear-opening');
-};
-
-const gearClosing = (element: HTMLElement): void => {
-  element.classList.remove('gear-opening');
-}
 
 export default withStyles(thoughtHomeStyles)(Thought);

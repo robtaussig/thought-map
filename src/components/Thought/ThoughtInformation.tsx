@@ -1,8 +1,6 @@
-import React, { useMemo, FC, useState, useRef, useEffect } from 'react';
+import React, { useMemo, FC, useState, useRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Close from '@material-ui/icons/Close';
-import Link from '@material-ui/icons/Link';
-import History from '@material-ui/icons/History';
 import { getTime } from './util';
 import {
   notes as noteActions,
@@ -99,8 +97,6 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const db = useLoadedDB();
   const { history } = useApp();
   const [editingSection, setEditingSection] = useState<string>(null);
-  const [isScrollingDown, setIsScrollingDown] = useState<boolean>(false);
-  const lastScrollPos = useRef<number>(0);
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
     if (statuses && statuses.length > 0) {
       return [getTime(statuses[statuses.length - 1].updated), getTime(statuses[0].created)];
@@ -254,14 +250,6 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     cancelEditAllSections();
   };
 
-  const handleClickViewConnections = () => {
-    history.push(`${homeUrl(history)}thought/${thought.id}/connections`);
-  };
-
-  const handleClickViewHistory = () => {
-    history.push(`${homeUrl(history)}thought/${thought.id}/history`);
-  };
-
   const handleClickRoot = (e: any) => {
     if (!e.target.closest('SECTION') && (editAllSections || editingSection)) {
       handleCancelEditSection();
@@ -389,29 +377,6 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
     />),
   }
 
-  useEffect(() => {
-    
-    const handleScroll = (e: any) => {
-
-      const scrollTop = e.target.scrollTop;
-      setIsScrollingDown(scrollTop > lastScrollPos.current);
-      lastScrollPos.current = scrollTop;
-    };
-
-    sectionsWrapper.current.addEventListener('scroll', handleScroll);
-
-    return () => sectionsWrapper.current.removeEventListener('scroll', handleScroll);
-  }, [isScrollingDown, connections]);
-
-  useEffect(() => {
-    const checkIsScrolledToBottom = () => {
-      return sectionsWrapper.current.clientHeight === sectionsWrapper.current.scrollHeight;
-    };
-    if (checkIsScrolledToBottom()) {
-      setIsScrollingDown(true);
-    }
-  }, []);
-
   return (
     <div className={classes.root} onClick={handleClickRoot}>
       {(editAllSections || editingSection) && <CircleButton classes={classes} id={'cancel-edit'} onClick={handleCancelEditSection} label={'Cancel Edit'} Icon={Close}/>}
@@ -428,20 +393,6 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
           return components[section];
         })}
       </div>
-      <CircleButton
-        classes={classes}
-        id={isScrollingDown ? 'visibile-connections-button' : 'hidden-connections-button'}
-        onClick={handleClickViewConnections}
-        label={'Connections'}
-        Icon={Link}
-      />
-      <CircleButton
-        classes={classes}
-        id={isScrollingDown ? 'visibile-history-button' : 'hidden-history-button'}
-        onClick={handleClickViewHistory}
-        label={'History'}
-        Icon={History}
-      />
     </div>
   )
 });

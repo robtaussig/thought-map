@@ -19,7 +19,7 @@ interface StagingButtonProps {
 const styles = (theme: any): StyleRules => ({
   circleButton: {
     ...theme.defaults.circleButton,
-    border: `2px solid ${theme.palette.secondary[200]}`,
+    border: `2px solid ${theme.palette.primary[500]}`,
     backgroundColor: theme.palette.gray[600],
     bottom: 10,
     right: 'calc(50% - 55px)',
@@ -33,7 +33,7 @@ const styles = (theme: any): StyleRules => ({
       border: `2px solid ${theme.palette.gray[500]}`,
     },
     '&#stage-button': {
-      border: `2px solid ${theme.palette.primary[500]}`,      
+      border: `2px solid ${theme.palette.secondary[500]}`,      
     },
   },
 });
@@ -78,7 +78,7 @@ export const StagingButton: FC<StagingButtonProps> = ({ classes }) => {
   }, [stage, history.location.pathname]);
 
   useEffect(() => {
-    setHideButton(/(history|connections)$/.test(history.location.pathname));
+    setHideButton(/(history|connections|settings)$/.test(history.location.pathname));
   }, [history.location.pathname])
 
   if (hideButton) return null;

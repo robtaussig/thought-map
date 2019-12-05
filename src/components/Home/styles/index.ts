@@ -212,6 +212,7 @@ export const styles = (theme: any): StyleRules => ({
     '&#edit-plan': {
       bottom: 10,
       left: 10,
+      border: `2px solid ${theme.palette.secondary[500]}`,
     },
     '&#create-plan': {
       '&:disabled': {

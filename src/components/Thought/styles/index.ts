@@ -25,18 +25,6 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
       top: 10,
       right: 10,
     },
-    '&#settings': {
-      top: 10,
-      left: 10,
-      '& svg': {
-        willChange: 'transform',
-        transition: 'transform 0.3s linear',
-        transform: 'rotate(-90deg)',
-        '&.gear-opening': {
-          transform: 'rotate(90deg) scale(2)',
-        },
-      },
-    },
   },
 });
 
@@ -53,6 +41,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridTemplateColumns: 'max-content max-content 1fr',
     gridGap: '10px',
     color: 'white',
+    marginBottom: 110,
   },
   circleButton: {
     ...theme.defaults.circleButton,
@@ -65,21 +54,6 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     '&#visibile-history-button': {
       bottom: 10,
       right: 10,
-      transition: 'all 0.1s linear',
-    },
-    '&#hidden-history-button': {
-      bottom: -100,
-      right: 10,
-      transition: 'all 0.1s linear',
-    },
-    '&#visibile-connections-button': {
-      bottom: 10,
-      left: 10,
-      transition: 'all 0.1s linear',
-    },
-    '&#hidden-connections-button': {
-      bottom: -100,
-      left: 10,
       transition: 'all 0.1s linear',
     },
   },
