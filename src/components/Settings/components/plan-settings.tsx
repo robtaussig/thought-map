@@ -189,13 +189,6 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
         afterDelete={handleReturnHomeAfterDelete}
         connections={connections}
       />
-      <CircleButton
-        classes={classes}
-        id={'return-home'}
-        onClick={handleClickReturnHome}
-        label={'Return Home'}
-        Icon={Home}
-      />
       {hasChange &&
           <CircleButton
           classes={classes}
