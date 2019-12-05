@@ -1,7 +1,5 @@
 import React, { FC, ChangeEventHandler } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import CircleButton from '../General/CircleButton';
-import Delete from '@material-ui/icons/Delete';
 import useModal from '../../hooks/useModal';
 import Template from './components/template';
 import AddToCalendar from './components/Calendar';
@@ -18,7 +16,6 @@ interface ThoughtSettingsProps {
   thought: Thought;
   tags: Tag[];
   notes: Note[];
-  onDelete: () => void;
   onEditSections: () => void;
   onApplySectionState: () => void;
   onChangeHideFromHomeScreen: (checked: boolean) => void;
@@ -33,7 +30,6 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({
   thought,
   tags,
   notes,
-  onDelete,
   onEditSections,
   onChangeHideFromHomeScreen,
 }) => {
@@ -79,7 +75,6 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({
           label={'Hide From Home'}
           onChange={handleCheckHideFromHomeScreen}
         />
-        {display && <CircleButton classes={classes} id={'delete-thought'} onClick={onDelete} label={'Delete Thought'} Icon={Delete}/>}
       </div>
     </div>
   );

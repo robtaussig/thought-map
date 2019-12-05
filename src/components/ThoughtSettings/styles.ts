@@ -98,13 +98,4 @@ export const styles = (theme: any): StyleRules => ({
   recurring: {
 
   },
-  circleButton: {
-    ...theme.defaults.circleButton,
-    '&#delete-thought': {
-      bottom: 10,
-      right: 10,
-      border: `2px solid ${theme.palette.red[300]}`,
-      backgroundColor: theme.palette.red[300],
-    },
-  },
 });

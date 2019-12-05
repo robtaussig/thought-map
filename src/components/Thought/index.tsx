@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useRef, FC } from 'react';
+import React, { useMemo, useCallback, useState, FC } from 'react';
 import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
@@ -9,11 +9,10 @@ import ThoughtInformation from './ThoughtInformation';
 import ThoughtSettings from '../ThoughtSettings';
 import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions, plans as planActions } from '../../actions';
-import { openConfirmation, homeUrl, getIdFromUrl } from '../../lib/util';
+import { homeUrl, getIdFromUrl } from '../../lib/util';
 import { Picture } from '../../store/rxdb/schemas/picture';
 import { Thought as ThoughtType } from '~store/rxdb/schemas/types';
 import { SectionVisibility } from './types';
-import { useLoadingOverlay } from '../../hooks/useLoadingOverlay';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { tagSelector } from '../../reducers/tags';
 import { noteSelector } from '../../reducers/notes';
@@ -63,8 +62,6 @@ const SECTION_DELIMITER_REGEX = /^_/;
 export const DEFAULT_SECTIONS = 'type-status-priority-description-datetime-notes-recurring-tags-connections-pictures';
 
 export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions, tagOptions }) => {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const [setLoading, stopLoading, updateLoading] = useLoadingOverlay(rootRef);
   const db = useLoadedDB();
   const dispatch = useDispatch();
   const { history } = useApp();
@@ -134,19 +131,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
     await thoughtActions.editThought(db, updatedThought);
   }, []);
 
-  const handleClickDelete = useCallback(() => {
-    if (typeof thoughtId === 'string') {
-      const onConfirm = async () => {        
-        setLoading('Deleting thought');
-        await thoughtActions.deleteThought(db, thoughtId);
-        updateLoading('Thought deleted');
-        history.push(homeUrl(history));
-      };
-  
-      openConfirmation('Are you sure you want to delete this?', onConfirm);
-    }
-  }, [thoughtId]);
-
   const handleEditAllSections = useCallback(() => {
     setDisplaySettings(false);
     setEditAllSections(true);
@@ -189,7 +173,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   }, [thoughtSections]);
 
   return (
-    <div ref={rootRef} className={classes.root}>
+    <div className={classes.root}>
       {!thought &&
         <Loading id={'thought-loader'}/>}
       {thought && 
@@ -218,7 +202,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
         thought={thought}
         tags={relatedTags}
         notes={relatedNotes}
-        onDelete={handleClickDelete}
         onEditSections={handleEditAllSections}
         onApplySectionState={handleApplySectionState}
         onChangeHideFromHomeScreen={handleChangeHideFromHomeScreen}
