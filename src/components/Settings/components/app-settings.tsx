@@ -30,13 +30,6 @@ const styles = (theme: any): StyleRules => ({
     alignItems: 'center',
     overflow: 'auto',
   },
-  circleButton: {
-    ...theme.defaults.circleButton,
-    '&#return-home': {
-      left: 10,
-      bottom: 10,
-    },
-  },
   updateButton: {
     border: '2px solid white',
     padding: '3px 0',
@@ -99,13 +92,6 @@ export const AppSettings: FC<AppSettingsProps> = ({ classes, setLastNotification
       <Data setLoading={setLoading}/>
       <CustomObjects settings={settings}/>
       <button className={classes.updateButton} onClick={handleCheckUpdates}>Check for Update (Current: {(window as any).APP_VERSION})</button>
-      <CircleButton
-        classes={classes}
-        id={'return-home'}
-        onClick={handleClickReturnHome}
-        label={'Return Home'}
-        Icon={Home}
-      />
     </div>
   );
 };

@@ -109,11 +109,11 @@ export const PlanButton: FC<PlanButtonProps> = ({ classes }) => {
 };
 
 const gearOpening = (element: HTMLElement): void => {
-  element.classList.add('gear-opening');
+  element && element.classList.add('gear-opening');
 };
 
 const gearClosing = (element: HTMLElement): void => {
-  element.classList.remove('gear-opening');
+  element && element.classList.remove('gear-opening');
 }
 
 export default withStyles(styles)(PlanButton);

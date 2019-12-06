@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, FC } from 'react';
+import React, { useMemo, useCallback, useState, FC, useEffect } from 'react';
 import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
@@ -171,6 +171,12 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
       return visibility;
     }, {} as SectionVisibility);
   }, [thoughtSections]);
+
+  useEffect(() => {
+    return () => {
+      setDisplaySettings(false);
+    };
+  }, []);
 
   return (
     <div className={classes.root}>

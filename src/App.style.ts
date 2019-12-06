@@ -149,23 +149,23 @@ export const theme = responsiveFontSizes(
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transition: 'all 0.1s linear',
+        // transition: 'all 0.1s linear',
         color: 'white',
-        ...CAST_SHADOW_HEAVY,
-        '&:not([disabled])': {
-          '&:hover': {
-            transform: 'scale(1.1)',
-            ...CAST_SHADOW_HEAVY,
-          },
-          '&:active': {
-            transform: 'scale(1)',
-            boxShadow: 'none',
-          },
-          '&.touched': {
-            boxShadow: 'none!important',
-            transform: 'scale(0.9)!important',
-          },
-        },
+        // ...CAST_SHADOW_HEAVY,
+        // '&:not([disabled])': {
+        //   '&:hover': {
+        //     transform: 'scale(1.1)',
+        //     ...CAST_SHADOW_HEAVY,
+        //   },
+        //   '&:active': {
+        //     transform: 'scale(1)',
+        //     boxShadow: 'none',
+        //   },
+        //   '&.touched': {
+        //     boxShadow: 'none!important',
+        //     transform: 'scale(0.9)!important',
+        //   },
+        // },
       }      
     },
   })
