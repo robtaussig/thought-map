@@ -3,6 +3,7 @@ import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 import useLongPress from '../../hooks/useLongPress';
 import { animated, useSpring, config } from 'react-spring';
+import { useGesture } from 'react-with-gesture';
 
 const EMPTY_LONG_PRESS = () => {};
 
@@ -31,24 +32,31 @@ export const CircleButton: FC<CircleButtonProps> = ({
   onLongPress,
   ...rest }) => {
   const [scale, setScale] = useSpring(() => ({ transform: 'scale(1)' , ...config.default }))
+  const bind = useGesture({
+    onAction: (event: any) => {
+      console.log(event);
+    },
+    onUp: () => {
+      setScale({ transform: 'scale(1)' });
+    },
+    onDown: () => {
+      setScale({ transform: 'scale(0.8)' });
+    },
+    touch: true,
+    mouse: true,
+  });
 
   return (
     <animated.button
       id={id}
       title={title}
-      // onMouseOver={() => setScale({ transform: 'scale(1.1)' })}
-      // onMouseLeave={() => setScale({ transform: 'scale(1)' })}
-      onMouseDown={() => setScale({ transform: 'scale(0.8)' })}
-      onMouseUp={() => {
-        setScale({ transform: 'scale(1)' });
-        onClick();
-      }}
-      onMouseLeave={() => setScale({ transform: 'scale(1)' })}
+      {...bind()}
       style={{
         userSelect: 'none',
         ...scale,
       }}
       className={classes.circleButton}
+      onClick={onClick}
       aria-label={label}
       disabled={disabled}
       {...rest}
