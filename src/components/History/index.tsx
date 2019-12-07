@@ -62,7 +62,7 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
         //@ts-ignore   
         const instance = await new WorkerGrapher();
         await instance.update(thought, connections);
-        instance.generate(proxy(setRelatedThoughtIds), thoughtsById);
+        instance.getDescendents(proxy(setRelatedThoughtIds));
       };
   
       processData();
