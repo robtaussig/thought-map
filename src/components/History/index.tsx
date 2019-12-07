@@ -16,6 +16,7 @@ import { thoughtSelector } from '../../reducers/thoughts';
 import { connectionSelector } from '../../reducers/connections';
 import { statusesByThoughtSelector } from '../../reducers/statusesByThought';
 import { statusSelector } from '../../reducers/statuses';
+import { proxy, wrap, releaseProxy } from 'comlink';
 
 interface HistoryProps {
   classes: any;
@@ -30,20 +31,12 @@ const styles = (theme: any): StyleRules => ({
 
 export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
   const { history } = useApp();
-  const grapher = useRef(null);
   const [relatedThoughtIds, setRelatedThoughtIds] = useState<string[]>([]);
   const plans = useSelector(planSelector);
   const thoughts = useSelector(thoughtSelector);
   const connections = useSelector(connectionSelector);
   const stateStatusesByThought = useSelector(statusesByThoughtSelector);
   const statuses = useSelector(statusSelector);
-  const getGrapher = (): Grapher => {
-    if (grapher.current === null) {
-      grapher.current = new Grapher();
-    }
-
-    return grapher.current;
-  }
   const isPlanHistory = /thought/.test(history.location.pathname) === false;
   const planId = getIdFromUrl(history, 'plan');
   const thoughtId = getIdFromUrl(history, 'thought');
@@ -61,9 +54,20 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
     if (isPlanHistory) {
 
     } else {
-      getGrapher()
-        .update(thought, connections)
-        .getDescendents(setRelatedThoughtIds);
+      const WorkerGrapher = wrap<Grapher>(
+        new Worker('../Connections/lib/worker.ts')
+      );
+  
+      const processData = async () => {
+        //@ts-ignore   
+        const instance = await new WorkerGrapher();
+        await instance.update(thought, connections);
+        instance.generate(proxy(setRelatedThoughtIds), thoughtsById);
+      };
+  
+      processData();
+  
+      return () => WorkerGrapher[releaseProxy]();
     }
   }, [connections, thoughts, planId, thoughtId, isPlanHistory, thoughtsById]);
 

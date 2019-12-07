@@ -69,7 +69,6 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
     }, {} as ThoughtConnections);
   }, [stateConnections, thoughts, stateThoughts]);
 
-
   const thoughtComponents = useMemo(() => {
     if (thoughts.length === 0) {
       return new Array(10).fill(null).map((_, idx) => {

@@ -7,6 +7,7 @@ import Grapher, {
   ThoughtsById,
 } from '../lib/grapher';
 import { Node } from '../lib/types';
+import { proxy, wrap, releaseProxy } from 'comlink';
 
 interface ConnectionGraphProps {
   classes: any;
@@ -15,7 +16,6 @@ interface ConnectionGraphProps {
   connections: Connections;
   statusOptions: string[];
 }
-
 
 const styles = (theme: any): StyleRules => ({
   root: {
@@ -71,17 +71,8 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, thoughts, connections, statusOptions }) => {
-  const grapher = useRef(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [tree, setTree] = useState<Node[]>([]);
-
-  const getGrapher = (): Grapher => {
-    if (grapher.current === null) {
-      grapher.current = new Grapher();
-    }
-
-    return grapher.current;
-  }
 
   const thoughtsById = useMemo(() => {
     return thoughts.reduce((byId, thought) => {
@@ -91,13 +82,25 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
   }, [thoughts]);
 
   useEffect(() => {
-    getGrapher()
-      .update(thought, connections)
-      .generate(setTree, thoughtsById);
+    const WorkerGrapher = wrap<Grapher>(
+      new Worker('../lib/worker.ts')
+    );
+
+    const processData = async () => {
+      //@ts-ignore   
+      const instance = await new WorkerGrapher();
+      await instance.update(thought, connections);
+      instance.generate(proxy(setTree), thoughtsById);
+    };
+
+    processData();
+
+    return () => WorkerGrapher[releaseProxy]();
   }, [thought, thoughtsById, connections]);
 
   useEffect(() => {
-    getGrapher().draw(canvasRef.current, tree, thoughtsById);
+    const grapher = new Grapher();
+    grapher.draw(canvasRef.current, tree, thoughtsById);
   }, [tree, thoughtsById]);
 
   const [columns, rows, _nodes]: any[] = useMemo(() => {
