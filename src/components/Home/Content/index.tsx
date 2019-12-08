@@ -37,6 +37,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   const thoughtMap = useRef<Graph>(new Graph());
   const dispatch = useDispatch();
   const lastScrollPos = useRef<number>(0);
+  const didMount = useRef<boolean>(false);
   const [showFilters, setShowFilters] = useState<boolean>(true);
   const handleLongPress = useLongPress(() => {
     setShowFilters(false);
@@ -139,9 +140,11 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   }, [thoughts, plan, plans, sortFilterSettings, matchingThoughts, searchTerm !== '', connectionStatusByThought, stateConnections]);
 
   const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
-    const scrollTop = e.target.scrollTop;
-    setShowFilters(scrollTop < lastScrollPos.current);
-    lastScrollPos.current = scrollTop;
+    if (didMount.current === true) {
+      const scrollTop = e.target.scrollTop;
+      setShowFilters(scrollTop < lastScrollPos.current);
+      lastScrollPos.current = scrollTop;
+    }
   };
 
   const handleSubmitSearch: FormEventHandler = e => {
@@ -157,6 +160,12 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
     
     setMatchingThoughts(searchTerm === '' ? null : matches.map(({ id}) => id));
   }, [searchTerm]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => didMount.current = true, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   const isSearching = showFilters === false || searchTerm !== '';
 
