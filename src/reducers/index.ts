@@ -8,6 +8,7 @@ import sortFilterSettings from './sortFilterSettings';
 import statuses from './statuses';
 import statusesByThought from './statusesByThought';
 import displayThoughtSettings from './displayThoughtSettings';
+import displayPriorities from './displayPriorities';
 import tags from './tags';
 import templates from './templates';
 import thoughts from './thoughts';
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   templates,
   thoughts,
   stage,
+  displayPriorities,
   displayThoughtSettings,
 });
 

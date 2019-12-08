@@ -7,6 +7,8 @@ import { Thought } from 'store/rxdb/schemas/thought';
 import { Plan } from 'store/rxdb/schemas/plan';
 import { Notification } from '../../../types';
 import PriorityList from '../../Home/PriorityList/';
+import { useSelector, useDispatch } from 'react-redux';
+import { displayPrioritiesSelector, toggle } from '../../../reducers/displayPriorities';
 
 interface PlanSelectProps {
   classes: any;
@@ -19,18 +21,17 @@ interface PlanSelectProps {
 const HOME_NAME = 'ThoughtMap';
 const SHOW_ARCHIVED = 'Show Archived';
 const HIDE_ARCHIVED = 'Hide Archived';
-const PRIORITIES = 'Priorities';
 
 export const CREATE_NEW_PLAN = 'Create Plan';
 
 export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, planId, setLastNotification }) => {
   const [currentPlan, setCurrentPlan] = useState<string>(HOME_NAME);
+  const dispatch = useDispatch();
   const [showArchived, setShowArchived] = useState<boolean>(false);
-  const [showPriorities, setShowPriorities] = useState<boolean>(false);
+  const displayPriorities = useSelector(displayPrioritiesSelector);
   const [openModal, closeModal] = useModal();
   const lastPlan = useRef<string>(HOME_NAME);
   const planOptions = [
-    PRIORITIES,
     HOME_NAME,
     ...[...new Set(plans.filter(hideOrShowArchived(showArchived)).map(toName))],
     showArchived ? HIDE_ARCHIVED : SHOW_ARCHIVED,
@@ -39,7 +40,7 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
   const { history } = useApp();
 
   const onClosePriorityList = useCallback(() => {
-    setShowPriorities(false);
+    dispatch(toggle());
   }, []);
 
   const handleChange = useCallback(e => {
@@ -70,11 +71,6 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
       case HOME_NAME:
         history.push('/');
         break;
-
-      case PRIORITIES:
-          setShowPriorities(true);
-          setCurrentPlan(lastPlan.current);
-        break;
     
       default:
         const plan = plans.find(({ name }) => name === value);
@@ -104,7 +100,7 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
         onChange={handleChange}
         ariaLabel={'Select Plan'}
       />
-      {showPriorities && <PriorityList thoughts={thoughts} onClose={onClosePriorityList}/>}
+      {displayPriorities && <PriorityList thoughts={thoughts} onClose={onClosePriorityList}/>}
     </>
   );
 };

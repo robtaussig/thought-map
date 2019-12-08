@@ -43,8 +43,8 @@ export const StagedItem: FC<StagedItemProps> = ({ classes, isStaging, item, styl
 
   return (
     <animated.div className={classNames(classes.stagedItem, { from })} style={style}>
-      <button className={classes.stagedItemTitle} onClick={handleClickItem}>{item.title}</button>
       <button className={classes.unstageButton} onClick={handleClickUnstage}><Undo/></button>
+      <button className={classes.stagedItemTitle} onClick={handleClickItem}>{item.title}</button>
       <button className={classes.promoteButton} onClick={handleClickPromote} disabled={isStaging}><Autorenew/></button>
     </animated.div>
   );

@@ -1,14 +1,18 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import { stageSelector } from '../../reducers/stage';
 import { thoughtSelector } from '../../reducers/thoughts';
+import { toggle } from '../../reducers/displayPriorities';
+import { useDispatch } from 'react-redux';
 import { thoughts as thoughtActions } from '../../actions';
 import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
 import CircleButton from '../General/CircleButton';
 import Bookmark from '@material-ui/icons/Bookmark';
 import ArrowBack from '@material-ui/icons/ArrowBack';
+import PriorityHigh from '@material-ui/icons/PriorityHigh';
+import Queue from '@material-ui/icons/Queue';
 import { getIdFromUrl } from '../../lib/util';
 import { format } from 'date-fns';
 
@@ -40,46 +44,69 @@ const styles = (theme: any): StyleRules => ({
 
 const STAGING_PATH_NAME = '/stage';
 
+enum CurrentPage {
+  Home,
+  Thought,
+  Connections,
+  History,
+  Settings,
+}
+
 export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   const stage = useSelector(stageSelector);
   const thoughts = useSelector(thoughtSelector);
+  const dispatch = useDispatch();
   const db = useLoadedDB();
   const [canStage, setCanStage] = useState<boolean>(false);
   const [hideButton, setHideButton] = useState<boolean>(false);
   const { history } = useApp();
   const isStaging = history.location.pathname === STAGING_PATH_NAME;
-  const handleClick = async (_: any, withThought?: boolean) => {
+  const currentPage = useMemo(() => {
+    if (/thought/.test(history.location.pathname)) return CurrentPage.Thought;
+    if (/history/.test(history.location.pathname)) return CurrentPage.History;
+    if (/connections/.test(history.location.pathname)) return CurrentPage.Connections;
+    if (/settings/.test(history.location.pathname)) return CurrentPage.Settings;
+    return CurrentPage.Home;
+  }, [history.location.pathname]);
+  
+  const handleClick = async () => {
     if (isStaging) {
       history.goBack();
     } else {
-      let thoughtQuery = '';
-      if (withThought && canStage) {
-        const thoughtId = getIdFromUrl(history, 'thought');
-        if (typeof thoughtId === 'string') {
-          const thought = thoughts.find(({ id }) => id === thoughtId);
-          if (thought && thought.status !== 'completed') {
-            await thoughtActions.editThought(db, {
-              ...thought,
-              stagedOn: format(new Date(), 'yyyy-MM-dd'),
-            });
-            thoughtQuery = `?from=${thoughtId}`;
-          }
-        }
-      }
-      history.push(`${STAGING_PATH_NAME}${thoughtQuery}`);
+      history.push(`${STAGING_PATH_NAME}`);
     }
   };
 
   useEffect(() => {
     setCanStage(
-      /thought/.test(history.location.pathname) &&
+      currentPage === CurrentPage.Thought &&
       stage.current.includes(String(getIdFromUrl(history, 'thought'))) === false
     );
-  }, [stage, history.location.pathname]);
+  }, [stage, currentPage]);
 
   useEffect(() => {
-    setHideButton(/(history|connections|settings)$/.test(history.location.pathname));
-  }, [history.location.pathname])
+    setHideButton([CurrentPage.History, CurrentPage.Connections, CurrentPage.Settings].includes(currentPage));
+  }, [currentPage])
+
+  const handleLongPress = async () => {
+    if (currentPage !== CurrentPage.Thought) {
+      dispatch(toggle());
+    } else if (canStage) {
+      let thoughtQuery = '';
+      const thoughtId = getIdFromUrl(history, 'thought');
+      if (typeof thoughtId === 'string') {
+        const thought = thoughts.find(({ id }) => id === thoughtId);
+        if (thought && thought.status !== 'completed') {
+          await thoughtActions.editThought(db, {
+            ...thought,
+            stagedOn: format(new Date(), 'yyyy-MM-dd'),
+          });
+          thoughtQuery = `?from=${thoughtId}`;
+        }
+      }
+      history.push(`${STAGING_PATH_NAME}${thoughtQuery}`);
+    }
+  };
 
   if (hideButton) return null;
 
@@ -101,7 +128,10 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
         classes={classes}
         label={'Staging'}
         Icon={Bookmark}
-        onLongPress={() => handleClick(null, true)}
+        onLongPress={(canStage || currentPage === CurrentPage.Home) && handleLongPress}
+        LongPressIcon={
+          canStage ? Queue :
+          currentPage === CurrentPage.Home ? PriorityHigh : null}
       />
     );
   }

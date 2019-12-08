@@ -6,6 +6,7 @@ import useModal from '../../hooks/useModal';
 import CreateThought from '../CreateThought';
 import CircleButton from '../General/CircleButton';
 import History from '@material-ui/icons/History';
+import Link from '@material-ui/icons/Link';
 import Add from '@material-ui/icons/Add';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Delete from '@material-ui/icons/Delete';
@@ -51,7 +52,14 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     return () => dispatch(toggle(false));    
   }, [history.location.pathname])  
 
-  const [Icon, label, handleClick, id, handleLongPress]: [any, string, () => void, string, () => void] = useMemo(() => {
+  const [
+    Icon,
+    label,
+    handleClick,
+    id,
+    handleLongPress,
+    LongPressIcon,
+  ]: [any, string, () => void, string, () => void, any?] = useMemo(() => {
 
     const handleAddThought = () => {
       openModal(
@@ -94,7 +102,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       if (displayThoughtSettings) {
         return [Delete, 'Delete Thought', handleDeleteThought, 'delete-button', null];
       } else {
-        return [History, 'History', handleClickViewConnections, 'has-secondary', handleClickViewHistory];
+        return [Link, 'History', handleClickViewConnections, 'has-secondary', handleClickViewHistory, History];
       }
     } else {
       return [Add, 'Create Thought', handleAddThought, 'thought-button', null];
@@ -111,6 +119,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       label={label}
       Icon={Icon}
       onLongPress={handleLongPress}
+      LongPressIcon={LongPressIcon}
     />
   );
 };

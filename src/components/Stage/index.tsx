@@ -17,17 +17,17 @@ export const Stage: FC<StageProps> = ({ classes }) => {
   const navItems = useMemo(() => {
     return [
       {
-        value: `Stage (${stage.current.length})`,
-        current: isStaging,
-        onClick: () => setIsStaging(true),
-        disabled: false,
-      },
-      {
         value: `Backlog (${stage.backlog.length})`,
         current: !isStaging,
         onClick: () => setIsStaging(false),
         disabled: false,
       },
+      {
+        value: `Stage (${stage.current.length})`,
+        current: isStaging,
+        onClick: () => setIsStaging(true),
+        disabled: false,
+      },      
     ];
   }, [stage, isStaging]);
 

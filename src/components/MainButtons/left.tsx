@@ -11,6 +11,7 @@ import useApp from '../../hooks/useApp';
 import { getIdFromUrl } from '../../lib/util';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Settings from '@material-ui/icons/Settings';
+import PlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck';
 
 interface LeftButtonProps {
   classes: any;
@@ -52,7 +53,14 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
     setHideButton(/(stage|history|connections)$/.test(history.location.pathname));
   }, [history.location.pathname])  
 
-  const [Icon, label, handleClick, handleLongPress, isSettings]: [any, string, () => void, () => void, boolean?] = useMemo(() => {
+  const [
+    Icon,
+    label,
+    handleClick,
+    handleLongPress,
+    isSettings,
+    LongPressIcon,
+  ]: [any, string, () => void, () => void, boolean?, any?] = useMemo(() => {
     const handleClickEditPlan = () => {
       const planId = getIdFromUrl(history, 'plan');
       history.push(planId ? `/plan/${planId}/settings?type=plan` : `/settings`);
@@ -81,7 +89,7 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
     } else if (/thought/.test(history.location.pathname)) {
       return [Settings, 'Settings', handleClickSettings, null, true];
     } else {
-      return [Build, 'Edit Plan', handleClickEditPlan, handleLongPress];
+      return [Build, 'Edit Plan', handleClickEditPlan, handleLongPress, null, PlaylistAddCheck];
     }
   }, [history.location.pathname]);
 
@@ -104,6 +112,7 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
       label={label}
       Icon={Icon}
       onLongPress={handleLongPress}
+      LongPressIcon={LongPressIcon}
     />
   );
 };

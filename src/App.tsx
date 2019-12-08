@@ -75,7 +75,6 @@ const App: FC<AppProps> = ({ classes, history }) => {
         <ModalProvider>
           <Div100vh id={'app'} ref={rootRef} className={classes.root}>
             <Notifications lastNotification={lastNotification} />
-            <PriorityList/>
             <LeftButton/>
             <MiddleButton/>
             <RightButton typeOptions={typeOptions}/>

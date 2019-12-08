@@ -1,4 +1,4 @@
-import React, { useRef, FC, ChangeEvent } from 'react';
+import React, { useRef, FC, ChangeEvent, CSSProperties } from 'react';
 import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 import useLongPress from '../../hooks/useLongPress'; 
@@ -13,10 +13,15 @@ interface CircleButtonProps {
   label?: string;
   disabled?: boolean;
   Icon?: any;
+  LongPressIcon?: any;
   title?: string;
   svgRef?: React.Ref<HTMLElement>;
   [rest: string]: any;
 }
+
+const longPressIconStyles: CSSProperties = {
+  color: '#9c9c9c',
+};
 
 export const CircleButton: FC<CircleButtonProps> = React.memo(({
   classes,
@@ -25,6 +30,7 @@ export const CircleButton: FC<CircleButtonProps> = React.memo(({
   label,
   disabled,
   Icon = Add,
+  LongPressIcon,
   title,
   svgRef,
   onLongPress,
@@ -72,7 +78,10 @@ export const CircleButton: FC<CircleButtonProps> = React.memo(({
       {...(onLongPress ? handleLongPress : {})}
       {...rest}
     >
-      {disabled ? <SentimentDissatisfied/> : <Icon ref={svgRef}/>}
+      {disabled ? <SentimentDissatisfied/> : <Icon
+        ref={svgRef}
+      />}
+      {LongPressIcon && <LongPressIcon style={longPressIconStyles}/>}
     </button>
   );
 });
