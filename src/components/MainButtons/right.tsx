@@ -1,20 +1,20 @@
 import React, { FC, useEffect, useState, useMemo } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import useApp from '../../../hooks/useApp';
-import { useLoadedDB } from '../../../hooks/useDB';
-import useModal from '../../../hooks/useModal';
-import CreateThought from '../../CreateThought';
-import CircleButton from '../../General/CircleButton';
+import useApp from '../../hooks/useApp';
+import { useLoadedDB } from '../../hooks/useDB';
+import useModal from '../../hooks/useModal';
+import CreateThought from '../CreateThought';
+import CircleButton from '../General/CircleButton';
 import History from '@material-ui/icons/History';
 import Add from '@material-ui/icons/Add';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Delete from '@material-ui/icons/Delete';
-import { getIdFromUrl, homeUrl, openConfirmation } from '../../../lib/util';
-import { useSelector } from 'react-redux';
-import { displayThoughtSettingsSelector } from '../../../reducers/displayThoughtSettings';
-import { thoughts as thoughtActions } from '../../../actions';
+import { getIdFromUrl, homeUrl, openConfirmation } from '../../lib/util';
+import { useSelector, useDispatch } from 'react-redux';
+import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
+import { thoughts as thoughtActions } from '../../actions';
 
-interface ThoughtButtonProps {
+interface RightButtonProps {
   classes: any;
   typeOptions: string[];
 }
@@ -37,8 +37,9 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const ThoughtButton: FC<ThoughtButtonProps> = ({ classes, typeOptions }) => {
+export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const [openModal, closeModal] = useModal();
+  const dispatch = useDispatch();
   const [hideButton, setHideButton] = useState<boolean>(false);
   const { history } = useApp();
   const db = useLoadedDB();
@@ -46,6 +47,8 @@ export const ThoughtButton: FC<ThoughtButtonProps> = ({ classes, typeOptions }) 
 
   useEffect(() => {
     setHideButton(/(stage|settings)$/.test(history.location.pathname));
+
+    return () => dispatch(toggle(false));    
   }, [history.location.pathname])  
 
   const [Icon, label, handleClick, id, handleLongPress]: [any, string, () => void, string, () => void] = useMemo(() => {
@@ -112,4 +115,4 @@ export const ThoughtButton: FC<ThoughtButtonProps> = ({ classes, typeOptions }) 
   );
 };
 
-export default withStyles(styles)(ThoughtButton);
+export default withStyles(styles)(RightButton);

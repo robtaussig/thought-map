@@ -1,18 +1,18 @@
 
 import React, { FC, useEffect, useState, useMemo, useRef } from 'react';
 import Build from '@material-ui/icons/Build';
-import CircleButton from '../../../General/CircleButton';
+import CircleButton from '../General/CircleButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { displayThoughtSettingsSelector, toggle } from '../../../../reducers/displayThoughtSettings';
-import useModal from '../../../../hooks/useModal';
-import PlanSelectActions from './actions';
+import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
+import useModal from '../../hooks/useModal';
+import PlanSelectActions from '../Home/PlanSelect/components/actions';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import useApp from '../../../../hooks/useApp';
-import { getIdFromUrl } from '../../../../lib/util';
+import useApp from '../../hooks/useApp';
+import { getIdFromUrl } from '../../lib/util';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Settings from '@material-ui/icons/Settings';
 
-interface PlanButtonProps {
+interface LeftButtonProps {
   classes: any;
 }
 
@@ -40,7 +40,7 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const PlanButton: FC<PlanButtonProps> = ({ classes }) => {
+export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
   const [openModal, closeModal] = useModal();
   const settingsGearButtonSVGRef = useRef<HTMLElement>(null);
   const dispatch = useDispatch();
@@ -116,4 +116,4 @@ const gearClosing = (element: HTMLElement): void => {
   element && element.classList.remove('gear-opening');
 }
 
-export default withStyles(styles)(PlanButton);
+export default withStyles(styles)(LeftButton);

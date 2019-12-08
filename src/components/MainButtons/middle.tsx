@@ -1,18 +1,18 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import { stageSelector } from '../../../reducers/stage';
-import { thoughtSelector } from '../../../reducers/thoughts';
-import { thoughts as thoughtActions } from '../../../actions';
-import useApp from '../../../hooks/useApp';
-import { useLoadedDB } from '../../../hooks/useDB';
-import CircleButton from '../../General/CircleButton';
+import { stageSelector } from '../../reducers/stage';
+import { thoughtSelector } from '../../reducers/thoughts';
+import { thoughts as thoughtActions } from '../../actions';
+import useApp from '../../hooks/useApp';
+import { useLoadedDB } from '../../hooks/useDB';
+import CircleButton from '../General/CircleButton';
 import Bookmark from '@material-ui/icons/Bookmark';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { getIdFromUrl } from '../../../lib/util';
+import { getIdFromUrl } from '../../lib/util';
 import { format } from 'date-fns';
 
-interface StagingButtonProps {
+interface MiddleButtonProps {
   classes: any;
 }
 
@@ -40,7 +40,7 @@ const styles = (theme: any): StyleRules => ({
 
 const STAGING_PATH_NAME = '/stage';
 
-export const StagingButton: FC<StagingButtonProps> = ({ classes }) => {
+export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   const stage = useSelector(stageSelector);
   const thoughts = useSelector(thoughtSelector);
   const db = useLoadedDB();
@@ -107,4 +107,4 @@ export const StagingButton: FC<StagingButtonProps> = ({ classes }) => {
   }
 };
 
-export default withStyles(styles)(StagingButton);
+export default withStyles(styles)(MiddleButton);

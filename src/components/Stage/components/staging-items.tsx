@@ -24,10 +24,10 @@ export const StagingItems: FC<StagingItemsProps> = ({ classes, isStaging, items 
 
   const transitions = useTransition(stagedThoughts, item => `${item.id}-staged-item`, {
     unique: true,
-    trail: 500 / stagedThoughts.length,
+    trail: 2,
     from: { opacity: 0, transform: 'scale(0)' },
     enter: { opacity: 1, transform: 'scale(1)' },
-    leave: { opacity: 0, transform: 'scale(0)' }
+    leave: { opacity: 0, transform: 'scale(0)' },
   });
 
   return (

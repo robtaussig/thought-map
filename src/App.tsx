@@ -11,9 +11,9 @@ import Home from './components/Home';
 import PriorityList from './components/Home/PriorityList';
 import Settings from './components/Settings';
 import Thought from './components/Thought';
-import StagingButton from './components/Stage/components/button';
-import ThoughtButton from './components/Thought/components/button';
-import PlanButton from './components/Home/PlanSelect/components/button';
+import MiddleButton from './components/MainButtons/middle';
+import RightButton from './components/MainButtons/right';
+import LeftButton from './components/MainButtons/left';
 import Stage from './components/Stage';
 import Notifications from './components/Notifications';
 import Connections from './components/Connections';
@@ -76,9 +76,9 @@ const App: FC<AppProps> = ({ classes, history }) => {
           <Div100vh id={'app'} ref={rootRef} className={classes.root}>
             <Notifications lastNotification={lastNotification} />
             <PriorityList/>
-            <PlanButton/>
-            <StagingButton/>
-            <ThoughtButton typeOptions={typeOptions}/>
+            <LeftButton/>
+            <MiddleButton/>
+            <RightButton typeOptions={typeOptions}/>
             <Switch>
               <Route exact path={'/'}>
                 {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}

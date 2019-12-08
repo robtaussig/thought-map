@@ -173,9 +173,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   }, [thoughtSections]);
 
   useEffect(() => {
-    return () => {
-      setDisplaySettings(false);
-    };
+    setDisplaySettings(false);
   }, []);
 
   return (

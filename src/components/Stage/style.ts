@@ -29,7 +29,8 @@ export const styles = (theme: any): StyleRules => ({
     display: 'flex',
     alignItems: 'center',
     backgroundColor: theme.palette.gray[100],
-    borderRadius: '5px',
+    borderRadius: '5px',    
+    willChange: 'transform, width, height, opacity',
     '& button': {
       height: '100%',
       ...theme.defaults.centered,
