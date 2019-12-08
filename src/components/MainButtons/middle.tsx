@@ -62,10 +62,10 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   const { history } = useApp();
   const isStaging = history.location.pathname === STAGING_PATH_NAME;
   const currentPage = useMemo(() => {
-    if (/thought/.test(history.location.pathname)) return CurrentPage.Thought;
-    if (/history/.test(history.location.pathname)) return CurrentPage.History;
-    if (/connections/.test(history.location.pathname)) return CurrentPage.Connections;
+    if (/history$/.test(history.location.pathname)) return CurrentPage.History;
+    if (/connections$/.test(history.location.pathname)) return CurrentPage.Connections;
     if (/settings/.test(history.location.pathname)) return CurrentPage.Settings;
+    if (/thought/.test(history.location.pathname)) return CurrentPage.Thought;
     return CurrentPage.Home;
   }, [history.location.pathname]);
   
