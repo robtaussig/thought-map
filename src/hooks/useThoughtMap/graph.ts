@@ -41,12 +41,11 @@ export class Graph {
   static topologicalSort = (vertices: Vertex[]): Vertex[] => {
     const stack: Vertex[] = [];
     const visited: Visited = {};
- 
     vertices.forEach(vertex => {
       if (!visited[vertex.id]) {
         Graph.dfs(vertex, visited, vertex => {
           stack.push(vertex);
-        });
+        }, true);
       }
     });
  
@@ -72,11 +71,18 @@ export class Graph {
   }
   
   addVertex = (id: string): Vertex => {
-    if (!this.vertices.find(vertex => vertex.id === id)) {
-      const vertex = new Vertex(id);
-      this.vertices.push(vertex);
+    const vertex = new Vertex(id);
+    this.vertices.push(vertex);
 
-      return vertex;
+    return vertex;
+  }
+
+  removeVertex = (id: string): void => {
+    const vertex = this.vertices.find(el => el.id === id);
+    if (vertex) {
+      vertex.prev.forEach(el => el.next.delete(vertex));
+      vertex.next.forEach(el => el.prev.delete(vertex));
+      this.vertices.splice(this.vertices.indexOf(vertex), 1);
     }
   }
 
@@ -86,5 +92,12 @@ export class Graph {
     
     fromVertex.addPrev(toVertex);
     toVertex.addNext(fromVertex);
+  }
+
+  removeEdge = (from: string, to: string): void => {
+    const fromVertex = this.vertices.find(({ id }) => id === from);
+    const toVertex = this.vertices.find(({ id }) => id === to);
+    fromVertex.prev.delete(toVertex);
+    toVertex.prev.delete(fromVertex);
   }
 }

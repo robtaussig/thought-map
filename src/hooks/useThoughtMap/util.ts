@@ -3,9 +3,9 @@ import { Visited, Node } from './types';
 
 export const getDepth = (vertex: Vertex, visited: Visited, depth: number = 0): number => {
   visited[vertex.id] = true;
-  if (vertex.next.size === 0) return depth;
+  if (vertex.prev.size === 0) return depth;
 
-  return Math.max(...[...vertex.next].map(child => {
+  return Math.max(...[...vertex.prev].map(child => {
     if (!visited[child.id]) {
       return getDepth(child, visited, depth + 1);
     } else {
@@ -16,7 +16,6 @@ export const getDepth = (vertex: Vertex, visited: Visited, depth: number = 0): n
 
 export const getTree = (vertices: Vertex[]): Node[] => {
   const sorted = Graph.topologicalSort(vertices);
-
   return sorted.map((vertex, vertexIdx) => {
     return {
       vertex,

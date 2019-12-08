@@ -1,4 +1,4 @@
-import { Graph as Base, Vertex } from '../../../../components/Connections/lib/graph';
+import { Graph as Base, Vertex } from '../../../../hooks/useThoughtMap/graph';
 import { Thought } from '../../../../store/rxdb/schemas/thought';
 import { Connection } from '../../../../store/rxdb/schemas/connection';
 

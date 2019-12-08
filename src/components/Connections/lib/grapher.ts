@@ -1,17 +1,11 @@
 import { Thought } from '../../../store/rxdb/schemas/thought';
-import { Connections } from '../../../reducers/connections';
-import { Graph } from './graph';
-import { Visited, Node } from './types';
-import { findRelations, getTree } from './util';
+import { Node } from '../../../hooks/useThoughtMap/types';
 
 export interface ThoughtsById {
   [thoughtId: string]: Thought;
 }
 
 export default class Grapher {
-  private graph: Graph = new Graph();
-  private origin: string;
-  private visited: Visited = {};
   private ctx: any;
 
   drawEdge = (
@@ -70,59 +64,5 @@ export default class Grapher {
         this.drawEdge([x, y], [toNode.x, toNode.y], maxX, maxY, canvas, completed, inProgress);
       });
     });
-  }
-
-  update = (thought: Thought, connections: Connections): Grapher => {
-    if (!thought) return this;
-    this.origin = thought.id;
-
-    if (!this.visited[thought.id]) {
-      this.visited[thought.id] = true;
-      this.graph.addVertex(thought.id);
-    }
-
-    Object.entries(connections)
-      .forEach(([ connectionId, { from, to }]) => {
-        if (!this.visited[from]) {
-          this.visited[from] = true;
-          this.graph.addVertex(from);
-        }
-
-        if (!this.visited[to]) {
-          this.visited[to] = true;
-          this.graph.addVertex(to);
-        }
-
-        this.graph.addEdge(to, from);
-      });
-    
-    //Force one-way relation
-    this.graph.vertices.find(({ id }) => id === thought.id).prev = new Set();
-    return this;
-  }
-
-  getDescendents = (setter: (state: string[]) => void) => {
-    const relations = findRelations(this.origin, this.graph, true);
-    setter(relations.map(({ id }) => id));
-  }
-
-  generate = (setter: (state: Node[]) => void, thoughtsById: ThoughtsById) => {
-    const relations = findRelations(this.origin, this.graph);
-  
-    const oneWayRelations = relations.map(relation => {
-      relation.next = relation.prev;
-      relation.prev = new Set();
-      return relation;
-    })
-      .sort((a, b) => {
-        if (thoughtsById[a.id].status === 'completed' && thoughtsById[b.id].status !== 'completed') return -1;
-        if (thoughtsById[b.id].status === 'completed' && thoughtsById[a.id].status !== 'completed') return 1;
-        if (a.id > b.id) return 1;
-        return -1;
-      });
-  
-    const tree = getTree(oneWayRelations);
-
-    setter(tree);
   }
 }

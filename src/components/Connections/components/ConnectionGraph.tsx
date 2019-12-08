@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState, useEffect, useRef } from 'react';
+import React, { FC, useMemo, useEffect, useRef } from 'react';
 import { withStyles, StyleRules, CSSProperties } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Connections } from '../../../reducers/connections';
@@ -6,8 +6,7 @@ import NodeComponent from './NodeComponent';
 import Grapher, {
   ThoughtsById,
 } from '../lib/grapher';
-import { Node } from '../lib/types';
-import { proxy, wrap, releaseProxy } from 'comlink';
+import useThoughtMap from '../../../hooks/useThoughtMap';
 
 interface ConnectionGraphProps {
   classes: any;
@@ -72,7 +71,7 @@ const styles = (theme: any): StyleRules => ({
 
 export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, thoughts, connections, statusOptions }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [tree, setTree] = useState<Node[]>([]);
+  const { tree } = useThoughtMap(thought?.id);
 
   const thoughtsById = useMemo(() => {
     return thoughts.reduce((byId, thought) => {
@@ -80,23 +79,6 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
       return byId;
     }, {} as ThoughtsById);
   }, [thoughts]);
-
-  useEffect(() => {
-    const WorkerGrapher = wrap<Grapher>(
-      new Worker('../lib/worker.ts')
-    );
-
-    const processData = async () => {
-      //@ts-ignore   
-      const instance = await new WorkerGrapher();
-      await instance.update(thought, connections);
-      instance.generate(proxy(setTree), thoughtsById);
-    };
-
-    processData();
-
-    return () => WorkerGrapher[releaseProxy]();
-  }, [thought, thoughtsById, connections]);
 
   useEffect(() => {
     const grapher = new Grapher();

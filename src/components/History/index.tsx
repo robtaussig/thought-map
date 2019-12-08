@@ -1,22 +1,17 @@
-import React, { FC, useMemo, useRef, useState, useEffect } from 'react';
+import React, { FC, useMemo } from 'react';
 import { withStyles, StyleRules, CSSProperties } from '@material-ui/styles';
 import { getIdFromUrl } from '../../lib/util';
 import useApp from '../../hooks/useApp';
 import ThoughtGroup from './components/thought-group';
-import Grapher, {
-  ThoughtsById,
-} from '../Connections/lib/grapher';
 import {
   StatusUpdate,
   Group,
 } from './types';
 import { useSelector } from 'react-redux';
-import { planSelector } from '../../reducers/plans';
 import { thoughtSelector } from '../../reducers/thoughts';
-import { connectionSelector } from '../../reducers/connections';
 import { statusesByThoughtSelector } from '../../reducers/statusesByThought';
 import { statusSelector } from '../../reducers/statuses';
-import { proxy, wrap, releaseProxy } from 'comlink';
+import useThoughtMap from '../../hooks/useThoughtMap';
 
 interface HistoryProps {
   classes: any;
@@ -31,48 +26,13 @@ const styles = (theme: any): StyleRules => ({
 
 export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
   const { history } = useApp();
-  const [relatedThoughtIds, setRelatedThoughtIds] = useState<string[]>([]);
-  const plans = useSelector(planSelector);
   const thoughts = useSelector(thoughtSelector);
-  const connections = useSelector(connectionSelector);
   const stateStatusesByThought = useSelector(statusesByThoughtSelector);
   const statuses = useSelector(statusSelector);
-  const isPlanHistory = /thought/.test(history.location.pathname) === false;
-  const planId = getIdFromUrl(history, 'plan');
   const thoughtId = getIdFromUrl(history, 'thought');
-  const thought = useMemo(() => {
-    return thoughts.find(({ id }) => id === thoughtId);
-  }, [thoughts, thoughtId]);
-  const thoughtsById = useMemo(() => {
-    return thoughts.reduce((byId, thought) => {
-      byId[thought.id] = thought;
-      return byId;
-    }, {} as ThoughtsById);
-  }, [thoughts]);
-
-  useEffect(() => {
-    if (isPlanHistory) {
-
-    } else {
-      const WorkerGrapher = wrap<Grapher>(
-        new Worker('../Connections/lib/worker.ts')
-      );
-  
-      const processData = async () => {
-        //@ts-ignore   
-        const instance = await new WorkerGrapher();
-        await instance.update(thought, connections);
-        instance.getDescendents(proxy(setRelatedThoughtIds));
-      };
-  
-      processData();
-  
-      return () => WorkerGrapher[releaseProxy]();
-    }
-  }, [connections, thoughts, planId, thoughtId, isPlanHistory, thoughtsById]);
-
+  const { descendants } = useThoughtMap(thoughtId as string);
   const statusUpdates = useMemo(() => {
-    return relatedThoughtIds.reduce((next, relatedThoughtId) => {
+    return descendants.reduce((next, relatedThoughtId) => {
       const thought = thoughts.find(({ id }) => id === relatedThoughtId);
       const statusesByThought: StatusUpdate[] = (stateStatusesByThought[relatedThoughtId] || [])
                                   .map(statusId => {
@@ -97,7 +57,7 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
         if (a.created > b.created) return 1;
         return -1;
       });
-  }, [stateStatusesByThought, statuses, relatedThoughtIds]);
+  }, [stateStatusesByThought, statuses, descendants]);
 
   const groupedByThought: Group[] = useMemo(() => {
     return statusUpdates.reduce((next, statusUpdate, statusUpdateIndex) => {
@@ -112,13 +72,13 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
         next.push([{
           ...statusUpdate,
           statusUpdateIndex: [statusUpdateIndex, statusUpdates.length - 1],
-          thoughtIndex: [next.length, relatedThoughtIds.length - 1],
+          thoughtIndex: [next.length, descendants.length - 1],
         }]);
       }
 
       return next;
     }, []);
-  }, [statusUpdates, relatedThoughtIds]);
+  }, [statusUpdates, descendants]);
 
   const gridStyle: CSSProperties = useMemo(() => {
     const columnCount = Math.max(groupedByThought[0] ? groupedByThought[0][0].thoughtIndex[1] + 1 : 0, 2);

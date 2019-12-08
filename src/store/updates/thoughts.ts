@@ -2,6 +2,12 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { Thought } from '../../store/rxdb/schemas/thought';
 import { insert, remove, update } from '../../reducers/thoughts';
 import { Notification, RxChangeEvent } from '../../types';
+import { getInstance } from '../../hooks/useThoughtMap';
+
+const updateThoughtMap = async (thoughtId: string) => {
+  const thoughtMap = await getInstance();
+  await thoughtMap.removeThought(thoughtId);
+};
 
 export const handleThoughtChange = (
   dispatch: Dispatch<any>,
@@ -18,6 +24,7 @@ export const handleThoughtChange = (
       break;
     
     case 'REMOVE':
+      updateThoughtMap(thought.id);
       dispatch(remove(thought));
       notification = { message: 'Thought removed' };
       break;

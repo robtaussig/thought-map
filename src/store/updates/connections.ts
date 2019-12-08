@@ -2,6 +2,12 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { Connection } from '../../store/rxdb/schemas/connection';
 import { insert, remove, update } from '../../reducers/connections';
 import { Notification, RxChangeEvent } from '../../types';
+import { getInstance } from '../../hooks/useThoughtMap';
+
+const updateThoughtMap = async (from: string, to: string) => {
+  const thoughtMap = await getInstance();
+  await thoughtMap.removeConnection(from, to);
+};
 
 export const handleConnectionChange = (
   dispatch: Dispatch<any>,
@@ -18,6 +24,7 @@ export const handleConnectionChange = (
       break;
     
     case 'REMOVE':
+      updateThoughtMap(connection.from, connection.to);
       dispatch(remove(connection));
       notification = { message: 'Connection removed' };
       break;
