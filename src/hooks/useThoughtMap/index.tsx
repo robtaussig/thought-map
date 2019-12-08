@@ -55,21 +55,33 @@ export const useThoughtMap = (thoughtId: string) => {
       descendants: descendants.map(({ id }) => id),
     });
   }
-  
+
   useEffect(() => {
     const update = async () => {
       const newThoughtIds = thoughts
         .filter(hasNotVisited)
         .map(visitAndGetId);
 
+      const thoughtMap = await getInstance();
+      if (newThoughtIds.length > 0) {
+        await thoughtMap.addThoughts(newThoughtIds);
+      }
+
+      updateState();
+    }
+
+    update();
+  }, [thoughts, thoughtId]);
+  
+  useEffect(() => {
+    const update = async () => {
+
       const newConnectionIds = Object.values(connections)
         .filter(hasNotVisited)
         .map(visitAndGetFromTo);
 
       const thoughtMap = await getInstance();
-      if (newThoughtIds.length > 0) {
-        await thoughtMap.addThoughts(newThoughtIds);
-      }
+
       if (newConnectionIds.length > 0) {
         await thoughtMap.addConnections(newConnectionIds);
       }
@@ -77,7 +89,7 @@ export const useThoughtMap = (thoughtId: string) => {
     }
 
     update();
-  }, [thoughts, connections, thoughtId]);
+  }, [connections, thoughtId]);
 
   return tree;
 };

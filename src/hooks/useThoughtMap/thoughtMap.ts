@@ -20,8 +20,8 @@ export default class ThoughtMap {
     });
   }
 
-  removeConnection = (to: string, from: string) => {
-    this.graph.removeEdge(to, from);
+  removeConnection = (from: string, to: string) => {
+    this.graph.removeEdge(from, to);
   }
 
   getDescendents = (id: string) => {

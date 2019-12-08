@@ -16,6 +16,13 @@ export class Vertex {
   addPrev(vertex: Vertex) {
     this.prev.add(vertex);
   }
+  removeNext(vertex: Vertex) {
+    this.next.delete(vertex);
+  }
+
+  removePrev(vertex: Vertex) {
+    this.prev.delete(vertex);
+  }
 }
 
 export class Graph {
@@ -97,7 +104,7 @@ export class Graph {
   removeEdge = (from: string, to: string): void => {
     const fromVertex = this.vertices.find(({ id }) => id === from);
     const toVertex = this.vertices.find(({ id }) => id === to);
-    fromVertex.prev.delete(toVertex);
-    toVertex.prev.delete(fromVertex);
+    fromVertex.removeNext(toVertex);
+    toVertex.removePrev(fromVertex);
   }
 }
