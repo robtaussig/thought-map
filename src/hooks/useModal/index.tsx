@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, FC, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, FC, useRef } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Close from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
+import uuidv4 from 'uuid/v4';
 import {
   OpenModal,
   CloseModal,
@@ -18,7 +19,7 @@ interface ModalProps {
 }
 
 const ModalContext = createContext<ModalContextValue>(null);
-const DEFAULT_MODAL: ModalState = { component: null, label: 'Modal', options: {}, expanded: false };
+const DEFAULT_MODAL: ModalState = { component: null, label: 'Modal', options: {}, expanded: false, id: null };
 
 const INITIAL_STATE: ModalState[] = [DEFAULT_MODAL];
 
@@ -26,24 +27,28 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
   const [modals, setModals] = useState<ModalState[]>(INITIAL_STATE);
   const modal = useMemo(() => modals[modals.length - 1] || DEFAULT_MODAL, [modals]);
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback((uuid: string) => {
     setModals(prev => {
       if (prev.length === 0) return prev;
-
-      if (prev[prev.length - 1].options && prev[prev.length - 1].options.afterClose) {
-        prev[prev.length - 1].options.afterClose();
-      }
-      return prev.slice(0, prev.length - 1);
+      return prev.filter(prevModal => {
+        if (prevModal.id === uuid) {
+          prevModal.options?.afterClose?.();
+          return false;
+        }
+        return true;
+      });
     });
   },[]);
   const handleOpen = useCallback((component, label = 'Modal', options = {}) => {
-    setModals(prev => prev.concat({ component, label, options, expanded: false }));
+    const uuid = uuidv4();
+    setModals(prev => prev.concat({ component, label, options, expanded: false, id: uuid }));
+    return uuid;
   },[]);
-  const handleExpand = useCallback((expand: boolean) => {
-    setModals(prev => prev.map((modal, idx) => idx === prev.length - 1 ? {
-      ...modal,
+  const handleExpand = useCallback((id: string, expand: boolean) => {
+    setModals(prev => prev.map(prevModal => prevModal.id === id ? {
+      ...prevModal,
       expanded: expand,
-    } : modal))
+    } : prevModal))
   }, []);
   const contextValue = useMemo(() => ({ openModal: handleOpen, closeModal: handleClose, expand: handleExpand }), []);
   const modalStyle = {    
@@ -53,12 +58,6 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
     maxHeight: modal.expanded ? '100%' : '80%',
     ...(modal.options.style || {})
   };
-
-  useEffect(() => {
-    window.addEventListener('popstate', handleClose);
-
-    return () => window.removeEventListener('popstate', handleClose);
-  }, []);
 
   return (
     <ModalContext.Provider value={contextValue}>
@@ -70,7 +69,7 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
           onClose={handleClose}
         >
           <div className={classNames(classes.root, modal.options.className)} style={modalStyle}>
-            <button className={classes.closeButton} onClick={handleClose}><Close/></button>
+            <button className={classes.closeButton} onClick={() => handleClose(modal.id)}><Close/></button>
             {modal.component}
           </div>
         </Modal>
@@ -82,9 +81,19 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
 export const ModalProvider = withStyles(styles)(ModalProviderWithoutStyles);
 
 export const useModal = (): [OpenModal, CloseModal, ExpandModal] => {
+  const modalId = useRef<string>(null);
   const { openModal, closeModal, expand } = useContext(ModalContext);
+  const handleOpen: OpenModal = (...args) => {
+    modalId.current = openModal(...args);
+  };
+  const handleClose: CloseModal = () => {
+    closeModal(modalId.current);
+  };
+  const handleExpand: ExpandModal = (shouldExpand: boolean) => {
+    expand(modalId.current, shouldExpand); 
+  };
 
-  return [openModal, closeModal, expand];
+  return [handleOpen, handleClose, handleExpand];
 };
 
 export default useModal;

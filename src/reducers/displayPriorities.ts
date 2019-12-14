@@ -4,7 +4,7 @@ import { RootState } from './';
 
 export const displayPrioritiesSelector: Selector<RootState, boolean> = state => state.displayPriorities;
 
-const initialState = true;
+const initialState = false;
 
 const displayPriorities = createSlice({
   name: 'displayPriorities',
