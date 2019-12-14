@@ -60,9 +60,9 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       .updateConnections(Object.values(stateConnections));
 
     return Object.values(stateConnections).reduce((next, { from, to }) => {
-      if (thoughts.find(({ id }) => from === id)) {
+      if (thoughts.find(({ id }) => from === id) && thoughts.find(({ id }) => to === id)) {
         next[from] = next[from] || [0,0];
-        const otherThought = stateThoughts.find(otherThought => otherThought.id === to);
+        const otherThought = thoughts.find(otherThought => otherThought.id === to);
         next[from][1]++;
         if (otherThought.status === 'completed') next[from][0]++;
       }
