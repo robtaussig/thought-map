@@ -162,7 +162,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
     
     if (searchTerm?.length > 2) {
       runSearch();
-    } else {
+    } else if (searchTerm?.length === 0) {
       setMatchingThoughts(null);
     }
   }, [searchTerm]);
