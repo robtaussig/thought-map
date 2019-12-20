@@ -50,9 +50,10 @@ export class Searchable {
   public findMatches = (input: string): string[] => {
     const matchGroups: string[][] = [];
     let node = this.root;
+    const lowerCased = input.toLowerCase();
 
-    for (let i = 0; node && i < input.length; i++) {
-      node = node[input[i]];
+    for (let i = 0; node && i < lowerCased.length; i++) {
+      node = node[lowerCased[i]];
     }
     if (!node) {
       return [];
@@ -77,7 +78,7 @@ export class Searchable {
 
   private processValues = (thoughtId: string, values: (string|number)[]): void => {
     values.forEach(value => {
-      const suffixes = this.generateSuffixes(String(value));
+      const suffixes = this.generateSuffixes(String(value).toLowerCase());
       suffixes.forEach(suffix => {
         this.buildNode(thoughtId, suffix);
       });
