@@ -15,27 +15,32 @@ export class Searchable {
   private visited: { [id: string]: boolean } = {};
 
   public buildTree = (thoughts: Thought[], notes: Notes, tags: Tags): void => {
+    if (thoughts) {
+      thoughts.forEach(({ id, date, description, status, time, title, type }) => {
+        if (!this.visited[id]) {
+          this.visited[id] = true;
+          this.processValues(id, [date, description, status, time, title, type]);
+        }
+      });
+    }
 
-    thoughts.forEach(({ id, date, description, status, time, title, type }) => {
-      if (!this.visited[id]) {
-        this.visited[id] = true;
-        this.processValues(id, [date, description, status, time, title, type]);
-      }
-    });
+    if (notes) {
+      Object.entries(notes).forEach(([id, { thoughtId, text }]) => {
+        if (!this.visited[id]) {
+          this.visited[id] = true;
+          this.processValues(thoughtId, [text]);
+        }
+      });
+    }
 
-    Object.entries(notes).forEach(([id, { thoughtId, text }]) => {
-      if (!this.visited[id]) {
-        this.visited[id] = true;
-        this.processValues(thoughtId, [text]);
-      }
-    });
-
-    Object.entries(tags).forEach(([id, { thoughtId, text }]) => {
-      if (!this.visited[id]) {
-        this.visited[id] = true;
-        this.processValues(thoughtId, [text]);
-      }
-    });
+    if (tags) {
+      Object.entries(tags).forEach(([id, { thoughtId, text }]) => {
+        if (!this.visited[id]) {
+          this.visited[id] = true;
+          this.processValues(thoughtId, [text]);
+        }
+      });
+    }
   }
 
   public invalidate = (id: string): void => {

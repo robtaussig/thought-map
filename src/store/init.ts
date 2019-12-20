@@ -22,6 +22,12 @@ import {
   settings as settingActions,
   statuses as statusActions,
 } from '../actions';
+import { Searchable } from '../components/Home/ThoughtSearch';
+import { wrap } from 'comlink';
+
+export const searcherWorker = wrap<Searchable>(
+  new Worker('../workers/search.worker.ts')
+);
 
 export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<any>) => {
   const setSettingsAction = (settings: SettingsType) => dispatch(setSettings(settings));
@@ -88,6 +94,8 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
   setSettingsAction(settingsMap);
   setStatusesAction(statusesById);
   setStatusesByThoughtAction(statusesByThought);
+
+  searcherWorker.buildTree(thoughtsWithStatuses, notesById, tagsById);
 
   return true;
 };

@@ -13,6 +13,7 @@ import Search from '@material-ui/icons/Search';
 import Close from '@material-ui/icons/Close';
 import { Searchable } from '../ThoughtSearch';
 import useLongPress from '../../../hooks/useLongPress';
+import { useLoadedDB } from '../../../hooks/useDB';
 import { Graph } from './lib/graph';
 import { ThoughtConnections } from './types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,11 +23,7 @@ import { thoughtSelector } from '../../../reducers/thoughts';
 import { connectionSelector } from '../../../reducers/connections';
 import { planSelector } from '../../../reducers/plans';
 import { sortFilterSettingsSelector, sortBy, SortFilterField } from '../../../reducers/sortFilterSettings';
-import { wrap } from 'comlink';
-
-const searcherWorker = wrap<Searchable>(
-  new Worker('./search.worker.ts')
-);
+import { searcherWorker } from '../../../store/init';
 
 interface ContentProps {
   classes: any;
@@ -40,6 +37,7 @@ interface ContentProps {
 export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, from }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const thoughtMap = useRef<Graph>(new Graph());
+  const db = useLoadedDB();
   const dispatch = useDispatch();
   const lastScrollPos = useRef<number>(0);
   const didMount = useRef<boolean>(false);
@@ -156,21 +154,17 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   };
 
   useEffect(() => {
-    searcherWorker.buildTree(thoughts, notes, tags);
-  }, [thoughts, notes, tags]);
-
-  useEffect(() => {
     const runSearch = async () => {
-      if (searchTerm?.length > 2) {
-        const matches = await searcherWorker.findMatches(searchTerm);
-        
-        setMatchingThoughts(matches);
-      } else {
-        setMatchingThoughts(null);
-      }
+      const matches = await searcherWorker.findMatches(searchTerm);
+      
+      setMatchingThoughts(matches);
     }
     
-    runSearch();
+    if (searchTerm?.length > 2) {
+      runSearch();
+    } else {
+      setMatchingThoughts(null);
+    }
   }, [searchTerm]);
 
   useEffect(() => {

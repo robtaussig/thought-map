@@ -3,6 +3,7 @@ import { Thought } from '../../store/rxdb/schemas/thought';
 import { insert, remove, update } from '../../reducers/thoughts';
 import { Notification, RxChangeEvent } from '../../types';
 import { getInstance } from '../../hooks/useThoughtMap';
+import { searcherWorker } from '../init';
 
 const updateThoughtMap = async (thoughtId: string) => {
   const thoughtMap = await getInstance();
@@ -20,17 +21,22 @@ export const handleThoughtChange = (
   switch (data.op) {
     case 'INSERT':
       dispatch(insert(thought));
+      searcherWorker.buildTree([thought], null, null);
       notification = { message: 'Thought created' };
       break;
     
     case 'REMOVE':
-      updateThoughtMap(thought.id);
       dispatch(remove(thought));
+      updateThoughtMap(thought.id);
+      searcherWorker.invalidate(thought.id);
       notification = { message: 'Thought removed' };
       break;
 
     case 'UPDATE':
       dispatch(update(thought));      
+      searcherWorker.invalidate(thought.id).then(() => {
+        searcherWorker.buildTree([thought], null, null);
+      })
       break;
   
     default:
