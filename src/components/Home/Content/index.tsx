@@ -83,7 +83,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       });
     }
 
-    const filterCompletedThoughts = (thought: Thought) => searchTerm !== '' || (plan && plan.showCompleted) || (thought.status !== 'completed' && thought.status !== 'won\'t fix');
+    const filterCompletedThoughts = (thought: Thought) => matchingThoughts?.length > 0 || (plan && plan.showCompleted) || (thought.status !== 'completed' && thought.status !== 'won\'t fix');
     const filterMatchedThoughts = (thought: Thought) => {
       return matchingThoughts === null || matchingThoughts.includes(thought.id);
     };
