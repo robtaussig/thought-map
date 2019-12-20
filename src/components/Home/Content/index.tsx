@@ -22,6 +22,11 @@ import { thoughtSelector } from '../../../reducers/thoughts';
 import { connectionSelector } from '../../../reducers/connections';
 import { planSelector } from '../../../reducers/plans';
 import { sortFilterSettingsSelector, sortBy, SortFilterField } from '../../../reducers/sortFilterSettings';
+import { wrap } from 'comlink';
+
+const searcherWorker = wrap<Searchable>(
+  new Worker('./search.worker.ts')
+);
 
 interface ContentProps {
   classes: any;
@@ -44,7 +49,6 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   });
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
-  const searchTree = useRef<Searchable>(new Searchable());
   const notes = useSelector(noteSelector);
   const tags = useSelector(tagSelector);
   const stateThoughts = useSelector(thoughtSelector);
@@ -137,7 +141,7 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
           />
         );
       });
-  }, [thoughts, plan, plans, sortFilterSettings, matchingThoughts, searchTerm !== '', connectionStatusByThought, stateConnections]);
+  }, [thoughts, plan, plans, sortFilterSettings, matchingThoughts, connectionStatusByThought, stateConnections]);
 
   const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
     if (didMount.current === true) {
@@ -152,13 +156,21 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
   };
 
   useEffect(() => {
-    searchTree.current.buildTree(thoughts, notes, tags);
+    searcherWorker.buildTree(thoughts, notes, tags);
   }, [thoughts, notes, tags]);
 
   useEffect(() => {
-    const matches = searchTree.current.findMatches(searchTerm);
+    const runSearch = async () => {
+      if (searchTerm?.length > 2) {
+        const matches = await searcherWorker.findMatches(searchTerm);
+        
+        setMatchingThoughts(matches);
+      } else {
+        setMatchingThoughts(null);
+      }
+    }
     
-    setMatchingThoughts(searchTerm === '' ? null : matches.map(({ id}) => id));
+    runSearch();
   }, [searchTerm]);
 
   useEffect(() => {
