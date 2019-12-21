@@ -10,8 +10,17 @@ export interface Tags {
   [tagId: string]: Tag;
 }
 
+interface Node {
+  [char: string]: Node | string[];
+}
+
+function getNext(node: Node, char: string): Node {
+  if (Array.isArray(node[char])) return null;
+  return node[char] as Node;
+};
+
 export class Searchable {
-  private root: any = {};
+  private root: Node = {};
   private visited: { [id: string]: boolean } = {};
 
   public buildTree = (thoughts: Thought[], notes: Notes, tags: Tags): void => {
@@ -53,7 +62,7 @@ export class Searchable {
     const lowerCased = input.toLowerCase();
 
     for (let i = 0; node && i < lowerCased.length; i++) {
-      node = node[lowerCased[i]];
+      node = getNext(node, lowerCased[i]);
     }
     if (!node) {
       return [];
@@ -89,11 +98,12 @@ export class Searchable {
     let node = this.root;
     for (let i = 0; i < value.length - 1; i++) {
       node[value[i]] = node[value[i]] || {};
-      node = node[value[i]];
+      node = getNext(node, value[i]);
     }
     node[value[value.length - 1]] = node[value[value.length - 1]] || {};
-    node[value[value.length - 1]].matches = node[value[value.length - 1]].matches || [];
-    node[value[value.length - 1]].matches.push(thoughtId);
+    node = getNext(node, value[value.length - 1]);
+    node.matches = node.matches || [];
+    (node.matches as string[]).push(thoughtId);
   }
 
   private generateSuffixes = (value: string): string[] => {
