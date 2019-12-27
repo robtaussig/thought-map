@@ -28,15 +28,18 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
   const modal = useMemo(() => modals[modals.length - 1] || DEFAULT_MODAL, [modals]);
 
   const handleClose = useCallback((uuid: string) => {
+
     setModals(prev => {
-      if (prev.length === 0) return prev;
-      return prev.filter(prevModal => {
-        if (prevModal.id === uuid) {
-          prevModal.options?.afterClose?.();
-          return false;
-        }
-        return true;
-      });
+      if (typeof uuid === 'string') {
+        return prev.filter(prevModal => {
+          if (prevModal.id === uuid) {
+            prevModal.options?.afterClose?.();
+            return false;
+          }
+          return true;
+        });
+      }
+      return [];
     });
   },[]);
   const handleOpen = useCallback((component, label = 'Modal', options = {}) => {
