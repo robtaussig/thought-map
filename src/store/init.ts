@@ -68,23 +68,8 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
     next[field] = value;
     return next;
   }, {} as SettingsType);
-
-  const thoughtsWithStatuses = thoughts.map(thought => {
-    const statusIds = statusesByThought[thought.id];
-    if (statusIds) {
-      const statuses = statusIds.map(id => statusesById[id]);
-      const sortedStatuses = statuses.sort((left, right) => right.created - left.created);
-      const latestStatus = sortedStatuses[0];
   
-      return {
-        ...thought,
-        status: latestStatus.text,
-      };
-    }
-    return thought;
-  });
-  
-  setThoughtsAction(thoughtsWithStatuses);
+  setThoughtsAction(thoughts);
   setConnectionsAction(connectionsById);
   setPlansAction(plans);
   setNotesAction(notesById);
@@ -95,7 +80,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
   setStatusesAction(statusesById);
   setStatusesByThoughtAction(statusesByThought);
 
-  searcherWorker.buildTree(thoughtsWithStatuses, notesById, tagsById);
+  searcherWorker.buildTree(thoughts, notesById, tagsById);
 
   return true;
 };

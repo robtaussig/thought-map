@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Thought } from '../store/rxdb/schemas/thought';
-import { Status } from '../store/rxdb/schemas/status';
-import { insert as insertStatus } from './statuses';
 import { Selector } from 'react-redux';
 import { RootState } from './';
 
@@ -30,20 +28,6 @@ const thoughts = createSlice({
     update(state, action: PayloadAction<Thought>) {
       return state.map(thought => thought.id == action.payload.id ? action.payload : thought).sort(sortThoughtsByLastUpdated);
     },
-  },
-  extraReducers: {
-    [insertStatus as any]: (state, action: PayloadAction<Status>) => {
-      return state.map(thought => {
-        if (thought.id === action.payload.thoughtId) {
-          return {
-            ...thought,
-            status: action.payload.text,
-            updated: action.payload.created,
-          };
-        }
-        return thought;
-      });
-    }
   },
 });
 
