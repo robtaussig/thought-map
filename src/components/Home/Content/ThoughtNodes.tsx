@@ -87,7 +87,7 @@ export const ThoughtNodes: FC<ThoughtNodesProps> = ({
     return thoughts
       .filter(combinedFilters)
       .sort(sortBySortRule);
-  }, [matchingThoughts, plan, plan, thoughtMap, sortFilterSettings.field, sortFilterSettings.desc]);
+  }, [matchingThoughts, thoughts, plan, plan, thoughtMap, sortFilterSettings.field, sortFilterSettings.desc]);
 
   return (
     <div className={classes.content} ref={rootRef} onScroll={handleScroll}>
