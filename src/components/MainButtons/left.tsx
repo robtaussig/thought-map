@@ -12,7 +12,7 @@ import { getIdFromUrl } from '../../lib/util';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Settings from '@material-ui/icons/Settings';
 import PlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck';
-import { tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
+import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
 
 interface LeftButtonProps {
   classes: any;
@@ -105,17 +105,25 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
 
   if (hideButton) return null;
 
+  const isEmphasized = tutorial.emphasizeButton === ButtonPositions.Left;
+
   return (
     <CircleButton
       svgRef={settingsGearButtonSVGRef}
       id={isSettings ? 'settings' : handleLongPress ? 'has-secondary' : 'edit-plan'}
       classes={classes}
-      onClick={handleClick}
+      onClick={() => {
+        isEmphasized && dispatch(emphasizeButton(null));
+        handleClick();
+      }}
       label={label}
       Icon={Icon}
-      onLongPress={handleLongPress}
+      onLongPress={() => {
+        isEmphasized && dispatch(emphasizeButton(null));
+        handleLongPress();
+      }}
       LongPressIcon={LongPressIcon}
-      emphasize={tutorial.emphasizeButton === ButtonPositions.Left}
+      emphasize={isEmphasized}
     />
   );
 };

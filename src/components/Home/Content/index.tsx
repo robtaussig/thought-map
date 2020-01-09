@@ -81,8 +81,6 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
     return () => clearTimeout(timeout);
   }, []);
 
-  useEffect(() => () => dispatch(emphasizeButton(null)),[]);
-
   useEffect(() => {
     if (thoughts.length === 0) {
       dispatch(emphasizeButton(ButtonPositions.Right));

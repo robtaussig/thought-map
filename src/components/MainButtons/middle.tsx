@@ -14,7 +14,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
 import Queue from '@material-ui/icons/Queue';
 import { getIdFromUrl } from '../../lib/util';
-import { tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
+import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
 import { format } from 'date-fns';
 
 interface MiddleButtonProps {
@@ -111,31 +111,43 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   };
 
   if (hideButton) return null;
+  const isEmphasized = tutorial.emphasizeButton === ButtonPositions.Middle;
 
   if (isStaging) {
     return (
       <CircleButton
-        onClick={handleClick}
+        onClick={() => {
+          isEmphasized && dispatch(emphasizeButton(null));
+          handleClick();
+        }}
         id={'return-home'}
         classes={classes}
         label={'Back'}
         Icon={ArrowBack}
-        emphasize={tutorial.emphasizeButton === ButtonPositions.Middle}
+        emphasize={isEmphasized}
       />
     );
   } else {
     return (
       <CircleButton
-        onClick={handleClick}
+        onClick={() => {
+          isEmphasized && dispatch(emphasizeButton(null));
+          handleClick();
+        }}
         id={canStage ? 'stage-button' : stage.backlog.length > 0 ? 'backlog-button' : stage.current.length === 0 ? 'empty-stage' : 'staging-button'}
         classes={classes}
         label={'Staging'}
         Icon={Bookmark}
-        onLongPress={(canStage || currentPage === CurrentPage.Home) && handleLongPress}
+        onLongPress={() => {
+          isEmphasized && dispatch(emphasizeButton(null));
+          if (canStage || currentPage === CurrentPage.Home) {
+            handleLongPress();
+          }
+        }}
         LongPressIcon={
           canStage ? Queue :
           currentPage === CurrentPage.Home ? PriorityHigh : null}
-        emphasize={tutorial.emphasizeButton === ButtonPositions.Middle}
+        emphasize={isEmphasized}
       />
     );
   }

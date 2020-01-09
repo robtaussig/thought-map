@@ -13,7 +13,7 @@ import Delete from '@material-ui/icons/Delete';
 import { getIdFromUrl, homeUrl, openConfirmation } from '../../lib/util';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
-import { tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
+import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
 import { thoughts as thoughtActions } from '../../actions';
 
 interface RightButtonProps {
@@ -113,16 +113,24 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
 
   if (hideButton) return null;
 
+  const isEmphasized = tutorial.emphasizeButton === ButtonPositions.Right;
+
   return (
     <CircleButton
-      onClick={handleClick}
+      onClick={() => {
+        isEmphasized && dispatch(emphasizeButton(null));
+        handleClick();
+      }}
       id={id}
       classes={classes}
       label={label}
       Icon={Icon}
-      onLongPress={handleLongPress}
+      onLongPress={() => {
+        isEmphasized && dispatch(emphasizeButton(null));
+        handleLongPress();
+      }}
       LongPressIcon={LongPressIcon}
-      emphasize={tutorial.emphasizeButton === ButtonPositions.Right}
+      emphasize={isEmphasized}
     />
   );
 };
