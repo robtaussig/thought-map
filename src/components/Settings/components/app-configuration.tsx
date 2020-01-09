@@ -96,6 +96,13 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
     setSide(Side.TOP);
   }, []);
 
+  const handleChangeDisableTips = useCallback(e => {
+    settingsActions.editSetting(db, {
+      field: 'disableTips',
+      value: e.target.checked,
+    });
+  }, []);
+
   const handleChangeReportBugs = useCallback(e => {
     settingsActions.editSetting(db, {
       field: 'reportBugs',
@@ -154,6 +161,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
     }
   }, []);
 
+  const disableTips = Boolean(settings && settings.disableTips);
   const reportBugs = Boolean(settings && settings.reportBugs);
   const useAutoSuggest = Boolean(settings && settings.useAutoSuggest);
   const useLocation = Boolean(settings && settings.useLocation);
@@ -172,6 +180,14 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
         top: side === Side.TOP ? '100%' : 0,
       }}>
         <h1 className={classes.header}>App Configuration</h1>
+        <CheckBox
+          classes={classes}
+          value={'Disable Tips'}
+          label={'Disable Tips'}
+          isChecked={disableTips}
+          onChange={handleChangeDisableTips}
+          tooltip={'By default, you will periodically receive context-based suggestions pointing to available features'}
+        />
         <CheckBox
           classes={classes}
           value={'Report Bugs'}

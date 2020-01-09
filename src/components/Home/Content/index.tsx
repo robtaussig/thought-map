@@ -1,17 +1,24 @@
 import './style.scss';
-import React, { useRef, FC, Fragment, useState, useMemo, useEffect } from 'react';
+import React, { useRef, FC, Fragment, useState, useMemo, useEffect, memo } from 'react';
 import { Plan } from '~store/rxdb/schemas/plan';
 import { Thought } from '~store/rxdb/schemas/thought';
 import { Graph } from './lib/graph';
 import { ThoughtConnections } from './types';
-import { useSelector } from 'react-redux';
+import { useLoadedDB } from '../../../hooks/useDB';
+import useModal from '../../../hooks/useModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { settings as settingsActions } from '../../../actions';
 import { thoughtSelector } from '../../../reducers/thoughts';
+import { settingSelector } from '../../../reducers/settings';
 import { connectionSelector } from '../../../reducers/connections';
+import { emphasizeButton, ButtonPositions } from '../../../reducers/tutorial';
 import { planSelector } from '../../../reducers/plans';
 import { sortFilterSettingsSelector } from '../../../reducers/sortFilterSettings';
 import { searcherWorker } from '../../../store/init';
 import FilterAndSearch from './FilterAndSearch';
 import ThoughtNodes from './ThoughtNodes';
+import PriorityTutorial from '../../Tutorials/PriorityTutorial';
+import LongPressTutorial from '../../Tutorials/LongPressTutorial';
 import BlankThoughtNode from './BlankThoughtNode';
 
 interface ContentProps {
@@ -23,15 +30,19 @@ interface ContentProps {
   from: string;
 }
 
-export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, statusOptions, typeOptions, from }) => {
+export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptions, typeOptions, from }) => {
+  const dispatch = useDispatch();
   const thoughtMap = useRef<Graph>(new Graph());
   const didMount = useRef<boolean>(false);
+  const db = useLoadedDB();
+  const [openModal] = useModal();
   const [showFilters, setShowFilters] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
   const stateThoughts = useSelector(thoughtSelector);
   const stateConnections = useSelector(connectionSelector);
   const plans = useSelector(planSelector);
+  const settings = useSelector(settingSelector);
   const sortFilterSettings = useSelector(sortFilterSettingsSelector);
 
   const connectionStatusByThought = useMemo(() => {
@@ -69,6 +80,49 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
 
     return () => clearTimeout(timeout);
   }, []);
+
+  useEffect(() => () => dispatch(emphasizeButton(null)),[]);
+
+  useEffect(() => {
+    if (thoughts.length === 0) {
+      dispatch(emphasizeButton(ButtonPositions.Right));
+
+      return () => dispatch(emphasizeButton(null));
+    }
+  }, [thoughts.length]);
+
+  useEffect(() => {
+    if (didMount.current === false && settings.disableTips !== true) {
+
+      if (
+        thoughts.length > 3 &&
+        settings.learnedPriorityList !== true
+      ) {
+        dispatch(emphasizeButton(ButtonPositions.Middle));
+        openModal(<PriorityTutorial/>, 'About Priority', {
+          afterClose: () => {
+            settingsActions.createSetting(db, {
+              field: 'learnedPriorityList',
+              value: true,
+            });
+          }
+        });
+      } else if (
+        thoughts.length > 0 &&
+        settings.learnedLongPress !== true
+      ) {
+        dispatch(emphasizeButton(ButtonPositions.Left));
+        openModal(<LongPressTutorial/>, 'About Long Press', {
+          afterClose: () => {
+            settingsActions.createSetting(db, {
+              field: 'learnedLongPress',
+              value: true,
+            });
+          }
+        });
+      }
+    }
+  },[thoughts, settings]);
 
   return (
     <Fragment>
@@ -110,6 +164,6 @@ export const Content: FC<ContentProps> = React.memo(({ classes, thoughts, plan, 
       )}
     </Fragment>
   );
-});
+};
 
-export default Content;
+export default memo(Content);

@@ -5,7 +5,7 @@ import { RootState } from './';
 
 export const settingSelector: Selector<RootState, Settings> = state => state.settings;
 export interface Settings {
-  [field: string]: Setting;
+  [field: string]: any;
 }
 
 const initialState: Settings = {};

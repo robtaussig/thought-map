@@ -1,17 +1,19 @@
 import React, { useRef, FC, ChangeEvent, CSSProperties } from 'react';
 import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
-import useLongPress from '../../hooks/useLongPress'; 
+import useLongPress from '../../hooks/useLongPress';
+import classNames from 'classnames';
 
 const EMPTY_LONG_PRESS = () => {};
 
 interface CircleButtonProps {
-  classes?: any;
+  classes: any;
   id?: string;
   onClick: (event?: ChangeEvent) => void;
   onLongPress?: () => void;
   label?: string;
   disabled?: boolean;
+  emphasize?: boolean;
   Icon?: any;
   LongPressIcon?: any;
   title?: string;
@@ -34,6 +36,7 @@ export const CircleButton: FC<CircleButtonProps> = React.memo(({
   title,
   svgRef,
   onLongPress,
+  emphasize,
   ...rest }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const isCancelled = useRef<boolean>(null);
@@ -71,7 +74,7 @@ export const CircleButton: FC<CircleButtonProps> = React.memo(({
       ref={buttonRef}
       title={title}
       style={{ userSelect: 'none' }}
-      className={classes.circleButton}
+      className={classNames(classes.circleButton, { emphasize })}
       onTouchStart={handleInteractionStart}
       onTouchEnd={handleInteractionEnd}
       onMouseDown={handleInteractionStart}

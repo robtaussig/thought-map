@@ -14,6 +14,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
 import Queue from '@material-ui/icons/Queue';
 import { getIdFromUrl } from '../../lib/util';
+import { tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
 import { format } from 'date-fns';
 
 interface MiddleButtonProps {
@@ -55,6 +56,7 @@ enum CurrentPage {
 export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   const stage = useSelector(stageSelector);
   const thoughts = useSelector(thoughtSelector);
+  const tutorial = useSelector(tutorialSelector);
   const dispatch = useDispatch();
   const db = useLoadedDB();
   const [canStage, setCanStage] = useState<boolean>(false);
@@ -118,6 +120,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
         classes={classes}
         label={'Back'}
         Icon={ArrowBack}
+        emphasize={tutorial.emphasizeButton === ButtonPositions.Middle}
       />
     );
   } else {
@@ -132,6 +135,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
         LongPressIcon={
           canStage ? Queue :
           currentPage === CurrentPage.Home ? PriorityHigh : null}
+        emphasize={tutorial.emphasizeButton === ButtonPositions.Middle}
       />
     );
   }

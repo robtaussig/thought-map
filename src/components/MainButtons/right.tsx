@@ -13,6 +13,7 @@ import Delete from '@material-ui/icons/Delete';
 import { getIdFromUrl, homeUrl, openConfirmation } from '../../lib/util';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
+import { tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
 import { thoughts as thoughtActions } from '../../actions';
 
 interface RightButtonProps {
@@ -45,6 +46,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const { history } = useApp();
   const db = useLoadedDB();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
+  const tutorial = useSelector(tutorialSelector);
 
   useEffect(() => {
     setHideButton(/(stage|settings)$/.test(history.location.pathname));
@@ -120,6 +122,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       Icon={Icon}
       onLongPress={handleLongPress}
       LongPressIcon={LongPressIcon}
+      emphasize={tutorial.emphasizeButton === ButtonPositions.Right}
     />
   );
 };

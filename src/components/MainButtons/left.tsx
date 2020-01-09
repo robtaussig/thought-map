@@ -12,6 +12,7 @@ import { getIdFromUrl } from '../../lib/util';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Settings from '@material-ui/icons/Settings';
 import PlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck';
+import { tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
 
 interface LeftButtonProps {
   classes: any;
@@ -46,6 +47,7 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
   const settingsGearButtonSVGRef = useRef<HTMLElement>(null);
   const dispatch = useDispatch();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
+  const tutorial = useSelector(tutorialSelector);
   const [hideButton, setHideButton] = useState<boolean>(false);
   const { history } = useApp();
 
@@ -113,6 +115,7 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
       Icon={Icon}
       onLongPress={handleLongPress}
       LongPressIcon={LongPressIcon}
+      emphasize={tutorial.emphasizeButton === ButtonPositions.Left}
     />
   );
 };

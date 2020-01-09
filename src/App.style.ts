@@ -166,6 +166,9 @@ export const theme = responsiveFontSizes(
             transform: 'scale(0.9)!important',
           },
         },
+        '&.emphasize': {
+          animation: 'shadow-pulse 1s infinite',
+        },
       }      
     },
   })

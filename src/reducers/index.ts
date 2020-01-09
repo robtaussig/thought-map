@@ -13,6 +13,7 @@ import tags from './tags';
 import templates from './templates';
 import thoughts from './thoughts';
 import stage from './stage';
+import tutorial from './tutorial';
 
 const rootReducer = combineReducers({
   connections,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   stage,
   displayPriorities,
   displayThoughtSettings,
+  tutorial,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

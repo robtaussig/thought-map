@@ -297,6 +297,10 @@ const VALID_SETTINGS: ValidSettings = {
     values: booleanValues,
     reason: 'reportBugs must be a boolean',
   },
+  disableTips: {
+    values: booleanValues,
+    reason: 'disableTips must be a boolean',
+  },
   useAutoSuggest: {
     values: booleanValues,
     reason: 'useAutoSuggest must be a boolean',

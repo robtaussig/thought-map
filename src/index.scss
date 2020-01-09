@@ -87,3 +87,13 @@ select:focus {
 }
 
 button:focus {outline:0;}
+
+@keyframes shadow-pulse
+{
+  0% {
+    box-shadow: 0 0 0 0px rgba(29, 139, 25, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 35px rgba(29, 139, 25, 0);
+  }
+}
