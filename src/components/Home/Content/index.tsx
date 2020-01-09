@@ -93,19 +93,6 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
     if (didMount.current === false && settings.disableTips !== true) {
 
       if (
-        thoughts.length > 3 &&
-        settings.learnedPriorityList !== true
-      ) {
-        dispatch(emphasizeButton(ButtonPositions.Middle));
-        openModal(<PriorityTutorial/>, 'About Priority', {
-          afterClose: () => {
-            settingsActions.createSetting(db, {
-              field: 'learnedPriorityList',
-              value: true,
-            });
-          }
-        });
-      } else if (
         thoughts.length > 0 &&
         settings.learnedLongPress !== true
       ) {
@@ -114,6 +101,19 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
           afterClose: () => {
             settingsActions.createSetting(db, {
               field: 'learnedLongPress',
+              value: true,
+            });
+          }
+        });
+      } else if (
+        thoughts.length > 3 &&
+        settings.learnedPriorityList !== true
+      ) {
+        dispatch(emphasizeButton(ButtonPositions.Middle));
+        openModal(<PriorityTutorial/>, 'About Priority', {
+          afterClose: () => {
+            settingsActions.createSetting(db, {
+              field: 'learnedPriorityList',
               value: true,
             });
           }
