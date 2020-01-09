@@ -15,12 +15,10 @@ export const handleSettingChange = (
   switch (data.op) {
     case 'INSERT':
       dispatch(insert(SettingModel.parseSetting(setting)));
-      notification = { message: 'Setting created' };
       break;
     
     case 'REMOVE':
       dispatch(remove(setting));
-      notification = { message: 'Setting removed' };
       break;
 
     case 'UPDATE':
