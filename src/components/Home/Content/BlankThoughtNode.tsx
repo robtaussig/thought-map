@@ -22,14 +22,14 @@ const styles = (theme: any): StyleRules => ({
     gridArea: 'header',
     '& > div': {
       height: '100%',
-      backgroundColor: theme.palette.gray[300],
+      backgroundColor: theme.palette.background[300],
     },
   },
   title: {
     gridArea: 'title',
     '& > div': {
       height: '15px',
-      backgroundColor: theme.palette.gray[500],
+      backgroundColor: theme.palette.background[500],
     },
   },
   status: {

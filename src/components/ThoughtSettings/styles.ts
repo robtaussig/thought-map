@@ -30,7 +30,7 @@ export const styles = (theme: any): StyleRules => ({
       padding: '10px 20px',
       borderRadius: 5,
       backgroundColor: theme.palette.secondary[800],
-      color: theme.palette.gray[100],
+      color: theme.palette.background[100],
       ...theme.defaults.centered,
       justifyContent: 'space-between',
       '& > input': {

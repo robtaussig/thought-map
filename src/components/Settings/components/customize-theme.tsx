@@ -18,12 +18,11 @@ const styles = (theme: any): StyleRules => ({
   root: {
     display: 'grid',
     gridTemplateColumns: 'repeat(4, 1fr)',
-    gridTemplateRows: 'repeat(10, 1fr)',
+    gridTemplateRows: 'repeat(8, 1fr)',
     gridGap: '10px',
     height: '100%',
     width: 'calc(100% - 80px)',
     marginTop: 10,
-    marginBottom: 120,
   },
 });
 

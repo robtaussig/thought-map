@@ -28,9 +28,9 @@ const styles = (theme: any): StyleRules => ({
     padding: '2px 5px',
     borderRadius: '4px',
     '&:disabled': {
-      color: theme.palette.gray[400],
+      color: theme.palette.background[400],
       backgroundColor: 'transparent',
-      border: `1px solid ${theme.palette.gray[400]}`,
+      border: `1px solid ${theme.palette.background[400]}`,
     },
   },
   inputLabel: {

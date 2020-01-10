@@ -18,11 +18,18 @@ const styles = (theme: any): StyleRules => ({
 
   },
   colorType: {
-    ...theme.defaults.centered,
-    justifyContent: 'space-around',
+    display: 'grid',
+    gridTemplateRows: '[header] max-content [buttons] 1fr',
+    gridTemplateColumns: '[left] 1fr [right] 1fr',
     fontWeight: 600,
-    fontSize: 20,
+    fontSize: 12,
     backgroundColor: 'white',
+    boxShadow: '0px 0px 5px black',
+  },
+  colorTypeText: {
+    gridRow: 'header',
+    gridColumn: 'left / -1',
+    ...theme.defaults.centered,
   },
   color: {
     boxShadow: '0px 0px 5px black',
@@ -33,9 +40,19 @@ const styles = (theme: any): StyleRules => ({
       transform: 'scale(1)',
     }
   },
-  button: {
+  button: () => ({
     ...theme.defaults.centered,
-  },
+    '&.left': {
+      gridColumn: 'left',
+      gridRow: 'buttons',
+      color: theme.palette.secondary[500],
+    },
+    '&.right': {
+      gridColumn: 'right',
+      gridRow: 'buttons',
+      color: theme.palette.primary[500],
+    },
+  }),
 });
 
 export const PaletteColorList: FC<PaletteColorListProps> = ({
@@ -56,18 +73,22 @@ export const PaletteColorList: FC<PaletteColorListProps> = ({
           color: values[500],
         }}
       >
+        <span className={classes.colorTypeText}>{colorType}</span>
         <button
-          className={classes.button}
+          className={classNames(classes.button, {
+            left: true,
+          })}
           onClick={onRandomize}
         >
           <Refresh />
         </button>
-        <span>{colorType}</span>
-        <button className={classes.button}>
+        <button className={classNames(classes.button, {
+          right: true,
+        })}>
           <Palette />
         </button>
       </div>
-      {Object.entries(values).map(([shade, value], idx) => {
+      {Object.entries(values).slice(2, Object.keys(values).length - 2).map(([shade, value], idx) => {
         return (
           <div
             key={`${colorType}-${shade}`}
@@ -77,7 +98,7 @@ export const PaletteColorList: FC<PaletteColorListProps> = ({
               backgroundColor: value,
             }}
             className={classNames(classes.color, {
-              main: idx === 5,
+              main: idx === 3,
             })}
           />
         );

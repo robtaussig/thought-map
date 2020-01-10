@@ -80,14 +80,14 @@ const styles = (theme: any): StyleRules => ({
     marginTop: 40,
     width: '70%',
     borderRadius: '3px',
-    backgroundColor: theme.palette.gray[500],
+    backgroundColor: theme.palette.background[500],
     color: 'white',
     '&:active': {
-      backgroundColor: theme.palette.gray[700],
+      backgroundColor: theme.palette.background[700],
       boxShadow: 'none!important',
     },
     '&:disabled': {
-      backgroundColor: theme.palette.gray[300],
+      backgroundColor: theme.palette.background[300],
       color: 'white',
     },
     '&:not(:disabled)': {
@@ -99,7 +99,7 @@ const styles = (theme: any): StyleRules => ({
     marginTop: 40,
     width: '70%',
     borderRadius: '3px',
-    backgroundColor: theme.palette.gray[500],
+    backgroundColor: theme.palette.background[500],
     display: 'flex',
     position: 'relative',
     justifyContent: 'center',
@@ -115,11 +115,11 @@ const styles = (theme: any): StyleRules => ({
     padding: '3px 0',
     flex: 1,
     '&:active': {
-      backgroundColor: theme.palette.gray[700],
+      backgroundColor: theme.palette.background[700],
       boxShadow: 'none!important',
     },
     '&:disabled': {
-      backgroundColor: theme.palette.gray[300],
+      backgroundColor: theme.palette.background[300],
       color: 'white',
     },
   },
@@ -131,7 +131,7 @@ const styles = (theme: any): StyleRules => ({
     marginTop: 40,
     width: '70%',
     borderRadius: '3px',
-    backgroundColor: theme.palette.gray[500],
+    backgroundColor: theme.palette.background[500],
     color: 'white',
     boxShadow: '0px 0px 5px 2px black',
     '& > input': {

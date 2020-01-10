@@ -8,7 +8,7 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
     overflowX: 'hidden',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: theme.palette.gray[700],
+    backgroundColor: theme.palette.background[700],
     '& #thought-loader': {
       position: 'absolute',
       top: '50%',
@@ -19,7 +19,7 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
   circleButton: {
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
-    backgroundColor: theme.palette.gray[600],
+    backgroundColor: theme.palette.background[600],
     opacity: 0.5,
     '&#return-home': {
       top: 10,
@@ -68,7 +68,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   },
   planName: {
     gridArea: 'plan-name',
-    color: theme.palette.gray[300],
+    color: theme.palette.background[300],
     fontWeight: 600,
   },
   editTitleForm: {
@@ -116,7 +116,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridTemplateRows: '20px max-content 1fr 20px',
     gridTemplateColumns: '50px 1fr 50px',
     gridColumnGap: '10px',
-    backgroundColor: theme.palette.gray[200],
+    backgroundColor: theme.palette.background[200],
     borderRadius: '10px',
     transition: 'background-color 0.5s ease-out',
     color: 'black',
@@ -125,7 +125,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       marginBottom: 100,
     },
     '&.drop-target': {
-      backgroundColor: theme.palette.gray[400],
+      backgroundColor: theme.palette.background[400],
     },
     '&.moved': {
       backgroundColor: theme.palette.primary[200],
@@ -169,9 +169,9 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   },
   sectionField: {
     gridArea: 'section-field',
-    color: theme.palette.gray[400],
+    color: theme.palette.background[400],
     '&.drop-target': {
-      color: theme.palette.gray[600],
+      color: theme.palette.background[600],
     },
   },
   sectionQuickActionButton: {
@@ -225,7 +225,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   },
   imageDescription: {
     fontSize: 12,
-    color: theme.palette.gray[400],
+    color: theme.palette.background[400],
   },
   image: {
     width: '100%',
@@ -284,9 +284,9 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     padding: '2px 5px',
     borderRadius: '4px',
     '&:disabled': {
-      color: theme.palette.gray[400],
+      color: theme.palette.background[400],
       backgroundColor: 'transparent',
-      border: `1px solid ${theme.palette.gray[400]}`,
+      border: `1px solid ${theme.palette.background[400]}`,
     },
   },
   cancelQuickAddButton: {

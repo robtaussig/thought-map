@@ -55,14 +55,14 @@ const styles = (theme: any): StyleRules => ({
     marginTop: 40,
     width: '70%',
     borderRadius: '3px',
-    backgroundColor: theme.palette.gray[500],
+    backgroundColor: theme.palette.background[500],
     color: 'white',
     '&:active': {
-      backgroundColor: theme.palette.gray[700],
+      backgroundColor: theme.palette.background[700],
       boxShadow: 'none!important',
     },
     '&:disabled': {
-      backgroundColor: theme.palette.gray[300],
+      backgroundColor: theme.palette.background[300],
       color: 'white',
     },
     '&:not(:disabled)': {

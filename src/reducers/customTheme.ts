@@ -65,7 +65,7 @@ export const customThemeSelector: Selector<RootState, CustomTheme> = state => st
 export enum PaletteOptions {
   Primary = 'primary',
   Secondary = 'secondary',
-  Gray = 'gray',
+  Background = 'background',
   Red = 'red',
 }
 
@@ -84,7 +84,7 @@ const initialState: CustomTheme = {
   palette: {
     primary: primaryColor,
     secondary: secondaryColor,
-    gray: grays,
+    background: grays,
     red: reds,
   },
   defaults: {

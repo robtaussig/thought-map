@@ -10,7 +10,7 @@ export const styles = (theme: any): StyleRules => ({
     transform: 'translateY(-50%)',
     color: theme.palette.secondary[700],
     padding: 30,
-    backgroundColor: theme.palette.gray[200],
+    backgroundColor: theme.palette.background[200],
     borderRadius: '10px',
     userSelect: 'none',
     '&:focus': {

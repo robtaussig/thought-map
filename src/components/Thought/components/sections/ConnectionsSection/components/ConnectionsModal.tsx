@@ -84,7 +84,7 @@ const styles = (theme: any): StyleRules => ({
   submitButton: {
     flex: '0 0 20px',
     marginLeft: 5,
-    color: theme.palette.gray[200],
+    color: theme.palette.background[200],
     backgroundColor: theme.palette.secondary[500],
     borderRadius: 5,
     height: 20,
@@ -93,7 +93,7 @@ const styles = (theme: any): StyleRules => ({
       width: 20,
     },
     '&:disabled': {
-      backgroundColor: theme.palette.gray[400],
+      backgroundColor: theme.palette.background[400],
     },
   },
   selectLabel: {

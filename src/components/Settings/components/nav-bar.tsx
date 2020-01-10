@@ -18,7 +18,7 @@ const styles = (theme: any): StyleRules => ({
     flex: 1,
     fontSize: 20,
     fontWeight: 600,
-    backgroundColor: theme.palette.gray[200],
+    backgroundColor: theme.palette.background[200],
     '&.current': {
       backgroundColor: theme.palette.primary[500],
       boxShadow: '0px 0px 5px 0px black',

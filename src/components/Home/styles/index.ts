@@ -7,7 +7,7 @@ export const styles = (theme: any): StyleRules => ({
     width: '100%',
     display: 'grid',
     padding: 20,
-    backgroundColor: theme.palette.gray[700],
+    backgroundColor: theme.palette.background[700],
     gap: '20px',
     gridTemplateAreas: `"sort-buttons sort-buttons"
                         "content content"
@@ -26,7 +26,7 @@ export const styles = (theme: any): StyleRules => ({
       boxShadow: '0px 0px 5px -1px black',
       '& > select': {
         flex: 1,
-        color: theme.palette.gray[600],
+        color: theme.palette.background[600],
         display: 'flex',
         textAlignLast: 'center',
         paddingLeft: 13,
@@ -100,7 +100,7 @@ export const styles = (theme: any): StyleRules => ({
     color: 'white',
   },
   sortButton: {
-    color: theme.palette.gray[800],
+    color: theme.palette.background[800],
     cursor: 'pointer',
     ...theme.defaults.centered,
     '&.selected': {
@@ -114,7 +114,7 @@ export const styles = (theme: any): StyleRules => ({
   sortByStatus: {
     ...theme.defaults.centered,
     marginRight: 18,
-    color: theme.palette.gray[800],
+    color: theme.palette.background[800],
   },
   emptyIcon: {
     width: 24,
@@ -151,7 +151,7 @@ export const styles = (theme: any): StyleRules => ({
   connectionStatus: {
     marginLeft: 20,
     fontSize: 11,
-    color: theme.palette.gray[300],
+    color: theme.palette.background[300],
     display: 'flex',
     alignItems: 'center',
     '& > span': {
@@ -169,7 +169,7 @@ export const styles = (theme: any): StyleRules => ({
   planName: {
     fontSize: 10,
     fontWeight: 600,
-    color: theme.palette.gray[300],
+    color: theme.palette.background[300],
     '& > span': {
       marginLeft: 10,
     },
@@ -180,7 +180,7 @@ export const styles = (theme: any): StyleRules => ({
     color: theme.palette.secondary[600],
   },
   thoughtNodeTitle: {
-    color: theme.palette.gray[500],
+    color: theme.palette.background[500],
     flex: 1,
     '&.arrivedFrom': {
       fontWeight: 600,
@@ -204,7 +204,7 @@ export const styles = (theme: any): StyleRules => ({
   circleButton: {
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
-    backgroundColor: theme.palette.gray[600],
+    backgroundColor: theme.palette.background[600],
     '&#add-thought, &#create-plan': {
       bottom: 10,
       right: 10,

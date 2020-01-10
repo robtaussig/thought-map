@@ -5,7 +5,7 @@ export const rootStyles = (theme: any): StyleRules => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    backgroundColor: theme.palette.gray[700],
+    backgroundColor: theme.palette.background[700],
   },
 });
 
@@ -54,14 +54,14 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     '&#confirm-delete-plan': {
       display: 'flex',
       flexDirection: 'column-reverse',
-      color: theme.palette.gray[200],
+      color: theme.palette.background[200],
       flex: 1,
     },
   },
   selectLabel: {
     display: 'flex',
     border: `1px solid ${theme.palette.primary[500]}`,
-    backgroundColor: theme.palette.gray[200],
+    backgroundColor: theme.palette.background[200],
     '& > select': {
       height: '100%',
       width: '100%',
@@ -91,7 +91,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
   checkboxLabel: {
     ...theme.defaults.centered,
     justifyContent: 'flex-start',
-    color: theme.palette.gray[300],
+    color: theme.palette.background[300],
     '&#show-completed': {
       gridArea: 'show-completed',
     },
@@ -118,7 +118,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     borderRadius: '4px',
     padding: '15px 30px',
     '&:disabled': {
-      backgroundColor: theme.palette.gray[300],
+      backgroundColor: theme.palette.background[300],
     },
   },
   circleButton: {

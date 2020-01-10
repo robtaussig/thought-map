@@ -25,7 +25,7 @@ const styles = (theme: any): StyleRules => ({
   circleButton: {
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
-    backgroundColor: theme.palette.gray[600],
+    backgroundColor: theme.palette.background[600],
     bottom: 10,
     right: 10,
     zIndex: 999,

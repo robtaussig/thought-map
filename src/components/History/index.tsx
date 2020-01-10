@@ -20,7 +20,7 @@ interface HistoryProps {
 
 const styles = (theme: any): StyleRules => ({
   root: {
-    backgroundColor: theme.palette.gray[700],
+    backgroundColor: theme.palette.background[700],
   },
 });
 

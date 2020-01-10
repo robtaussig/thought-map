@@ -28,14 +28,14 @@ const styles = (theme: any): StyleRules => ({
   updateButton: {
     flex: 0,
     backgroundColor: theme.palette.secondary[500],
-    color: theme.palette.gray[100],
+    color: theme.palette.background[100],
     padding: '5px 10px',
     borderRadius: 5,
     marginLeft: 20,
   },
   bumpButton: {
     backgroundColor: theme.palette.secondary[500],
-    color: theme.palette.gray[100],
+    color: theme.palette.background[100],
     padding: '5px 0',
     borderRadius: 5,
     width: '100%',

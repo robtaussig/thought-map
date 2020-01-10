@@ -22,7 +22,7 @@ const styles = (theme: any): StyleRules => ({
   selectLabel: {
     display: 'flex',
     flexDirection: 'column',    
-    color: theme.palette.gray[200],
+    color: theme.palette.background[200],
     margin: '110px 110px',
   },
   selectInput: {

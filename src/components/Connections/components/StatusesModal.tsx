@@ -23,7 +23,7 @@ const styles = (theme: any): StyleRules => ({
         padding: 12,
         fontSize: 18,
         backgroundColor: theme.palette.secondary[500],
-        color: theme.palette.gray[100],
+        color: theme.palette.background[100],
       },
     },
   },

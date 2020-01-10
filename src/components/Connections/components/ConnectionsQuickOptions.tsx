@@ -47,7 +47,7 @@ const styles = (theme: any): StyleRules => ({
     gridArea: 'nav-items',
   },
   navItem: {
-    color: theme.palette.gray[400],
+    color: theme.palette.background[400],
     fontWeight: 600,
     display: 'flex',
     '&:not(:first-child)': {

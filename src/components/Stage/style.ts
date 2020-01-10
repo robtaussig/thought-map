@@ -9,7 +9,7 @@ export const styles = (theme: any): StyleRules => ({
     gridTemplateAreas: `"nav-bar"
                         "grid-items"`,
     gridTemplateRows: '80px 1fr',
-    backgroundColor: theme.palette.gray[700],
+    backgroundColor: theme.palette.background[700],
     '& #staging-nav': {
       gridArea: 'nav-bar',
     },
@@ -28,7 +28,7 @@ export const styles = (theme: any): StyleRules => ({
   stagedItem: {
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: theme.palette.gray[100],
+    backgroundColor: theme.palette.background[100],
     borderRadius: '5px',    
     willChange: 'transform, width, height, opacity',
     '& button': {
@@ -42,7 +42,7 @@ export const styles = (theme: any): StyleRules => ({
   stagedItemTitle: {
     flex: 1,
     margin: 10,
-    color: theme.palette.gray[600],
+    color: theme.palette.background[600],
   },
   unstageButton: {
     flex: '0 0 50px',

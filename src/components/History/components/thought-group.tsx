@@ -16,7 +16,7 @@ const styles = (theme: any): StyleRules => ({
     position: 'relative',
     '&:before': {
       content: "''",
-      backgroundColor: theme.palette.gray[500],
+      backgroundColor: theme.palette.background[500],
       position: 'absolute',
       top: 0,
       bottom: 0,
@@ -70,7 +70,7 @@ const styles = (theme: any): StyleRules => ({
   },
   partText: {
     zIndex: 99,
-    color: theme.palette.gray[100],
+    color: theme.palette.background[100],
     textShadow: '0px 0px 4px black',
     ...theme.defaults.textEllipsis,
     textAlign: 'left',

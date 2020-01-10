@@ -65,13 +65,13 @@ const styles = (theme: any): StyleRules => ({
     padding: 4,
   },
   title: {
-    color: theme.palette.gray[800],
+    color: theme.palette.background[800],
     fontWeight: 600,
     fontSize: 10,
   },
   furtherDetails: {
     fontSize: 10,
-    color: theme.palette.gray[700],
+    color: theme.palette.background[700],
   },
   affectedItems: {
     fontWeight: 600,

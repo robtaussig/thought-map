@@ -31,7 +31,7 @@ const styles = (theme: any): StyleRules => ({
     '&:after': {
       content: "''",
       border: '1px solid #000000db',
-      backgroundColor: theme.palette.gray[300],
+      backgroundColor: theme.palette.background[300],
       borderRadius: '50%',
       height: 15,
       width: 15,
@@ -60,7 +60,7 @@ const styles = (theme: any): StyleRules => ({
   },
   nodeTitle: {
     fontWeight: 600,
-    color: theme.palette.gray[200],
+    color: theme.palette.background[200],
     textShadow: '0px 0px 30px black',
     overflow: 'auto',
     '&.origin': {

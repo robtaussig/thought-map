@@ -57,10 +57,10 @@ const styles = (theme: any): StyleRules => ({
       color: theme.palette.red[500],
     },
     '&:active': {
-      color: theme.palette.gray[200],
+      color: theme.palette.background[200],
       backgroundColor: theme.palette.secondary[700],
       '&.delete': {
-        color: theme.palette.gray[200],
+        color: theme.palette.background[200],
         backgroundColor: theme.palette.red[500],
       },
     },
