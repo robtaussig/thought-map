@@ -2,13 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
-import { theme } from './App.style';
 import { Provider as ReduxProvider } from 'react-redux';
-import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
 import { Portal } from './hooks/usePortal';
 import store from './store';
+import Themer from './lib/Themer';
 
 (window as any).APP_VERSION = '0.7';
 
@@ -16,12 +15,12 @@ ReactDOM.render(
   (
     <BrowserRouter>
       <ReduxProvider store={store}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline/>
+        <Themer>
+          <CssBaseline />
           <Portal>
-            <App/>
+            <App />
           </Portal>
-        </ThemeProvider>
+        </Themer>
       </ReduxProvider>
     </BrowserRouter>
   ),

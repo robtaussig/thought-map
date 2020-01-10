@@ -20,7 +20,7 @@ const initialState: Tutorial = {
   emphasizeButton: null,
 };
 
-const tags = createSlice({
+const tutorial = createSlice({
   name: 'tutorial',
   initialState,
   reducers: {
@@ -32,6 +32,6 @@ const tags = createSlice({
 
 export const {
   emphasizeButton,
-} = tags.actions;
+} = tutorial.actions;
 
-export default tags.reducer;
+export default tutorial.reducer;

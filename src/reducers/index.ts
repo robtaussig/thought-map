@@ -14,6 +14,7 @@ import templates from './templates';
 import thoughts from './thoughts';
 import stage from './stage';
 import tutorial from './tutorial';
+import customTheme from './customTheme';
 
 const rootReducer = combineReducers({
   connections,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   displayPriorities,
   displayThoughtSettings,
   tutorial,
+  customTheme,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
