@@ -114,23 +114,28 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   if (hideButton) return null;
 
   const isEmphasized = tutorial.emphasizeButton === ButtonPositions.Right;
+  const isAltEmphasized = tutorial.emphasizeButton === ButtonPositions.RightAlt;
 
   return (
     <CircleButton
-      onClick={() => {
-        isEmphasized && dispatch(emphasizeButton(null));
-        handleClick();
-      }}
+      onClick={handleClick ? () => {
+        if (!isAltEmphasized) {
+          isEmphasized && dispatch(emphasizeButton(null));
+          handleClick();
+        }
+      } : undefined}
       id={id}
       classes={classes}
       label={label}
       Icon={Icon}
-      onLongPress={() => {
-        isEmphasized && dispatch(emphasizeButton(null));
-        handleLongPress();
-      }}
+      onLongPress={handleLongPress ? () => {
+        if (!isEmphasized) {
+          isAltEmphasized && dispatch(emphasizeButton(null));
+          handleLongPress();
+        }
+      } : undefined}
       LongPressIcon={LongPressIcon}
-      emphasize={isEmphasized}
+      emphasize={isEmphasized || isAltEmphasized}
     />
   );
 };

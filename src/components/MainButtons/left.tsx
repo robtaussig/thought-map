@@ -106,24 +106,29 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
   if (hideButton) return null;
 
   const isEmphasized = tutorial.emphasizeButton === ButtonPositions.Left;
+  const isAltEmphasized = tutorial.emphasizeButton === ButtonPositions.LeftAlt;
 
   return (
     <CircleButton
       svgRef={settingsGearButtonSVGRef}
       id={isSettings ? 'settings' : handleLongPress ? 'has-secondary' : 'edit-plan'}
       classes={classes}
-      onClick={() => {
-        isEmphasized && dispatch(emphasizeButton(null));
-        handleClick();
-      }}
+      onClick={handleClick ? () => {
+        if (!isAltEmphasized) {
+          isEmphasized && dispatch(emphasizeButton(null));
+          handleClick();
+        }
+      } : undefined}
       label={label}
       Icon={Icon}
-      onLongPress={() => {
-        isEmphasized && dispatch(emphasizeButton(null));
-        handleLongPress();
-      }}
+      onLongPress={handleLongPress ? () => {
+        if (!isEmphasized) {
+          isAltEmphasized && dispatch(emphasizeButton(null));
+          handleLongPress();
+        }
+      } : undefined}
       LongPressIcon={LongPressIcon}
-      emphasize={isEmphasized}
+      emphasize={isEmphasized || isAltEmphasized}
     />
   );
 };

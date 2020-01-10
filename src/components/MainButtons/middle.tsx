@@ -35,7 +35,7 @@ const styles = (theme: any): StyleRules => ({
     },
     '&#empty-stage': {
       opacity: 0.5,
-      border: `2px solid ${theme.palette.gray[500]}`,
+      border: `2px solid ${theme.palette.red[300]}`,
     },
     '&#stage-button': {
       border: `2px solid ${theme.palette.secondary[500]}`,      
@@ -112,13 +112,16 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
 
   if (hideButton) return null;
   const isEmphasized = tutorial.emphasizeButton === ButtonPositions.Middle;
+  const isAltEmphasized = tutorial.emphasizeButton === ButtonPositions.MiddleAlt;
 
   if (isStaging) {
     return (
       <CircleButton
         onClick={() => {
-          isEmphasized && dispatch(emphasizeButton(null));
-          handleClick();
+          if (!isAltEmphasized) {
+            isEmphasized && dispatch(emphasizeButton(null));
+            handleClick();
+          }
         }}
         id={'return-home'}
         classes={classes}
@@ -130,24 +133,28 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   } else {
     return (
       <CircleButton
-        onClick={() => {
-          isEmphasized && dispatch(emphasizeButton(null));
-          handleClick();
-        }}
+        onClick={handleClick ? () => {
+          if (!isAltEmphasized) {
+            isEmphasized && dispatch(emphasizeButton(null));
+            handleClick();
+          }
+        } : undefined}
         id={canStage ? 'stage-button' : stage.backlog.length > 0 ? 'backlog-button' : stage.current.length === 0 ? 'empty-stage' : 'staging-button'}
         classes={classes}
         label={'Staging'}
         Icon={Bookmark}
-        onLongPress={() => {
-          isEmphasized && dispatch(emphasizeButton(null));
-          if (canStage || currentPage === CurrentPage.Home) {
-            handleLongPress();
+        onLongPress={handleLongPress ? () => {
+          if (!isEmphasized) {
+            isAltEmphasized && dispatch(emphasizeButton(null));
+            if (canStage || currentPage === CurrentPage.Home) {
+              handleLongPress();
+            }
           }
-        }}
+        } : undefined}
         LongPressIcon={
           canStage ? Queue :
           currentPage === CurrentPage.Home ? PriorityHigh : null}
-        emphasize={isEmphasized}
+        emphasize={isEmphasized || isAltEmphasized}
       />
     );
   }

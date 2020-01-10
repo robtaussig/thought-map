@@ -9,8 +9,11 @@ export interface Tutorial {
 
 export enum ButtonPositions {
   Left,
+  LeftAlt,
   Middle,
+  MiddleAlt,
   Right,
+  RightAlt,
 }
 
 const initialState: Tutorial = {

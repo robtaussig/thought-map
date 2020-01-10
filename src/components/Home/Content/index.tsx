@@ -96,7 +96,7 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
         thoughts.length > 0 &&
         settings.learnedLongPress !== true
       ) {
-        dispatch(emphasizeButton(ButtonPositions.Left));
+        dispatch(emphasizeButton(ButtonPositions.LeftAlt));
         openModal(<LongPressTutorial/>, 'About Long Press', {
           afterClose: () => {
             settingsActions.createSetting(db, {
@@ -109,7 +109,7 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
         thoughts.length > 3 &&
         settings.learnedPriorityList !== true
       ) {
-        dispatch(emphasizeButton(ButtonPositions.Middle));
+        dispatch(emphasizeButton(ButtonPositions.MiddleAlt));
         openModal(<PriorityTutorial/>, 'About Priority', {
           afterClose: () => {
             settingsActions.createSetting(db, {
