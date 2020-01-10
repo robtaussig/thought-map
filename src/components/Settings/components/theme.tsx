@@ -36,9 +36,9 @@ const useStyles = makeStyles<CustomTheme>((theme: any) => ({
       }
     }
   },
-  header: (props: CustomTheme) => ({
+  header: () => ({
     flex: '0 0 80px',
-    backgroundColor: props.palette.primary[500],
+    backgroundColor: theme.palette.primary[500],
     boxShadow: '0px 0px 5px 0px black',
     width: '100%',
     alignItems: 'center',
@@ -46,29 +46,28 @@ const useStyles = makeStyles<CustomTheme>((theme: any) => ({
     justifyContent: 'center',
     fontSize: 24,
   }),
-  button: (props: CustomTheme) => ({
+  button: () => ({
     border: '2px solid white',
     padding: '3px 0',
     marginTop: 40,
     width: '70%',
     borderRadius: '3px',
-    backgroundColor: props.palette.gray[500],
+    backgroundColor: theme.palette.gray[500],
     color: 'white',
     '&:active': {
-      backgroundColor: props.palette.gray[700],
+      backgroundColor: theme.palette.gray[700],
       boxShadow: 'none!important',
     },
     '&:disabled': {
-      backgroundColor: props.palette.gray[300],
+      backgroundColor: theme.palette.gray[300],
       color: 'white',
     },
     '&:not(:disabled)': {
       boxShadow: '0px 0px 5px 2px black',
     }
   }),
-  circleButton: (props: CustomTheme) => ({
+  circleButton: () => ({
     ...theme.defaults.circleButton,
-    ...props.defaults.circleButton,
     '&#submit': {
       right: 10,
       bottom: 10,
