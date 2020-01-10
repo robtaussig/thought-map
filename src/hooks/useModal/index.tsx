@@ -28,7 +28,6 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
   const modal = useMemo(() => modals[modals.length - 1] || DEFAULT_MODAL, [modals]);
 
   const handleClose = useCallback((uuid: string) => {
-
     setModals(prev => {
       if (typeof uuid === 'string') {
         return prev.filter(prevModal => {
@@ -69,7 +68,7 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
         <Modal
           aria-labelledby={modal.label}
           open={modal.component !== null}
-          onClose={handleClose}
+          onClose={() => handleClose(modal.id)}
         >
           <div className={classNames(classes.root, modal.options.className)} style={modalStyle}>
             <button className={classes.closeButton} onClick={() => handleClose(modal.id)}><Close/></button>
