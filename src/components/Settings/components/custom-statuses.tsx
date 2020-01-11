@@ -46,7 +46,7 @@ const styles = (theme: any): StyleRules => ({
 
   },
   deleteCustomStatus: () => ({
-    color: theme.palette.red[500],
+    color: theme.palette.negative[500],
   }),
 });
 

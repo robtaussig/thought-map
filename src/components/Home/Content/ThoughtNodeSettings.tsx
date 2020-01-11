@@ -54,14 +54,14 @@ const styles = (theme: any): StyleRules => ({
     fontWeight: 600,
     transition: 'all 0.3s linear',
     '&.delete': {
-      color: theme.palette.red[500],
+      color: theme.palette.negative[500],
     },
     '&:active': {
       color: theme.palette.background[200],
       backgroundColor: theme.palette.secondary[700],
       '&.delete': {
         color: theme.palette.background[200],
-        backgroundColor: theme.palette.red[500],
+        backgroundColor: theme.palette.negative[500],
       },
     },
   }),

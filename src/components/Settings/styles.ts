@@ -113,7 +113,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
   }),
   deletePlanButton: () => ({
     marginRight: 20,
-    backgroundColor: theme.palette.red[500],
+    backgroundColor: theme.palette.negative[500],
     color: 'white',
     borderRadius: '4px',
     padding: '15px 30px',

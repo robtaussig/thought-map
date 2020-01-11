@@ -65,7 +65,7 @@ export const styles = (theme: any): StyleRules => ({
   deleteButton: () => ({
     gridArea: 'delete',
     borderBottom: 'none!important',
-    color: `${theme.palette.red[500]}!important`,
+    color: `${theme.palette.negative[500]}!important`,
     margin: '0!important',
   }),
   pinButton: {

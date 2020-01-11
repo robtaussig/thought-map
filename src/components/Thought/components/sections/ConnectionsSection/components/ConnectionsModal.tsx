@@ -40,7 +40,7 @@ const styles = (theme: any): StyleRules => ({
   }),
   deleteConnectionButton: () => ({
     marginLeft: 5,
-    color: theme.palette.red[500],
+    color: theme.palette.negative[500],
     ...theme.defaults.centered,
   }),
   noMatches: {

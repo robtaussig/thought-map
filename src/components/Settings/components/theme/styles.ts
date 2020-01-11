@@ -59,8 +59,8 @@ export const useThemeStyles = makeStyles<CustomTheme>((theme: any) => ({
     '&#reset': {
       right: 10,
       bottom: 10,
-      color: theme.palette.red[300],
-      borderColor: theme.palette.red[300],
+      color: theme.palette.negative[300],
+      borderColor: theme.palette.negative[300],
     },
   }),
   saveButton: () => ({

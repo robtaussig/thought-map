@@ -33,8 +33,8 @@ const styles = (theme: any): StyleRules => ({
       border: `2px solid ${theme.palette.secondary[500]}`,
     },
     '&#delete-button': {
-      border: `2px solid ${theme.palette.red[300]}`,
-      backgroundColor: theme.palette.red[300],
+      border: `2px solid ${theme.palette.negative[300]}`,
+      backgroundColor: theme.palette.negative[300],
     },
   }),
 });

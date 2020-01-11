@@ -30,12 +30,12 @@ const styles = (theme: any): StyleRules => ({
     right: 'calc(50% - 55px)',
     zIndex: 999,
     '&#backlog-button': {
-      color: theme.palette.red[300],
-      border: `2px solid ${theme.palette.red[300]}`,
+      color: theme.palette.negative[300],
+      border: `2px solid ${theme.palette.negative[300]}`,
     },
     '&#empty-stage': {
       opacity: 0.5,
-      border: `2px solid ${theme.palette.red[300]}`,
+      border: `2px solid ${theme.palette.negative[300]}`,
     },
     '&#stage-button': {
       border: `2px solid ${theme.palette.secondary[500]}`,

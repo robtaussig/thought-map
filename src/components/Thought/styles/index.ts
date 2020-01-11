@@ -93,7 +93,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   cancelTitleButton: () => ({
     flex: '0 0 35px',
     ...theme.defaults.centered,
-    color: theme.palette.red[500],
+    color: theme.palette.negative[500],
   }),
   createdAt: {
     gridArea: 'created-at',
@@ -208,7 +208,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     },
   },
   highPriorityButton: () => ({
-    color: theme.palette.red[500],
+    color: theme.palette.negative[500],
     '& > svg': {
       background: 'black',
       borderRadius: '5px',
@@ -306,7 +306,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   },
   deleteItemButton: () => ({
     ...theme.defaults.centered,
-    color: theme.palette.red[500],
+    color: theme.palette.negative[500],
   }),
   quickItem: {
 

@@ -27,7 +27,7 @@ const styles = (theme: any): StyleRules => ({
     color: theme.palette.secondary[700],
   }),
   deleteTemplate: () => ({
-    color: theme.palette.red[500],
+    color: theme.palette.negative[500],
   }),
 });
 

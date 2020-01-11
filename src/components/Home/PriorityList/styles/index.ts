@@ -38,7 +38,7 @@ export const styles = (theme: any): StyleRules => ({
     '&.highPriority': {
       position: 'relative',
       '& > button': {
-        color: theme.palette.red[400],
+        color: theme.palette.negative[400],
       }
     }
   }),

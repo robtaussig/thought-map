@@ -42,7 +42,7 @@ const styles = (theme: any): StyleRules => ({
 
   },
   deleteCustomType: () => ({
-    color: theme.palette.red[500],
+    color: theme.palette.negative[500],
   }),
 });
 

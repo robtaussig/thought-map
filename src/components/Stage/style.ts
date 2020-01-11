@@ -46,7 +46,7 @@ export const styles = (theme: any): StyleRules => ({
   }),
   unstageButton: () => ({
     flex: '0 0 50px',
-    color: theme.palette.red[300],
+    color: theme.palette.negative[300],
   }),
   promoteButton: () => ({
     flex: '0 0 50px',

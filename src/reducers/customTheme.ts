@@ -66,7 +66,7 @@ export enum PaletteOptions {
   Primary = 'primary',
   Secondary = 'secondary',
   Background = 'background',
-  Red = 'red',
+  Negative = 'negative',
 }
 
 export type Shades = 0 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 'A400';
@@ -85,7 +85,7 @@ const initialState: CustomTheme = {
     primary: primaryColor,
     secondary: secondaryColor,
     background: grays,
-    red: reds,
+    negative: reds,
   },
   defaults: {
     circleButton: {
