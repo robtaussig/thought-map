@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { useLoadedDB } from '../../../../hooks/useDB';
 import CustomizeTheme from './customize-theme';
 import { customThemeSelector, resetDefault } from '../../../../reducers/customTheme';
-import { useStyles } from './styles';
+import { useThemeStyles } from './styles';
 import { ViewPosition } from './types';
 
 interface ThemeProps {
@@ -16,7 +16,7 @@ interface ThemeProps {
 
 export const Theme: FC<ThemeProps> = ({ }) => {
   const customTheme = useSelector(customThemeSelector);
-  const classes = useStyles(customTheme);
+  const classes = useThemeStyles(customTheme);
   const dispatch = useDispatch();
   const [side, setSide] = useState<ViewPosition>(ViewPosition.Down);
   const rootRef = useRef(null);

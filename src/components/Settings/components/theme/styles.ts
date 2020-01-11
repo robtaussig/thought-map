@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 import { CustomTheme } from '../../../../reducers/customTheme';
 
-export const useStyles = makeStyles<CustomTheme>((theme: any) => ({
+export const useThemeStyles = makeStyles<CustomTheme>((theme: any) => ({
   container: () => ({
     position: 'fixed',
     height: '100%',
@@ -72,4 +72,58 @@ export const useStyles = makeStyles<CustomTheme>((theme: any) => ({
     color: theme.palette.primary[200],
     border: `2px solid ${theme.palette.primary[200]}`,
   }),
+}));
+
+export const usePaletteColorListStyles = makeStyles((theme: any) => ({
+  root: {
+
+  },
+  colorType: {
+    display: 'grid',
+    gridTemplateRows: '[header] max-content [buttons] 1fr',
+    gridTemplateColumns: '[left] 1fr [right] 1fr',
+    fontWeight: 600,
+    fontSize: 12,
+    backgroundColor: 'white',
+    boxShadow: '0px 0px 5px black',
+  },
+  colorTypeText: {
+    gridRow: 'header',
+    gridColumn: 'left / -1',
+    ...theme.defaults.centered,
+  },
+  color: {
+    boxShadow: '0px 0px 5px black',
+    borderRadius: '5px',
+    transform: 'scale(0.95)',
+    '&.main': {
+      boxShadow: `0px 0px 15px black`,
+      transform: 'scale(1)',
+    }
+  },
+  button: () => ({
+    ...theme.defaults.centered,
+    '&.left': {
+      gridColumn: 'left',
+      gridRow: 'buttons',
+      color: theme.palette.secondary[500],
+    },
+    '&.right': {
+      gridColumn: 'right',
+      gridRow: 'buttons',
+      color: theme.palette.primary[500],
+    },
+  }),
+}));
+
+export const useCustomizeThemeStyles = makeStyles((theme: any) => ({
+  root: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateRows: 'repeat(8, 1fr)',
+    gridGap: '10px',
+    height: '100%',
+    width: 'calc(100% - 80px)',
+    marginTop: 10,
+  },
 }));
