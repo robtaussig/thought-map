@@ -60,10 +60,10 @@ const styles = (theme: any): StyleRules => ({
       margin: '5px 0',
     }
   },
-  action: {
-    border: '1px solid black',
+  action: () => ({
+    border: `1px solid ${theme.palette.background[900]}`,
     padding: 4,
-  },
+  }),
   title: () => ({
     color: theme.palette.background[800],
     fontWeight: 600,
@@ -83,13 +83,13 @@ const styles = (theme: any): StyleRules => ({
     alignItems: 'center',
     marginBottom: 4,
   },
-  table: {
-    border: '1px solid black',
-    backgroundColor: 'white',
+  table: () => ({
+    border: `1px solid ${theme.palette.background[900]}`,
+    backgroundColor: theme.palette.background[0],
     borderRadius: '3px',
     padding: '1px 3px',
     cursor: 'pointer',
-  },
+  }),
   tooltip: () => ({
     justifyContent: 'center',
     overflow: 'auto',
@@ -102,7 +102,7 @@ const styles = (theme: any): StyleRules => ({
     justifyContent: 'space-between',
     marginTop: 30,
     '& > button': {
-      backgroundColor: 'white',
+      backgroundColor: theme.palette.background[0],
       color: theme.palette.secondary[700],
       border: `1px solid ${theme.palette.secondary[700]}`,
       padding: '3px 15px',

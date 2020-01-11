@@ -6,18 +6,18 @@ interface BlankThoughtNodeProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     display: 'grid',
     width: '100%',
     padding: '20px 10px',
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.background[0],
     userSelect: 'none',
     gridTemplateAreas: `"header . . status"
                         "title title . status"`,
     gridTemplateRows: '10px 20px',
     gridTemplateColumns: '50px 120px 1fr 92px',
     gridGap: '5px',
-  },
+  }),
   plan: () => ({
     gridArea: 'header',
     '& > div': {

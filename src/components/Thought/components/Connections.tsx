@@ -19,7 +19,7 @@ interface ConnectionMap {
 }
 
 const styles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     position: 'absolute',
     top: '20%',
     bottom: '20%',
@@ -27,12 +27,12 @@ const styles = (theme: any): StyleRules => ({
     right: 0,
     transition: 'all 0.1s ease-out',
     borderRadius: '20px',
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.background[0],
     opacity: 0.9,
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
-  },
+  }),
   header: {
     flex: 0,
     textTransform: 'uppercase',
@@ -64,14 +64,14 @@ const styles = (theme: any): StyleRules => ({
     backgroundColor: 'dodgerblue',
     display: 'flex',
   },
-  connectionButton: {
+  connectionButton: () => ({
     textAlign: 'left',
     width: '100%',
     '&:active, &:link': {
       backgroundColor: 'dodgerblue',
-      color: 'white',
+      color: theme.palette.background[0],
     },
-  },
+  }),
   addConnectionIcon: {
     ...theme.defaults.centered,
   },
@@ -88,7 +88,7 @@ export const Connections: FC<ConnectionsProps> = ({ classes, thought, from, to, 
   useEffect(() => {
     if (revealed) {
       setPositionOfCenter(from ? -50 : 50);
-  
+
       return () => setPositionOfCenter(INITIAL_STATE);
     }
   }, [revealed]);

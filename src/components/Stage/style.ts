@@ -42,7 +42,7 @@ export const styles = (theme: any): StyleRules => ({
   stagedItemTitle: () => ({
     flex: 1,
     margin: 10,
-    color: theme.palette.background[600],
+    color: theme.palette.background[900],
   }),
   unstageButton: () => ({
     flex: '0 0 50px',

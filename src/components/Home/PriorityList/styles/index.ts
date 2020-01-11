@@ -13,7 +13,7 @@ export const styles = (theme: any): StyleRules => ({
     color: theme.palette.secondary[700],
     backgroundColor: theme.palette.background[200],
     zIndex: 1,
-    borderTop: '1px solid white',
+    borderTop: `1px solid ${theme.palette.background[0]}`,
     fontWeight: 600,
     cursor: 'pointer',
   }),

@@ -61,7 +61,7 @@ const styles = (theme: any): StyleRules => ({
   nodeTitle: () => ({
     fontWeight: 600,
     color: theme.palette.background[200],
-    textShadow: '0px 0px 30px black',
+    textShadow: `0px 0px 30px ${theme.palette.background[900]}`,
     overflow: 'auto',
     '&.origin': {
       color: theme.palette.secondary[300],

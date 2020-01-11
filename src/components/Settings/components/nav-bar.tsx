@@ -12,7 +12,7 @@ const styles = (theme: any): StyleRules => ({
   root: {
     display: 'flex',
     flex: '0 0 80px',
-    boxShadow: '0px 3px 7px 2px black',
+    boxShadow: `0px 3px 7px 2px ${theme.palette.background[900]}`,
   },
   navItem: () => ({
     flex: 1,
@@ -21,11 +21,11 @@ const styles = (theme: any): StyleRules => ({
     backgroundColor: theme.palette.background[200],
     '&.current': {
       backgroundColor: theme.palette.primary[500],
-      boxShadow: '0px 0px 5px 0px black',
+      boxShadow: `0px 0px 5px 0px ${theme.palette.background[900]}`,
       zIndex: 1,
     },
     '&[disabled]': {
-      color: 'black',
+      color: theme.palette.background[900],
     },
   }),
 });

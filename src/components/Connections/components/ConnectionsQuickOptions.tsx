@@ -52,7 +52,7 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     '&:not(:first-child)': {
       paddingLeft: 15,
-      borderLeft: '1px solid black',
+      borderLeft: `1px solid ${theme.palette.background[900]}`,
     },
     '&:not(:last-child)': {
       paddingRight: 15,

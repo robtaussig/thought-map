@@ -83,11 +83,11 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     display: 'flex',
     alignItems: 'center',
   },
-  defaultTypeHeader: {
-    color: 'white',
+  defaultTypeHeader: () => ({
+    color: theme.palette.background[0],
     fontWeight: 600,
     marginRight: 15,
-  },
+  }),
   checkboxLabel: () => ({
     ...theme.defaults.centered,
     justifyContent: 'flex-start',
@@ -114,7 +114,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
   deletePlanButton: () => ({
     marginRight: 20,
     backgroundColor: theme.palette.negative[500],
-    color: 'white',
+    color: theme.palette.background[0],
     borderRadius: '4px',
     padding: '15px 30px',
     '&:disabled': {

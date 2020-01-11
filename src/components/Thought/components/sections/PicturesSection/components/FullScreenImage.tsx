@@ -9,7 +9,7 @@ interface FullScreenImageProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  imageWrapper: {
+  imageWrapper: () => ({
     position: 'fixed',
     top: 0,
     left: 0,
@@ -18,15 +18,15 @@ const styles = (theme: any): StyleRules => ({
     zIndex: 10000,
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: theme.palette.background[900],
     overflow: 'auto',
-  },
+  }),
   image: {
     width: '100%',
     height: 'auto',
     transform: 'translateZ',
     transition: 'all 0.3s linear',
-    
+
     '&.display': {
       opacity: 1,
     },
@@ -34,8 +34,8 @@ const styles = (theme: any): StyleRules => ({
       width: '200%',
     },
   },
-  closeButton: {
-    color: 'white',
+  closeButton: () => ({
+    color: theme.palette.background[0],
     position: 'absolute',
     top: 0,
     right: 0,
@@ -46,7 +46,7 @@ const styles = (theme: any): StyleRules => ({
     alignItems: 'center',
     justifyContent: 'center',
     textShadow: '1px 1px 5px #000000',
-  },
+  }),
 });
 
 export const FullScreenImage: FC<FullScreenImageProps> = ({ classes, onClose, image }) => {
@@ -72,7 +72,7 @@ export const FullScreenImage: FC<FullScreenImageProps> = ({ classes, onClose, im
         closeButton.style.display = 'block';
       }
     }
-  
+
     wrapper.appendChild(closeButton);
     wrapper.appendChild(imageElement);
     document.body.appendChild(wrapper);

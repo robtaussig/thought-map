@@ -17,10 +17,10 @@ const styles = (theme: any): StyleRules => ({
     flexDirection: 'column',
     height: '100%',
   },
-  icon: {
+  icon: () => ({
     fontSize: 12,
-    color: 'white',
-  },
+    color: theme.palette.background[0],
+  }),
   wrapper: {
     overflow: 'auto',
   }
@@ -38,7 +38,7 @@ export const Tooltip: FC<TooltipProps> = ({ classes, text, className }) => {
     <button className={classNames(classes.root, {
       [className]: Boolean(className)
     })} onClick={handleClickTooltip}>
-      <Help className={classes.icon}/>
+      <Help className={classes.icon} />
     </button>
   );
 };

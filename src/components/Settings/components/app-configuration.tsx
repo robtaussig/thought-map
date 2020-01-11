@@ -40,7 +40,7 @@ const styles = (theme: any): StyleRules => ({
   header: () => ({
     flex: '0 0 80px',
     backgroundColor: theme.palette.primary[500],
-    boxShadow: '0px 0px 5px 0px black',
+    boxShadow: `0px 0px 5px 0px ${theme.palette.background[900]}`,
     width: '100%',
     alignItems: 'center',
     display: 'flex',
@@ -48,23 +48,23 @@ const styles = (theme: any): StyleRules => ({
     fontSize: 24,
   }),
   button: () => ({
-    border: '2px solid white',
+    border: `2px solid ${theme.palette.background[0]}`,
     padding: '3px 0',
     marginTop: 40,
     width: '70%',
     borderRadius: '3px',
     backgroundColor: theme.palette.background[500],
-    color: 'white',
+    color: theme.palette.background[0],
     '&:active': {
       backgroundColor: theme.palette.background[700],
       boxShadow: 'none!important',
     },
     '&:disabled': {
       backgroundColor: theme.palette.background[300],
-      color: 'white',
+      color: theme.palette.background[0],
     },
     '&:not(:disabled)': {
-      boxShadow: '0px 0px 5px 2px black',
+      boxShadow: `0px 0px 5px 2px ${theme.palette.background[900]}`,
     }
   }),
   circleButton: {
@@ -74,18 +74,18 @@ const styles = (theme: any): StyleRules => ({
       bottom: 10,
     },
   },
-  checkboxLabel: {
+  checkboxLabel: () => ({
     marginTop: 40,
     width: '70%',
     padding: '3px 0',
     display: 'flex',
     alignItems: 'center',
     height: 30,
-    color: 'white',
+    color: theme.palette.background[0],
     '& > input': {
       marginRight: 5,
     }
-  },
+  }),
 });
 
 export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings }) => {

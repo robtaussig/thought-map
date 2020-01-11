@@ -13,13 +13,13 @@ const styles = (theme: any): StyleRules => ({
     opacity: 0.9,
     transition: 'all 0.3s linear',
   }),
-  header: {
+  header: () => ({
     margin: '20px auto',
     textAlign: 'center',
     fontSize: '24px',
-    color: 'white',
+    color: theme.palette.background[0],
     fontWeight: 600,
-  },
+  }),
   selectLabel: () => ({
     display: 'flex',
     flexDirection: 'column',

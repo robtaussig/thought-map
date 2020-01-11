@@ -71,7 +71,7 @@ const styles = (theme: any): StyleRules => ({
   partText: () => ({
     zIndex: 99,
     color: theme.palette.background[100],
-    textShadow: '0px 0px 4px black',
+    textShadow: `0px 0px 4px ${theme.palette.background[900]}`,
     ...theme.defaults.textEllipsis,
     textAlign: 'left',
     '&.isSelected': {

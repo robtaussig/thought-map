@@ -7,7 +7,7 @@ export const styles = (theme: any): StyleRules => ({
     width: '100%',
     display: 'grid',
     padding: 20,
-    backgroundColor: theme.palette.background[700],
+    backgroundColor: theme.palette.background[600],
     gap: '20px',
     gridTemplateAreas: `"sort-buttons sort-buttons"
                         "content content"
@@ -23,10 +23,10 @@ export const styles = (theme: any): StyleRules => ({
       backgroundColor: theme.palette.primary[500],
       borderRadius: '10px',
       position: 'relative',
-      boxShadow: '0px 0px 5px -1px black',
+      boxShadow: `0px 0px 5px -1px ${theme.palette.background[900]}`,
       '& > select': {
         flex: 1,
-        color: theme.palette.background[600],
+        color: theme.palette.background[900],
         display: 'flex',
         textAlignLast: 'center',
         paddingLeft: 13,
@@ -37,12 +37,12 @@ export const styles = (theme: any): StyleRules => ({
       }
     },
   }),
-  content: {
+  content: () => ({
     gridArea: 'content',
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
-    backgroundColor: 'white',
+    borderTop: `1px solid ${theme.palette.background[0]}`,
     overflow: 'auto',
     ...theme.defaults.castShadow.light,
     '& > h3': {
@@ -59,7 +59,7 @@ export const styles = (theme: any): StyleRules => ({
         bottom: 0,
       },
     },
-  },
+  }),
   flippableWrapper: {
     display: 'flex',
     gridArea: 'sort-buttons',
@@ -69,15 +69,15 @@ export const styles = (theme: any): StyleRules => ({
     display: 'flex',
     justifyContent: 'space-between',
     backgroundColor: theme.palette.primary[500],
-    color: 'white',
+    color: theme.palette.background[0],
   }),
   searchWrapper: () => ({
     backgroundColor: theme.palette.primary[500],
-    color: 'white',
+    color: theme.palette.background[0],
     display: 'flex',
     backfaceVisibility: 'hidden',
   }),
-  inputLabel: {
+  inputLabel: () => ({
     flex: 1,
     height: '100%',
     display: 'flex',
@@ -87,18 +87,18 @@ export const styles = (theme: any): StyleRules => ({
       margin: 'auto 0',
       fontSize: 18,
       borderRadius: '10px',
-      border: '1px solid black',
+      border: `1px solid ${theme.palette.background[900]}`,
       padding: '3px 10px',
       outline: 'none',
     }
-  },
-  searchButton: {
+  }),
+  searchButton: () => ({
     flex: '0 0 40px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'white',
-  },
+    color: theme.palette.background[0],
+  }),
   sortButton: () => ({
     color: theme.palette.background[800],
     cursor: 'pointer',
@@ -119,12 +119,12 @@ export const styles = (theme: any): StyleRules => ({
   emptyIcon: {
     width: 24,
   },
-  thoughtNode: {
+  thoughtNode: () => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '20px 10px',
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.background[0],
     userSelect: 'none',
     '& > #status-select': {
       marginLeft: 20,
@@ -132,7 +132,7 @@ export const styles = (theme: any): StyleRules => ({
       backgroundColor: '#8380ff',
       borderRadius: '10px',
       '& > select': {
-        color: 'white',
+        color: theme.palette.background[0],
         display: 'flex',
         textAlignLast: 'center',
         padding: '0 13px',
@@ -140,7 +140,7 @@ export const styles = (theme: any): StyleRules => ({
         border: 'none',
       },
     },
-  },
+  }),
   expandedThoughtNode: {
     display: 'flex',
     flexDirection: 'column',
@@ -180,7 +180,7 @@ export const styles = (theme: any): StyleRules => ({
     color: theme.palette.secondary[600],
   }),
   thoughtNodeTitle: () => ({
-    color: theme.palette.background[500],
+    color: theme.palette.background[900],
     flex: 1,
     '&.arrivedFrom': {
       fontWeight: 600,

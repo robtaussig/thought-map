@@ -29,7 +29,7 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
 });
 
 export const thoughtInformationStyles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     display: 'grid',
     height: '100%',
     padding: 20,
@@ -40,23 +40,23 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridTemplateRows: 'max-content max-content 1fr',
     gridTemplateColumns: 'max-content max-content 1fr',
     gridGap: '10px',
-    color: 'white',
+    color: theme.palette.background[0],
     marginBottom: 110,
-  },
-  circleButton: {
+  }),
+  circleButton: () => ({
     ...theme.defaults.circleButton,
     '&#cancel-edit': {
       top: 10,
       left: 10,
       opacity: 0.5,
-      border: '2px solid white',
+      border: `2px solid ${theme.palette.background[0]}`,
     },
     '&#visibile-history-button': {
       bottom: 10,
       right: 10,
       transition: 'all 0.1s linear',
     },
-  },
+  }),
   placeBeforeButton: {
 
   },
@@ -119,7 +119,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     backgroundColor: theme.palette.background[200],
     borderRadius: '10px',
     transition: 'background-color 0.5s ease-out',
-    color: 'black',
+    color: theme.palette.background[800],
     margin: '10px 0',
     '&:last-child': {
       marginBottom: 100,
@@ -163,7 +163,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     fontWeight: 600,
     ...theme.defaults.textEllipsis,
     '&.drop-target': {
-      backgroundColor: 'black',
+      backgroundColor: theme.palette.background[900],
       color: theme.palette.primary[500],
     },
   }),
@@ -171,7 +171,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridArea: 'section-field',
     color: theme.palette.background[400],
     '&.drop-target': {
-      color: theme.palette.background[600],
+      color: theme.palette.background[900],
     },
   }),
   sectionQuickActionButton: {
@@ -185,7 +185,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   completeThoughtButton: () => ({
     color: theme.palette.primary[500],
     '& > svg': {
-      background: 'black',
+      background: theme.palette.background[900],
       borderRadius: '5px',
     },
     '&.firstAction': {
@@ -210,7 +210,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   highPriorityButton: () => ({
     color: theme.palette.negative[500],
     '& > svg': {
-      background: 'black',
+      background: theme.palette.background[900],
       borderRadius: '5px',
     },
   }),
@@ -240,7 +240,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       paddingTop: 10,
     },
     '&:not(:last-child)': {
-      borderBottom: '1px solid black',
+      borderBottom: `1px solid ${theme.palette.background[900]}`,
     },
     '& .completed': {
       color: theme.palette.secondary[500],
@@ -249,7 +249,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   quickAddButton: () => ({
     color: theme.palette.primary[500],
     '& > svg': {
-      background: 'black',
+      background: theme.palette.background[900],
       borderRadius: '5px',
     },
   }),
