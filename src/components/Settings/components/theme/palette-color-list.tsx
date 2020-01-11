@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { PaletteShades, PaletteOptions } from '../../../../reducers/customTheme';
 import classNames from 'classnames';
-import Refresh from '@material-ui/icons/Refresh';
+import Help from '@material-ui/icons/Help';
 import Palette from '@material-ui/icons/Palette';
 import { usePaletteColorListStyles } from './styles';
+import debounce from 'lodash/debounce';
 
 interface PaletteColorListProps {
   column: number;
@@ -19,6 +20,15 @@ export const PaletteColorList: FC<PaletteColorListProps> = ({
   onChange,
 }) => {
   const classes = usePaletteColorListStyles({});
+
+  const debouncedUpdate = useCallback(debounce((color: string) => {
+    onChange(color);
+  }, 300, { leading: true, trailing: true }), []);
+
+  const handleChangePalette = useCallback((event: any) => {
+    const value = event.target.value;
+    debouncedUpdate(value);
+  }, []);
 
   return (
     <>
@@ -37,13 +47,16 @@ export const PaletteColorList: FC<PaletteColorListProps> = ({
           })}
           onClick={() => onChange()}
         >
-          <Refresh />
+          <Help />
         </button>
-        <button className={classNames(classes.button, {
-          right: true,
-        })}>
+        <label
+          className={classNames(classes.palette, {
+            right: true,
+          })}
+        >
           <Palette />
-        </button>
+          <input type={'color'} onChange={handleChangePalette} />
+        </label>
       </div>
       {Object.entries(values).slice(2, Object.keys(values).length - 2).map(([shade, value], idx) => {
         return (

@@ -103,15 +103,17 @@ export const usePaletteColorListStyles = makeStyles((theme: any) => ({
   },
   button: () => ({
     ...theme.defaults.centered,
-    '&.left': {
-      gridColumn: 'left',
-      gridRow: 'buttons',
-      color: theme.palette.secondary[500],
-    },
-    '&.right': {
-      gridColumn: 'right',
-      gridRow: 'buttons',
-      color: theme.palette.primary[500],
+    gridColumn: 'left',
+    gridRow: 'buttons',
+    color: theme.palette.secondary[500],
+  }),
+  palette: () => ({
+    ...theme.defaults.centered,
+    gridColumn: 'right',
+    gridRow: 'buttons',
+    color: theme.palette.primary[500],
+    '& input': {
+      display: 'none',
     },
   }),
 }));
