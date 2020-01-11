@@ -46,13 +46,13 @@ import {
 } from '../types';
 
 const styles = (theme: any): StyleRules => ({
-  container: {
+  container: () => ({
     position: 'fixed',
     height: '100%',
     left: 0,
     right: 0,
     top: 0,
-    backgroundColor: '#545454',
+    backgroundColor: theme.palette.background[500],
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -63,8 +63,8 @@ const styles = (theme: any): StyleRules => ({
         display: 'none',
       }
     }
-  },
-  header: {
+  }),
+  header: () => ({
     flex: '0 0 80px',
     backgroundColor: theme.palette.primary[500],
     boxShadow: '0px 0px 5px 0px black',
@@ -73,8 +73,8 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     justifyContent: 'center',
     fontSize: 24,
-  },
-  button: {
+  }),
+  button: () => ({
     border: '2px solid white',
     padding: '3px 0',
     marginTop: 40,
@@ -93,8 +93,8 @@ const styles = (theme: any): StyleRules => ({
     '&:not(:disabled)': {
       boxShadow: '0px 0px 5px 2px black',
     }
-  },
-  buttonWrapper: {
+  }),
+  buttonWrapper: () => ({
     border: '2px solid white',
     marginTop: 40,
     width: '70%',
@@ -109,8 +109,8 @@ const styles = (theme: any): StyleRules => ({
       justifyContent: 'center',
       right: -30,
     }
-  },
-  tooltipButton: {
+  }),
+  tooltipButton: () => ({
     color: 'white',
     padding: '3px 0',
     flex: 1,
@@ -122,8 +122,8 @@ const styles = (theme: any): StyleRules => ({
       backgroundColor: theme.palette.background[300],
       color: 'white',
     },
-  },
-  uploadInput: {
+  }),
+  uploadInput: () => ({
     display: 'flex',
     justifyContent: 'center',
     border: '2px solid white',
@@ -137,7 +137,7 @@ const styles = (theme: any): StyleRules => ({
     '& > input': {
       display: 'none',
     }
-  },
+  }),
   circleButton: {
     ...theme.defaults.circleButton,
     '&#submit': {
@@ -167,7 +167,7 @@ const DELETE_DATA_TOOLTIP = 'You may need to delete your data before importing f
 export const jsonDump = async (db: RxDatabase) => {
   const json = await db.dump();
   const dataStr = JSON.stringify(json);
-  const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+  const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
   const exportFileDefaultName = 'data.json';
   const linkElement = document.createElement('a');
   linkElement.setAttribute('href', dataUri);
@@ -180,7 +180,7 @@ export const Data: FC<DataProps> = ({ classes, setLoading }) => {
   const [side, setSide] = useState<Side>(Side.TOP);
   const { history } = useApp();
   const readyToImport = getSearchParam(history, 'import');
-  
+
   const rootRef = useRef(null);
   const [openModal, closeModal] = useModal();
   const db = useLoadedDB();
@@ -204,17 +204,17 @@ export const Data: FC<DataProps> = ({ classes, setLoading }) => {
       diagnosisChunks[action][title].items =
         diagnosisChunks[action][title].items.concat(affectedItems.map<ChunkItem>(item => ({ item, table, solution })));
     });
-    openModal(<Diagnosis diagnosisChunks={diagnosisChunks} onFix={closeModal}/>);
+    openModal(<Diagnosis diagnosisChunks={diagnosisChunks} onFix={closeModal} />);
   }, []);
 
   useEffect(() => {
     const handleChange: EventListener = event => {
       const fr = new FileReader();
-    
+
       fr.onload = e => {
         const json = JSON.parse((e.target as any).result);
 
-        const importJSON = async () => {          
+        const importJSON = async () => {
           (window as any).blockDBSubscriptions = true;
           setLoading();
           await db.importDump(json);
@@ -226,7 +226,7 @@ export const Data: FC<DataProps> = ({ classes, setLoading }) => {
 
       fr.readAsText((event.target as any).files[0]);
     };
-  
+
     if (readyToImport) {
       importJSONRef.current.addEventListener('change', handleChange);
     }
@@ -273,24 +273,24 @@ export const Data: FC<DataProps> = ({ classes, setLoading }) => {
         <h1 className={classes.header}>Data</h1>
         <label className={classes.uploadInput}>
           <span>Import Data from JSON</span>
-          <input ref={importJSONRef} type="file" accept="json/*" id="file-input"/>
+          <input ref={importJSONRef} type="file" accept="json/*" id="file-input" />
         </label>
         <div className={classes.buttonWrapper}>
-            <button className={classes.tooltipButton} onClick={handleClickDeleteDatabase}>Delete Data</button>
-            <Tooltip className={'tooltip'} text={DELETE_DATA_TOOLTIP}/>
-          </div>
+          <button className={classes.tooltipButton} onClick={handleClickDeleteDatabase}>Delete Data</button>
+          <Tooltip className={'tooltip'} text={DELETE_DATA_TOOLTIP} />
+        </div>
         <button className={classes.button} onClick={handleClickExportDataJSON}>Export Data to JSON</button>
         <div className={classes.buttonWrapper}>
           <button className={classes.tooltipButton} onClick={handleClickRunDiagnosis}>Run diagnosis</button>
-          <Tooltip className={'tooltip'} text={DIAGNOSIS_TOOLTIP_TEXT}/>
+          <Tooltip className={'tooltip'} text={DIAGNOSIS_TOOLTIP_TEXT} />
         </div>
-        <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
+        <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close} />
       </div>
     </Fragment>
   );
 };
 
-const booleanValues = new Set([ true, false ]);
+const booleanValues = new Set([true, false]);
 
 const VALID_SETTINGS: ValidSettings = {
   reportBugs: {
@@ -421,7 +421,7 @@ const formatResults = (
 };
 
 const getOrphanedObjects = (orphanedChildObjectSources: OrphanedChildSource[], thoughtIds: Set<string>): OrphanedChildObject[] => {
-   return orphanedChildObjectSources.reduce((results, { table, items }) => {
+  return orphanedChildObjectSources.reduce((results, { table, items }) => {
     items.forEach(item => {
       if (thoughtIds.has(item.thoughtId) === false) {
         results.push({ table, item });
@@ -447,7 +447,7 @@ const isBrokenConnection = (thoughtIds: Set<string>): (connection: Connection) =
 };
 
 const getInvalidSettings = (settings: Setting[]): InvalidSetting[] => {
-   return settings.filter(({ field, value}) => {
+  return settings.filter(({ field, value }) => {
     return !(VALID_SETTINGS[field] &&
       (
         VALID_SETTINGS[field].values === null ||
@@ -479,7 +479,7 @@ const getDBItems = (db: RxDatabase): Promise<[
 };
 
 const runDiagnosis = async (db: RxDatabase) => {
-  const [ thoughts, connections, plans, notes, tags, pictures, settings, statuses ] = await getDBItems(db);
+  const [thoughts, connections, plans, notes, tags, pictures, settings, statuses] = await getDBItems(db);
   const thoughtIds = new Set<string>(thoughts.map<string>(({ id }) => id));
   const orphanedChildObjectSources: OrphanedChildSource[] = [
     { table: 'note', items: notes },

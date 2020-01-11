@@ -16,7 +16,7 @@ const styles = (theme: any): StyleRules => ({
   root: {
 
   },
-  selectLabel: {
+  selectLabel: () => ({
     '&#statuses': {
       '& select': {
         width: '100%',
@@ -26,7 +26,7 @@ const styles = (theme: any): StyleRules => ({
         color: theme.palette.background[100],
       },
     },
-  },
+  }),
 });
 
 export const StatusesModal: FC<StatusesModalProps> = ({ classes, onClose, thought, statusOptions }) => {

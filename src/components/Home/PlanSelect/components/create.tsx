@@ -19,7 +19,7 @@ const styles = (theme: any): StyleRules => ({
     gridTemplateColumns: '1fr max-content',
     gridGap: 10,
   },
-  submitButton: {
+  submitButton: () => ({
     gridArea: 'submit',
     color: theme.palette.secondary[700],
     cursor: 'pointer',
@@ -32,7 +32,7 @@ const styles = (theme: any): StyleRules => ({
       backgroundColor: 'transparent',
       border: `1px solid ${theme.palette.background[400]}`,
     },
-  },
+  }),
   inputLabel: {
     gridArea: 'input',
     '& input': {

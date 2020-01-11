@@ -18,21 +18,21 @@ const styles = (theme: any): StyleRules => ({
     gridTemplateColumns: '50px 120px 1fr 92px',
     gridGap: '5px',
   },
-  plan: {
+  plan: () => ({
     gridArea: 'header',
     '& > div': {
       height: '100%',
       backgroundColor: theme.palette.background[300],
     },
-  },
-  title: {
+  }),
+  title: () => ({
     gridArea: 'title',
     '& > div': {
       height: '15px',
       backgroundColor: theme.palette.background[500],
     },
-  },
-  status: {
+  }),
+  status: () => ({
     gridArea: 'status',
     ...theme.defaults.centered,
     '& > div': {
@@ -41,16 +41,16 @@ const styles = (theme: any): StyleRules => ({
       width: '100%',
       backgroundColor: theme.palette.secondary[500],
     },
-  },
+  }),
 });
 
 export const BlankThoughtNode: FC<BlankThoughtNodeProps> = ({ classes }) => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.plan}><div/></div>
-      <div className={classes.title}><div/></div>
-      <div className={classes.status}><div/></div>
+      <div className={classes.plan}><div /></div>
+      <div className={classes.title}><div /></div>
+      <div className={classes.status}><div /></div>
     </div>
   );
 };

@@ -21,7 +21,7 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  form: {
+  form: () => ({
     display: 'flex',
     marginBottom: 20,
     '& button': {
@@ -30,7 +30,7 @@ const styles = (theme: any): StyleRules => ({
       marginLeft: 30,
       color: theme.palette.secondary[700],
     },
-  },
+  }),
   inputLabel: {
     flex: 1,
     '& input': {
@@ -45,9 +45,9 @@ const styles = (theme: any): StyleRules => ({
   customStatusText: {
 
   },
-  deleteCustomStatus: {
+  deleteCustomStatus: () => ({
     color: theme.palette.red[500],
-  },
+  }),
 });
 
 export const CustomStatuses: FC<CustomStatusesProps> = ({ classes, onClose }) => {
@@ -118,7 +118,7 @@ export const CustomStatuses: FC<CustomStatusesProps> = ({ classes, onClose }) =>
         return (
           <div key={status} className={classes.customStatus}>
             <span className={classes.customStatusText}>{status}</span>
-            <button className={classes.deleteCustomStatus} onClick={deleteCustomStatus(status)}><Delete/></button>
+            <button className={classes.deleteCustomStatus} onClick={deleteCustomStatus(status)}><Delete /></button>
           </div>
         );
       })}

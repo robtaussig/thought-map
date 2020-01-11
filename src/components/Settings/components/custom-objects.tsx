@@ -22,13 +22,13 @@ enum Side {
 }
 
 const styles = (theme: any): StyleRules => ({
-  container: {
+  container: () => ({
     position: 'fixed',
     height: '100%',
     left: 0,
     right: 0,
     top: 0,
-    backgroundColor: '#545454',
+    backgroundColor: theme.palette.background[500],
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -39,8 +39,8 @@ const styles = (theme: any): StyleRules => ({
         display: 'none',
       }
     }
-  },
-  header: {
+  }),
+  header: () => ({
     flex: '0 0 80px',
     backgroundColor: theme.palette.primary[500],
     boxShadow: '0px 0px 5px 0px black',
@@ -49,8 +49,8 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     justifyContent: 'center',
     fontSize: 24,
-  },
-  button: {
+  }),
+  button: () => ({
     border: '2px solid white',
     padding: '3px 0',
     marginTop: 40,
@@ -69,7 +69,7 @@ const styles = (theme: any): StyleRules => ({
     '&:not(:disabled)': {
       boxShadow: '0px 0px 5px 2px black',
     }
-  },
+  }),
   circleButton: {
     ...theme.defaults.circleButton,
     '&#submit': {
@@ -89,21 +89,21 @@ export const CustomObjects: FC<CustomObjectsProps> = ({ classes, settings }) => 
   }, []);
 
   const handleClickCustomStatuses = useCallback(() => {
-    openModal(<CustomStatuses onClose={closeModal}/>);
+    openModal(<CustomStatuses onClose={closeModal} />);
   }, []);
 
   const handleClickCustomTags = useCallback(() => {
-    openModal(<CustomTags onClose={closeModal}/>);
+    openModal(<CustomTags onClose={closeModal} />);
   }, []);
 
   const handleClickCustomTypes = useCallback(() => {
-    openModal(<CustomTypes onClose={closeModal}/>);
+    openModal(<CustomTypes onClose={closeModal} />);
   }, []);
 
   const handleClickDeleteTemplates = useCallback(() => {
-    openModal(<DeleteTemplates onClose={closeModal}/>);
+    openModal(<DeleteTemplates onClose={closeModal} />);
   }, []);
-  
+
   return (
     <Fragment>
       <button className={classes.button} onClick={() => setSide(Side.MIDDLE)}>
@@ -120,7 +120,7 @@ export const CustomObjects: FC<CustomObjectsProps> = ({ classes, settings }) => 
         <button className={classes.button} onClick={handleClickCustomTags}>Tags</button>
         <button className={classes.button} onClick={handleClickCustomTypes}>Types</button>
         <button className={classes.button} onClick={handleClickDeleteTemplates}>Delete Templates</button>
-        <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
+        <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close} />
       </div>
     </Fragment>
   );

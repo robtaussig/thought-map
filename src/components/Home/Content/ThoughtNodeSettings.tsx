@@ -30,7 +30,7 @@ const styles = (theme: any): StyleRules => ({
     fontWeight: 600,
     fontSize: 20,
   },
-  buttonWrapper: {
+  buttonWrapper: () => ({
     border: `1px solid ${theme.palette.secondary[700]}`,
     margin: '10px 0',
     width: '70%',
@@ -46,8 +46,8 @@ const styles = (theme: any): StyleRules => ({
         color: theme.palette.secondary[700],
       },
     },
-  },
-  button: {
+  }),
+  button: () => ({
     width: '100%',
     padding: '5px 15px',
     color: theme.palette.secondary[700],
@@ -64,7 +64,7 @@ const styles = (theme: any): StyleRules => ({
         backgroundColor: theme.palette.red[500],
       },
     },
-  },
+  }),
 });
 
 const BUMP_TOOLTIP_TEXT = 'Bumping a thought will update it so that it will be displayed at the top (when sorted by last updated), without changing any other fields. This can be useful to increase the visibility of a thought that becomes buried over time as new thoughts rise to the top.';
@@ -121,20 +121,20 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
       <h1 className={classes.title}>{thought.title}</h1>
       <div className={classes.buttonWrapper}>
         <button className={classes.button} onClick={handleClickBump}>Bump</button>
-        <Tooltip className={'tooltip'} text={BUMP_TOOLTIP_TEXT}/>
+        <Tooltip className={'tooltip'} text={BUMP_TOOLTIP_TEXT} />
       </div>
       <div className={classes.buttonWrapper}>
         <button className={classes.button} onClick={handleClickStage}>Stage</button>
-        <Tooltip className={'tooltip'} text={STAGE_TOOLTIP_TEXT}/>
+        <Tooltip className={'tooltip'} text={STAGE_TOOLTIP_TEXT} />
       </div>
       <div className={classes.buttonWrapper}>
-        <button className={classes.button} onClick={handleClickViewHistory}>View History</button>        
+        <button className={classes.button} onClick={handleClickViewHistory}>View History</button>
       </div>
       {hasConnections && <div className={classes.buttonWrapper}>
         <button className={classes.button} onClick={handleClickViewConnections}>View Connections</button>
       </div>}
       <div className={classes.buttonWrapper}>
-        <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete}>Delete</button>        
+        <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete}>Delete</button>
       </div>
     </div>
   );

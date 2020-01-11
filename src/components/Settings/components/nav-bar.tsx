@@ -14,7 +14,7 @@ const styles = (theme: any): StyleRules => ({
     flex: '0 0 80px',
     boxShadow: '0px 3px 7px 2px black',
   },
-  navItem: {
+  navItem: () => ({
     flex: 1,
     fontSize: 20,
     fontWeight: 600,
@@ -27,7 +27,7 @@ const styles = (theme: any): StyleRules => ({
     '&[disabled]': {
       color: 'black',
     },
-  },
+  }),
 });
 
 export const NavBar: FC<NavBarProps> = ({ classes, items, id = 'nav' }) => {

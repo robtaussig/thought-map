@@ -40,13 +40,13 @@ const styles = (theme: any): StyleRules => ({
     flex: 1,
     gridArea: 'content',
   },
-  navItems: {
+  navItems: () => ({
     display: 'flex',
     overflow: 'auto',
     borderBottom: `1px solid ${theme.palette.secondary[500]}`,
     gridArea: 'nav-items',
-  },
-  navItem: {
+  }),
+  navItem: () => ({
     color: theme.palette.background[400],
     fontWeight: 600,
     display: 'flex',
@@ -60,7 +60,7 @@ const styles = (theme: any): StyleRules => ({
     '&.active': {
       color: theme.palette.secondary[500],
     },
-  },
+  }),
   navButton: {
     color: 'inherit',
   },

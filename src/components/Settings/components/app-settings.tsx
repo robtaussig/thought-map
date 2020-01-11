@@ -29,7 +29,7 @@ const styles = (theme: any): StyleRules => ({
     alignItems: 'center',
     overflow: 'auto',
   },
-  updateButton: {
+  updateButton: () => ({
     border: '2px solid white',
     padding: '3px 0',
     marginTop: 40,
@@ -48,7 +48,7 @@ const styles = (theme: any): StyleRules => ({
     '&:not(:disabled)': {
       boxShadow: '0px 0px 5px 2px black',
     }
-  }
+  }),
 });
 
 const SETTINGS_PATH_REGEX = /settings.*/;

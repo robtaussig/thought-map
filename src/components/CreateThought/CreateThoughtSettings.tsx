@@ -4,14 +4,15 @@ import Select from '../General/Select';
 import { Template } from '../../store/rxdb/schemas/template';
 
 const styles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     position: 'fixed',
     height: '100%',
     left: 0,
     right: 0,
-    backgroundColor: '#545454f0',    
+    backgroundColor: theme.palette.background[500],
+    opacity: 0.9,
     transition: 'all 0.3s linear',
-  },
+  }),
   header: {
     margin: '20px auto',
     textAlign: 'center',
@@ -19,12 +20,12 @@ const styles = (theme: any): StyleRules => ({
     color: 'white',
     fontWeight: 600,
   },
-  selectLabel: {
+  selectLabel: () => ({
     display: 'flex',
-    flexDirection: 'column',    
+    flexDirection: 'column',
     color: theme.palette.background[200],
     margin: '110px 110px',
-  },
+  }),
   selectInput: {
     flex: '0 0 40px',
     fontSize: 20,

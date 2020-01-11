@@ -21,14 +21,14 @@ const styles = (theme: any): StyleRules => ({
       width: '100%',
     },
   },
-  submitButton: {
+  submitButton: () => ({
     marginTop: 10,
     marginLeft: 'auto',
     color: theme.palette.secondary[700],
     fontWeight: 600,
     cursor: 'pointer',
     userSelect: 'none',
-  },
+  }),
 });
 
 export const EditPictureDescription: FC<EditPictureDescriptionProps> = ({ classes, onClose, picture }) => {

@@ -1,7 +1,7 @@
 import { StyleRules } from '@material-ui/core/styles';
 
 export const thoughtHomeStyles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     height: '100%',
     position: 'relative',
     overflow: 'auto',
@@ -15,8 +15,8 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
       left: '50%',
       transform: 'translate(-50%, -50%)',
     },
-  },
-  circleButton: {
+  }),
+  circleButton: () => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
     backgroundColor: theme.palette.background[600],
@@ -25,7 +25,7 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
       top: 10,
       right: 10,
     },
-  },
+  }),
 });
 
 export const thoughtInformationStyles = (theme: any): StyleRules => ({
@@ -60,17 +60,17 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   placeBeforeButton: {
 
   },
-  thoughtTitle: {
+  thoughtTitle: () => ({
     gridArea: 'title',
     fontSize: 24,
     color: theme.palette.primary[500],
     userSelect: 'none',
-  },
-  planName: {
+  }),
+  planName: () => ({
     gridArea: 'plan-name',
     color: theme.palette.background[300],
     fontWeight: 600,
-  },
+  }),
   editTitleForm: {
     gridArea: 'title',
     fontSize: 24,
@@ -85,16 +85,16 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       flex: 1,
     },
   },
-  submitTitleButton: {
+  submitTitleButton: () => ({
     flex: '0 0 35px',
     ...theme.defaults.centered,
     color: theme.palette.primary[500],
-  },
-  cancelTitleButton: {
+  }),
+  cancelTitleButton: () => ({
     flex: '0 0 35px',
     ...theme.defaults.centered,
     color: theme.palette.red[500],
-  },
+  }),
   createdAt: {
     gridArea: 'created-at',
   },
@@ -107,7 +107,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  thoughtSection: {
+  thoughtSection: () => ({
     display: 'grid',
     gridTemplateAreas: `". . action-buttons"
                         "section-icon section-field quick-action"
@@ -135,8 +135,8 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
         whiteSpace: 'unset',
       },
     },
-  },
-  editToggle: {
+  }),
+  editToggle: () => ({
     gridArea: 'action-buttons',
     ...theme.defaults.centered,
     marginRight: 5,
@@ -152,12 +152,12 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
         fontSize: 30,
       },
     },
-  },
+  }),
   sectionIcon: {
     gridArea: 'section-icon',
     ...theme.defaults.centered,
   },
-  sectionValue: {
+  sectionValue: () => ({
     gridArea: 'section-value',
     fontSize: 18,
     fontWeight: 600,
@@ -166,14 +166,14 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       backgroundColor: 'black',
       color: theme.palette.primary[500],
     },
-  },
-  sectionField: {
+  }),
+  sectionField: () => ({
     gridArea: 'section-field',
     color: theme.palette.background[400],
     '&.drop-target': {
       color: theme.palette.background[600],
     },
-  },
+  }),
   sectionQuickActionButton: {
     gridArea: 'quick-action',
     ...theme.defaults.centered,
@@ -182,7 +182,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       ...theme.defaults.centered,
     },
   },
-  completeThoughtButton: {
+  completeThoughtButton: () => ({
     color: theme.palette.primary[500],
     '& > svg': {
       background: 'black',
@@ -191,7 +191,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     '&.firstAction': {
       color: 'gold',
     },
-  },
+  }),
   sectionEditForm: {
     gridArea: 'section-value',
     fontSize: 18,
@@ -207,13 +207,13 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       height: 100,
     },
   },
-  highPriorityButton: {
+  highPriorityButton: () => ({
     color: theme.palette.red[500],
     '& > svg': {
       background: 'black',
       borderRadius: '5px',
     },
-  },
+  }),
   itemList: {
     gridArea: 'section-value',
     overflow: 'hidden',
@@ -223,15 +223,15 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     flexDirection: 'column',
     marginBottom: 10,
   },
-  imageDescription: {
+  imageDescription: () => ({
     fontSize: 12,
     color: theme.palette.background[400],
-  },
+  }),
   image: {
     width: '100%',
     height: 'auto',
   },
-  noteItem: {
+  noteItem: () => ({
     fontWeight: 600,
     paddingBottom: 10,
     textOverflow: 'ellipsis',
@@ -245,14 +245,14 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     '& .completed': {
       color: theme.palette.secondary[500],
     }
-  },
-  quickAddButton: {
+  }),
+  quickAddButton: () => ({
     color: theme.palette.primary[500],
     '& > svg': {
       background: 'black',
       borderRadius: '5px',
     },
-  },
+  }),
   addModal: {
     '& #tag-select': {
       '& select': {
@@ -275,7 +275,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       },
     },
   },
-  submitQuickAddButton: {
+  submitQuickAddButton: () => ({
     gridArea: 'submit',
     color: theme.palette.secondary[700],
     cursor: 'pointer',
@@ -288,12 +288,12 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       backgroundColor: 'transparent',
       border: `1px solid ${theme.palette.background[400]}`,
     },
-  },
-  cancelQuickAddButton: {
+  }),
+  cancelQuickAddButton: () => ({
     gridArea: 'cancel',
     color: theme.palette.secondary[700],
     padding: '2px 5px',
-  },
+  }),
   editableItem: {
     display: 'flex',
     marginBottom: 10,
@@ -304,10 +304,10 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
       },
     },
   },
-  deleteItemButton: {
+  deleteItemButton: () => ({
     ...theme.defaults.centered,
     color: theme.palette.red[500],
-  },
+  }),
   quickItem: {
 
   },

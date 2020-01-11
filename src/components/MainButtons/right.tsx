@@ -22,7 +22,7 @@ interface RightButtonProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  circleButton: {
+  circleButton: () => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
     backgroundColor: theme.palette.background[600],
@@ -36,7 +36,7 @@ const styles = (theme: any): StyleRules => ({
       border: `2px solid ${theme.palette.red[300]}`,
       backgroundColor: theme.palette.red[300],
     },
-  },
+  }),
 });
 
 export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
@@ -51,8 +51,8 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   useEffect(() => {
     setHideButton(/(stage|settings)$/.test(history.location.pathname));
 
-    return () => dispatch(toggle(false));    
-  }, [history.location.pathname])  
+    return () => dispatch(toggle(false));
+  }, [history.location.pathname])
 
   const [
     Icon,
@@ -89,11 +89,11 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     const handleDeleteThought = () => {
       const thoughtId = getIdFromUrl(history, 'thought');
       if (typeof thoughtId === 'string') {
-        const onConfirm = async () => {        
+        const onConfirm = async () => {
           await thoughtActions.deleteThought(db, thoughtId);
           history.push(homeUrl(history));
         };
-    
+
         openConfirmation('Are you sure you want to delete this?', onConfirm);
       }
     };

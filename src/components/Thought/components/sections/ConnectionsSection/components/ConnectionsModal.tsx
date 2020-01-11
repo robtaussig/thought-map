@@ -34,15 +34,15 @@ const styles = (theme: any): StyleRules => ({
   currentConnection: {
     display: 'flex',
   },
-  currentConnectionTitle: {
+  currentConnectionTitle: () => ({
     flex: 1,
     color: theme.palette.secondary[700],
-  },
-  deleteConnectionButton: {
+  }),
+  deleteConnectionButton: () => ({
     marginLeft: 5,
     color: theme.palette.red[500],
     ...theme.defaults.centered,
-  },
+  }),
   noMatches: {
 
   },
@@ -51,26 +51,26 @@ const styles = (theme: any): StyleRules => ({
     flexDirection: 'column',
     overflow: 'auto',
   },
-  thoughtItem: {
+  thoughtItem: () => ({
     marginTop: 10,
-    paddingBottom: 10,   
+    paddingBottom: 10,
     color: theme.palette.secondary[700],
     display: 'flex',
     flexDirection: 'column',
     '&:not(:last-child)': {
       borderBottom: `1px solid ${theme.palette.secondary[700]}`,
     },
-  },
+  }),
   buttonsDivider: {
     margin: '0 15px',
   },
-  buttonsWrapper: {
+  buttonsWrapper: () => ({
     marginTop: 10,
     '& button': {
       fontWeight: 600,
       color: theme.palette.secondary[500],
     },
-  },
+  }),
   inputLabel: {
     '&#filter-thoughts': {
       display: 'flex',
@@ -81,7 +81,7 @@ const styles = (theme: any): StyleRules => ({
       },
     },
   },
-  submitButton: {
+  submitButton: () => ({
     flex: '0 0 20px',
     marginLeft: 5,
     color: theme.palette.background[200],
@@ -95,7 +95,7 @@ const styles = (theme: any): StyleRules => ({
     '&:disabled': {
       backgroundColor: theme.palette.background[400],
     },
-  },
+  }),
   selectLabel: {
     '&#available-thoughts': {
       '& select': {
@@ -109,7 +109,7 @@ export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, 
   const thoughts = useSelector(thoughtSelector);
   const plans = useSelector(planSelector);
   const stateConnections = useSelector(connectionSelector);
-  
+
   const thought = thoughts.find(({ id }) => id === thoughtId);
   const plan: Plan = plans.find(({ id }) => thought.planId === id);
   const connections: ConnectionSummary[] = useMemo(() =>
@@ -125,7 +125,7 @@ export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, 
           connectionId: id,
         };
       })
-  , [thoughtId, stateConnections, thoughts]);
+    , [thoughtId, stateConnections, thoughts]);
 
   const availableThoughts = useMemo(() => {
     const otherThoughtIds =

@@ -50,24 +50,24 @@ export const styles = (theme: any): StyleRules => ({
   pictureDescriptionText: {
     flex: 1,
   },
-  editPictureDescriptionButton: {
+  editPictureDescriptionButton: () => ({
     flex: '0 0 40px',
     color: theme.palette.secondary[700],
     display: 'flex',
     justifyContent: 'flex-end',
-  },
-  pictureDescriptionButton: {
+  }),
+  pictureDescriptionButton: () => ({
     gridArea: 'description',
     marginTop: 10,
     color: theme.palette.secondary[700],
     fontWeight: 600,
-  },
-  deleteButton: {
+  }),
+  deleteButton: () => ({
     gridArea: 'delete',
     borderBottom: 'none!important',
     color: `${theme.palette.red[500]}!important`,
     margin: '0!important',
-  },
+  }),
   pinButton: {
     gridArea: 'delete',
     color: `#0000002e!important`,
@@ -84,7 +84,7 @@ export const styles = (theme: any): StyleRules => ({
     height: 'auto',
     flex: 1,
   },
-  uploadOptions: {
+  uploadOptions: () => ({
     flex: `0 0 ${UPLOAD_OPTIONS_WIDTH}px`,
     display: 'flex',
     flexDirection: 'column',
@@ -96,5 +96,5 @@ export const styles = (theme: any): StyleRules => ({
       color: theme.palette.secondary[700],
       margin: '15px 0',
     },
-  },
+  }),
 });

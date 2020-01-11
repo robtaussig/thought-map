@@ -19,7 +19,7 @@ interface LeftButtonProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  circleButton: {
+  circleButton: () => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
     backgroundColor: theme.palette.background[600],
@@ -39,7 +39,7 @@ const styles = (theme: any): StyleRules => ({
         },
       },
     },
-  },
+  }),
 });
 
 export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
@@ -53,7 +53,7 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
 
   useEffect(() => {
     setHideButton(/(stage|history|connections)$/.test(history.location.pathname));
-  }, [history.location.pathname])  
+  }, [history.location.pathname])
 
   const [
     Icon,

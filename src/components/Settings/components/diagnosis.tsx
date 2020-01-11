@@ -51,7 +51,7 @@ const styles = (theme: any): StyleRules => ({
     overflow: 'auto',
   },
   diagnosis: {
-    
+
   },
   actionType: {
     fontWeight: 600,
@@ -64,15 +64,15 @@ const styles = (theme: any): StyleRules => ({
     border: '1px solid black',
     padding: 4,
   },
-  title: {
+  title: () => ({
     color: theme.palette.background[800],
     fontWeight: 600,
     fontSize: 10,
-  },
-  furtherDetails: {
+  }),
+  furtherDetails: () => ({
     fontSize: 10,
     color: theme.palette.background[700],
-  },
+  }),
   affectedItems: {
     fontWeight: 600,
     fontSize: 10,
@@ -90,14 +90,14 @@ const styles = (theme: any): StyleRules => ({
     padding: '1px 3px',
     cursor: 'pointer',
   },
-  tooltip: {
+  tooltip: () => ({
     justifyContent: 'center',
     overflow: 'auto',
     '& > svg': {
       color: theme.palette.secondary[700],
     },
-  },
-  actionButtons: {
+  }),
+  actionButtons: () => ({
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: 30,
@@ -108,7 +108,7 @@ const styles = (theme: any): StyleRules => ({
       padding: '3px 15px',
       borderRadius: '5px',
     }
-  },
+  }),
 });
 
 const canFix = (diagnosisChunks: DiagnosisChunks) => {
@@ -136,7 +136,7 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
 
     return (
       <div className={classes.diagnosis}>
-        {Object.entries(diagnosisChunks).map(([actionType, chunks], actionIdx) => {          
+        {Object.entries(diagnosisChunks).map(([actionType, chunks], actionIdx) => {
           return (
             <Fragment key={`${actionIdx}-action`}>
               <h2 className={classes.actionType}>{actionType}</h2>
@@ -151,7 +151,7 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
                         return (
                           <div key={`${itemIdx}-item`} className={classes.item}>
                             <button className={classes.table} onClick={handleClickThought(item)}>{table}</button>
-                            <Tooltip className={classes.tooltip} text={JSON.stringify(item)}/>
+                            <Tooltip className={classes.tooltip} text={JSON.stringify(item)} />
                           </div>
                         );
                       })}
@@ -178,7 +178,7 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
           case SolutionTypes.DELETE:
             queries.push(modelsByTable[table].delete(db, item.id));
             break;
-        
+
           case SolutionTypes.NULL_OUT_PLAN_ID:
             queries.push(modelsByTable[table].update(db, {
               ...item,
@@ -206,7 +206,7 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
       });
       return queries;
     }, [] as Promise<any>[]));
-    
+
     onFix();
   };
 

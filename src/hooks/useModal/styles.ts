@@ -1,7 +1,7 @@
 import { StyleRules } from '@material-ui/styles';
 
 export const styles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     position: 'absolute',
     display: 'flex',
     flexDirection: 'column',
@@ -16,12 +16,12 @@ export const styles = (theme: any): StyleRules => ({
     '&:focus': {
       outline: 'none',
     },
-  },
-  closeButton: {
+  }),
+  closeButton: () => ({
     position: 'absolute',
     top: 0,
     right: 0,
     margin: 5,
     color: theme.palette.secondary[700],
-  },
+  }),
 });

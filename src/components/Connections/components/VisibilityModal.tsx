@@ -25,22 +25,22 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     margin: '10px 0',
   },
-  updateButton: {
+  updateButton: () => ({
     flex: 0,
     backgroundColor: theme.palette.secondary[500],
     color: theme.palette.background[100],
     padding: '5px 10px',
     borderRadius: 5,
     marginLeft: 20,
-  },
-  bumpButton: {
+  }),
+  bumpButton: () => ({
     backgroundColor: theme.palette.secondary[500],
     color: theme.palette.background[100],
     padding: '5px 0',
     borderRadius: 5,
     width: '100%',
     marginTop: 25,
-  },
+  }),
 });
 
 export const VisibilityModal: FC<VisibilityModalProps> = ({ classes, thought, onClose }) => {
@@ -71,7 +71,7 @@ export const VisibilityModal: FC<VisibilityModalProps> = ({ classes, thought, on
       goalPoints,
     });
   };
-  
+
   const handleClickBump = () => {
     thoughtActions.editThought(db, {
       ...thought,

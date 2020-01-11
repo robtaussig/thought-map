@@ -40,7 +40,7 @@ export const styles = (theme: any): StyleRules => ({
       },
     },
   },
-  submitButton: {
+  submitButton: () => ({
     gridArea: 'submit',
     cursor: 'pointer',
     fontWeight: 600,
@@ -53,5 +53,5 @@ export const styles = (theme: any): StyleRules => ({
       color: 'gray',
       border: '1px solid gray',
     },
-  },
+  }),
 });

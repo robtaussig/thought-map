@@ -21,13 +21,13 @@ enum Side {
 }
 
 const styles = (theme: any): StyleRules => ({
-  container: {
+  container: () => ({
     position: 'fixed',
     height: '100%',
     left: 0,
     right: 0,
     top: 0,
-    backgroundColor: '#545454',
+    backgroundColor: theme.palette.background[500],
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -38,8 +38,8 @@ const styles = (theme: any): StyleRules => ({
         display: 'none',
       }
     }
-  },
-  header: {
+  }),
+  header: () => ({
     flex: '0 0 80px',
     backgroundColor: theme.palette.primary[500],
     boxShadow: '0px 0px 5px 0px black',
@@ -48,8 +48,8 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     justifyContent: 'center',
     fontSize: 24,
-  },
-  button: {
+  }),
+  button: () => ({
     border: '2px solid white',
     padding: '3px 0',
     marginTop: 40,
@@ -68,7 +68,7 @@ const styles = (theme: any): StyleRules => ({
     '&:not(:disabled)': {
       boxShadow: '0px 0px 5px 2px black',
     }
-  },
+  }),
   circleButton: {
     ...theme.defaults.circleButton,
     '&#submit': {
@@ -94,7 +94,7 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
   const kbUsed = useMemo(() => {
     return Object.values(pictures).map(picture => picture.localUrl).reduce((num, url) => {
       if (url) {
-        num += 3 + ((url.length*16)/(8*1024));
+        num += 3 + ((url.length * 16) / (8 * 1024));
       }
       return num;
     }, 0);
@@ -108,14 +108,14 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
     const uploadImage = async (image: Picture): Promise<Picture> => {
       const res = await fetch('https://api.imgur.com/3/image', {
         headers: {
-            'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          method: 'POST',
-          body: JSON.stringify({
-              image: image.localUrl.replace(BASE64_REGEX,''),
-          }),
+          'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          image: image.localUrl.replace(BASE64_REGEX, ''),
+        }),
       })
       const rjson = await res.json();
       const newImage = {
@@ -132,7 +132,7 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
         Object.values(pictures)
           .filter(picture => picture.localUrl)
           .map(uploadImage)
-        );
+      );
       stopLoading();
     };
 
@@ -146,7 +146,7 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
   const handleClickViewAllImages = useCallback(() => {
     alert('Coming soon...')
   }, [pictures]);
-  
+
   return (
     <Fragment>
       <button className={classes.button} onClick={() => setSide(Side.MIDDLE)}>
@@ -162,7 +162,7 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
         <button className={classes.button} disabled={kbUsed === 0} onClick={handleClickUploadLocalImages}>Upload all images to imgur ({spaceUsedText})</button>
         <button className={classes.button} onClick={handleClickDownloadImages}>Download all images to phone</button>
         <button className={classes.button} onClick={handleClickViewAllImages}>View all images</button>
-        <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
+        <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close} />
       </div>
     </Fragment>
   );

@@ -22,7 +22,7 @@ interface MiddleButtonProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  circleButton: {
+  circleButton: () => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
     backgroundColor: theme.palette.background[600],
@@ -38,9 +38,9 @@ const styles = (theme: any): StyleRules => ({
       border: `2px solid ${theme.palette.red[300]}`,
     },
     '&#stage-button': {
-      border: `2px solid ${theme.palette.secondary[500]}`,      
+      border: `2px solid ${theme.palette.secondary[500]}`,
     },
-  },
+  }),
 });
 
 const STAGING_PATH_NAME = '/stage';
@@ -70,7 +70,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
     if (/thought/.test(history.location.pathname)) return CurrentPage.Thought;
     return CurrentPage.Home;
   }, [history.location.pathname]);
-  
+
   const handleClick = async () => {
     if (isStaging) {
       history.goBack();
@@ -153,7 +153,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
         } : undefined}
         LongPressIcon={
           canStage ? Queue :
-          currentPage === CurrentPage.Home ? PriorityHigh : null}
+            currentPage === CurrentPage.Home ? PriorityHigh : null}
         emphasize={isEmphasized || isAltEmphasized}
       />
     );

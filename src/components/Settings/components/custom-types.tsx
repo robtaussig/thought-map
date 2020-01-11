@@ -18,7 +18,7 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  form: {
+  form: () => ({
     display: 'flex',
     marginBottom: 20,
     '& button': {
@@ -27,7 +27,7 @@ const styles = (theme: any): StyleRules => ({
       marginLeft: 30,
       color: theme.palette.secondary[700],
     },
-  },
+  }),
   inputLabel: {
     flex: 1,
     '& input': {
@@ -41,9 +41,9 @@ const styles = (theme: any): StyleRules => ({
   customTypeText: {
 
   },
-  deleteCustomType: {
+  deleteCustomType: () => ({
     color: theme.palette.red[500],
-  },
+  }),
 });
 
 export const CustomTypes: FC<CustomTypesProps> = ({ classes, onClose }) => {
@@ -73,7 +73,7 @@ export const CustomTypes: FC<CustomTypesProps> = ({ classes, onClose }) => {
       });
     };
 
-    openConfirmation('Are you sure you want to delete this?', deleteCustomType); 
+    openConfirmation('Are you sure you want to delete this?', deleteCustomType);
   };
 
   return (
@@ -91,7 +91,7 @@ export const CustomTypes: FC<CustomTypesProps> = ({ classes, onClose }) => {
         return (
           <div key={type} className={classes.customType}>
             <span className={classes.customTypeText}>{type}</span>
-            <button className={classes.deleteCustomType} onClick={deleteCustomType(type)}><Delete/></button>
+            <button className={classes.deleteCustomType} onClick={deleteCustomType(type)}><Delete /></button>
           </div>
         );
       })}

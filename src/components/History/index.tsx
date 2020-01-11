@@ -19,9 +19,9 @@ interface HistoryProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     backgroundColor: theme.palette.background[700],
-  },
+  }),
 });
 
 export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
@@ -35,21 +35,21 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
     return descendants.reduce((next, relatedThoughtId) => {
       const thought = thoughts.find(({ id }) => id === relatedThoughtId);
       const statusesByThought: StatusUpdate[] = (stateStatusesByThought[relatedThoughtId] || [])
-                                  .map(statusId => {
-                                    const status = statuses[statusId];
-                                    const completionIndex = statusOptions.indexOf(status.text);
+        .map(statusId => {
+          const status = statuses[statusId];
+          const completionIndex = statusOptions.indexOf(status.text);
 
-                                    return {
-                                      thoughtId: relatedThoughtId,
-                                      statusId,
-                                      status: status.text,
-                                      completionIndex: [completionIndex, statusOptions.length - 1],
-                                      thoughtTitle: thought.title,
-                                      location: status.location,
-                                      created: status.created,
-                                      isSelectedThought: relatedThoughtId === thoughtId,
-                                    };
-                                  });
+          return {
+            thoughtId: relatedThoughtId,
+            statusId,
+            status: status.text,
+            completionIndex: [completionIndex, statusOptions.length - 1],
+            thoughtTitle: thought.title,
+            location: status.location,
+            created: status.created,
+            isSelectedThought: relatedThoughtId === thoughtId,
+          };
+        });
       next = next.concat(statusesByThought);
       return next;
     }, [] as StatusUpdate[])
@@ -82,7 +82,7 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
 
   const gridStyle: CSSProperties = useMemo(() => {
     const columnCount = Math.max(groupedByThought[0] ? groupedByThought[0][0].thoughtIndex[1] + 1 : 0, 2);
-    const rowCount = groupedByThought[0] ? groupedByThought[0][0].statusUpdateIndex[1] + 1: 1;
+    const rowCount = groupedByThought[0] ? groupedByThought[0][0].statusUpdateIndex[1] + 1 : 1;
 
     return {
       display: 'grid',
@@ -100,7 +100,7 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
     <div className={classes.root} style={gridStyle}>
       {groupedByThought.map((group, idx) => {
         return (
-          <ThoughtGroup key={`${idx}-thought-group`} group={group} statusOptions={statusOptions}/>
+          <ThoughtGroup key={`${idx}-thought-group`} group={group} statusOptions={statusOptions} />
         );
       })}
     </div>

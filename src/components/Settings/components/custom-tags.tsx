@@ -18,7 +18,7 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  form: {
+  form: () => ({
     display: 'flex',
     marginBottom: 20,
     '& button': {
@@ -27,7 +27,7 @@ const styles = (theme: any): StyleRules => ({
       marginLeft: 30,
       color: theme.palette.secondary[700],
     },
-  },
+  }),
   inputLabel: {
     flex: 1,
     '& input': {
@@ -42,9 +42,9 @@ const styles = (theme: any): StyleRules => ({
   customTagText: {
 
   },
-  deleteCustomTag: {
+  deleteCustomTag: () => ({
     color: theme.palette.red[500],
-  },
+  }),
 });
 
 export const CustomTags: FC<CustomTagsProps> = ({ classes, onClose }) => {
@@ -73,7 +73,7 @@ export const CustomTags: FC<CustomTagsProps> = ({ classes, onClose }) => {
         value: next,
       });
     };
-    
+
     openConfirmation('Are you sure you want to delete this?', deleteCustomTag);
   };
 
@@ -92,7 +92,7 @@ export const CustomTags: FC<CustomTagsProps> = ({ classes, onClose }) => {
         return (
           <div key={tag} className={classes.customTag}>
             <span className={classes.customTagText}>{tag}</span>
-            <button className={classes.deleteCustomTag} onClick={deleteCustomTag(tag)}><Delete/></button>
+            <button className={classes.deleteCustomTag} onClick={deleteCustomTag(tag)}><Delete /></button>
           </div>
         );
       })}

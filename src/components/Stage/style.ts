@@ -1,7 +1,7 @@
 import { StyleRules } from '@material-ui/styles';
 
 export const styles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     height: '100%',
     width: '100%',
     display: 'grid',
@@ -13,7 +13,7 @@ export const styles = (theme: any): StyleRules => ({
     '& #staging-nav': {
       gridArea: 'nav-bar',
     },
-  },
+  }),
   stagingItems: {
     gridArea: 'grid-items',
     gridTemplateColumns: '1fr',
@@ -25,11 +25,11 @@ export const styles = (theme: any): StyleRules => ({
     margin: 10,
     marginBottom: 125,
   },
-  stagedItem: {
+  stagedItem: () => ({
     display: 'flex',
     alignItems: 'center',
     backgroundColor: theme.palette.background[100],
-    borderRadius: '5px',    
+    borderRadius: '5px',
     willChange: 'transform, width, height, opacity',
     '& button': {
       height: '100%',
@@ -38,20 +38,20 @@ export const styles = (theme: any): StyleRules => ({
     '&.from': {
       backgroundColor: theme.palette.secondary[200],
     },
-  },
-  stagedItemTitle: {
+  }),
+  stagedItemTitle: () => ({
     flex: 1,
     margin: 10,
     color: theme.palette.background[600],
-  },
-  unstageButton: {
+  }),
+  unstageButton: () => ({
     flex: '0 0 50px',
     color: theme.palette.red[300],
-  },
-  promoteButton: {
+  }),
+  promoteButton: () => ({
     flex: '0 0 50px',
     '&:not(:disabled)': {
       color: theme.palette.secondary[500],
     },
-  },
+  }),
 });

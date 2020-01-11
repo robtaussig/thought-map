@@ -26,7 +26,7 @@ const styles = (theme: any): StyleRules => ({
     height: '100%',
     zIndex: -1,
   },
-  nodeComponent: {
+  nodeComponent: () => ({
     ...theme.defaults.centered,
     '&:after': {
       content: "''",
@@ -57,8 +57,8 @@ const styles = (theme: any): StyleRules => ({
         width: 25,
       },
     },
-  },
-  nodeTitle: {
+  }),
+  nodeTitle: () => ({
     fontWeight: 600,
     color: theme.palette.background[200],
     textShadow: '0px 0px 30px black',
@@ -66,7 +66,7 @@ const styles = (theme: any): StyleRules => ({
     '&.origin': {
       color: theme.palette.secondary[300],
     },
-  },
+  }),
 });
 
 export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, thoughts, connections, statusOptions }) => {
@@ -116,12 +116,12 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
   }, [columns, rows]);
 
   return (
-    <div className={classes.root} style={style}>      
+    <div className={classes.root} style={style}>
       <canvas
         className={classes.canvas}
         ref={canvasRef}
         height={window.innerHeight}
-        width={window.innerWidth}  
+        width={window.innerWidth}
       />
       {_nodes}
     </div>

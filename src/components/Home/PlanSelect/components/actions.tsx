@@ -29,7 +29,7 @@ const styles = (theme: any): StyleRules => ({
     fontSize: 18,
     display: 'flex',
   },
-  selectLabel: {
+  selectLabel: () => ({
     margin: '0 5px',
     display: 'flex',
     '& select': {
@@ -38,7 +38,7 @@ const styles = (theme: any): StyleRules => ({
       backgroundColor: theme.palette.primary[500],
       fontWeight: 600,
     },
-  },
+  }),
   reviewWrapper: {
 
   },
@@ -72,7 +72,7 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
           classes={classes}
           value={currentReviewPeriod}
           options={[...new Set(Object.keys(ReviewPeriods))]}
-          onChange={e => setCurrentReviewPeriopd(e.target.value as ReviewPeriods)}/>}
+          onChange={e => setCurrentReviewPeriopd(e.target.value as ReviewPeriods)} />}
         In Review
       </h2>
       <Review

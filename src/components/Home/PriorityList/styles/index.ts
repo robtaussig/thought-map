@@ -4,7 +4,7 @@ export const styles = (theme: any): StyleRules => ({
   root: {
     overflow: 'auto',
   },
-  prioritiesButton: {
+  prioritiesButton: () => ({
     position: 'fixed',
     bottom: 0,
     left: 0,
@@ -16,21 +16,21 @@ export const styles = (theme: any): StyleRules => ({
     borderTop: '1px solid white',
     fontWeight: 600,
     cursor: 'pointer',
-  },
-  header: {
+  }),
+  header: () => ({
     marginBottom: 20,
     fontSize: 24,
     paddingRight: 15,
     marginRight: 15,
     color: theme.palette.secondary[700],
-  },
+  }),
   priorityList: {
     display: 'grid',
     gridTemplateColumns: '[title] 1fr [date] 80px',
     gridColumnGap: '5px',
     gridRowGap: '15px',
   },
-  thoughtTitle: {
+  thoughtTitle: () => ({
     '& > button': {
       color: theme.palette.secondary[700],
       fontWeight: 600,
@@ -41,7 +41,7 @@ export const styles = (theme: any): StyleRules => ({
         color: theme.palette.red[400],
       }
     }
-  },
+  }),
   thoughtTitleButton: {
     textAlign: 'left',
   },

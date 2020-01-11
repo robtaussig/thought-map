@@ -22,9 +22,9 @@ const styles = (theme: any): StyleRules => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  error: {
+  error: () => ({
     color: theme.palette.red[500],
-  },
+  }),
   errorHeader: {
     fontSize: 20,
     fontWeight: 600,
@@ -37,22 +37,22 @@ const styles = (theme: any): StyleRules => ({
     fontSize: 20,
     marginBottom: 20,
   },
-  createButton: {
+  createButton: () => ({
     margin: '10px 0',
     padding: '5px 0',
     width: '70%',
     border: `1px solid ${theme.palette.secondary[700]}`,
     borderRadius: '7px',
     color: theme.palette.secondary[700],
-  },
-  viewEventButton: {
+  }),
+  viewEventButton: () => ({
     margin: '10px 0',
     padding: '5px 0',
     width: '70%',
     border: `1px solid ${theme.palette.secondary[700]}`,
     borderRadius: '7px',
     color: theme.palette.secondary[700],
-  },
+  }),
 });
 
 interface AddToCalendarProps {
@@ -114,8 +114,8 @@ export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, though
           )}
         </Fragment>
       ) : (
-        <Loading id={'calendar-loader'}/>
-      )}
+          <Loading id={'calendar-loader'} />
+        )}
     </div>
   );
 };

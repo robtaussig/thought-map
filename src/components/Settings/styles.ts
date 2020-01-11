@@ -1,12 +1,12 @@
 import { StyleRules } from '@material-ui/core/styles';
 
 export const rootStyles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
     backgroundColor: theme.palette.background[700],
-  },
+  }),
 });
 
 export const planSettingsStyles = (theme: any): StyleRules => ({
@@ -33,7 +33,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     top: '50%',
     transform: 'translateY(-50%)',
   },
-  inputLabel: {
+  inputLabel: () => ({
     '&#plan-name': {
       gridArea: 'plan-name',
       display: 'flex',
@@ -57,8 +57,8 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
       color: theme.palette.background[200],
       flex: 1,
     },
-  },
-  selectLabel: {
+  }),
+  selectLabel: () => ({
     display: 'flex',
     border: `1px solid ${theme.palette.primary[500]}`,
     backgroundColor: theme.palette.background[200],
@@ -77,7 +77,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
       flex: 1,
       height: '100%',
     },
-  },
+  }),
   defaultType: {
     gridArea: 'default-type',
     display: 'flex',
@@ -88,7 +88,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     fontWeight: 600,
     marginRight: 15,
   },
-  checkboxLabel: {
+  checkboxLabel: () => ({
     ...theme.defaults.centered,
     justifyContent: 'flex-start',
     color: theme.palette.background[300],
@@ -104,14 +104,14 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     '&#with-thoughts': {
       marginLeft: 20,
     },
-  },
-  deletePlanSection: {
+  }),
+  deletePlanSection: () => ({
     gridArea: 'delete-plan',
     borderTop: `1px solid ${theme.palette.secondary[500]}`,
     display: 'flex',
     alignItems: 'center',
-  },
-  deletePlanButton: {
+  }),
+  deletePlanButton: () => ({
     marginRight: 20,
     backgroundColor: theme.palette.red[500],
     color: 'white',
@@ -120,7 +120,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     '&:disabled': {
       backgroundColor: theme.palette.background[300],
     },
-  },
+  }),
   circleButton: {
     ...theme.defaults.circleButton,
     '&[disabled]': {
@@ -134,5 +134,5 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
       bottom: 10,
       right: 10,
     },
-  },  
+  },
 });

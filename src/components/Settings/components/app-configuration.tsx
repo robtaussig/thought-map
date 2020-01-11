@@ -19,13 +19,13 @@ enum Side {
 }
 
 const styles = (theme: any): StyleRules => ({
-  container: {
+  container: () => ({
     position: 'fixed',
     height: '100%',
     left: 0,
     right: 0,
     top: 0,
-    backgroundColor: '#545454',
+    backgroundColor: theme.palette.background[500],
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -36,8 +36,8 @@ const styles = (theme: any): StyleRules => ({
         display: 'none',
       }
     }
-  },
-  header: {
+  }),
+  header: () => ({
     flex: '0 0 80px',
     backgroundColor: theme.palette.primary[500],
     boxShadow: '0px 0px 5px 0px black',
@@ -46,8 +46,8 @@ const styles = (theme: any): StyleRules => ({
     display: 'flex',
     justifyContent: 'center',
     fontSize: 24,
-  },
-  button: {
+  }),
+  button: () => ({
     border: '2px solid white',
     padding: '3px 0',
     marginTop: 40,
@@ -66,7 +66,7 @@ const styles = (theme: any): StyleRules => ({
     '&:not(:disabled)': {
       boxShadow: '0px 0px 5px 2px black',
     }
-  },
+  }),
   circleButton: {
     ...theme.defaults.circleButton,
     '&#submit': {
@@ -126,7 +126,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
 
   const handleChangeUsePushNotifications = useCallback(e => {
     if (e.target.checked) {
-      Notification.requestPermission(function(status) {
+      Notification.requestPermission(function (status) {
         if (status === 'granted') {
           settingsActions.editSetting(db, {
             field: 'usePushNotifications',
@@ -135,7 +135,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
         } else {
           alert('If you would like to use push notifications in the future, you will need to manually grant permission.');
         }
-    });
+      });
     } else {
       settingsActions.editSetting(db, {
         field: 'usePushNotifications',
@@ -202,7 +202,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Use AutoSuggest'}
           isChecked={useAutoSuggest}
           onChange={handleChangeUseAutoSuggest}
-          tooltip={'If enabled, certain inputs will produce suggestions that draw from previous entries. Suggestions will be a combination of word completions and word sequences, and will be displayed as an overlay. This is different from any browser/device-based auto-suggestions which don\'t necessarily consider context.'}  
+          tooltip={'If enabled, certain inputs will produce suggestions that draw from previous entries. Suggestions will be a combination of word completions and word sequences, and will be displayed as an overlay. This is different from any browser/device-based auto-suggestions which don\'t necessarily consider context.'}
         />
         <CheckBox
           classes={classes}
@@ -210,7 +210,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Automatically create calendar events'}
           isChecked={autoCreateCalendarEvent}
           onChange={handleChangeAutoCreateCalendarEvent}
-          tooltip={'If enabled, calendar events will be created automatically whenever a thought\'s date/time is modified'}  
+          tooltip={'If enabled, calendar events will be created automatically whenever a thought\'s date/time is modified'}
         />
         <CheckBox
           classes={classes}
@@ -226,9 +226,9 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Use Location'}
           isChecked={useLocation}
           onChange={handleChangeUseLocation}
-          tooltip={'If enabled, and permission to use geolocation granted, your location will be saved along with updates to thought statuses. This will allow for a more comprehensive context behind thought transitions.'}  
+          tooltip={'If enabled, and permission to use geolocation granted, your location will be saved along with updates to thought statuses. This will allow for a more comprehensive context behind thought transitions.'}
         />}
-        <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close}/>
+        <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close} />
       </div>
     </Fragment>
   );

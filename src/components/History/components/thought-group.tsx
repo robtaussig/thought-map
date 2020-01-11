@@ -12,7 +12,7 @@ interface ThoughtGroupProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  statusUpdate: {
+  statusUpdate: () => ({
     position: 'relative',
     '&:before': {
       content: "''",
@@ -63,12 +63,12 @@ const styles = (theme: any): StyleRules => ({
         },
       },
     },
-    
+
     '&.path': {
 
     },
-  },
-  partText: {
+  }),
+  partText: () => ({
     zIndex: 99,
     color: theme.palette.background[100],
     textShadow: '0px 0px 4px black',
@@ -78,7 +78,7 @@ const styles = (theme: any): StyleRules => ({
       color: theme.palette.secondary[400],
       fontWeight: 600,
     },
-  },
+  }),
 });
 
 export const ThoughtGroup: FC<ThoughtGroupProps> = React.memo(({ classes, group, statusOptions }) => {
@@ -120,19 +120,19 @@ export const ThoughtGroup: FC<ThoughtGroupProps> = React.memo(({ classes, group,
           );
         } else if (index > group[0].statusUpdateIndex[0] &&
           index < group[group.length - 1].statusUpdateIndex[0]) {
-            return (
-              <Part
-                key={`${thoughtIndex}-${index}-group-part`}
-                classes={classes}
-                part={null}
-                row={index + 1}
-                col={thoughtIndex + 1}
-                colCount={thoughtCount}
-                isSelected={isSelected}
-              />
-            );
+          return (
+            <Part
+              key={`${thoughtIndex}-${index}-group-part`}
+              classes={classes}
+              part={null}
+              row={index + 1}
+              col={thoughtIndex + 1}
+              colCount={thoughtCount}
+              isSelected={isSelected}
+            />
+          );
         }
-      })}      
+      })}
     </>
   );
 });

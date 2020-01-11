@@ -22,13 +22,13 @@ const styles = (theme: any): StyleRules => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  templateText: {
+  templateText: () => ({
     fontWeight: 600,
     color: theme.palette.secondary[700],
-  },
-  deleteTemplate: {
+  }),
+  deleteTemplate: () => ({
     color: theme.palette.red[500],
-  },
+  }),
 });
 
 export const DeleteTemplates: FC<DeleteTemplatesProps> = ({ classes, onClose }) => {
@@ -45,7 +45,7 @@ export const DeleteTemplates: FC<DeleteTemplatesProps> = ({ classes, onClose }) 
         return (
           <div key={template.name} className={classes.template}>
             <span className={classes.templateText}>{template.name}</span>
-            <button className={classes.deleteTemplate} onClick={() => deleteTemplate(template.id)}><Delete/></button>
+            <button className={classes.deleteTemplate} onClick={() => deleteTemplate(template.id)}><Delete /></button>
           </div>
         );
       })}
