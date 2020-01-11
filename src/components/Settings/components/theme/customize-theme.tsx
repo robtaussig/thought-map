@@ -1,12 +1,14 @@
 import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../reducers';
+import { RootState } from '../../../../reducers';
 import {
   CustomTheme,
   customThemeSelector,
   updatePalette,
   PaletteOptions,
-} from '../../../reducers/customTheme';
+  PaletteShades,
+  Shades,
+} from '../../../../reducers/customTheme';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import PaletteColorList from './palette-color-list';
 
@@ -26,14 +28,38 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
+const adjust = (color: string, amount: number) => {
+  return '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
+}
+
+const randomHex = (): string => '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+
+const shadeOptions: [Shades, number][] = [
+  [0, 250],
+  [100, 200],
+  [200, 150],
+  [300, 100],
+  [400, 50],
+  [500, 0],
+  [600, -50],
+  [700, -100],
+  [800, -150],
+  [900, -200],
+  ['A400', 0],
+];
+
 export const CustomizeTheme: FC<CustomizeThemeProps> = ({ classes }) => {
   const customTheme = useSelector<RootState, CustomTheme>(customThemeSelector);
   const dispatch = useDispatch();
 
-  const handleClickRandom = (colorType: PaletteOptions) => () => {
-    const randomHex = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
-    dispatch(updatePalette([colorType, randomHex]));
-  };
+  const handleClickRandom = (colorType: PaletteOptions) =>
+    (baseHex: string = randomHex()) => {
+      const palette = shadeOptions.reduce((next, [shade, increment]) => {
+        next[shade] = adjust(baseHex, increment);
+        return next;
+      }, {} as PaletteShades)
+      dispatch(updatePalette([colorType, palette]));
+    };
 
   return (
     <div className={classes.root}>
@@ -44,7 +70,7 @@ export const CustomizeTheme: FC<CustomizeThemeProps> = ({ classes }) => {
             column={idx}
             colorType={colorType as PaletteOptions}
             values={values}
-            onRandomize={handleClickRandom(colorType as PaletteOptions)}
+            onChange={handleClickRandom(colorType as PaletteOptions)}
           />
         );
       })}

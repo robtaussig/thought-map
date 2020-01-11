@@ -99,9 +99,9 @@ const customTheme = createSlice({
   name: 'customTheme',
   initialState,
   reducers: {
-    updatePalette: (state, action: PayloadAction<[PaletteOptions, string]>) => {
+    updatePalette: (state, action: PayloadAction<[PaletteOptions, PaletteShades]>) => {
       const [colorType, value] = action.payload;
-      state.palette[colorType][500] = value;
+      state.palette[colorType] = value;
     },
     resetDefault: (state) => initialState,
   }

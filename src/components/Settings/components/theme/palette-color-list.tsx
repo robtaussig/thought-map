@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import { PaletteShades, PaletteOptions } from '../../../reducers/customTheme';
+import { PaletteShades, PaletteOptions } from '../../../../reducers/customTheme';
 import classNames from 'classnames';
 import Refresh from '@material-ui/icons/Refresh';
 import Palette from '@material-ui/icons/Palette';
@@ -10,7 +10,7 @@ interface PaletteColorListProps {
   column: number;
   colorType: PaletteOptions;
   values: PaletteShades;
-  onRandomize: () => void;
+  onChange: (shade?: string) => void;
 }
 
 const styles = (theme: any): StyleRules => ({
@@ -60,7 +60,7 @@ export const PaletteColorList: FC<PaletteColorListProps> = ({
   column,
   colorType,
   values,
-  onRandomize,
+  onChange,
 }) => {
 
   return (
@@ -78,7 +78,7 @@ export const PaletteColorList: FC<PaletteColorListProps> = ({
           className={classNames(classes.button, {
             left: true,
           })}
-          onClick={onRandomize}
+          onClick={() => onChange()}
         >
           <Refresh />
         </button>
@@ -97,6 +97,7 @@ export const PaletteColorList: FC<PaletteColorListProps> = ({
               gridColumn: `${column + 1}`,
               backgroundColor: value,
             }}
+            onClick={() => onChange(value)}
             className={classNames(classes.color, {
               main: idx === 3,
             })}
