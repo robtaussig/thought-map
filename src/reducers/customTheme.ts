@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
 import { RootState } from './';
+import { setSettings } from './settings';
 import { CSSProperties } from '@material-ui/styles';
 
 export const SHADE_OPTIONS: [Shades, number][] = [
@@ -130,6 +131,13 @@ const customTheme = createSlice({
         const opposite = SHADE_OPTIONS[SHADE_OPTIONS.length - 2 - idx][0];
         state.palette.background[shade] = previous[opposite];
       });
+    }
+  },
+  extraReducers: {
+    [setSettings as any]: (state, action: PayloadAction<any>) => {
+      if (action.payload.customTheme) {
+        return action.payload.customTheme;
+      }
     }
   }
 });

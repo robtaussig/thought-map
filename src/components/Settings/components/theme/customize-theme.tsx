@@ -19,10 +19,10 @@ import {
 import Select from '../../../General/Select';
 
 interface CustomizeThemeProps {
-
+  onChange: () => void;
 }
 
-export const CustomizeTheme: FC<CustomizeThemeProps> = () => {
+export const CustomizeTheme: FC<CustomizeThemeProps> = ({ onChange }) => {
   const customTheme = useSelector<RootState, CustomTheme>(customThemeSelector);
   const dispatch = useDispatch();
   const classes = useCustomizeThemeStyles({});
@@ -33,10 +33,12 @@ export const CustomizeTheme: FC<CustomizeThemeProps> = () => {
         return next;
       }, {} as PaletteShades)
       dispatch(updatePalette([colorType, palette]));
+      onChange();
     };
 
   const handleSelectDarkMode = (event: any) => {
     dispatch(toggleDarkMode());
+    onChange();
   };
 
   return (

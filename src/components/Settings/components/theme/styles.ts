@@ -72,6 +72,11 @@ export const useThemeStyles = makeStyles<CustomTheme>((theme: any) => ({
     backgroundColor: theme.palette.primary[800],
     color: theme.palette.primary[200],
     border: `2px solid ${theme.palette.primary[200]}`,
+    '& svg': {
+      height: '1rem',
+      width: '1rem',
+      marginLeft: 10,
+    },
   }),
 }));
 
