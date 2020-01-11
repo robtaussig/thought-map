@@ -4,7 +4,6 @@ import Close from '@material-ui/icons/Close';
 import Refresh from '@material-ui/icons/Refresh';
 import CircleButton from '../../../../components/General/CircleButton';
 import classNames from 'classnames';
-import { useLoadedDB } from '../../../../hooks/useDB';
 import CustomizeTheme from './customize-theme';
 import { customThemeSelector, resetDefault } from '../../../../reducers/customTheme';
 import { useThemeStyles } from './styles';
@@ -14,13 +13,12 @@ interface ThemeProps {
 
 }
 
-export const Theme: FC<ThemeProps> = ({ }) => {
+export const Theme: FC<ThemeProps> = () => {
   const customTheme = useSelector(customThemeSelector);
   const classes = useThemeStyles(customTheme);
   const dispatch = useDispatch();
   const [side, setSide] = useState<ViewPosition>(ViewPosition.Down);
   const rootRef = useRef(null);
-  const db = useLoadedDB();
   const handleClickClose = useCallback(() => {
     setSide(ViewPosition.Down);
   }, []);

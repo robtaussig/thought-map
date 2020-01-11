@@ -7,7 +7,7 @@ export const styles = (theme: any): StyleRules => ({
     width: '100%',
     display: 'grid',
     padding: 20,
-    backgroundColor: theme.palette.background[600],
+    backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[600],
     gap: '20px',
     gridTemplateAreas: `"sort-buttons sort-buttons"
                         "content content"
@@ -23,7 +23,7 @@ export const styles = (theme: any): StyleRules => ({
       backgroundColor: theme.palette.primary[500],
       borderRadius: '10px',
       position: 'relative',
-      boxShadow: `0px 0px 5px -1px ${theme.palette.background[900]}`,
+      boxShadow: `0px 0px 5px -1px black`,
       '& > select': {
         flex: 1,
         color: theme.palette.background[900],
@@ -196,7 +196,7 @@ export const styles = (theme: any): StyleRules => ({
   circleButton: () => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
-    backgroundColor: theme.palette.background[600],
+    backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     '&#add-thought, &#create-plan': {
       bottom: 10,
       right: 10,

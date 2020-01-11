@@ -9,7 +9,7 @@ const styles = (theme: any): StyleRules => ({
     height: '100%',
     left: 0,
     right: 0,
-    backgroundColor: theme.palette.background[500],
+    backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[500],
     opacity: 0.9,
     transition: 'all 0.3s linear',
   }),

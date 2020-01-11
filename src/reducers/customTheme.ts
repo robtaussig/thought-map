@@ -3,6 +3,20 @@ import { Selector } from 'react-redux';
 import { RootState } from './';
 import { CSSProperties } from '@material-ui/styles';
 
+export const SHADE_OPTIONS: [Shades, number][] = [
+  [0, 250],
+  [100, 200],
+  [200, 150],
+  [300, 100],
+  [400, 50],
+  [500, 0],
+  [600, -50],
+  [700, -100],
+  [800, -150],
+  [900, -200],
+  ['A400', 0],
+];
+
 /* LIGHT GREEN */
 const primaryColor = {
   0: '#F8FBEF',
@@ -75,6 +89,7 @@ export type Palette = Record<PaletteOptions, PaletteShades>;
 
 export interface CustomTheme {
   palette?: Palette;
+  useDarkMode?: boolean;
   defaults?: {
     [key: string]: CSSProperties;
   };
@@ -87,6 +102,7 @@ const initialState: CustomTheme = {
     background: grays,
     negative: reds,
   },
+  useDarkMode: false,
   defaults: {
     circleButton: {
       border: `2px solid ${primaryColor[500]}`,
@@ -104,12 +120,24 @@ const customTheme = createSlice({
       state.palette[colorType] = value;
     },
     resetDefault: (state) => initialState,
+    toggleDarkMode: (state, action: PayloadAction<boolean>) => {
+      state.useDarkMode = action.payload === undefined ?
+        !state.useDarkMode :
+        action.payload;
+
+      const previous = { ...state.palette.background };
+      SHADE_OPTIONS.slice(0, SHADE_OPTIONS.length - 1).forEach(([shade], idx) => {
+        const opposite = SHADE_OPTIONS[SHADE_OPTIONS.length - 2 - idx][0];
+        state.palette.background[shade] = previous[opposite];
+      });
+    }
   }
 });
 
 export const {
   updatePalette,
   resetDefault,
+  toggleDarkMode,
 } = customTheme.actions;
 
 export default customTheme.reducer;

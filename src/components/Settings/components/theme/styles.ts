@@ -8,7 +8,7 @@ export const useThemeStyles = makeStyles<CustomTheme>((theme: any) => ({
     left: 0,
     right: 0,
     top: 0,
-    backgroundColor: theme.palette.background[500],
+    backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[500],
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -23,7 +23,7 @@ export const useThemeStyles = makeStyles<CustomTheme>((theme: any) => ({
   header: () => ({
     flex: '0 0 80px',
     backgroundColor: theme.palette.primary[500],
-    boxShadow: `0px 0px 5px 0px ${theme.palette.background[900]}`,
+    boxShadow: `0px 0px 5px 0px black`,
     width: '100%',
     alignItems: 'center',
     display: 'flex',
@@ -47,11 +47,12 @@ export const useThemeStyles = makeStyles<CustomTheme>((theme: any) => ({
       color: theme.palette.background[0],
     },
     '&:not(:disabled)': {
-      boxShadow: `0px 0px 5px 2px ${theme.palette.background[900]}`,
+      boxShadow: `0px 0px 5px 2px black`,
     }
   }),
   circleButton: () => ({
     ...theme.defaults.circleButton,
+    backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     '&#close': {
       left: 10,
       bottom: 10,
@@ -74,7 +75,7 @@ export const useThemeStyles = makeStyles<CustomTheme>((theme: any) => ({
   }),
 }));
 
-export const usePaletteColorListStyles = makeStyles((theme: any) => ({
+export const usePaletteColorListStyles = makeStyles<CustomTheme>((theme: any) => ({
   root: {
 
   },
@@ -85,7 +86,7 @@ export const usePaletteColorListStyles = makeStyles((theme: any) => ({
     fontWeight: 600,
     fontSize: 12,
     backgroundColor: theme.palette.background[0],
-    boxShadow: `0px 0px 5px ${theme.palette.background[900]}`,
+    boxShadow: `0px 0px 5px black`,
   }),
   colorTypeText: {
     gridRow: 'header',
@@ -93,7 +94,7 @@ export const usePaletteColorListStyles = makeStyles((theme: any) => ({
     ...theme.defaults.centered,
   },
   color: {
-    boxShadow: `0px 0px 5px ${theme.palette.background[900]}`,
+    boxShadow: `0px 0px 5px black`,
     borderRadius: '5px',
     transform: 'scale(0.95)',
     '&.main': {
@@ -118,14 +119,32 @@ export const usePaletteColorListStyles = makeStyles((theme: any) => ({
   }),
 }));
 
-export const useCustomizeThemeStyles = makeStyles((theme: any) => ({
-  root: {
+export const useCustomizeThemeStyles = makeStyles<CustomTheme>((theme: any) => ({
+  root: () => ({
     display: 'grid',
     gridTemplateColumns: 'repeat(4, 1fr)',
-    gridTemplateRows: 'repeat(8, 1fr)',
+    gridTemplateRows: 'repeat(9, 1fr)',
     gridGap: '10px',
     height: '100%',
     width: 'calc(100% - 80px)',
     marginTop: 10,
-  },
+  }),
+  selectLabel: () => ({
+    gridRow: '9',
+    gridColumn: '1 / -1',
+    '& > select': {
+      width: '100%',
+      height: '100%',
+      fontSize: 20,
+      color: theme.palette.background[900],
+      backgroundColor: theme.palette.background[0],
+      textAlignLast: 'center' as any,
+      display: 'flex',
+      paddingLeft: 13,
+    },
+    '&#dark': {
+      color: theme.palette.background[0],
+      backgroundColor: theme.palette.background[900],
+    },
+  }),
 }));

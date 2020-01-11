@@ -27,7 +27,7 @@ const styles = (theme: any): StyleRules => ({
     left: 0,
     right: 0,
     top: 0,
-    backgroundColor: theme.palette.background[500],
+    backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[500],
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -42,7 +42,7 @@ const styles = (theme: any): StyleRules => ({
   header: () => ({
     flex: '0 0 80px',
     backgroundColor: theme.palette.primary[500],
-    boxShadow: `0px 0px 5px 0px ${theme.palette.background[900]}`,
+    boxShadow: `0px 0px 5px 0px black`,
     width: '100%',
     alignItems: 'center',
     display: 'flex',
@@ -66,16 +66,17 @@ const styles = (theme: any): StyleRules => ({
       color: theme.palette.background[0],
     },
     '&:not(:disabled)': {
-      boxShadow: `0px 0px 5px 2px ${theme.palette.background[900]}`,
+      boxShadow: `0px 0px 5px 2px black`,
     }
   }),
-  circleButton: {
+  circleButton: () => ({
     ...theme.defaults.circleButton,
+    backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     '&#submit': {
       right: 10,
       bottom: 10,
     },
-  },
+  }),
 });
 
 const IMGUR_CLIENT_ID = 'f1b9f4565330211';

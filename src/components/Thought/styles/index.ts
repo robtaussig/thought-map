@@ -19,7 +19,7 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
   circleButton: () => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
-    backgroundColor: theme.palette.background[600],
+    backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     opacity: 0.5,
     '&#return-home': {
       top: 10,
@@ -45,6 +45,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   }),
   circleButton: () => ({
     ...theme.defaults.circleButton,
+    backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     '&#cancel-edit': {
       top: 10,
       left: 10,

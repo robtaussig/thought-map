@@ -1,34 +1,37 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import ManagePhotos from './manage-photos';
 import CustomObjects from './custom-objects';
 import AppConfiguration from './app-configuration';
 import Theme from './theme';
 import Data from './data';
-import useApp from '../../../hooks/useApp';
 import { CACHE } from '../../../public/sw';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 import { useSelector } from 'react-redux';
 import { pictureSelector } from '../../../reducers/pictures';
 import { settingSelector } from '../../../reducers/settings';
+import {
+  CustomTheme,
+  customThemeSelector,
+} from '../../../reducers/customTheme';
 
 const LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY = 'updateCheckCount';
 const LOCAL_STORAGE_LAST_VERSION_KEY = 'lastVersion';
 
 interface AppSettingsProps {
-  classes: any;
   setLastNotification: (notification: { message: string }) => void;
 }
 
-const styles = (theme: any): StyleRules => ({
-  root: {
+const useStyles = makeStyles<CustomTheme>((theme: CustomTheme) => ({
+  root: () => ({
     position: 'relative',
+    backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[700],
     flex: 1,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as any,
     alignItems: 'center',
     overflow: 'auto',
-  },
+  }),
   updateButton: () => ({
     border: `2px solid ${theme.palette.background[0]}`,
     padding: '3px 0',
@@ -46,19 +49,18 @@ const styles = (theme: any): StyleRules => ({
       color: theme.palette.background[0],
     },
     '&:not(:disabled)': {
-      boxShadow: `0px 0px 5px 2px ${theme.palette.background[900]}`,
+      boxShadow: `0px 0px 5px 2px black`,
     },
   }),
-});
+}));
 
-const SETTINGS_PATH_REGEX = /settings.*/;
-
-export const AppSettings: FC<AppSettingsProps> = ({ classes, setLastNotification }) => {
-  const { history } = useApp();
+export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
   const pictures = useSelector(pictureSelector);
   const settings = useSelector(settingSelector);
+  const customTheme = useSelector(customThemeSelector);
+  const classes = useStyles(customTheme);
   const handleCheckUpdates = () => {
     caches.delete(CACHE);
     localStorage.setItem(LOCAL_STORAGE_LAST_VERSION_KEY, (window as any).APP_VERSION);
@@ -92,4 +94,4 @@ export const AppSettings: FC<AppSettingsProps> = ({ classes, setLastNotification
   );
 };
 
-export default withStyles(styles)(AppSettings);
+export default AppSettings;

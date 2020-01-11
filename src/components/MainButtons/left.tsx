@@ -22,7 +22,7 @@ const styles = (theme: any): StyleRules => ({
   circleButton: () => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
-    backgroundColor: theme.palette.background[800],
+    backgroundColor: 'black',
     bottom: 10,
     left: 10,
     zIndex: 999,

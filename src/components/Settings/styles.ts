@@ -5,15 +5,16 @@ export const rootStyles = (theme: any): StyleRules => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    backgroundColor: theme.palette.background[700],
+    backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[700],
   }),
 });
 
 export const planSettingsStyles = (theme: any): StyleRules => ({
-  root: {
+  root: () => ({
     flex: 1,
     display: 'grid',
     paddingBottom: '80px',
+    backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[700],
     margin: 20,
     gridTemplateAreas: `"plan-name plan-name plan-name"
                         "group-thoughts archive-plan show-completed"
@@ -26,7 +27,7 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     gridRowGap: '20px',
     gridColumnGap: '10px',
     overflow: 'auto',
-  },
+  }),
   editIcon: {
     position: 'absolute',
     right: 0,
@@ -121,8 +122,9 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
       backgroundColor: theme.palette.background[300],
     },
   }),
-  circleButton: {
+  circleButton: () => ({
     ...theme.defaults.circleButton,
+    backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     '&[disabled]': {
       opacity: 0.5,
     },
@@ -134,5 +136,5 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
       bottom: 10,
       right: 10,
     },
-  },
+  }),
 });

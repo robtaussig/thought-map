@@ -7,6 +7,8 @@ import {
   updatePalette,
   PaletteOptions,
   PaletteShades,
+  toggleDarkMode,
+  SHADE_OPTIONS,
 } from '../../../../reducers/customTheme';
 import { useCustomizeThemeStyles } from './styles';
 import PaletteColorList from './palette-color-list';
@@ -14,7 +16,7 @@ import {
   adjustShade,
   randomHex,
 } from './util';
-import { SHADE_OPTIONS } from './constants';
+import Select from '../../../General/Select';
 
 interface CustomizeThemeProps {
 
@@ -24,14 +26,18 @@ export const CustomizeTheme: FC<CustomizeThemeProps> = () => {
   const customTheme = useSelector<RootState, CustomTheme>(customThemeSelector);
   const dispatch = useDispatch();
   const classes = useCustomizeThemeStyles({});
-  const handleClickRandom = (colorType: PaletteOptions) =>
+  const handleChange = (colorType: PaletteOptions) =>
     (baseHex: string = randomHex()) => {
       const palette = SHADE_OPTIONS.reduce((next, [shade, increment]) => {
-        next[shade] = adjustShade(baseHex, increment);
+        next[shade] = adjustShade(baseHex, customTheme.useDarkMode ? -1 * increment : increment);
         return next;
       }, {} as PaletteShades)
       dispatch(updatePalette([colorType, palette]));
     };
+
+  const handleSelectDarkMode = (event: any) => {
+    dispatch(toggleDarkMode());
+  };
 
   return (
     <div className={classes.root}>
@@ -42,10 +48,17 @@ export const CustomizeTheme: FC<CustomizeThemeProps> = () => {
             column={idx}
             colorType={colorType as PaletteOptions}
             values={values}
-            onChange={handleClickRandom(colorType as PaletteOptions)}
+            onChange={handleChange(colorType as PaletteOptions)}
           />
         );
       })}
+      <Select
+        classes={classes}
+        id={customTheme.useDarkMode ? 'dark' : 'light'}
+        options={['light', 'dark']}
+        value={customTheme.useDarkMode ? 'dark' : 'light'}
+        onChange={handleSelectDarkMode}
+      />
     </div>
   );
 };
