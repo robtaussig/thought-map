@@ -75,12 +75,12 @@ const styles = (theme: any): StyleRules => ({
     fontSize: 24,
   }),
   button: () => ({
-    border: `2px solid ${theme.palette.background[0]}`,
+    border: `2px solid ${theme.palette.secondary[0]}`,
     padding: '3px 0',
     marginTop: 40,
     width: '70%',
     borderRadius: '3px',
-    backgroundColor: theme.palette.background[500],
+    backgroundColor: theme.palette.secondary[500],
     color: theme.palette.background[0],
     '&:active': {
       backgroundColor: theme.palette.background[700],

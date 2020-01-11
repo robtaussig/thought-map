@@ -169,7 +169,7 @@ export const styles = (theme: any): StyleRules => ({
   planName: () => ({
     fontSize: 10,
     fontWeight: 600,
-    color: theme.palette.background[300],
+    color: theme.palette.secondary[700],
     '& > span': {
       marginLeft: 10,
     },

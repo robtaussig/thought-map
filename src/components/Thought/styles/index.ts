@@ -8,7 +8,7 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
     overflowX: 'hidden',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: theme.palette.background[700],
+    background: theme.useDarkMode ? 'black' : theme.palette.background[600],
     '& #thought-loader': {
       position: 'absolute',
       top: '50%',
@@ -40,6 +40,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     gridTemplateRows: 'max-content max-content 1fr',
     gridTemplateColumns: 'max-content max-content 1fr',
     gridGap: '10px',
+    backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     color: theme.palette.background[0],
     marginBottom: 110,
   }),
@@ -96,12 +97,14 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     ...theme.defaults.centered,
     color: theme.palette.negative[500],
   }),
-  createdAt: {
+  createdAt: () => ({
     gridArea: 'created-at',
-  },
-  updatedAt: {
+    color: theme.useDarkMode ? 'white' : 'inherit',
+  }),
+  updatedAt: () => ({
     gridArea: 'updated-at',
-  },
+    color: theme.useDarkMode ? 'white' : 'inherit',
+  }),
   thoughtSections: {
     gridArea: 'sections',
     overflow: 'auto',
@@ -181,6 +184,9 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     justifyContent: 'flex-start',
     '& > button': {
       ...theme.defaults.centered,
+      '& svg': {
+        border: '1px solid currentColor',
+      }
     },
   },
   completeThoughtButton: () => ({
@@ -249,7 +255,7 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   }),
   quickAddButton: () => ({
     color: theme.palette.primary[500],
-    '& > svg': {
+    '& svg': {
       background: theme.palette.background[900],
       borderRadius: '5px',
     },
