@@ -1,10 +1,7 @@
-import React, { useRef, FC, ChangeEvent, CSSProperties } from 'react';
+import React, { useRef, FC, ChangeEvent } from 'react';
 import Add from '@material-ui/icons/Add';
-import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
-import useLongPress from '../../hooks/useLongPress';
-import classNames from 'classnames';
-
-const EMPTY_LONG_PRESS = () => { };
+import LongPressCircleButton from './LongPressCircleButton';
+import StaticCircleButton from './StaticCircleButton';
 
 interface CircleButtonProps {
   classes: any;
@@ -21,10 +18,6 @@ interface CircleButtonProps {
   [rest: string]: any;
 }
 
-const longPressIconStyles: CSSProperties = {
-  color: '#9c9c9c',
-};
-
 export const CircleButton: FC<CircleButtonProps> = React.memo(({
   classes,
   id = 'add-button',
@@ -38,59 +31,40 @@ export const CircleButton: FC<CircleButtonProps> = React.memo(({
   onLongPress,
   emphasize,
   ...rest }) => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const isCancelled = useRef<boolean>(null);
-  const isEnded = useRef<boolean>(null);
 
-  const handleInteractionStart = (): void => {
-    isCancelled.current = false;
-    isEnded.current = false;
-    !disabled && buttonRef.current.classList.add('touched');
-  };
-  const handleInteractionEnd = (e: (React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>)): void => {
-    if (!disabled && isEnded.current === false && isCancelled.current === false) {
-      isEnded.current = true;
-      buttonRef.current.classList.remove('touched');
-      e.preventDefault();
-      onClick();
-    }
-  };
-  const handleCancelInteraction = (): void => {
-    if (isEnded.current === false && isCancelled.current !== true) {
-      isCancelled.current = true;
-      buttonRef.current.classList.remove('touched');
-    }
-  };
-
-  const handleLongPress = useLongPress(onLongPress || EMPTY_LONG_PRESS, 400, {
-    onStart: handleInteractionStart,
-    onEnd: handleInteractionEnd,
-  });
-
-  return (
-    <button
-      id={id}
-      ref={buttonRef}
-      title={title}
-      style={{ userSelect: 'none' }}
-      className={classNames(classes.circleButton, { emphasize })}
-      onTouchStart={handleInteractionStart}
-      onTouchEnd={handleInteractionEnd}
-      onMouseDown={handleInteractionStart}
-      onMouseUp={handleInteractionEnd}
-      onMouseMove={handleCancelInteraction}
-      onTouchMove={handleCancelInteraction}
-      aria-label={label}
-      disabled={disabled}
-      {...(onLongPress ? handleLongPress : {})}
-      {...rest}
-    >
-      {disabled ? <SentimentDissatisfied /> : <Icon
-        ref={svgRef}
-      />}
-      {LongPressIcon && <LongPressIcon style={longPressIconStyles} />}
-    </button>
-  );
+  if (onLongPress) {
+    return (
+      <LongPressCircleButton
+        classes={classes}
+        id={id}
+        onClick={onClick}
+        label={label}
+        disabled={disabled}
+        Icon={Icon}
+        LongPressIcon={LongPressIcon}
+        title={title}
+        svgRef={svgRef}
+        onLongPress={onLongPress}
+        emphasize={emphasize}
+        {...rest}
+      />
+    )
+  } else {
+    return (
+      <StaticCircleButton
+        classes={classes}
+        id={id}
+        onClick={onClick}
+        label={label}
+        disabled={disabled}
+        Icon={Icon}
+        title={title}
+        svgRef={svgRef}
+        emphasize={emphasize}
+        {...rest}
+      />
+    )
+  }
 });
 
 export default CircleButton;

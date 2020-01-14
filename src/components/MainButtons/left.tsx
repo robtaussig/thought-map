@@ -79,7 +79,8 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
     };
 
     const handleGoBack = () => {
-      history.goBack();
+      const planId = getIdFromUrl(history, 'plan');
+      history.push(planId ? `/plan/${planId}` : `/`);
     };
 
     const handleClickSettings = () => {
