@@ -16,6 +16,7 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
   const origin = useRef<{ x: number, y: number }>(null);
 
   const handlePressStart = (e: any) => {
+    isMoving.current = false;
     if (isMobile) {
       const { clientX, clientY } = e.touches[0];
       origin.current = { x: clientX, y: clientY };
