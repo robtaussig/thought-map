@@ -12,7 +12,7 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
   const pressTimeout = useRef<NodeJS.Timer>(null);
 
   const handlePressStart = (e: any) => {
-    
+
     combinedHandlers.onStart && combinedHandlers.onStart(e);
     pressTimeout.current = setTimeout(() => {
       pressTimeout.current = null;
@@ -33,7 +33,6 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
     return {
       onTouchStart: handlePressStart,
       onTouchEnd: handlePressEnd,
-      onTouchMove: handlePressEnd,
       onContextMenu: (e: any) => e.preventDefault(),
     };
   } else {
