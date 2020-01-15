@@ -65,6 +65,7 @@ export const useThemeStyles = makeStyles<CustomTheme>((theme: any) => ({
     },
   }),
   saveButton: () => ({
+    ...theme.defaults.centered,
     margin: '50px auto',
     borderRadius: 5,
     padding: '10px 20px',
