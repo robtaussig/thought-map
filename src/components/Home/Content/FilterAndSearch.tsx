@@ -47,34 +47,34 @@ export const FilterAndSearch: FC<FilterAndSearchProps> = ({
           })} onClick={handleSortBy(SortFilterField.Title)}>
             Name
             {sortFilterSettings.field === SortFilterField.Title ?
-              (sortFilterSettings.desc ? <ExpandMore/> : <ExpandLess/>) :
-              <UnfoldMore/>
+              (sortFilterSettings.desc ? <ExpandMore /> : <ExpandLess />) :
+              <UnfoldMore />
             }
           </button>
         </div>
         <div className={classes.sortByStatus}>
-        <button className={classNames(classes.sortButton, {
-          selected: sortFilterSettings.field === SortFilterField.Status
-        })} onClick={handleSortBy(SortFilterField.Status)}>
-          Status
+          <button className={classNames(classes.sortButton, {
+            selected: sortFilterSettings.field === SortFilterField.Status
+          })} onClick={handleSortBy(SortFilterField.Status)}>
+            Status
         </button>
-        /
+          /
         <button className={classNames(classes.sortButton, {
-          selected: sortFilterSettings.field === SortFilterField.Type
-        })} onClick={handleSortBy(SortFilterField.Type)}>
-          Type
+            selected: sortFilterSettings.field === SortFilterField.Type
+          })} onClick={handleSortBy(SortFilterField.Type)}>
+            Type
         </button>
-        {[SortFilterField.Status, SortFilterField.Type].includes(sortFilterSettings.field) ?
-          (sortFilterSettings.desc ? <ExpandMore/> : <ExpandLess/>) :
-          <UnfoldMore/>
-        }
+          {[SortFilterField.Status, SortFilterField.Type].includes(sortFilterSettings.field) ?
+            (sortFilterSettings.desc ? <ExpandMore /> : <ExpandLess />) :
+            <UnfoldMore />
+          }
         </div>
       </div>
       <form className={classNames(classes.searchWrapper, 'flippable', isSearching ? 'front' : 'back')} onSubmit={handleSubmitSearch}>
-        <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'}/>
+        <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'} autocapitalize={'none'} />
         {searchTerm === '' ?
-          (<button className={classes.searchButton}><Search/></button>) :
-          (<button className={classes.searchButton} onClick={() => setSearchTerm('')}><Close/></button>)}
+          (<button className={classes.searchButton}><Search /></button>) :
+          (<button className={classes.searchButton} onClick={() => setSearchTerm('')}><Close /></button>)}
       </form>
     </div>
   );
