@@ -71,7 +71,7 @@ export const FilterAndSearch: FC<FilterAndSearchProps> = ({
         </div>
       </div>
       <form className={classNames(classes.searchWrapper, 'flippable', isSearching ? 'front' : 'back')} onSubmit={handleSubmitSearch}>
-        <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'} autocapitalize={'none'} />
+        <Input classes={classes} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} aria-label={'Search'} autoCapitalize={'none'} />
         {searchTerm === '' ?
           (<button className={classes.searchButton}><Search /></button>) :
           (<button className={classes.searchButton} onClick={() => setSearchTerm('')}><Close /></button>)}

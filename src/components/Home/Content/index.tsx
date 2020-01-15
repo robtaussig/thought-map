@@ -52,7 +52,7 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
 
     return Object.values(stateConnections).reduce((next, { from, to }) => {
       if (thoughts.find(({ id }) => from === id) && thoughts.find(({ id }) => to === id)) {
-        next[from] = next[from] || [0,0];
+        next[from] = next[from] || [0, 0];
         const otherThought = thoughts.find(otherThought => otherThought.id === to);
         next[from][1]++;
         if (otherThought.status === 'completed') next[from][0]++;
@@ -64,10 +64,10 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
   useEffect(() => {
     const runSearch = async () => {
       const matches = await searcherWorker.findMatches(searchTerm);
-      
+
       setMatchingThoughts(matches);
     }
-    
+
     if (searchTerm?.length > 2) {
       runSearch();
     } else if (searchTerm?.length === 0) {
@@ -88,16 +88,14 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
       return () => dispatch(emphasizeButton(null));
     }
   }, [thoughts.length]);
-
   useEffect(() => {
-    if (didMount.current === false && settings.disableTips !== true) {
-
+    if (settings.didInit === true && settings.disableTips !== true) {
       if (
         thoughts.length > 0 &&
         settings.learnedLongPress !== true
       ) {
         dispatch(emphasizeButton(ButtonPositions.LeftAlt));
-        openModal(<LongPressTutorial/>, 'About Long Press', {
+        openModal(<LongPressTutorial />, 'About Long Press', {
           afterClose: () => {
             settingsActions.createSetting(db, {
               field: 'learnedLongPress',
@@ -110,7 +108,7 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
         settings.learnedPriorityList !== true
       ) {
         dispatch(emphasizeButton(ButtonPositions.MiddleAlt));
-        openModal(<PriorityTutorial/>, 'About Priority', {
+        openModal(<PriorityTutorial />, 'About Priority', {
           afterClose: () => {
             settingsActions.createSetting(db, {
               field: 'learnedPriorityList',
@@ -120,7 +118,7 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
         });
       }
     }
-  },[thoughts, settings]);
+  }, [settings.didInit]);
 
   return (
     <Fragment>
@@ -136,30 +134,30 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
         <div className={classes.content}>
           {new Array(10).fill(null).map((_, idx) => {
             return (
-                <BlankThoughtNode
-                  key={`${idx}-blank-thought`}
-                />
-              );
-            })
+              <BlankThoughtNode
+                key={`${idx}-blank-thought`}
+              />
+            );
+          })
           }
         </div>
       ) : (
-        <ThoughtNodes
-          classes={classes}
-          thoughts={thoughts}
-          matchingThoughts={matchingThoughts}
-          plan={plan}
-          thoughtMap={thoughtMap}
-          sortFilterSettings={sortFilterSettings}
-          plans={plans}
-          didMount={didMount}
-          setShowFilters={setShowFilters}
-          statusOptions={statusOptions}
-          typeOptions={typeOptions}
-          from={from}
-          connectionStatusByThought={connectionStatusByThought}
-        />
-      )}
+          <ThoughtNodes
+            classes={classes}
+            thoughts={thoughts}
+            matchingThoughts={matchingThoughts}
+            plan={plan}
+            thoughtMap={thoughtMap}
+            sortFilterSettings={sortFilterSettings}
+            plans={plans}
+            didMount={didMount}
+            setShowFilters={setShowFilters}
+            statusOptions={statusOptions}
+            typeOptions={typeOptions}
+            from={from}
+            connectionStatusByThought={connectionStatusByThought}
+          />
+        )}
     </Fragment>
   );
 };

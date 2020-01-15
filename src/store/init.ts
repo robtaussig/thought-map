@@ -1,11 +1,11 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { Settings as SettingsType, setSettings } from '../reducers/settings';
-import { Thoughts as ThoughtsType, setThoughts } from '../reducers/thoughts'; 
-import { Connections as ConnectionsType, setConnections } from '../reducers/connections'; 
-import { Notes as NotesType, setNotes } from '../reducers/notes'; 
-import { Tags as TagsType, setTags } from '../reducers/tags'; 
-import { Plans as PlansType, setPlans } from '../reducers/plans'; 
-import { Templates as TemplatesType, setTemplates } from '../reducers/templates'; 
+import { Thoughts as ThoughtsType, setThoughts } from '../reducers/thoughts';
+import { Connections as ConnectionsType, setConnections } from '../reducers/connections';
+import { Notes as NotesType, setNotes } from '../reducers/notes';
+import { Tags as TagsType, setTags } from '../reducers/tags';
+import { Plans as PlansType, setPlans } from '../reducers/plans';
+import { Templates as TemplatesType, setTemplates } from '../reducers/templates';
 import { Pictures as PicturesType, setPictures } from '../reducers/pictures';
 import { Statuses as StatusesType, setStatuses } from '../reducers/statuses';
 import { StatusesByThought as StatusesByThoughtType, setStatusesByThought } from '../reducers/statusesByThought';
@@ -41,7 +41,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
   const setStatusesAction = (statuses: StatusesType) => dispatch(setStatuses(statuses));
   const setStatusesByThoughtAction = (statusesByThought: StatusesByThoughtType) => dispatch(setStatusesByThought(statusesByThought));
 
-  const [ thoughts, connections, plans, notes, tags, templates, pictures, settings, statuses ] = await Promise.all([
+  const [thoughts, connections, plans, notes, tags, templates, pictures, settings, statuses] = await Promise.all([
     thoughtActions.getThoughts(db),
     connectionActions.getConnections(db),
     planActions.getPlans(db),
@@ -52,7 +52,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
     settingActions.getSettings(db),
     statusActions.getStatuses(db),
   ]);
-  
+
   const statusesById = intoMap(statuses);
   const notesById = intoMap(notes);
   const tagsById = intoMap(tags);
@@ -67,8 +67,8 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
   const settingsMap = settings.reduce((next, { field, value }) => {
     next[field] = value;
     return next;
-  }, {} as SettingsType);
-  
+  }, { didInit: true } as SettingsType);
+
   setThoughtsAction(thoughts);
   setConnectionsAction(connectionsById);
   setPlansAction(plans);
