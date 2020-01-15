@@ -60,7 +60,7 @@ export const LongPressCircleButton: FC<LongPressCircleButtonProps> = React.memo(
     }
   };
 
-  const handleLongPress = useLongPress(onLongPress, 400, {
+  const handleLongPress = useLongPress(onLongPress, 300, {
     onStart: handleInteractionStart,
     onEnd: handleInteractionEnd,
     onCancel: handleCancelInteraction,

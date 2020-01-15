@@ -9,7 +9,7 @@ interface Handlers {
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500, combinedHandlers: Handlers = {}) => {
+export const useLongPress = (longPressCb: (e: any) => void, timer: number = 400, combinedHandlers: Handlers = {}) => {
   const pressTimeout = useRef<NodeJS.Timer>(null);
   const didLongPress = useRef<boolean>(false);
   const isMoving = useRef<boolean>(false);
