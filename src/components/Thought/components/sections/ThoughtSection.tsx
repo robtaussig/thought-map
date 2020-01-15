@@ -52,11 +52,11 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   visible,
   quickActionButton,
   linkifyValues,
-  onLongPress = (cb: () => void) => {},
+  onLongPress = (cb: () => void) => { },
   sectionState,
   onDrop,
   onToggleVisibility,
-}) => {  
+}) => {
   const [editting, setEditting] = useState<boolean>(false);
   const [fullScreenImage, setFullScreenImage] = useState<string>(null);
   const [edittedItems, setEdittedItems] = useState<(string | [string, string])[]>([]);
@@ -91,7 +91,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     if ([null, EditTypes.Photo].includes(edit.type)) {
       if (edit.onEdit) edit.onEdit();
     } else {
-      setEditting(prev => !prev);    
+      setEditting(prev => !prev);
     }
   };
 
@@ -115,7 +115,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
               options={edit.options}
             />
           );
-        break;
+          break;
         case EditTypes.TextArea:
           _component = (
             <TextArea
@@ -139,8 +139,8 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
           };
           _component = (
             <div>
-              <DateInput classes={classes} value={inputtedDate} onChange={handleSetDate} autoFocus/>
-              <DateInput classes={classes} value={inputtedTime} time onChange={handleSetTime} autoFocus/>
+              <DateInput classes={classes} value={inputtedDate} onChange={handleSetDate} autoFocus />
+              <DateInput classes={classes} value={inputtedTime} time onChange={handleSetTime} autoFocus />
             </div>
           );
           break;
@@ -157,7 +157,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
             />
           );
           break;
-      
+
         default:
           _component = (
             <Input
@@ -180,12 +180,12 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     } else {
       return (
         <div className={classes.sectionEditForm}>
-          {edit.options ? 
+          {edit.options ?
             (value.map((item, idx) => {
               return (
                 <div key={`${item}-${idx}`} className={classes.editableItem}>
                   <span className={classes.quickItem}>{item}</span>
-                  <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete/></button>
+                  <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete /></button>
                 </div>
               );
             })) :
@@ -206,7 +206,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
                     }}
                     aria-label={`Edit ${item}`}
                   />
-                  <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete/></button>
+                  <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete /></button>
                 </div>
               );
             }))
@@ -221,7 +221,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       const handleBodyClick = (e: any) => {
         if (!rootRef.current.contains(e.target)) {
           setEditting(false);
-        }       
+        }
       };
 
       const handleKeyDown = (e: any) => {
@@ -231,7 +231,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       };
 
       document.body.addEventListener('click', handleBodyClick);
-      document.body,addEventListener('keydown', handleKeyDown);
+      document.body, addEventListener('keydown', handleKeyDown);
 
       return () => {
         document.body.removeEventListener('click', handleBodyClick);
@@ -249,11 +249,11 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     setFullScreenImage(null);
   }, []);
 
-  const _displayComponent = useMemo(() => {    
+  const _displayComponent = useMemo(() => {
     const linkify = (element: any): any => {
       if (linkifyValues) {
         if (HTTP_REGEX.test(element)) {
-          return <a href={`http://${element.replace(HTTPS_REGEX,'')}`} target={'_blank'} style={{ color: 'black' }}>{element}</a>;
+          return <a href={`http://${element.replace(HTTPS_REGEX, '')}`} target={'_blank'} style={{ color: 'black' }}>{element}</a>;
         } else if (TEL_REGEX.test(element)) {
           return <a href={`tel:${element}`} style={{ color: 'black' }}>{element}</a>;
         } else if (EMAIL_REGEX.test(element)) {
@@ -273,15 +273,15 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         <ul className={classes.itemList}>
           {value.map((item, idx) => {
             return edit.type === EditTypes.Photo ?
-            (<div key={`${idx}-image`} className={classes.imageWrapper}>
-              {/* 
+              (<div key={`${idx}-image`} className={classes.imageWrapper}>
+                {/* 
               // @ts-ignore */}
-              <img src={item[0]} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>
-              <span className={classes.imageDescription}>{item[1]}</span>
-            </div>) :
-            (
-              <li key={`${item}-${idx}`} className={classes.noteItem} onClick={edit.onClickItem ? () => edit.onClickItem(item, idx) : undefined}>{linkify(item)}</li>
-            );
+                <img src={item[0]} className={classes.image} loading="lazy" onClick={handleClickImage(idx)} />
+                <span className={classes.imageDescription}>{item[1]}</span>
+              </div>) :
+              (
+                <li key={`${item}-${idx}`} className={classes.noteItem} onClick={edit.onClickItem ? () => edit.onClickItem(item, idx) : undefined}>{linkify(item)}</li>
+              );
           })}
         </ul>
       );
@@ -314,7 +314,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
 
       return (
         <button className={classes.quickAddButton} onClick={handleClickAdd}>
-          <Add/>
+          <Add />
         </button>
       );
     }
@@ -345,7 +345,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       return (
         <button className={classNames(classes.editToggle, {
           editting,
-        })} onClick={handleToggleEdit}>{editting ? (<Check/>) : (<Edit/>)}</button>
+        })} onClick={handleToggleEdit}>{editting ? (<Check />) : (<Edit />)}</button>
       );
     }
 
@@ -353,7 +353,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       <button className={classNames(classes.editToggle, {
         visible,
       })} onClick={onToggleVisibility}>
-        {visible ? (<Visibility/>) : (<VisibilityOff/>)}
+        {visible ? (<Visibility />) : (<VisibilityOff />)}
       </button>
     );
   }, [editting, edittedItems, sectionState, quickActionButton, _quickActionButton, visible, inputtedValue]);
@@ -366,7 +366,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       >
         {_editIcons}
         <div className={classes.sectionIcon}>
-          <Icon/>
+          <Icon />
         </div>
         <span className={classNames(classes.sectionField, 'drop-target')} title={'Double-click to edit'}>{field}</span>
         {sectionState === SectionState.EditingOtherSection && (<button className={classNames(classes.sectionValue, 'drop-target')} onClick={onDrop}>
@@ -387,7 +387,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     >
       {_editIcons}
       <div className={classes.sectionIcon} onClick={handleToggleEdit}>
-        <Icon/>
+        <Icon />
       </div>
       <span className={classes.sectionField} title={'Double-click to edit'}>{field}</span>
       {editting ? _editComponent : _displayComponent}
@@ -395,7 +395,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         {!editting && (quickActionButton || _quickActionButton)}
       </div>
       {fullScreenImage && (
-        <FullScreenImage onClose={handleCloseFullScreenImage} image={fullScreenImage}/>
+        <FullScreenImage onClose={handleCloseFullScreenImage} image={fullScreenImage} />
       )}
     </section>
   );

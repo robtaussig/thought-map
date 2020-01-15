@@ -6,6 +6,7 @@ import Home from '@material-ui/icons/Home';
 import { thoughtHomeStyles } from './styles';
 import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
+import MissingThought from './components/MissingThought';
 import ThoughtSettings from '../ThoughtSettings';
 import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions, plans as planActions } from '../../actions';
@@ -67,6 +68,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   const { history } = useApp();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const [editAllSections, setEditAllSections] = useState<boolean>(false);
+  const [threeSecondsElapsed, setThreeSecondsElapsed] = useState<boolean>(false);
   const thoughtId = getIdFromUrl(history, 'thought');
   const thoughts = useSelector(thoughtSelector);
   const tags = useSelector(tagSelector);
@@ -96,19 +98,19 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
           connectionId: id,
         };
       })
-  , [thoughtId, connections, thoughts]);
+    , [thoughtId, connections, thoughts]);
 
   const plan = useMemo(() => {
-    return plans.find(({ id}) => thought && id === thought.planId);
+    return plans.find(({ id }) => thought && id === thought.planId);
   }, [plans, thought]);
 
   const thoughtSections = thought && thought.sections ?
     thought.sections :
-      plan && plan.defaultSections ?
-        plan.defaultSections :
-        DEFAULT_SECTIONS;
+    plan && plan.defaultSections ?
+      plan.defaultSections :
+      DEFAULT_SECTIONS;
 
-  const thoughtStatuses = useMemo(() => {    
+  const thoughtStatuses = useMemo(() => {
     if (typeof thoughtId === 'string') {
       return (statusesByThought[thoughtId] || [])
         .map(statusId => statuses[statusId])
@@ -134,7 +136,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   const handleEditAllSections = useCallback(() => {
     setDisplaySettings(false);
     setEditAllSections(true);
-  }, []);  
+  }, []);
 
   const handleCancelEditAllSections = useCallback(() => {
     setEditAllSections(false);
@@ -162,7 +164,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
 
   const sectionVisibility = useMemo(() => {
     return thoughtSections.split('-').reduce((visibility, section) => {
-      
+
       if (section.startsWith('_')) {
         visibility[section.replace(SECTION_DELIMITER_REGEX, '')] = false;
       } else {
@@ -176,11 +178,27 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
     setDisplaySettings(false);
   }, []);
 
+  useEffect(() => {
+    let unmounted = false;
+    const timeout = setTimeout(() => {
+      if (unmounted === false) {
+        setThreeSecondsElapsed(true);
+      }
+    }, 3000)
+
+    return () => {
+      unmounted = true;
+      clearTimeout(timeout);
+    };
+  }, []);
+
   return (
     <div className={classes.root}>
       {!thought &&
-        <Loading id={'thought-loader'}/>}
-      {thought && 
+        (threeSecondsElapsed ?
+          (<MissingThought />) :
+          (<Loading id={'thought-loader'} />))}
+      {thought &&
         <ThoughtInformation
           thought={thought}
           tags={relatedTags}
@@ -210,7 +228,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
         onApplySectionState={handleApplySectionState}
         onChangeHideFromHomeScreen={handleChangeHideFromHomeScreen}
       />
-      {!displayThoughtSettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home}/>}
+      {!displayThoughtSettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home} />}
     </div>
   );
 };
