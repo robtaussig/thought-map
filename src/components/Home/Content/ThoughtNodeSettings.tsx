@@ -15,7 +15,6 @@ interface ThoughtNodeSettingsProps {
   classes: any,
   thought: Thought;
   onClose: () => void;
-  onLoad: () => void;
 }
 
 const styles = (theme: any): StyleRules => ({
@@ -70,14 +69,10 @@ const styles = (theme: any): StyleRules => ({
 const BUMP_TOOLTIP_TEXT = 'Bumping a thought will update it so that it will be displayed at the top (when sorted by last updated), without changing any other fields. This can be useful to increase the visibility of a thought that becomes buried over time as new thoughts rise to the top.';
 const STAGE_TOOLTIP_TEXT = 'Staging a thought flags it as being relevant on the day it is staged. All staged thoughts are collected and displayed on the \'Stage\', which can be viewed by clicking on the bookmark button. Thoughts that were staged on a previous day are placed in the \'Backlog\'. Thoughts are unstaged as soon as they are completed.';
 
-export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, thought, onClose, onLoad }) => {
+export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, thought, onClose }) => {
   const db = useLoadedDB();
   const { history } = useApp();
   const connections = useSelector(connectionSelector);
-
-  useEffect(() => {
-    onLoad();
-  }, []);
 
   const handleClickBump = () => {
     onClose();

@@ -79,22 +79,21 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
   const [showConnections, setShowConnections] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [openModal, closeModal] = useModal();
-  const blockClick = useRef<boolean>(false);
+
+  const handleClick = () => {
+    history.push(`${homeUrl(history)}thought/${thought.id}`);
+  };
+
   const handleLongPress = useLongPress(() => {
-    blockClick.current = true;
-    openModal(<ThoughtNodeSettings thought={thought} onClose={closeModal} onLoad={() => blockClick.current = false}/>);
-  }, 400);
+    openModal(<ThoughtNodeSettings thought={thought} onClose={closeModal} />);
+  }, 400, {
+    onClick: handleClick,
+  });
 
   const connectionStatus = connectionStatusByThought[thought.id];
   const nextThoughts = useMemo(() => {
     return thoughtMap.current.children(thought.id)
   }, [connectionStatus]);
-
-  const handleClick = () => {
-    if (blockClick.current === false) {
-      history.push(`${homeUrl(history)}thought/${thought.id}`);
-    }
-  };
 
   const handleChangeStatus = useCallback(event => {
     statusActions.createStatus(db, {
@@ -105,8 +104,8 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
 
   const handleChangeType = useCallback(event => {
     thoughtActions.editThought(db, {
-        ...thought,
-        type: event.target.value,
+      ...thought,
+      type: event.target.value,
     });
   }, []);
 
@@ -131,17 +130,16 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
         borderBottom: (showConnections || isLastChild) ? '1px solid gray' : undefined,
       }}
       className={classes.thoughtNode}
-      {...handleLongPress}
     >
       <div className={classes.thoughtNodeTitleWrapper}>
         {planName ? (
           <span className={classes.planName}>{planName}<span className={classes.dateTime}>{generateDateTimeString(thought)}</span></span>
         ) : (
-          <span className={classes.dateTime}>{generateDateTimeString(thought)}</span>
-        )}
+            <span className={classes.dateTime}>{generateDateTimeString(thought)}</span>
+          )}
         <span className={classNames(classes.thoughtNodeTitle, {
           arrivedFrom,
-        })} onClick={handleClick} style={styleFromPriority(thought.priority)}>{thought.title}</span>
+        })} {...handleLongPress} style={styleFromPriority(thought.priority)}>{thought.title}</span>
       </div>
       {connectionStatus && (
         <ConnectionStatus
@@ -160,17 +158,17 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
           onChange={handleChangeType}
         />
       ) : (
-        <Select
-          id={'status-select'}
-          classes={classes}
-          value={thought.status}
-          options={statusOptions}
-          onChange={handleChangeStatus}
-          style={{
-            backgroundColor: STATUS_TO_COLOR[thought.status],
-          }}
-        />
-      )}
+          <Select
+            id={'status-select'}
+            classes={classes}
+            value={thought.status}
+            options={statusOptions}
+            onChange={handleChangeStatus}
+            style={{
+              backgroundColor: STATUS_TO_COLOR[thought.status],
+            }}
+          />
+        )}
     </div>
   );
 
