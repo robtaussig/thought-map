@@ -47,11 +47,10 @@ export const LongPressCircleButton: FC<LongPressCircleButtonProps> = React.memo(
     !disabled && buttonRef.current.classList.add('touched');
   };
 
-  const handleInteractionEnd = (e: (React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>)): void => {
+  const handleInteractionEnd = (): void => {
     if (!disabled && isEnded.current === false && isCancelled.current === false) {
       isEnded.current = true;
       buttonRef.current.classList.remove('touched');
-      e.preventDefault();
     }
   };
   const handleCancelInteraction = (): void => {

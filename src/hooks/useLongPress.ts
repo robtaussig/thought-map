@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 
 interface Handlers {
-  onStart?: (e: any) => void;
-  onEnd?: (e: any) => void;
-  onCancel?: (e: any) => void;
-  onClick?: (e: any) => void;
+  onStart?: () => void;
+  onEnd?: () => void;
+  onCancel?: () => void;
+  onClick?: () => void;
 }
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
@@ -21,11 +21,13 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
       const { clientX, clientY } = e.touches[0];
       origin.current = { x: clientX, y: clientY };
     }
-    combinedHandlers.onStart && combinedHandlers.onStart(e);
+    combinedHandlers.onStart && combinedHandlers.onStart();
+    e.preventDefault();
     pressTimeout.current = setTimeout(() => {
       pressTimeout.current = null;
+      origin.current = null;
       didLongPress.current = true;
-      combinedHandlers.onCancel && combinedHandlers.onCancel(e);
+      combinedHandlers.onCancel && combinedHandlers.onCancel();
       if ('vibrate' in navigator) {
         navigator.vibrate(100);
       }
@@ -34,10 +36,11 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
   };
 
   const handlePressEnd = (e: any) => {
-    combinedHandlers.onEnd && combinedHandlers.onEnd(e);
+    e.preventDefault();
+    combinedHandlers.onEnd && combinedHandlers.onEnd();
 
     if (didLongPress.current === false && isMoving.current === false) {
-      combinedHandlers.onClick && combinedHandlers.onClick(e);
+      combinedHandlers.onClick && combinedHandlers.onClick();
     } else {
       didLongPress.current = false;
     }
