@@ -22,7 +22,6 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
       origin.current = { x: clientX, y: clientY };
     }
     combinedHandlers.onStart && combinedHandlers.onStart();
-    e.preventDefault();
     pressTimeout.current = setTimeout(() => {
       pressTimeout.current = null;
       origin.current = null;
