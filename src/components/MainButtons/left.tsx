@@ -23,8 +23,8 @@ const styles = (theme: any): StyleRules => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
     backgroundColor: 'black',
-    bottom: 10,
-    left: 10,
+    bottom: 0,
+    left: 0,
     zIndex: 999,
     '&#has-secondary': {
       border: `2px solid ${theme.palette.secondary[500]}`,

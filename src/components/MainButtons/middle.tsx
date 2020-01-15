@@ -26,8 +26,8 @@ const styles = (theme: any): StyleRules => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
     backgroundColor: 'black',
-    bottom: 10,
-    right: 'calc(50% - 55px)',
+    bottom: 0,
+    right: 'calc(50% - 50px)',
     zIndex: 999,
     '&#backlog-button': {
       color: theme.palette.negative[300],
