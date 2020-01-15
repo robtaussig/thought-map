@@ -95,11 +95,11 @@ const styles = (theme: any): StyleRules => ({
     }
   }),
   buttonWrapper: () => ({
-    border: `2px solid ${theme.palette.background[0]}`,
+    border: `2px solid ${theme.palette.secondary[0]}`,
     marginTop: 40,
     width: '70%',
     borderRadius: '3px',
-    backgroundColor: theme.palette.background[500],
+    backgroundColor: theme.palette.secondary[500],
     display: 'flex',
     position: 'relative',
     justifyContent: 'center',
@@ -126,12 +126,12 @@ const styles = (theme: any): StyleRules => ({
   uploadInput: () => ({
     display: 'flex',
     justifyContent: 'center',
-    border: `2px solid ${theme.palette.background[0]}`,
+    border: `2px solid ${theme.palette.secondary[0]}`,
     padding: '3px 0',
     marginTop: 40,
     width: '70%',
     borderRadius: '3px',
-    backgroundColor: theme.palette.background[500],
+    backgroundColor: theme.palette.secondary[500],
     color: theme.palette.background[0],
     boxShadow: `0px 0px 5px 2px black`,
     '& > input': {
@@ -291,54 +291,12 @@ export const Data: FC<DataProps> = ({ classes, setLoading }) => {
   );
 };
 
-const booleanValues = new Set([true, false]);
-
-const VALID_SETTINGS: ValidSettings = {
-  reportBugs: {
-    values: booleanValues,
-    reason: 'reportBugs must be a boolean',
-  },
-  disableTips: {
-    values: booleanValues,
-    reason: 'disableTips must be a boolean',
-  },
-  useAutoSuggest: {
-    values: booleanValues,
-    reason: 'useAutoSuggest must be a boolean',
-  },
-  customStatuses: {
-    values: null,
-    reason: 'customStatuses must be an array of strings',
-  },
-  useLocation: {
-    values: booleanValues,
-    reason: 'useLocation must be a boolean',
-  },
-  usePushNotifications: {
-    values: booleanValues,
-    reason: 'usePushNotifications must be a boolean',
-  },
-  customTypes: {
-    values: null,
-    reason: 'customTypes must be an array of strings',
-  },
-  customTags: {
-    values: null,
-    reason: 'customTags must be an array of strings',
-  },
-  autoCreateCalendarEvent: {
-    values: booleanValues,
-    reason: 'useLocation must be a boolean',
-  },
-};
-
 const formatResults = (
   orphanedObjects: OrphanedChildObject[],
   statuslessThoughts: Thought[],
   uncategorizedThoughts: Thought[],
   orphanedThoughts: Thought[],
   brokenConnections: Connection[],
-  invalidSettings: InvalidSetting[],
   fatPictures: Picture[],
 ): FormattedResult[] => {
   const formattedResults: FormattedResult[] = [];
@@ -397,17 +355,6 @@ const formatResults = (
     });
   });
 
-  invalidSettings.forEach(invalidSetting => {
-    formattedResults.push({
-      action: FormattedResultActionEnum.CAN_FIX,
-      furtherDetails: 'These settings are not valid and should be deleted.',
-      table: 'setting',
-      affectedItems: [invalidSetting],
-      title: 'Invalid Setting',
-      solution: SolutionTypes.DELETE,
-    });
-  });
-
   fatPictures.forEach(fatPicture => {
     formattedResults.push({
       action: FormattedResultActionEnum.CAN_FIX,
@@ -447,23 +394,6 @@ const isBrokenConnection = (thoughtIds: Set<string>): (connection: Connection) =
   };
 };
 
-const getInvalidSettings = (settings: Setting[]): InvalidSetting[] => {
-  return settings.filter(({ field, value }) => {
-    return !(VALID_SETTINGS[field] &&
-      (
-        VALID_SETTINGS[field].values === null ||
-        VALID_SETTINGS[field].values.has(value)
-      ));
-  })
-    .map<InvalidSetting>(({ field, value }) => {
-      return {
-        field,
-        value,
-        reason: VALID_SETTINGS[field].reason,
-      };
-    });
-}
-
 const getDBItems = (db: RxDatabase): Promise<[
   Thought[], Connection[], Plan[], Note[], Tag[], Picture[], Setting[], Status[]
 ]> => {
@@ -497,7 +427,6 @@ const runDiagnosis = async (db: RxDatabase) => {
     return thought.planId && (plans.some(plan => plan.id === thought.planId) === false);
   });
   const brokenConnections: Connection[] = connections.filter(isBrokenConnection(thoughtIds));
-  const invalidSettings = getInvalidSettings(settings);
   //Has both localUrl and imgurUrl
   const fatPictures: Picture[] = pictures.filter(({ imgurUrl, localUrl }) => {
     return imgurUrl && localUrl;
@@ -509,7 +438,6 @@ const runDiagnosis = async (db: RxDatabase) => {
     uncategorizedThoughts,
     orphanedThoughts,
     brokenConnections,
-    invalidSettings,
     fatPictures,
   );
 };
