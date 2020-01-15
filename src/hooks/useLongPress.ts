@@ -35,9 +35,8 @@ export const useLongPress = (longPressCb: (e: any) => void, timer: number = 500,
   };
 
   const handlePressEnd = (e: any) => {
-    e.preventDefault();
     combinedHandlers.onEnd && combinedHandlers.onEnd();
-
+    combinedHandlers.onClick && e.preventDefault();
     if (didLongPress.current === false && isMoving.current === false) {
       combinedHandlers.onClick && combinedHandlers.onClick();
     } else {
