@@ -1,68 +1,24 @@
 import './full-screen-image.scss';
 import React, { FC, useEffect } from 'react';
-import { withStyles, StyleRules } from '@material-ui/core/styles';
 
 interface FullScreenImageProps {
-  classes: any;
   onClose: () => void;
   image: string;
 }
 
-const styles = (theme: any): StyleRules => ({
-  imageWrapper: () => ({
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 10000,
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: theme.palette.background[900],
-    overflow: 'auto',
-  }),
-  image: {
-    width: '100%',
-    height: 'auto',
-    transform: 'translateZ',
-    transition: 'all 0.3s linear',
-
-    '&.display': {
-      opacity: 1,
-    },
-    '&.zoom': {
-      width: '200%',
-    },
-  },
-  closeButton: () => ({
-    color: theme.palette.background[0],
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 50,
-    height: 50,
-    fontSize: 30,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textShadow: '1px 1px 5px #000000',
-  }),
-});
-
-export const FullScreenImage: FC<FullScreenImageProps> = ({ classes, onClose, image }) => {
-
+export const FullScreenImage: FC<FullScreenImageProps> = ({ onClose, image }) => {
   useEffect(() => {
     const wrapper = document.createElement('div');
-    wrapper.classList.add(classes.imageWrapper);
+    wrapper.classList.add('imageWrapper');
 
     const closeButton = document.createElement('button');
     closeButton.innerText = '×';
-    closeButton.classList.add(classes.closeButton);
+    closeButton.classList.add('closeButton');
     closeButton.onclick = onClose;
 
     const imageElement = document.createElement('img');
     imageElement.src = image;
-    imageElement.classList.add(classes.image);
+    imageElement.classList.add('image');
     imageElement.id = 'full-screen-image';
     imageElement.onclick = e => {
       imageElement.classList.toggle('zoom');
@@ -85,4 +41,4 @@ export const FullScreenImage: FC<FullScreenImageProps> = ({ classes, onClose, im
   return null;
 };
 
-export default withStyles(styles)(FullScreenImage);
+export default FullScreenImage;

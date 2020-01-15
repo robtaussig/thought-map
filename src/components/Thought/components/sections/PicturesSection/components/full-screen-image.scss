@@ -1,3 +1,46 @@
+.imageWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  background-color: black;
+  overflow: auto;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  transform: translateZ;
+  transition: all 0.3s linear;
+
+  &.display {
+    opacity: 1;
+  }
+
+  &.zoom {
+    width: 200%;
+  }
+}
+
+.closeButton {
+  color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10vh;
+  height: 10vh;
+  font-size: 10vh;
+  line-height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 1px 1px 5px #000000;
+}
+
 #full-screen-image {
   animation: fade-in 0.2s ease-in;
 }
@@ -7,6 +50,7 @@
     opacity: 0;
     transform: scale(0.1);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
