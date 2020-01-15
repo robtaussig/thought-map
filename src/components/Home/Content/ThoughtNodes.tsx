@@ -57,7 +57,7 @@ export const ThoughtNodes: FC<ThoughtNodesProps> = ({
       matchingThoughts.includes(thought.id);
 
     const filterCompletedThoughts = (thought: Thought) =>
-      (plan && plan.showCompleted) || 
+      (plan && plan.showCompleted) ||
       (thought.status !== 'completed' && thought.status !== 'won\'t fix');
 
     const filterChildrenThoughts = (thought: Thought) =>
@@ -66,28 +66,27 @@ export const ThoughtNodes: FC<ThoughtNodesProps> = ({
 
     const filterHiddenThoughts = (thought: Thought) =>
       Boolean(plan) || thought.hideFromHomeScreen !== true;
-      
+
     const combinedFilters = (thought: Thought): boolean =>
       matchingThoughts ?
         filterMatchedThoughts(thought) :
         (filterCompletedThoughts(thought) &&
-        filterChildrenThoughts(thought) &&
-        filterHiddenThoughts(thought));
+          filterChildrenThoughts(thought) &&
+          filterHiddenThoughts(thought));
 
     const sortBySortRule = (left: Thought, right: Thought): number => {
-      if (sortFilterSettings.field) {
-        const leftIsBigger = left[sortFilterSettings.field] &&
-          (!right[sortFilterSettings.field] || (left[sortFilterSettings.field].toLowerCase() > right[sortFilterSettings.field].toLowerCase()));
-        
-        return (leftIsBigger && sortFilterSettings.desc) || (!leftIsBigger && !sortFilterSettings.desc) ? 1 : -1;
-      }
-      return 1;
+      const leftIsBigger = left[sortFilterSettings.field] &&
+        (!right[sortFilterSettings.field] || (left[sortFilterSettings.field].toLowerCase() > right[sortFilterSettings.field].toLowerCase()));
+
+      return (leftIsBigger && sortFilterSettings.desc) || (!leftIsBigger && !sortFilterSettings.desc) ? 1 : -1;
     };
 
-    return thoughts
-      .filter(combinedFilters)
-      .sort(sortBySortRule);
-  }, [matchingThoughts, thoughts, plan, plan, thoughtMap, sortFilterSettings.field, sortFilterSettings.desc]);
+    const filtered = thoughts.filter(combinedFilters)
+
+    return sortFilterSettings.field ?
+      filtered.sort(sortBySortRule) :
+      filtered;
+  }, [matchingThoughts, thoughts, plan, thoughtMap, sortFilterSettings.field, sortFilterSettings.desc]);
 
   return (
     <div className={classes.content} ref={rootRef} onScroll={handleScroll}>
@@ -96,7 +95,7 @@ export const ThoughtNodes: FC<ThoughtNodesProps> = ({
           return (
             <ThoughtNode
               classes={classes}
-              key={`thought-node-${thought.id}`}  
+              key={`thought-node-${thought.id}`}
               thought={thought}
               statusOptions={statusOptions}
               typeOptions={typeOptions}

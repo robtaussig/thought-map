@@ -10,16 +10,11 @@ interface Sortable {
 
 interface Deletion {
   tableName: string;
-  key: string;  
+  key: string;
 }
 
-export const sortByIndexThenDate = (resLeft: Sortable, resRight: Sortable): number => {
-  if (resLeft.index || resRight.index) {
-    if (resRight.index > resLeft.index) return -1;
-    return 1;
-  } else {
-    return resRight.updated - resLeft.updated;
-  }
+export const sortByDateUpdated = (resLeft: Sortable, resRight: Sortable): number => {
+  return resRight.updated > resLeft.updated ? 1 : -1;
 };
 
 export default class Base {
@@ -28,14 +23,14 @@ export default class Base {
     const results = await query.exec();
     return results
       .map(toJSON)
-      .sort(sortByIndexThenDate);
+      .sort(sortByDateUpdated);
   }
 
   static fetch = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
     const query = db[tableName].find({ id: { $eq: id } });
     const result: RxDocumentTypeWithRev<any> = await query.exec();
 
-    return result && result[0]? result[0].toJSON() : null;
+    return result && result[0] ? result[0].toJSON() : null;
   }
 
   static add = async (db: RxDatabase, object: RxDocumentTypeWithRev<any>, tableName: string): Promise<any> => {
@@ -62,7 +57,7 @@ export default class Base {
 
     return response;
   }
-  
+
   static find = async (db: RxDatabase, field: string, value: any, tableName: string): Promise<any> => {
     const query = db[tableName]
       .find()
