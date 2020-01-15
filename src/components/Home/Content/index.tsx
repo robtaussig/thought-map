@@ -33,10 +33,8 @@ interface ContentProps {
 export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptions, typeOptions, from }) => {
   const dispatch = useDispatch();
   const thoughtMap = useRef<Graph>(new Graph());
-  const didMount = useRef<boolean>(false);
   const db = useLoadedDB();
   const [openModal] = useModal();
-  const [showFilters, setShowFilters] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
   const stateThoughts = useSelector(thoughtSelector);
@@ -74,12 +72,6 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
       setMatchingThoughts(null);
     }
   }, [searchTerm]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => didMount.current = true, 1000);
-
-    return () => clearTimeout(timeout);
-  }, []);
 
   useEffect(() => {
     if (thoughts.length === 0) {
@@ -124,8 +116,6 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
     <Fragment>
       <FilterAndSearch
         classes={classes}
-        setShowFilters={setShowFilters}
-        showFilters={showFilters}
         searchTerm={searchTerm}
         sortFilterSettings={sortFilterSettings}
         setSearchTerm={setSearchTerm}
@@ -150,8 +140,6 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
             thoughtMap={thoughtMap}
             sortFilterSettings={sortFilterSettings}
             plans={plans}
-            didMount={didMount}
-            setShowFilters={setShowFilters}
             statusOptions={statusOptions}
             typeOptions={typeOptions}
             from={from}

@@ -14,8 +14,6 @@ interface ThoughtNodesProps {
   thoughtMap: MutableRefObject<Graph>;
   sortFilterSettings: SortFilterSettings;
   plans: Plan[];
-  didMount: MutableRefObject<boolean>;
-  setShowFilters: (show: boolean) => void;
   statusOptions: string[];
   typeOptions: string[];
   from: string;
@@ -30,27 +28,15 @@ export const ThoughtNodes: FC<ThoughtNodesProps> = ({
   thoughtMap,
   sortFilterSettings,
   plans,
-  didMount,
-  setShowFilters,
   statusOptions,
   typeOptions,
   from,
   connectionStatusByThought,
 }) => {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const lastScrollPos = useRef<number>(0);
   const planNamesById = plans.reduce((next, statePlan) => {
     next[statePlan.id] = statePlan.name;
     return next;
   }, {} as { [planId: string]: string });
-
-  const handleScroll: EventHandler<any> = (e: { target: HTMLDivElement }) => {
-    if (didMount.current === true) {
-      const scrollTop = e.target.scrollTop;
-      setShowFilters(scrollTop < lastScrollPos.current);
-      lastScrollPos.current = scrollTop;
-    }
-  };
 
   const sortedAndFiltered = useMemo(() => {
     const filterMatchedThoughts = (thought: Thought) =>
@@ -89,7 +75,7 @@ export const ThoughtNodes: FC<ThoughtNodesProps> = ({
   }, [matchingThoughts, thoughts, plan, thoughtMap, sortFilterSettings.field, sortFilterSettings.desc]);
 
   return (
-    <div className={classes.content} ref={rootRef} onScroll={handleScroll}>
+    <div className={classes.content}>
       {sortedAndFiltered
         .map(thought => {
           return (

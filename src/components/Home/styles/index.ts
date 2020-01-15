@@ -64,6 +64,7 @@ export const styles = (theme: any): StyleRules => ({
     display: 'flex',
     gridArea: 'sort-buttons',
     position: 'relative',
+    boxShadow: '0px 0px 5px -1px black',
   },
   sortByButtons: () => ({
     display: 'flex',
@@ -98,6 +99,8 @@ export const styles = (theme: any): StyleRules => ({
     alignItems: 'center',
     justifyContent: 'center',
     color: theme.palette.background[0],
+    marginLeft: 'auto',
+    backgroundColor: theme.palette.primary[500],
   }),
   sortButton: () => ({
     color: theme.palette.background[800],
