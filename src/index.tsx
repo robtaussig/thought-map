@@ -33,7 +33,7 @@ if ("serviceWorker" in navigator) {
   } else {
     // Register the service worker
     navigator.serviceWorker
-      .register("public/sw.ts", {
+      .register("public/sw.js", {
         scope: "./"
       })
       .then(function (reg) {

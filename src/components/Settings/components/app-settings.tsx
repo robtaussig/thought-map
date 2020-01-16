@@ -5,7 +5,6 @@ import CustomObjects from './custom-objects';
 import AppConfiguration from './app-configuration';
 import Theme from './theme';
 import Data from './data';
-import { CACHE } from '../../../public/sw';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 import { useSelector } from 'react-redux';
 import { pictureSelector } from '../../../reducers/pictures';
@@ -62,7 +61,6 @@ export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
   const customTheme = useSelector(customThemeSelector);
   const classes = useStyles(customTheme);
   const handleCheckUpdates = () => {
-    caches.delete(CACHE);
     localStorage.setItem(LOCAL_STORAGE_LAST_VERSION_KEY, (window as any).APP_VERSION);
     localStorage.setItem(LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY, '1');
     location.reload();
