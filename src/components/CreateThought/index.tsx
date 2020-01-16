@@ -23,7 +23,7 @@ export interface CreatedThought {
   tagOptions: string[];
 }
 
-const DEFAULT_STATE: CreatedThought = {
+export const DEFAULT_STATE: CreatedThought = {
   title: '',
   type: 'Task',
   date: '',
@@ -62,7 +62,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
       history.push(`${homeUrl(history)}thought/${response.thought.id}`);
     }
   };
-  
+
   return (
     <Fragment>
       <form className={classNames(classes.form)} onSubmit={handleSubmit}>
@@ -77,7 +77,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
         <button className={classes.submitButton} disabled={!ready}>
           Submit
         </button>
-      </form>      
+      </form>
     </Fragment>
   );
 };

@@ -4,6 +4,7 @@ import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
 import useModal from '../../hooks/useModal';
 import CreateThought from '../CreateThought';
+import CreateBulkThought from '../CreateThought/Bulk';
 import CircleButton from '../General/CircleButton';
 import History from '@material-ui/icons/History';
 import Link from '@material-ui/icons/Link';
@@ -72,6 +73,14 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       );
     }
 
+    const handleBulkCreateThought = () => {
+      openModal(
+        <CreateBulkThought
+          onClose={closeModal}
+        />, 'Create Bulk Thoughts'
+      );
+    };
+
     const handleClickViewConnections = () => {
       const thoughtId = getIdFromUrl(history, 'thought');
       history.push(`${homeUrl(history)}thought/${thoughtId}/connections`);
@@ -107,7 +116,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
         return [Link, 'History', handleClickViewConnections, 'has-secondary', handleClickViewHistory, History];
       }
     } else {
-      return [Add, 'Create Thought', handleAddThought, 'thought-button', null];
+      return [Add, 'Create Thought', handleAddThought, 'thought-button', handleBulkCreateThought, null];
     }
   }, [history.location.pathname, displayThoughtSettings]);
 

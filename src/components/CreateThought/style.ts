@@ -1,4 +1,4 @@
-import { StyleRules } from '@material-ui/core/styles';
+import { StyleRules, makeStyles } from '@material-ui/core/styles';
 
 export const styles = (theme: any): StyleRules => ({
   form: {
@@ -55,3 +55,43 @@ export const styles = (theme: any): StyleRules => ({
     },
   }),
 });
+
+export const useBulkStyles = makeStyles((theme: any) => ({
+  root: {
+    display: 'grid',
+    width: '100%',
+    height: 300,
+    gridGap: '15px',
+    gridTemplateAreas: `"header header"
+                        "input input"
+                        ". submit-button"`,
+    gridTemplateColumns: '1fr max-content',
+    gridTemplateRows: 'max-content 1fr max-content',
+  },
+  header: {
+    fontWeight: 600,
+    color: theme.palette.secondary[600],
+  },
+  form: {
+    gridArea: 'input',
+  },
+  textAreaLabel: {
+    '& textarea': {
+      height: '100%',
+      width: '100%',
+    },
+  },
+  submitButton: {
+    gridArea: 'submit-button',
+    cursor: 'pointer',
+    fontWeight: 600,
+    color: theme.palette.secondary[700],
+    border: `1px solid ${theme.palette.secondary[700]}`,
+    padding: '5px 12px',
+    borderRadius: '5px',
+    '&:disabled': {
+      color: 'gray',
+      border: '1px solid gray',
+    },
+  },
+}));

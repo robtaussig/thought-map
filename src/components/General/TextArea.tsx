@@ -9,10 +9,11 @@ interface TextAreaProps {
   onFocus?: ChangeEventHandler<HTMLTextAreaElement>;
   label?: string;
   tooltip?: string;
+  autoFocus?: boolean;
   [rest: string]: any;
 }
 
-export const TextArea: FC<TextAreaProps> = React.memo(({ id, classes, value, onChange, onFocus, label, tooltip, ...rest }) => {
+export const TextArea: FC<TextAreaProps> = React.memo(({ id, classes, value, onChange, onFocus, label, tooltip, autoFocus, ...rest }) => {
 
   const handleFocus: ChangeEventHandler<HTMLTextAreaElement> = e => {
     const target = e.target;
@@ -27,9 +28,9 @@ export const TextArea: FC<TextAreaProps> = React.memo(({ id, classes, value, onC
     <label id={id} className={classes.textAreaLabel} {...rest}>
       {label}
       {tooltip && (
-        <Tooltip text={tooltip}/>
+        <Tooltip text={tooltip} />
       )}
-      <textarea className={classes.textAreaInput} value={value} onChange={onChange} onFocus={handleFocus}/>
+      <textarea className={classes.textAreaInput} value={value} onChange={onChange} onFocus={handleFocus} autoFocus={autoFocus} />
     </label>
   );
 });
