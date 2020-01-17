@@ -48,7 +48,7 @@ export const Backup: FC<BackupProps> = () => {
         Private Key:
       </div>
       <div style={{ userSelect: 'all' }} onClick={handleClickPrivateKey}>
-        {privateKey}
+        {privateKey.split('\n').map((line, idx) => <div key={`${idx}-key`}>{line}</div>)}
       </div>
       {copied && (
         <div>
