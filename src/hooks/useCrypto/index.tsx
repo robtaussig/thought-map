@@ -1,7 +1,7 @@
-import { encrypt, decrypt } from './util';
+import { encrypt, decrypt, generatePrivateKey } from './util';
 
 export const useCrypto = () => {
-  return { encrypt, decrypt };
+  return { encrypt, decrypt, generatePrivateKey };
 };
 
 export default useCrypto;

@@ -80,7 +80,7 @@
     "react-test-renderer": "^16.12.0",
     "sass": "^1.22.9",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.7.2"
+    "typescript": "^3.8.0-dev.20200124"
   },
   "scripts": {
     "cleanup": "rm -rf .cache dist",

@@ -56,11 +56,15 @@ export const importKey = async (key: string): Promise<[CryptoKey, ArrayBuffer]> 
   return [imported, ivBuffer];
 };
 
-export const encrypt = async (str: string): Promise<[any, string]> => {
+export const generatePrivateKey = async (): Promise<string> => {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const privateKey = await generateKey(iv);
+  return privateKey;
+};
+
+export const encrypt = async (str: string, privateKey: string): Promise<any> => {
   const encoder = new TextEncoder();
   const encoded = encoder.encode(str);
-  let iv = crypto.getRandomValues(new Uint8Array(12));
-  const privateKey = await generateKey(iv);
   const [key, importedIv] = await importKey(privateKey);
   const encrypted = await crypto.subtle.encrypt(
     {
@@ -70,7 +74,8 @@ export const encrypt = async (str: string): Promise<[any, string]> => {
     key,
     encoded
   );
-  return [encrypted, privateKey];
+
+  return encrypted;
 };
 
 export const decrypt = async (ciphertext: ArrayBuffer, privateKey: string): Promise<string> => {

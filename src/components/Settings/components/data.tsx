@@ -174,7 +174,7 @@ export const jsonDump = async (db: RxDatabase): Promise<string> => {
   return dataUri;
 };
 
-const download = (data: string) => {
+export const download = (data: string) => {
   const exportFileDefaultName = 'data.json';
   const linkElement = document.createElement('a');
   linkElement.setAttribute('href', data);
