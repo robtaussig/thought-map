@@ -7,6 +7,11 @@ import uuidv4 from 'uuid/v4';
 import { CHUNK_LENGTH } from './constants';
 import { useStyles } from './styles';
 import { uploadChunk, fetchBackup } from './api';
+import Nav from './components/Nav';
+import Upload from './components/Upload';
+import Retrieve from './components/Retrieve';
+import Update from './components/Update';
+import { NavOptions } from './types';
 
 interface BackupProps {
 
@@ -14,6 +19,7 @@ interface BackupProps {
 
 export const Backup: FC<BackupProps> = () => {
   const classes = useStyles({});
+  const [currentOption, setCurrentOption] = useState<NavOptions>(null);
   const { encrypt, decrypt, generatePrivateKey } = useCrypto();
   const db = useLoadedDB();
   const [copied, setCopied] = useState<boolean>(false);
@@ -22,29 +28,10 @@ export const Backup: FC<BackupProps> = () => {
   const [encrypted, setEncrypted] = useState<ArrayBuffer[]>([new ArrayBuffer(8)]);
   const [privateKey, setPrivateKey] = useState<string>('');
 
-  const handleEncrypt = async () => {
-    const data = await jsonDump(db);
-    const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
-    const chunks = chunkData(data, NUM_CHUNKS);
-    const key = await generatePrivateKey();
-    const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, key)));
-    setEncrypted(encryptedChunks);
-    setPrivateKey(key);
-    setCopied(false);
-  };
-
   const handleClickPrivateKey = (e: any) => {
     navigator.clipboard.writeText(privateKey);
     setCopied(true);
   }
-
-  const handleUpload = async () => {
-    const uuid = uuidv4();
-
-    await Promise.all(encrypted.map((chunk, idx) => uploadChunk(chunk, idx, uuid)))
-
-    setInputtedUuid(uuid);
-  };
 
   const retrieveBackup = async () => {
     try {
@@ -59,31 +46,14 @@ export const Backup: FC<BackupProps> = () => {
 
   return (
     <div className={classes.root}>
-      <button onClick={handleEncrypt}>Encrypt</button>
-      <div>
-        Private Key:
-      </div>
-      <div style={{ userSelect: 'all' }} onClick={handleClickPrivateKey}>
-        {privateKey.split('\n').map((line, idx) => <div key={`${idx}-key`}>{line}</div>)}
-      </div>
-      {copied && (
-        <div>
-          Copied!
-        </div>
-      )}
-      {copied && (
-        <button onClick={handleUpload}>
-          Upload
-        </button>
-      )}
-      <label>
-        UniqueId
-        <input type={'text'} value={inputtedUuid} onChange={e => setInputtedUuid(e.target.value)} />
-      </label>
-      <button onClick={retrieveBackup}>
-        Retrieve
-      </button>
-      <textarea value={textareaInput} onChange={e => setTextareaInput(e.target.value)} />
+      <Nav
+        classes={classes}
+        currentOption={currentOption}
+        onChange={setCurrentOption}
+      />
+      {currentOption === NavOptions.Upload && <Upload classes={classes}/>}
+      {currentOption === NavOptions.Retrieve && <Retrieve classes={classes}/>}
+      {currentOption === NavOptions.Update && <Update classes={classes}/>}
     </div>
   );
 };
