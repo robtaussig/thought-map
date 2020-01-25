@@ -41,7 +41,8 @@ export const Backup: FC<BackupProps> = () => {
   const handleUpload = async () => {
     const uuid = uuidv4();
 
-    await Promise.all(encrypted.map((chunk, idx) => uploadChunk(chunk, idx, uuid)));
+    await Promise.all(encrypted.map((chunk, idx) => uploadChunk(chunk, idx, uuid)))
+
     setInputtedUuid(uuid);
   };
 
