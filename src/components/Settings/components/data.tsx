@@ -167,16 +167,20 @@ const DIAGNOSIS_TOOLTIP_TEXT = 'Sometimes bugs magically appear and result in co
 const DELETE_DATA_TOOLTIP = 'You may need to delete your data before importing from JSON. You will be asked whether you want to create a backup before continuing.';
 const CREATE_BACKUP_TOOLTIP_TEXT = 'Your data will be encrypted client-side before being stored in a remote database. The key you provide is used to encrypt the data and will not be sent through the wire. This means that if you forget your key, there is no way to recover your data.';
 
-export const jsonDump = async (db: RxDatabase) => {
+export const jsonDump = async (db: RxDatabase): Promise<string> => {
   const json = await db.dump();
   const dataStr = JSON.stringify(json);
   const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+  return dataUri;
+};
+
+const download = (data: string) => {
   const exportFileDefaultName = 'data.json';
   const linkElement = document.createElement('a');
-  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('href', data);
   linkElement.setAttribute('download', exportFileDefaultName);
   return linkElement.click();
-};
+}
 
 export const Data: FC<DataProps> = ({ classes, setLoading }) => {
   const importJSONRef = useRef<HTMLInputElement>(null);
@@ -192,7 +196,8 @@ export const Data: FC<DataProps> = ({ classes, setLoading }) => {
   }, []);
 
   const handleClickExportDataJSON = useCallback(async () => {
-    jsonDump(db);
+    const data = await jsonDump(db);
+    download(data);
   }, []);
 
   const handleClickRunDiagnosis = useCallback(async () => {
