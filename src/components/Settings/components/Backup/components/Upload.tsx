@@ -1,19 +1,24 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, MutableRefObject } from 'react';
 import Input from '../../../../General/Input';
 import classNames from 'classnames';
+import { useLoadingOverlay } from '../../../../../hooks/useLoadingOverlay';
 import useCrypto from '../../../../../hooks/useCrypto';
 import { useLoadedDB } from '../../../../../hooks/useDB';
 import { jsonDump } from '../../data';
 import { chunkData } from '../util';
 import { CHUNK_LENGTH } from '../constants';
 import { uploadChunk } from '../api';
+import Check from '@material-ui/icons/Check';
+import CloudUpload from '@material-ui/icons/CloudUpload';
 
 interface UploadProps {
   classes: any;
+  rootRef: MutableRefObject<HTMLDivElement>;
 }
 
-export const Upload: FC<UploadProps> = ({ classes }) => {
+export const Upload: FC<UploadProps> = ({ classes, rootRef }) => {
   const [id, setId] = useState<string>('');
+  const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');
   const [copied, setCopied] = useState<boolean>(false);
   const [stored, setStored] = useState<boolean>(false);
@@ -24,13 +29,16 @@ export const Upload: FC<UploadProps> = ({ classes }) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!id || privateKey) return;
+    setLoading('Exporting Data...');
     const data = await jsonDump(db);
     const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
     const chunks = chunkData(data, NUM_CHUNKS);
     const key = await generatePrivateKey();
+    updateText('Encrypting Data...');
     const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, key)));
     setCopied(false);
     try {
+      updateText('Uploading Data...');
       const responses = await Promise.all(encryptedChunks.map((chunk, idx) => uploadChunk(chunk, idx, id)))
       if (responses.some(response => response instanceof Error)) {
         setError(responses.find(response => response instanceof Error).message);
@@ -39,6 +47,8 @@ export const Upload: FC<UploadProps> = ({ classes }) => {
       }
     } catch (e) {
       setError(e.message ?? e);
+    } finally {
+      stopLoading();
     }
   }
 
@@ -73,14 +83,12 @@ export const Upload: FC<UploadProps> = ({ classes }) => {
             onClick={handleSubmit}
             disabled={!Boolean(id)}
           >
-            Upload
+            <CloudUpload/>
           </button>
         )}
         {privateKey && (
-          <span
-            className={classes.uploadSuccess}
-          >
-            Uploaded!
+          <span className={classes.uploadSuccess}>
+            <Check/>
           </span>
         )}
       </form>
@@ -93,7 +101,7 @@ export const Upload: FC<UploadProps> = ({ classes }) => {
           className={classes.storeButton}
           onClick={handleStore}
         >
-          Store
+          Save
         </button>
       )}
       {error && <span className={classes.errorMessage}>{error}</span>}

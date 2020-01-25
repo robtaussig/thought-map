@@ -1,18 +1,22 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, MutableRefObject } from 'react';
 import Input from '../../../../General/Input';
 import TextArea from '../../../../General/TextArea';
+import { useLoadingOverlay } from '../../../../../hooks/useLoadingOverlay';
 import useCrypto from '../../../../../hooks/useCrypto';
 import { download } from '../../data';
 import { buildDechunker } from '../util';
 import { fetchBackup } from '../api';
 import { Chunk } from '../types';
+import CloudDownload from '@material-ui/icons/CloudDownload';
 
 interface RetrieveProps {
   classes: any;
+  rootRef: MutableRefObject<HTMLDivElement>;
 }
 
-export const Retrieve: FC<RetrieveProps> = ({ classes }) => {
+export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
   const [id, setId] = useState<string>('');
+  const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');
   const [encryptedChunks, setEncryptedChunks] = useState<Chunk[]>(null);
   const [decrypted, setDecrypted] = useState<boolean>(false);
@@ -22,6 +26,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes }) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!id) return;
+    setLoading('Downloading...');
     try {
       const response = await fetchBackup(id);
       if (response instanceof Error) {
@@ -31,17 +36,23 @@ export const Retrieve: FC<RetrieveProps> = ({ classes }) => {
       }
     } catch (e) {
       setError(e.message ?? e);
+    } finally {
+      stopLoading();
     }
   }
 
   const handleDecrypt = async () => {
     const dechunker = buildDechunker(decrypt);
     try {
+      setLoading('Decrypting...');
       const decrypted = await dechunker(encryptedChunks, privateKey);
       setDecrypted(true);
+      updateText('Downloading...');
       download(decrypted);
     } catch (e) {
       setError(e.message ?? e);
+    } finally {
+      stopLoading();
     }
   };
 
@@ -62,7 +73,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes }) => {
         className={classes.useStoredButton}
         onClick={handleUseStored}
       >
-        Use stored
+        Use saved
       </button>
       <form
         className={classes.idForm}
@@ -82,7 +93,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes }) => {
             onClick={handleSubmit}
             disabled={!Boolean(id)}
           >
-            Retrieve
+            <CloudDownload/>
           </button>
         )}
       </form>
