@@ -3,7 +3,7 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import Close from '@material-ui/icons/Close';
 import CircleButton from '../../../components/General/CircleButton';
 import Diagnosis from './diagnosis';
-import CreateBackup from './backup';
+import CreateBackup from './Backup';
 import { RxDatabase } from 'rxdb';
 import { openConfirmation } from '../../../lib/util';
 import classNames from 'classnames';
@@ -35,8 +35,6 @@ import {
   Side,
   OrphanedChildSource,
   OrphanedChildObject,
-  InvalidSetting,
-  ValidSettings,
   FormattedResultActionEnum,
   FormattedResult,
   ChunkItem,

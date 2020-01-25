@@ -1,44 +1,16 @@
 import React, { FC, useState } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import useCrypto from '../../../hooks/useCrypto';
-import { ab2str, str2ab } from '../../../hooks/useCrypto/util';
-import { useLoadedDB } from '../../../hooks/useDB';
-import { jsonDump, download } from './data';
+import useCrypto from '../../../../hooks/useCrypto';
+import { useLoadedDB } from '../../../../hooks/useDB';
+import { jsonDump, download } from '../data';
+import { chunkData, rebuildResponse } from './util';
 import uuidv4 from 'uuid/v4';
-
-const useStyles = makeStyles((theme: any) => ({
-  root: {
-
-  },
-}));
+import { CHUNK_LENGTH } from './constants';
+import { useStyles } from './styles';
+import { uploadChunk, fetchBackup } from './api';
 
 interface BackupProps {
 
 }
-
-const chunkData = (data: string, numChunks: number): string[] => {
-  const chunks: string[] = [];
-  const chunkLength = Math.floor(data.length / numChunks);
-  for (let i = 0; i < numChunks; i++) {
-    const start = i * chunkLength;
-    const end = start + chunkLength;
-    if (i === numChunks - 1) {
-      chunks.push(data.slice(start));
-    } else {
-      chunks.push(data.slice(start, end));
-    }
-  }
-  return chunks;
-};
-
-const dechunkData = (chunks: string[]): string => {
-  return chunks.reduce((dechunked, chunk) => dechunked + chunk, '');
-};
-
-const CHUNK_LENGTH = 30000;
-
-// const API = 'http://localhost:3001';
-const API = 'https://robtaussig.com';
 
 export const Backup: FC<BackupProps> = () => {
   const classes = useStyles({});
@@ -68,55 +40,17 @@ export const Backup: FC<BackupProps> = () => {
 
   const handleUpload = async () => {
     const uuid = uuidv4();
-    const uploadChunk = (chunk: any, partIdx: number): Promise<any> => {
-      return fetch(`${API}/thought-map/api/backup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          uuid,
-          part: partIdx,
-          chunk: ab2str(chunk),
-        }),
-      });
-    };
 
-    await Promise.all(encrypted.map(uploadChunk));
+    await Promise.all(encrypted.map((chunk, idx) => uploadChunk(chunk, idx, uuid)));
     setInputtedUuid(uuid);
   };
 
   const retrieveBackup = async () => {
     try {
-      const res = await fetch(`${API}/thought-map/api/retrieve-backup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          uuid: inputtedUuid,
-        }),
-      });
-      const jsonRes: {
-        chunks: {
-          part: number,
-          chunk: string,
-        }[]
-      } = await res.json();
-
-      const final = await Promise.all(
-        jsonRes.chunks
-          .sort((a, b) => a.part > b.part ? 1 : -1)
-          .map(({ chunk }) => {
-            return decrypt(str2ab(chunk), textareaInput);
-          })
-      );
-
-      const decryptedSingle = dechunkData(final);
-      download(decryptedSingle);
-
+      const response = await fetchBackup(inputtedUuid);
+      const responseBuilder = rebuildResponse(decrypt);
+      const decrypted = await responseBuilder(response, textareaInput);
+      download(decrypted);
     } catch (e) {
       console.error(e);
     }
