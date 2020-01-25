@@ -53,6 +53,12 @@ export const useStyles = makeStyles((theme: any) => ({
     color: theme.palette.primary[700],
     fontWeight: 600,
   }),
+  uploadSuccess: () => ({
+    flex: 0,
+    ...theme.defaults.centered,
+    marginLeft: 30,
+    color: theme.palette.primary[700],
+  }),
   copyToClipboardText: {
     marginTop: 10,
   },
@@ -67,5 +73,23 @@ export const useStyles = makeStyles((theme: any) => ({
     marginTop: 20,
     color: theme.palette.primary[700],
     fontWeight: 600,
+  }),
+  textAreaLabel: {
+    '&#private-key-textarea': {
+      display: 'flex',
+      flexDirection: 'column',
+      margin: '10px 0px',
+    },
+  },
+  useStoredButton: () => ({
+    marginBottom: 10,
+    color: theme.palette.secondary[500],
+    fontWeight: 600,
+  }),
+  decryptionSuccess: () => ({
+    color: theme.palette.primary[600],
+  }),
+  errorMessage: () => ({
+    color: theme.palette.negative[600],
   }),
 }));

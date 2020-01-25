@@ -3,10 +3,10 @@ import Input from '../../../../General/Input';
 import classNames from 'classnames';
 import useCrypto from '../../../../../hooks/useCrypto';
 import { useLoadedDB } from '../../../../../hooks/useDB';
-import { jsonDump, download } from '../../data';
+import { jsonDump } from '../../data';
 import { chunkData } from '../util';
 import { CHUNK_LENGTH } from '../constants';
-import { uploadChunk, fetchBackup } from '../api';
+import { uploadChunk } from '../api';
 
 interface UploadProps {
   classes: any;
@@ -20,7 +20,7 @@ export const Upload: FC<UploadProps> = ({ classes }) => {
   const [error, setError] = useState<string>('');
   const db = useLoadedDB();
   const { encrypt, generatePrivateKey } = useCrypto();
-  
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!id || privateKey) return;
@@ -31,8 +31,12 @@ export const Upload: FC<UploadProps> = ({ classes }) => {
     const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, key)));
     setCopied(false);
     try {
-      // await Promise.all(encryptedChunks.map((chunk, idx) => uploadChunk(chunk, idx, id)))
-      setPrivateKey(key);
+      const responses = await Promise.all(encryptedChunks.map((chunk, idx) => uploadChunk(chunk, idx, id)))
+      if (responses.some(response => response instanceof Error)) {
+        setError(responses.find(response => response instanceof Error).message);
+      } else {
+        setPrivateKey(key);
+      }
     } catch (e) {
       setError(e.message ?? e);
     }
@@ -72,6 +76,13 @@ export const Upload: FC<UploadProps> = ({ classes }) => {
             Upload
           </button>
         )}
+        {privateKey && (
+          <span
+            className={classes.uploadSuccess}
+          >
+            Uploaded!
+          </span>
+        )}
       </form>
       {!copied && privateKey && <span className={classes.copyToClipboardText}>Click to copy:</span>}
       <div className={classNames(classes.privateKey, { copied })} style={{ userSelect: 'all' }} onClick={handleClickPrivateKey}>
@@ -85,6 +96,7 @@ export const Upload: FC<UploadProps> = ({ classes }) => {
           Store
         </button>
       )}
+      {error && <span className={classes.errorMessage}>{error}</span>}
     </div>
   );
 };

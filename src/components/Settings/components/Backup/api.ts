@@ -2,8 +2,8 @@ import { API } from './constants';
 import { ab2str } from '../../../../hooks/useCrypto/util';
 import { BackupResponse } from './types';
 
-export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string): Promise<any> => {
-  return fetch(`${API}/thought-map/api/backup`, {
+export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string): Promise<any | Error> => {
+  const res = await fetch(`${API}/thought-map/api/backup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -15,9 +15,12 @@ export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string
       chunk: ab2str(chunk),
     }),
   });
+  if (!res.ok) return new Error(res.statusText);
+
+  return true;
 };
 
-export const fetchBackup = async (uuid: string): Promise<BackupResponse> => {
+export const fetchBackup = async (uuid: string): Promise<BackupResponse | Error> => {
   const res = await fetch(`${API}/thought-map/api/retrieve-backup`, {
     method: 'POST',
     headers: {
@@ -28,7 +31,7 @@ export const fetchBackup = async (uuid: string): Promise<BackupResponse> => {
       uuid,
     }),
   });
-  const jsonRes: BackupResponse = await res.json();
+  if (!res.ok) return new Error(res.statusText);
 
-  return jsonRes;
+  return res.json();
 }

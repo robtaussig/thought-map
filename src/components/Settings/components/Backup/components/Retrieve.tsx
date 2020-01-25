@@ -1,14 +1,111 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
+import Input from '../../../../General/Input';
+import TextArea from '../../../../General/TextArea';
+import useCrypto from '../../../../../hooks/useCrypto';
+import { download } from '../../data';
+import { buildDechunker } from '../util';
+import { fetchBackup } from '../api';
+import { Chunk } from '../types';
 
 interface RetrieveProps {
   classes: any;
 }
 
 export const Retrieve: FC<RetrieveProps> = ({ classes }) => {
+  const [id, setId] = useState<string>('');
+  const [privateKey, setPrivateKey] = useState<string>('');
+  const [encryptedChunks, setEncryptedChunks] = useState<Chunk[]>(null);
+  const [decrypted, setDecrypted] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const { decrypt } = useCrypto();
+  
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    if (!id) return;
+    try {
+      const response = await fetchBackup(id);
+      if (response instanceof Error) {
+        setError(response.message);
+      } else {
+        setEncryptedChunks(response.chunks);
+      }
+    } catch (e) {
+      setError(e.message ?? e);
+    }
+  }
+
+  const handleDecrypt = async () => {
+    const dechunker = buildDechunker(decrypt);
+    try {
+      const decrypted = await dechunker(encryptedChunks, privateKey);
+      setDecrypted(true);
+      download(decrypted);
+    } catch (e) {
+      setError(e.message ?? e);
+    }
+  };
+
+  const handleUseStored = () => {
+    const storedId = localStorage.getItem('backupId');
+    const storedPrivateKey = localStorage.getItem('privateKey');
+    if (storedId && storedPrivateKey) {
+      setId(storedId);
+      setPrivateKey(storedPrivateKey);
+    } else {
+      setError('No privateKey found');
+    }
+  };
 
   return (
-    <div className={classes.retrieve}>
-      Retrieve
+    <div className={classes.upload}>
+      <button
+        className={classes.useStoredButton}
+        onClick={handleUseStored}
+      >
+        Use stored
+      </button>
+      <form
+        className={classes.idForm}
+        onSubmit={handleSubmit}
+      >
+        <Input
+          classes={classes}
+          id={'id-input'}
+          value={id}
+          onChange={e => setId(e.target.value)}
+          label={'Id'}
+          autoFocus
+        />
+        {(
+          <button
+            className={classes.uploadButton}
+            onClick={handleSubmit}
+            disabled={!Boolean(id)}
+          >
+            Retrieve
+          </button>
+        )}
+      </form>
+      <TextArea
+        classes={classes}
+        id={'private-key-textarea'}
+        value={privateKey}
+        onChange={e => setPrivateKey(e.target.value)}
+        label={'Private Key'}
+        inputProps={{ rows: 5 }}
+      />
+      {encryptedChunks && (decrypted ? (
+        <span className={classes.decryptionSuccess}>Decrypted!</span>
+      ) : (
+        <button
+          className={classes.storeButton}
+          onClick={handleDecrypt}
+          disabled={!Boolean(privateKey)}
+        >
+          Decrypt
+        </button>
+      ))}
+      {error && <span className={classes.errorMessage}>{error}</span>}
     </div>
   );
 };

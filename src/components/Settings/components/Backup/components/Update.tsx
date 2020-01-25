@@ -8,7 +8,7 @@ export const Update: FC<UpdateProps> = ({ classes }) => {
 
   return (
     <div className={classes.update}>
-      Update
+      Coming Soon...
     </div>
   );
 };
