@@ -1,6 +1,6 @@
 // This is the service worker with the Cache-first network
 
-const CACHE = "pwabuilder-precache-with-push-v2";
+const CACHE = "pwabuilder-precache-with-push-v3";
 const precacheFiles = [
   /* Add an array of files to precache for your app */
 ];
