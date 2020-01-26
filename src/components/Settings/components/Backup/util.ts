@@ -1,4 +1,4 @@
-import { Chunk, Decryptor } from './types';
+import { Decryptor } from './types';
 import { str2ab } from '../../../../hooks/useCrypto/util';
 
 export const chunkData = (data: string, numChunks: number): string[] => {
@@ -21,11 +21,10 @@ export const dechunkData = (chunks: string[]): string => {
 };
 
 export const buildDechunker = (decrypt: Decryptor) =>
-  async (chunks: Chunk[], privateKey: string): Promise<string> => {
+  async (chunks: string[], privateKey: string): Promise<string> => {
     const final = await Promise.all(
       chunks
-        .sort((a, b) => a.part > b.part ? 1 : -1)
-        .map(({ chunk }) => {
+        .map(chunk => {
           return decrypt(str2ab(chunk), privateKey);
         })
     );

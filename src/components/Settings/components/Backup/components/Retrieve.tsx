@@ -6,7 +6,6 @@ import useCrypto from '../../../../../hooks/useCrypto';
 import { download } from '../../data';
 import { buildDechunker } from '../util';
 import { fetchBackup } from '../api';
-import { Chunk } from '../types';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
 interface RetrieveProps {
@@ -18,7 +17,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
   const [id, setId] = useState<string>('');
   const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');
-  const [encryptedChunks, setEncryptedChunks] = useState<Chunk[]>(null);
+  const [encryptedChunks, setEncryptedChunks] = useState<string[]>(null);
   const [decrypted, setDecrypted] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const { decrypt } = useCrypto();
@@ -106,7 +105,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
         inputProps={{ rows: 5 }}
       />
       {encryptedChunks && (decrypted ? (
-        <span className={classes.decryptionSuccess}>Decrypted!</span>
+        <span className={classes.decryptionSuccess}>Decrypted and downloading!</span>
       ) : (
         <button
           className={classes.storeButton}

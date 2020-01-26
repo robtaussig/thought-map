@@ -21,15 +21,10 @@ export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string
 };
 
 export const fetchBackup = async (uuid: string): Promise<BackupResponse | Error> => {
-  const res = await fetch(`${API}/thought-map/api/retrieve-backup`, {
-    method: 'POST',
+  const res = await fetch(`${API}/thought-map/api/retrieve-backup/${uuid}`, {
     headers: {
-      'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
-    body: JSON.stringify({
-      uuid,
-    }),
   });
   if (!res.ok) return new Error(res.statusText);
 
