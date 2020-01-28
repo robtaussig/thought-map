@@ -171,8 +171,8 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
       value: e.target.checked,
     });
     
-    if (e.target.checked && !localStorage.getItem('backupId')) {
-      openModal(<SetupBackup onClose={closeModal}/>,'Set up backups')
+    if (e.target.checked) {
+      openModal(<SetupBackup onClose={closeModal}/>,'Set Up Backup on Demand')
     }
   }, []);
 
