@@ -31,6 +31,7 @@ interface InputProps {
   placeholder?: string;
   autoSuggest?: string[];
   tooltip?: string;
+  password?: boolean;
   [rest: string]: any;
 }
 

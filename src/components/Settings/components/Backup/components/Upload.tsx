@@ -20,6 +20,7 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef }) => {
   const [id, setId] = useState<string>('');
   const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [copied, setCopied] = useState<boolean>(false);
   const [stored, setStored] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -27,6 +28,7 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef }) => {
   const { encrypt, generatePrivateKey } = useCrypto();
 
   const handleSubmit = async (e: any) => {
+    setError('');
     e.preventDefault();
     if (!id || privateKey) return;
     setLoading('Exporting Data...');
@@ -39,7 +41,7 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef }) => {
     setCopied(false);
     try {
       updateText('Uploading Data...');
-      const responses = await Promise.all(encryptedChunks.map((chunk, idx) => uploadChunk(chunk, idx, id)))
+      const responses = await Promise.all(encryptedChunks.map((chunk, idx) => uploadChunk(chunk, idx, id, password)))
       if (responses.some(response => response instanceof Error)) {
         setError(responses.find(response => response instanceof Error).message);
       } else {
@@ -66,7 +68,7 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef }) => {
   return (
     <div className={classes.upload}>
       <form
-        className={classes.idForm}
+        className={classes.uploadForm}
         onSubmit={handleSubmit}
       >
         <Input
@@ -76,6 +78,14 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef }) => {
           onChange={e => setId(e.target.value)}
           label={'Id'}
           autoFocus
+        />
+        <Input
+          classes={classes}
+          id={'password'}
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          label={'Password'}
+          type={'password'}
         />
         {!privateKey && (
           <button

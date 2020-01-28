@@ -39,15 +39,28 @@ export const useStyles = makeStyles((theme: any) => ({
   inputLabel: {
     '&#id-input': {
       display: 'flex',
+      gridArea: 'id-input',
+      flexDirection: 'column-reverse',
+      textTransform: 'uppercase',
+      flex: 1,
+    },
+    '&#password': {
+      gridArea: 'password-input',
+      display: 'flex',
       flexDirection: 'column-reverse',
       textTransform: 'uppercase',
       flex: 1,
     },
   },
-  idForm: {
-    display: 'flex',
+  uploadForm: {
+    display: 'grid',
+    gridTemplateAreas: `"id-input submit-button"
+                        "password-input submit-button"`,
+    gridTemplateRows: 'max-content max-content',
+    gridTemplateColumns: '1fr max-content',
   },  
   uploadButton: () => ({
+    gridArea: 'submit-button',
     flex: 0,
     marginLeft: 30,
     color: theme.palette.primary[700],
@@ -55,6 +68,7 @@ export const useStyles = makeStyles((theme: any) => ({
   }),
   uploadSuccess: () => ({
     flex: 0,
+    gridArea: 'submit-button',
     ...theme.defaults.centered,
     marginLeft: 30,
     color: theme.palette.primary[700],

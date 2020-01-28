@@ -17,17 +17,19 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
   const [id, setId] = useState<string>('');
   const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [encryptedChunks, setEncryptedChunks] = useState<string[]>(null);
   const [decrypted, setDecrypted] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const { decrypt } = useCrypto();
   
   const handleSubmit = async (e: any) => {
+    setError('');
     e.preventDefault();
     if (!id) return;
     setLoading('Downloading...');
     try {
-      const response = await fetchBackup(id);
+      const response = await fetchBackup(id, password);
       if (response instanceof Error) {
         setError(response.message);
       } else {
@@ -41,6 +43,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
   }
 
   const handleDecrypt = async () => {
+    setError('');
     const dechunker = buildDechunker(decrypt);
     try {
       setLoading('Decrypting...');
@@ -75,7 +78,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
         Use saved
       </button>
       <form
-        className={classes.idForm}
+        className={classes.uploadForm}
         onSubmit={handleSubmit}
       >
         <Input
@@ -85,6 +88,14 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
           onChange={e => setId(e.target.value)}
           label={'Id'}
           autoFocus
+        />
+        <Input
+          classes={classes}
+          id={'password'}
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          label={'Password'}
+          type={'password'}
         />
         {(
           <button
