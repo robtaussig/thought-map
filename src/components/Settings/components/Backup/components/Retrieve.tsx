@@ -107,16 +107,16 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
           </button>
         )}
       </form>
-      <TextArea
+      {(encryptedChunks && !decrypted) && (<TextArea
         classes={classes}
         id={'private-key-textarea'}
         value={privateKey}
         onChange={e => setPrivateKey(e.target.value)}
         label={'Private Key'}
         inputProps={{ rows: 5 }}
-      />
+      />)}
       {encryptedChunks && (decrypted ? (
-        <span className={classes.decryptionSuccess}>Decrypted and downloading!</span>
+        <span className={classes.decryptionSuccess}>Decrypted and downloaded!</span>
       ) : (
         <button
           className={classes.storeButton}

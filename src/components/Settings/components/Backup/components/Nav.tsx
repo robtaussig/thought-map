@@ -11,8 +11,14 @@ interface NavProps {
 
 export const Nav: FC<NavProps> = ({ classes, currentOption, onChange }) => {
 
+  const handleClick = (navOption: NavOptions) => () => {
+    onChange(navOption);
+  };
+
   return (
-    <nav className={classes.nav}>
+    <nav className={classNames(classes.nav, {
+      initial: currentOption === null,
+    })}>
       {NAV_OPTIONS.map(navOption => {
         return (
           <button
@@ -20,7 +26,7 @@ export const Nav: FC<NavProps> = ({ classes, currentOption, onChange }) => {
             className={classNames(classes.navOption, {
               selected: currentOption === navOption
             })}
-            onClick={() => onChange(navOption)}
+            onClick={handleClick(navOption)}
           >
             {navOption}
           </button>

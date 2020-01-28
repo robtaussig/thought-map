@@ -16,6 +16,12 @@ export const useStyles = makeStyles((theme: any) => ({
     gridArea: 'nav',
     display: 'grid',
     gridTemplateColumns: `repeat(${NAV_OPTIONS.length}, 1fr)`,
+    transition: 'all 0.2s linear',
+    '&.initial': {
+      gridRow: '1 / -1',
+      fontWeight: 900,
+      fontSize: 20,
+    },
   },
   navOption: () => ({
     color: theme.palette.secondary[500],
