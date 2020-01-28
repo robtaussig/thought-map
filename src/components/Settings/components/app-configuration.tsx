@@ -5,8 +5,10 @@ import CircleButton from '../../../components/General/CircleButton';
 import CheckBox from '../../../components/General/CheckBox';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
+import useModal from '../../../hooks/useModal';
 import { SettingState } from '../../../types';
 import { settings as settingsActions } from '../../../actions';
+import SetupBackup from '../components/Backup/components/SetupBackup';
 
 interface AppConfigurationProps {
   classes: any;
@@ -93,6 +95,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
   const [side, setSide] = useState<Side>(Side.TOP);
   const rootRef = useRef(null);
   const db = useLoadedDB();
+  const [openModal, closeModal] = useModal();
   const handleClickClose = useCallback(() => {
     setSide(Side.TOP);
   }, []);
@@ -162,12 +165,24 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
     }
   }, []);
 
+  const handleChangeUseAutomaticBackups = useCallback(e => {
+    settingsActions.editSetting(db, {
+      field: 'enableBackupOnDemand',
+      value: e.target.checked,
+    });
+    
+    if (e.target.checked && !localStorage.getItem('backupId')) {
+      openModal(<SetupBackup onClose={closeModal}/>,'Set up backups')
+    }
+  }, []);
+
   const disableTips = Boolean(settings && settings.disableTips);
   const reportBugs = Boolean(settings && settings.reportBugs);
   const useAutoSuggest = Boolean(settings && settings.useAutoSuggest);
   const useLocation = Boolean(settings && settings.useLocation);
   const usePushNotifications = Boolean(settings && settings.usePushNotifications);
   const autoCreateCalendarEvent = Boolean(settings && settings.autoCreateCalendarEvent);
+  const enableBackupOnDemand = Boolean(settings && settings.enableBackupOnDemand);
 
   return (
     <Fragment>
@@ -220,6 +235,14 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           isChecked={usePushNotifications}
           onChange={handleChangeUsePushNotifications}
           tooltip={'In order to use reminders and other related features, push notifications must be enabled'}
+        />
+        <CheckBox
+          classes={classes}
+          value={'Automatically back up data'}
+          label={'Automatically back up data'}
+          isChecked={enableBackupOnDemand}
+          onChange={handleChangeUseAutomaticBackups}
+          tooltip={'Update remote backup every 24 hours'}
         />
         {'geolocation' in navigator && <CheckBox
           classes={classes}

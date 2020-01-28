@@ -62,6 +62,7 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef }) => {
   const handleStore = () => {
     localStorage.setItem('backupId', id);
     localStorage.setItem('privateKey', privateKey);
+    localStorage.setItem('password', password);
     setStored(true);
   };
 

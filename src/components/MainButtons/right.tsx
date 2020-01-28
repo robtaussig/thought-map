@@ -3,19 +3,27 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import useApp from '../../hooks/useApp';
 import { useLoadedDB } from '../../hooks/useDB';
 import useModal from '../../hooks/useModal';
+import useCrypto from '../../hooks/useCrypto';
 import CreateThought from '../CreateThought';
 import CreateBulkThought from '../CreateThought/Bulk';
 import CircleButton from '../General/CircleButton';
 import History from '@material-ui/icons/History';
 import Link from '@material-ui/icons/Link';
 import Add from '@material-ui/icons/Add';
+import Refresh from '@material-ui/icons/Refresh';
 import ArrowBack from '@material-ui/icons/ArrowBack';
+import CloudUpload from '@material-ui/icons/CloudUpload';
 import Delete from '@material-ui/icons/Delete';
 import { getIdFromUrl, homeUrl, openConfirmation } from '../../lib/util';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
 import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
+import { settingSelector } from '../../reducers/settings';
 import { thoughts as thoughtActions } from '../../actions';
+import { jsonDump } from '../Settings/components/data';
+import { CHUNK_LENGTH } from '../Settings/components/Backup/constants';
+import { chunkData } from '../Settings/components/Backup/util';
+import { updateChunk } from '../Settings/components/Backup/api';
 
 interface RightButtonProps {
   classes: any;
@@ -37,6 +45,11 @@ const styles = (theme: any): StyleRules => ({
       border: `2px solid ${theme.palette.negative[300]}`,
       backgroundColor: theme.palette.negative[300],
     },
+    '&#updating-button': {
+      animation: 'rotate 1s infinite',
+      border: `2px solid gray`,
+      backgroundColor: 'gray',
+    },
   }),
 });
 
@@ -44,10 +57,13 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const [openModal, closeModal] = useModal();
   const dispatch = useDispatch();
   const [hideButton, setHideButton] = useState<boolean>(false);
+  const [updating, setUpdating] = useState<boolean>(false);
   const { history } = useApp();
   const db = useLoadedDB();
+  const { encrypt } = useCrypto();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const tutorial = useSelector(tutorialSelector);
+  const settings = useSelector(settingSelector);
 
   useEffect(() => {
     setHideButton(/(stage|settings)$/.test(history.location.pathname));
@@ -68,18 +84,18 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       openModal(
         <CreateThought
           onClose={closeModal}
+          onCreateBulk={() => {
+            closeModal();
+            openModal(
+              <CreateBulkThought
+                onClose={closeModal}
+              />, 'Create Bulk Thoughts'
+            );
+          }}
           typeOptions={typeOptions}
         />, 'Create Thought'
       );
     }
-
-    const handleBulkCreateThought = () => {
-      openModal(
-        <CreateBulkThought
-          onClose={closeModal}
-        />, 'Create Bulk Thoughts'
-      );
-    };
 
     const handleClickViewConnections = () => {
       const thoughtId = getIdFromUrl(history, 'thought');
@@ -107,6 +123,26 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       }
     };
 
+    const handleDemandBackup = async () => {
+      setUpdating(true);
+      try {
+        const id = localStorage.getItem('backupId');
+        const password = localStorage.getItem('password');
+        const privateKey = localStorage.getItem('privateKey');
+        const data = await jsonDump(db);
+        const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
+        const chunks = chunkData(data, NUM_CHUNKS);
+        const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
+        await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, id, password)));
+      } catch (e) {
+        alert(e);
+      } finally {
+        setUpdating(false);
+      }
+    };
+
+    if (updating) return [Refresh, 'Updating', null, 'updating-button', null];
+
     if (/(history|connections)$/.test(history.location.pathname)) {
       return [ArrowBack, 'Back', handleBack, 'thought-button', null];
     } else if (/thought/.test(history.location.pathname)) {
@@ -116,9 +152,11 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
         return [Link, 'History', handleClickViewConnections, 'has-secondary', handleClickViewHistory, History];
       }
     } else {
-      return [Add, 'Create Thought', handleAddThought, 'thought-button', handleBulkCreateThought, null];
+      return settings.enableBackupOnDemand ?
+        [Add, 'Create Thought', handleAddThought, 'thought-button', handleDemandBackup, CloudUpload] :
+        [Add, 'Create Thought', handleAddThought, 'thought-button', null, null];
     }
-  }, [history.location.pathname, displayThoughtSettings]);
+  }, [history.location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating]);
 
   if (hideButton) return null;
 
@@ -134,6 +172,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
         }
       } : undefined}
       id={id}
+      disabled={handleClick === null}
       classes={classes}
       label={label}
       Icon={Icon}

@@ -38,9 +38,10 @@ interface CreateThoughtProps {
   classes: any;
   typeOptions: string[];
   onClose: CloseModal;
+  onCreateBulk: () => void;
 }
 
-export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, onClose }) => {
+export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, onClose, onCreateBulk }) => {
   const { history } = useApp();
   const thoughts = useSelector(thoughtSelector);
   const plans = useSelector(planSelector);
@@ -63,6 +64,11 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
     }
   };
 
+  const handleClickBulk = (e: any) => {
+    e.preventDefault();
+    onCreateBulk();
+  };
+
   return (
     <Fragment>
       <form className={classNames(classes.form)} onSubmit={handleSubmit}>
@@ -74,6 +80,9 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
           onReady={setReady}
           thoughtTitles={thoughtTitles}
         />
+        <button className={classes.bulkButton} onClick={handleClickBulk}>
+          Bulk
+        </button>
         <button className={classes.submitButton} disabled={!ready}>
           Submit
         </button>

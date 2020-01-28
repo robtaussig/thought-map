@@ -71,9 +71,9 @@ export const StaticCircleButton: FC<StaticCircleButtonProps> = React.memo(({
       disabled={disabled}
       {...rest}
     >
-      {disabled ? <SentimentDissatisfied /> : <Icon
+      <Icon
         ref={svgRef}
-      />}
+      />
     </button>
   );
 });

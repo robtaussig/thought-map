@@ -6,9 +6,9 @@ export const styles = (theme: any): StyleRules => ({
     display: 'grid',
     gridTemplateAreas: `"title title"
                         "type type"
-                        ". submit"`,
+                        "bulk submit"`,
     gridTemplateRows: 'max-content max-content max-content',
-    gridTemplateColumns: '1fr max-content',
+    gridTemplateColumns: 'max-content 1fr',
     gridGap: '10px',
   },
   expanded: {
@@ -40,6 +40,20 @@ export const styles = (theme: any): StyleRules => ({
       },
     },
   },
+  bulkButton: () => ({
+    gridArea: 'bulk',
+    cursor: 'pointer',
+    fontWeight: 600,
+    color: theme.palette.secondary[700],
+    marginTop: 20,
+    border: `1px solid ${theme.palette.secondary[700]}`,
+    padding: '5px 12px',
+    borderRadius: '5px',
+    '&:disabled': {
+      color: 'gray',
+      border: '1px solid gray',
+    },
+  }),
   submitButton: () => ({
     gridArea: 'submit',
     cursor: 'pointer',
