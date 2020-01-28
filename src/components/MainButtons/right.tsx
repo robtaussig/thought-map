@@ -11,6 +11,7 @@ import History from '@material-ui/icons/History';
 import Link from '@material-ui/icons/Link';
 import Add from '@material-ui/icons/Add';
 import Refresh from '@material-ui/icons/Refresh';
+import Check from '@material-ui/icons/Check';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import Delete from '@material-ui/icons/Delete';
@@ -50,6 +51,10 @@ const styles = (theme: any): StyleRules => ({
       border: `2px solid gray`,
       backgroundColor: 'gray',
     },
+    '&#updated': {
+      border: `2px solid limegreen`,
+      backgroundColor: 'limegreen',
+    },
   }),
 });
 
@@ -58,6 +63,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const dispatch = useDispatch();
   const [hideButton, setHideButton] = useState<boolean>(false);
   const [updating, setUpdating] = useState<boolean>(false);
+  const [updated, setUpdated] = useState<boolean>(false);
   const { history } = useApp();
   const db = useLoadedDB();
   const { encrypt } = useCrypto();
@@ -134,6 +140,10 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
         const chunks = chunkData(data, NUM_CHUNKS);
         const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
         await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, id, password)));
+        setUpdated(true);
+        setTimeout(() => {
+          setUpdated(false);
+        }, 2000);
       } catch (e) {
         alert(e);
       } finally {
@@ -141,6 +151,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       }
     };
 
+    if (updated) return [Check, 'Updated', null, 'updated', null];
     if (updating) return [Refresh, 'Updating', null, 'updating-button', null];
 
     if (/(history|connections)$/.test(history.location.pathname)) {
@@ -156,7 +167,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
         [Add, 'Create Thought', handleAddThought, 'thought-button', handleDemandBackup, CloudUpload] :
         [Add, 'Create Thought', handleAddThought, 'thought-button', null, null];
     }
-  }, [history.location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating]);
+  }, [history.location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating, updated]);
 
   if (hideButton) return null;
 
