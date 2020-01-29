@@ -32,8 +32,8 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
       if (typeof uuid === 'string') {
         return prev.filter(prevModal => {
           if (prevModal.id === uuid) {
-            prevModal.options?.afterClose?.();
-            return false;
+            const stopClose = prevModal.options?.afterClose?.();
+            return Boolean(stopClose);
           }
           return true;
         });

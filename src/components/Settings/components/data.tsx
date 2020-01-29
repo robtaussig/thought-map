@@ -214,8 +214,11 @@ export const Data: FC<DataProps> = ({ classes, setLoading }) => {
   }, []);
 
   const handleClickCreateBackup = useCallback(async () => {
+    let closeLock = false;
     openModal(
-      <CreateBackup />
+      <CreateBackup toggleLock={(lock: boolean) => { closeLock = lock }}/>,
+      'Backup',
+      { afterClose: () => closeLock }
     );
   }, []);
 

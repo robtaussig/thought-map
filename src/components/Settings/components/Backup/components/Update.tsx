@@ -14,9 +14,10 @@ import CloudUpload from '@material-ui/icons/CloudUpload';
 interface UpdateProps {
   classes: any;
   rootRef: MutableRefObject<HTMLDivElement>;
+  toggleLock: (lock: boolean) => void;
 }
 
-export const Update: FC<UpdateProps> = ({ classes, rootRef }) => {
+export const Update: FC<UpdateProps> = ({ classes, rootRef, toggleLock }) => {
   const [id, setId] = useState<string>('');
   const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');
@@ -28,6 +29,7 @@ export const Update: FC<UpdateProps> = ({ classes, rootRef }) => {
 
   const handleSubmit = async (e: any) => {
     setError('');
+    toggleLock(true);
     e.preventDefault();
     if (!id || !privateKey) return;
     setLoading('Exporting Data...');
@@ -48,6 +50,7 @@ export const Update: FC<UpdateProps> = ({ classes, rootRef }) => {
       setError(e.message ?? e);
     } finally {
       stopLoading();
+      toggleLock(false);
     }
   }
 

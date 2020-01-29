@@ -238,11 +238,11 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
         />
         <CheckBox
           classes={classes}
-          value={'Automatically back up data'}
-          label={'Automatically back up data'}
+          value={'Enable backup on demand'}
+          label={'Enable backup on demand'}
           isChecked={enableBackupOnDemand}
           onChange={handleChangeUseAutomaticBackups}
-          tooltip={'Update remote backup every 24 hours'}
+          tooltip={'If enabled, long pressing thought-creation button encrypts and backs up your data to a remote server'}
         />
         {'geolocation' in navigator && <CheckBox
           classes={classes}

@@ -7,10 +7,10 @@ import Update from './components/Update';
 import { NavOptions } from './types';
 
 interface BackupProps {
-
+  toggleLock: (lock: boolean) => void;
 }
 
-export const Backup: FC<BackupProps> = () => {
+export const Backup: FC<BackupProps> = ({ toggleLock }) => {
   const classes = useStyles({});
   const rootRef = useRef(null);
   const [currentOption, setCurrentOption] = useState<NavOptions>(null);
@@ -22,9 +22,9 @@ export const Backup: FC<BackupProps> = () => {
         currentOption={currentOption}
         onChange={setCurrentOption}
       />
-      {currentOption === NavOptions.Upload && <Upload rootRef={rootRef} classes={classes}/>}
-      {currentOption === NavOptions.Retrieve && <Retrieve rootRef={rootRef} classes={classes}/>}
-      {currentOption === NavOptions.Update && <Update rootRef={rootRef} classes={classes}/>}
+      {currentOption === NavOptions.Upload && <Upload rootRef={rootRef} toggleLock={toggleLock} classes={classes}/>}
+      {currentOption === NavOptions.Retrieve && <Retrieve rootRef={rootRef} toggleLock={toggleLock} classes={classes}/>}
+      {currentOption === NavOptions.Update && <Update rootRef={rootRef} toggleLock={toggleLock} classes={classes}/>}
     </div>
   );
 };

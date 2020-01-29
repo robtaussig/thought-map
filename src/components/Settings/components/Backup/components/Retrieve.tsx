@@ -11,9 +11,10 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 interface RetrieveProps {
   classes: any;
   rootRef: MutableRefObject<HTMLDivElement>;
+  toggleLock: (lock: boolean) => void;
 }
 
-export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
+export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef, toggleLock }) => {
   const [id, setId] = useState<string>('');
   const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');
@@ -25,6 +26,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
   
   const handleSubmit = async (e: any) => {
     setError('');
+    toggleLock(true);
     e.preventDefault();
     if (!id) return;
     setLoading('Downloading...');
@@ -39,11 +41,13 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
       setError(e.message ?? e);
     } finally {
       stopLoading();
+      toggleLock(false);
     }
   }
 
   const handleDecrypt = async () => {
     setError('');
+    toggleLock(true);
     const dechunker = buildDechunker(decrypt);
     try {
       setLoading('Decrypting...');
@@ -55,6 +59,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef }) => {
       setError(e.message ?? e);
     } finally {
       stopLoading();
+      toggleLock(false);
     }
   };
 
