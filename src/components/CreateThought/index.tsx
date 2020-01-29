@@ -80,11 +80,11 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
           onReady={setReady}
           thoughtTitles={thoughtTitles}
         />
-        <button className={classes.bulkButton} onClick={handleClickBulk}>
-          Bulk
-        </button>
         <button className={classes.submitButton} disabled={!ready}>
           Submit
+        </button>
+        <button className={classes.bulkButton} onClick={handleClickBulk}>
+          Bulk
         </button>
       </form>
     </Fragment>
