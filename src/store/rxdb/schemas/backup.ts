@@ -1,9 +1,10 @@
-import { RxJsonSchema } from 'rxdb';
+import { RxJsonSchema, RxDocument } from 'rxdb';
 
 export interface Backup {
   id?: string;
   backupId: string;
   privateKey: string;
+  isActive?: boolean;
   password: string;
   created?: number;
   updated?: number;
@@ -11,7 +12,7 @@ export interface Backup {
 
 export default ['backup', {
   "title": "Backup schema",
-  "version": 0,
+  "version": 1,
   "description": "A Backup",
   "type": "object",
   "properties": {
@@ -24,6 +25,9 @@ export default ['backup', {
     },
     "password": {
       "type": "string",
+    },
+    "isActive": {
+      "type": "boolean",
     },
     "privateKey": {
       "type": "string",
@@ -39,4 +43,11 @@ export default ['backup', {
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema, {
+  "migrationStrategies": {
+    1: (oldBackup: RxDocument<Backup>) => {
+      oldBackup.isActive = false;
+      return oldBackup;
+    },
+  },
+}];

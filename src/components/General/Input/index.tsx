@@ -96,7 +96,17 @@ export const Input: FC<InputProps> = React.memo(({
   return (
     <Fragment>
       <label key={`${id}-label`} ref={rootRef} id={id} className={classes.inputLabel} onClick={focusOnLabelClick ? undefined : e => e.preventDefault()} {...rest}>
-        <input key={`${id}-input`} ref={inputRef} className={classes.inputField} placeholder={placeholder} type={type || 'text'} value={value} onChange={onChange} autoFocus={autoFocus}/>
+        <input
+          key={`${id}-input`}
+          ref={inputRef}
+          className={classes.inputField}
+          placeholder={placeholder}
+          type={type || 'text'}
+          autoComplete={type === 'password' ? 'current-password' : 'off'}
+          value={value}
+          onChange={onChange}
+          autoFocus={autoFocus}
+        />
         {label}
         {injectedComponent}
         {DeleteButton}

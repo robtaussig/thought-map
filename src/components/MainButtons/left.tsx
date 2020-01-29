@@ -9,7 +9,7 @@ import PlanSelectActions from '../Home/PlanSelect/components/actions';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import useApp from '../../hooks/useApp';
 import { getIdFromUrl } from '../../lib/util';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import PlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck';
 import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
@@ -87,8 +87,8 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
       dispatch(toggle());
     };
 
-    if (/settings/.test(history.location.pathname)) {
-      return [ArrowBack, 'Return Home', handleGoBack, null];
+    if (/settings|backups/.test(history.location.pathname)) {
+      return [Home, 'Return Home', handleGoBack, null];
     } else if (/thought/.test(history.location.pathname)) {
       return [Settings, 'Settings', handleClickSettings, null, true];
     } else {

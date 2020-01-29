@@ -51,6 +51,7 @@ enum CurrentPage {
   Connections,
   History,
   Settings,
+  Backups,
 }
 
 export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
@@ -68,6 +69,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
     if (/connections$/.test(history.location.pathname)) return CurrentPage.Connections;
     if (/settings/.test(history.location.pathname)) return CurrentPage.Settings;
     if (/thought/.test(history.location.pathname)) return CurrentPage.Thought;
+    if (/backups/.test(history.location.pathname)) return CurrentPage.Backups;
     return CurrentPage.Home;
   }, [history.location.pathname]);
 
@@ -87,7 +89,12 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   }, [stage, currentPage]);
 
   useEffect(() => {
-    setHideButton([CurrentPage.History, CurrentPage.Connections, CurrentPage.Settings].includes(currentPage));
+    setHideButton([
+      CurrentPage.History,
+      CurrentPage.Connections,
+      CurrentPage.Settings,
+      CurrentPage.Backups,
+    ].includes(currentPage));
   }, [currentPage])
 
   const handleLongPress = async () => {
