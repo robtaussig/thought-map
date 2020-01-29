@@ -8,7 +8,7 @@ import { subscribeToChanges } from './store/updates';
 import initializeApplication from './store/init';
 import { useDB } from './hooks/useDB';
 import Home from './components/Home';
-import PriorityList from './components/Home/PriorityList';
+import Backups from './components/Backups';
 import Settings from './components/Settings';
 import Thought from './components/Thought';
 import MiddleButton from './components/MainButtons/middle';
@@ -114,7 +114,10 @@ const App: FC<AppProps> = ({ classes, history }) => {
               </Route>
               <Route path={'/stage'}>
                 {dbReadyState && <Stage/>}  
-              </Route>           
+              </Route>
+              <Route path={'/backups'}>
+                {dbReadyState && <Backups/>}
+              </Route>
             </Switch> 
           </Div100vh>
         </ModalProvider>  

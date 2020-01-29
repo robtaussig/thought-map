@@ -222,6 +222,10 @@ export const Data: FC<DataProps> = ({ classes, setLoading }) => {
     );
   }, []);
 
+  const handleClickManageBackups = useCallback(() => {
+    history.push('/backups');
+  }, []);
+
   useEffect(() => {
     const handleChange: EventListener = event => {
       const fr = new FileReader();
@@ -302,6 +306,9 @@ export const Data: FC<DataProps> = ({ classes, setLoading }) => {
         <div className={classes.buttonWrapper}>
           <button className={classes.tooltipButton} onClick={handleClickCreateBackup}>Create/Restore Backup</button>
           <Tooltip className={'tooltip'} text={CREATE_BACKUP_TOOLTIP_TEXT} />
+        </div>
+        <div className={classes.buttonWrapper}>
+          <button className={classes.tooltipButton} onClick={handleClickManageBackups}>Manage Backups</button>
         </div>
         <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close} />
       </div>
