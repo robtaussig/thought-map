@@ -7,6 +7,7 @@ import Templates from '../models/templates';
 import Pictures from '../models/pictures';
 import Settings from '../models/settings';
 import Statuses from '../models/statuses';
+import Backups from '../models/backups';
 
 export const thoughts = {
   getThoughts: Thoughts.fetchAll,
@@ -80,3 +81,11 @@ export const statuses = {
   deleteStatus: Statuses.delete,
   editStatus: Statuses.update,
 };
+
+export const backups = {
+  getBackups: Backups.fetchAll,
+  getBackup: Backups.fetch,
+  createBackup: Backups.upsert,
+  deleteBackup: Backups.delete,
+  editBackup: Backups.update,
+}

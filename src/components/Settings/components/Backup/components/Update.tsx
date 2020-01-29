@@ -10,6 +10,7 @@ import { CHUNK_LENGTH } from '../constants';
 import { updateChunk } from '../api';
 import Check from '@material-ui/icons/Check';
 import CloudUpload from '@material-ui/icons/CloudUpload';
+import { backups as backupActions } from '../../../../../actions';
 
 interface UpdateProps {
   classes: any;
@@ -44,6 +45,11 @@ export const Update: FC<UpdateProps> = ({ classes, rootRef, toggleLock }) => {
       if (responses.some(response => response instanceof Error)) {
         setError(responses.find(response => response instanceof Error).message);
       } else {
+        backupActions.createBackup(db, {
+          backupId: id,
+          password,
+          privateKey,
+        });
         setUpdated(true);
       }
     } catch (e) {
@@ -53,15 +59,6 @@ export const Update: FC<UpdateProps> = ({ classes, rootRef, toggleLock }) => {
       toggleLock(false);
     }
   }
-
-  useEffect(() => {
-    const storedId = localStorage.getItem('backupId');
-    const storedPrivateKey = localStorage.getItem('privateKey');
-    if (storedId && storedPrivateKey) {
-      setId(storedId);
-      setPrivateKey(storedPrivateKey);
-    }
-  }, []);
 
   return (
     <div className={classes.upload}>

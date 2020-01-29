@@ -1,5 +1,6 @@
 import { handleThoughtChange } from './thoughts';
 import { handleConnectionChange } from './connections';
+import { handleBackupChange } from './backups';
 import { handleNoteChange } from './notes';
 import { handlePictureChange } from './pictures';
 import { handleSettingChange } from './settings';
@@ -95,6 +96,8 @@ export const subscribeToChanges = async (
   db.picture.$.subscribe(handlePictureChange(dispatch, setLastNotification, matchPictureLocationIfEnabled(db)));
   // @ts-ignore
   db.setting.$.subscribe(handleSettingChange(dispatch, setLastNotification));
+  // @ts-ignore
+  db.backup.$.subscribe(handleBackupChange(dispatch, setLastNotification));
   //@ts-ignore
   db.status.$.subscribe(handleStatusChange(
     dispatch,

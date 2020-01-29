@@ -59,9 +59,6 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
         setError(responses.find(response => response instanceof Error).message);
       } else {
         stopLoading();
-        localStorage.setItem('backupId', id);
-        localStorage.setItem('password', password);
-        localStorage.setItem('privateKey', privateKey);
         onClose();
       }
     } catch (e) {

@@ -14,6 +14,7 @@ import templates from './templates';
 import thoughts from './thoughts';
 import stage from './stage';
 import tutorial from './tutorial';
+import backups from './backups';
 import customTheme from './customTheme';
 
 const rootReducer = combineReducers({
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   displayThoughtSettings,
   tutorial,
   customTheme,
+  backups,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

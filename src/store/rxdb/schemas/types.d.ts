@@ -7,6 +7,7 @@ import { Template } from './template';
 import { Picture } from './picture';
 import { Setting } from './setting';
 import { Status } from './status';
+import { Backup } from './backup';
 
 export {
   Thought,
@@ -18,4 +19,5 @@ export {
   Picture,
   Setting,
   Status,
+  Backup,
 }

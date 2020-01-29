@@ -8,6 +8,7 @@ import template from './template';
 import picture from './picture';
 import setting from './setting';
 import status from './status';
+import backup from './backup';
 
 type SchemaTuple = [string, RxJsonSchema, RxCollectionCreator?];
 
@@ -21,7 +22,9 @@ export default [
   picture,
   setting,
   status,
+  backup,
 ] as [
+  SchemaTuple,
   SchemaTuple,
   SchemaTuple,
   SchemaTuple,

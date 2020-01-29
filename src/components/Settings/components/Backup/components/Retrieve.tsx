@@ -3,10 +3,12 @@ import Input from '../../../../General/Input';
 import TextArea from '../../../../General/TextArea';
 import { useLoadingOverlay } from '../../../../../hooks/useLoadingOverlay';
 import useCrypto from '../../../../../hooks/useCrypto';
+import { useLoadedDB } from '../../../../../hooks/useDB';
 import { download } from '../../data';
 import { buildDechunker } from '../util';
 import { fetchBackup } from '../api';
 import CloudDownload from '@material-ui/icons/CloudDownload';
+import { backups as backupActions } from '../../../../../actions';
 
 interface RetrieveProps {
   classes: any;
@@ -15,6 +17,7 @@ interface RetrieveProps {
 }
 
 export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef, toggleLock }) => {
+  const db = useLoadedDB();
   const [id, setId] = useState<string>('');
   const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');
@@ -52,6 +55,11 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef, toggleLock }) =>
     try {
       setLoading('Decrypting...');
       const decrypted = await dechunker(encryptedChunks, privateKey);
+      backupActions.createBackup(db, {
+        backupId: id,
+        password,
+        privateKey,
+      });
       setDecrypted(true);
       updateText('Downloading...');
       download(decrypted);
@@ -63,25 +71,8 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef, toggleLock }) =>
     }
   };
 
-  const handleUseStored = () => {
-    const storedId = localStorage.getItem('backupId');
-    const storedPrivateKey = localStorage.getItem('privateKey');
-    if (storedId && storedPrivateKey) {
-      setId(storedId);
-      setPrivateKey(storedPrivateKey);
-    } else {
-      setError('No privateKey found');
-    }
-  };
-
   return (
     <div className={classes.upload}>
-      <button
-        className={classes.useStoredButton}
-        onClick={handleUseStored}
-      >
-        Use saved
-      </button>
       <form
         className={classes.uploadForm}
         onSubmit={handleSubmit}

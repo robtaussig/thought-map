@@ -8,6 +8,7 @@ import { jsonDump } from '../../data';
 import { chunkData } from '../util';
 import { CHUNK_LENGTH } from '../constants';
 import { uploadChunk } from '../api';
+import { backups as backupActions } from '../../../../../actions';
 import Check from '@material-ui/icons/Check';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 
@@ -23,7 +24,6 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef, toggleLock }) => {
   const [privateKey, setPrivateKey] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [copied, setCopied] = useState<boolean>(false);
-  const [stored, setStored] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const db = useLoadedDB();
   const { encrypt, generatePrivateKey } = useCrypto();
@@ -47,6 +47,11 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef, toggleLock }) => {
       if (responses.some(response => response instanceof Error)) {
         setError(responses.find(response => response instanceof Error).message);
       } else {
+        backupActions.createBackup(db, {
+          backupId: id,
+          password,
+          privateKey: key,
+        });
         setPrivateKey(key);
       }
     } catch (e) {
@@ -60,13 +65,6 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef, toggleLock }) => {
   const handleClickPrivateKey = (e: any) => {
     navigator.clipboard.writeText(privateKey);
     setCopied(true);
-  };
-
-  const handleStore = () => {
-    localStorage.setItem('backupId', id);
-    localStorage.setItem('privateKey', privateKey);
-    localStorage.setItem('password', password);
-    setStored(true);
   };
 
   return (
@@ -110,14 +108,6 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef, toggleLock }) => {
       <div className={classNames(classes.privateKey, { copied })} style={{ userSelect: 'all' }} onClick={handleClickPrivateKey}>
         {privateKey.split('\n').map((line, idx) => <div key={`${idx}-key`}>{line}</div>)}
       </div>
-      {!stored && privateKey && (
-        <button
-          className={classes.storeButton}
-          onClick={handleStore}
-        >
-          Save
-        </button>
-      )}
       {error && <span className={classes.errorMessage}>{error}</span>}
     </div>
   );
