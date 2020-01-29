@@ -72,7 +72,10 @@ export const FilterAndSearch: FC<FilterAndSearchProps> = ({
           setFocus={f => focusSearch.current = f}
         />
       </form>
-      <button className={classes.searchButton} onClick={() => setIsSearching(prev => !prev)}><Search /></button>
+      <button className={classes.searchButton} onClick={() => {
+        setSearchTerm('');
+        setIsSearching(prev => !prev);
+      }}><Search /></button>
     </div>
   );
 };
