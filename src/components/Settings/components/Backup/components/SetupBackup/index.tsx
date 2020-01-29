@@ -10,6 +10,7 @@ import { SetupStages } from './types';
 import { jsonDump } from '../../../data';
 import { chunkData } from '../../util';
 import { updateChunk } from '../../api';
+import { backups as backupActions } from '../../../../../../actions';
 
 interface SetupBackupProps {
   onClose: () => void;
@@ -58,6 +59,11 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
         stopLoading();
         setError(responses.find(response => response instanceof Error).message);
       } else {
+        backupActions.createBackup(db, {
+          backupId: id,
+          password,
+          privateKey,
+        });
         stopLoading();
         onClose();
       }
