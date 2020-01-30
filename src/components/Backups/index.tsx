@@ -55,13 +55,13 @@ export const Backups: FC<BackupsProps> = () => {
   }
 
   const handlePull = (backup: Backup) => async () => {
-    const { id, password, privateKey } = backup;
+    const { backupId, password, privateKey } = backup;
     setUpdating(prev => ({
       ...prev,
       [backup.backupId]: true,
     }));
     try {
-      const response = await fetchBackup(id, password);
+      const response = await fetchBackup(backupId, password);
       if (response instanceof Error) {
         alert(response);
       } else {
