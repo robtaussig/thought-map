@@ -96,6 +96,10 @@ export const Backups: FC<BackupsProps> = () => {
       const chunks = chunkData(data, NUM_CHUNKS);
       const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
       await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion)));
+      setCurrentVersions(prev => ({
+        ...prev,
+        [backup.backupId]: nextVersion,
+      }));
       backupActions.editBackup(db, {
         ...backup,
         version: nextVersion,
