@@ -52,7 +52,7 @@ const styles = (theme: any): StyleRules => ({
 
 export const CustomStatuses: FC<CustomStatusesProps> = ({ classes, onClose }) => {
   const [inputtedValue, setInputtedValue] = useState<string>('');
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const settings = useSelector(settingSelector);
   const thoughts = useSelector(thoughtSelector);
   const customStatuses = useMemo(() => {

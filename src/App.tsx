@@ -37,17 +37,17 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const dispatch = useDispatch();
   const settings = useSelector(settingsSelector);
   const [lastNotification, setLastNotification] = useState<Notification>(null);
-  const [DBProvider, db, dbReadyState] = useDB();
+  const [DBProvider, dbContext, dbReadyState] = useDB();
   const rootRef = useRef(null);
 
   useEffect(() => {
     if (dbReadyState) {
-      initializeApplication(db, dispatch).then(() => {
+      initializeApplication(dbContext.db, dispatch).then(() => {
         document.body.classList.remove('loader');
       });
-      subscribeToChanges(db, dispatch, setLastNotification);
+      subscribeToChanges(dbContext.db, dispatch, setLastNotification);
     }
-  }, [db, dbReadyState]);
+  }, [dbContext.db, dbReadyState]);
 
   const appContext = useMemo(() => ({ history }), []);
 
@@ -71,7 +71,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
 
   return (
     <AppContext.Provider value={appContext}>
-      <DBProvider value={db}>
+      <DBProvider value={dbContext}>
         <ModalProvider>
           <Div100vh id={'app'} ref={rootRef} className={classes.root}>
             <Notifications lastNotification={lastNotification} />

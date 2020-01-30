@@ -44,7 +44,7 @@ const styles = (theme: any): StyleRules => ({
 
 export const CreatePlan: FC<CreatePlanProps> = ({ classes, onClose }) => {
   const [inputtedValue, setInputtedValue] = useState('');
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const { history } = useApp();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

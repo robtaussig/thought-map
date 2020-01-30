@@ -75,7 +75,7 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
   isLastChild,
 }) => {
   const { history } = useApp();
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const [showConnections, setShowConnections] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [openModal, closeModal] = useModal();

@@ -26,7 +26,7 @@ const sortConnections = (left: Thought, right: Thought) => {
 };
 
 export const AvailableThoughts: FC<AvailableThoughtsProps> = ({ classes, thoughts, thoughtId, plan, onCreate, autoFocus = true }) => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const [searchText, setSearchText] = useState<string>('');
 
   const options: Thought[] = useMemo(() => {

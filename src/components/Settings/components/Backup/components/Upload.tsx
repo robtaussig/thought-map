@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useLoadingOverlay } from '../../../../../hooks/useLoadingOverlay';
 import useCrypto from '../../../../../hooks/useCrypto';
 import { useLoadedDB } from '../../../../../hooks/useDB';
-import { jsonDump } from '../../data';
+import { jsonDump } from '../../Data';
 import { chunkData } from '../util';
 import { CHUNK_LENGTH } from '../constants';
 import { uploadChunk } from '../api';
@@ -25,7 +25,7 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef, toggleLock }) => {
   const [password, setPassword] = useState<string>('');
   const [copied, setCopied] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const { encrypt, generatePrivateKey } = useCrypto();
 
   const handleSubmit = async (e: any) => {

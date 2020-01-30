@@ -4,7 +4,7 @@ import TextArea from '../../../../General/TextArea';
 import { useLoadingOverlay } from '../../../../../hooks/useLoadingOverlay';
 import useCrypto from '../../../../../hooks/useCrypto';
 import { useLoadedDB } from '../../../../../hooks/useDB';
-import { download } from '../../data';
+import { download } from '../../Data';
 import { buildDechunker } from '../util';
 import { fetchBackup } from '../api';
 import CloudDownload from '@material-ui/icons/CloudDownload';
@@ -17,7 +17,7 @@ interface RetrieveProps {
 }
 
 export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef, toggleLock }) => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const [id, setId] = useState<string>('');
   const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');

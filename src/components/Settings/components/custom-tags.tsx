@@ -49,7 +49,7 @@ const styles = (theme: any): StyleRules => ({
 
 export const CustomTags: FC<CustomTagsProps> = ({ classes, onClose }) => {
   const [inputtedValue, setInputtedValue] = useState<string>('');
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const settings = useSelector(settingSelector);
   const customTags = useMemo(() => {
     return Array.isArray(settings.customTags) ? settings.customTags : [];

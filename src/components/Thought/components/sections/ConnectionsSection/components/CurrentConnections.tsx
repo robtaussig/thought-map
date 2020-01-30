@@ -10,7 +10,7 @@ interface CurrentConnectionsProps {
 }
 
 export const CurrentConnections: FC<CurrentConnectionsProps> = ({ classes, connections }) => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
 
   const handleDeleteConnection = (connectionId: string) => () => {
     connectionsActions.deleteConnection(db, connectionId);

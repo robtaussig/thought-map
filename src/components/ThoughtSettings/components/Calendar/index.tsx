@@ -66,7 +66,7 @@ interface AddToCalendarProps {
 const DASH_REGEX = /-/g;
 
 export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, thoughtId, notes, tags }) => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const thoughts = useSelector(thoughtSelector);
   const thought = thoughts.find(el => el.id === thoughtId);
   const [signedIn, actions, error] = useGoogleCalendar();

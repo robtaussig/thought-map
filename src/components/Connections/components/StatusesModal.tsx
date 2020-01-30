@@ -30,7 +30,7 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const StatusesModal: FC<StatusesModalProps> = ({ classes, onClose, thought, statusOptions }) => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const handleSelectStatus = (event: any) => {
     if (event.target.value !== thought.status) {
       statusActions.createStatus(db, {

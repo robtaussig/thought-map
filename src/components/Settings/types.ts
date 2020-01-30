@@ -1,5 +1,4 @@
 export interface DataProps {
-  classes: any;
   setLoading: () => void;
 }
 

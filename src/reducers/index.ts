@@ -39,4 +39,9 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-export default rootReducer;
+const appReducer: typeof rootReducer = (state, action) => {
+  if (action.type === 'RESET') return rootReducer(undefined, action);
+  return rootReducer(state, action);
+};
+
+export default appReducer;

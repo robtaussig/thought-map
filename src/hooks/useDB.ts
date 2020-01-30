@@ -3,29 +3,34 @@ import { DB_SETTINGS, initializeCollections } from '../store/rxdb';
 import RxDB, { RxDatabase } from 'rxdb';
 RxDB.plugin(require('pouchdb-adapter-idb'));
 
-const DBContext = createContext<RxDatabase>(null);
+export interface DBContext {
+  db: RxDatabase;
+  initialize: () => Promise<RxDatabase>;
+}
+const DBContext = createContext<DBContext>(null);
 
-export const useDB = (): [Provider<RxDatabase>, RxDatabase, boolean] => {
-  const dbRef = useRef(null);
+export const useDB = (): [Provider<DBContext>, DBContext, boolean] => {
+  const dbContext = useRef<DBContext>({ db: null, initialize: null });
   const [readyState, setReadyState] = useState(false);
 
   useEffect(() => {
-    const initializeDB = async () => {
+    dbContext.current.initialize = async () => {
       const db = await RxDB.create(DB_SETTINGS);
       await initializeCollections(db);
 
-      dbRef.current = db;
+      dbContext.current.db = db;
       setReadyState(true);
+      return dbContext.current.db;
     }
 
-    initializeDB();
+    dbContext.current.initialize();
   }, []);
 
-  return [DBContext.Provider, dbRef.current, readyState];
+  return [DBContext.Provider, dbContext.current, readyState];
 };
 
-export const useLoadedDB = (): RxDatabase => {
-  const db = useContext(DBContext);
+export const useLoadedDB = (): DBContext => {
+  const dbContext = useContext(DBContext);
 
-  return db;
+  return dbContext;
 };

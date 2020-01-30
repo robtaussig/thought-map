@@ -19,7 +19,7 @@ interface ThemeProps {
 export const Theme: FC<ThemeProps> = () => {
   const customTheme = useSelector(customThemeSelector);
   const [saved, setSaved] = useState<boolean>(false);
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const classes = useThemeStyles(customTheme);
   const dispatch = useDispatch();
   const [side, setSide] = useState<ViewPosition>(ViewPosition.Down);

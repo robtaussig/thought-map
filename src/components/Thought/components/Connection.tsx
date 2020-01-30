@@ -16,7 +16,7 @@ interface ConnectionProps {
 }
 
 export const Connection: FC<ConnectionProps> = ({ classes, targetThought, sourceThought, connected, from, to }) => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const [loading, setLoading] = useState(false);
   const { history } = useApp();
 

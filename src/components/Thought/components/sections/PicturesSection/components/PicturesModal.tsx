@@ -25,7 +25,7 @@ export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const loaded = useRef<boolean>(false);
   const uploadPictureRef = useRef<HTMLInputElement>(null);
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const pictures = useSelector(pictureSelector);
   const [tempImages, setTempImages] = useState<any[]>([]);
   const [setLoading, stopLoading] = useLoadingOverlay(rootRef);

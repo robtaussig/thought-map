@@ -94,7 +94,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   lastSectionOrder.current = sectionOrder;
   const lastSectionVisibility = useRef<SectionVisibility>(null);
   lastSectionVisibility.current = sectionVisibility;
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const { history } = useApp();
   const [editingSection, setEditingSection] = useState<string>(null);
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {

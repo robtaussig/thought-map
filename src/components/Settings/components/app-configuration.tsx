@@ -96,7 +96,7 @@ const styles = (theme: any): StyleRules => ({
 export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings }) => {
   const [side, setSide] = useState<Side>(Side.TOP);
   const rootRef = useRef(null);
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const backups = useSelector(backupSelector);
   const [openModal, closeModal] = useModal();
   const handleClickClose = useCallback(() => {

@@ -7,7 +7,7 @@ import { useLoadedDB } from '../../../../../../hooks/useDB';
 import { useLoadingOverlay } from '../../../../../../hooks/useLoadingOverlay';
 import { useStyles } from './styles';
 import { SetupStages } from './types';
-import { jsonDump } from '../../../data';
+import { jsonDump } from '../../../Data';
 import { chunkData } from '../../util';
 import { updateChunk, getVersion } from '../../api';
 import { backups as backupActions } from '../../../../../../actions';
@@ -19,7 +19,7 @@ interface SetupBackupProps {
 export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
   const classes = useStyles({});
   const rootRef = useRef(null);
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const [stage, setStage] = useState<SetupStages>(SetupStages.Id);
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');

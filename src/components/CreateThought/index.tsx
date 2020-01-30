@@ -46,7 +46,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
   const thoughts = useSelector(thoughtSelector);
   const plans = useSelector(planSelector);
   const [ready, setReady] = useState<boolean>(false);
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const planId = getIdFromUrl(history, 'plan');
   const plan = plans.find(plan => plan.id === planId);
   const [createdThought, setCreatedThought] = useState<CreatedThought>({

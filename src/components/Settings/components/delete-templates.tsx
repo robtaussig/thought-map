@@ -32,7 +32,7 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const DeleteTemplates: FC<DeleteTemplatesProps> = ({ classes, onClose }) => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const templates = useSelector(templateSelector);
 
   const deleteTemplate = (templateId: string) => {

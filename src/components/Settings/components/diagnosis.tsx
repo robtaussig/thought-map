@@ -38,7 +38,7 @@ const modelsByTable: {
   status: { delete: Status.delete, update: Status.update, add: Status.add }
 };
 
-import { jsonDump } from './data';
+import { jsonDump } from './Data';
 
 interface DiagnosisProps {
   classes: any;
@@ -116,7 +116,7 @@ const canFix = (diagnosisChunks: DiagnosisChunks) => {
 };
 
 export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix }) => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const { history } = useApp();
 
   const _diagnosis = useMemo(() => {

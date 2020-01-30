@@ -24,7 +24,7 @@ export const DeletePlan: FC<DeletePlanProps> = ({ classes, plan, thoughts, after
   const [setLoading, stopLoading, updateLoading] = useLoadingOverlay(rootRef);
   const [withThoughts, setWithThoughts] = useState<boolean>(false);
   const [inputtedPlanName, setInputtedPlanName] = useState<string>('');
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
 
   const handleClickDelete = async () => {
     const message = withThoughts ?

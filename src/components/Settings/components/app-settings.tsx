@@ -4,7 +4,7 @@ import ManagePhotos from './manage-photos';
 import CustomObjects from './custom-objects';
 import AppConfiguration from './app-configuration';
 import Theme from './theme';
-import Data from './data';
+import Data from './Data';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 import { useSelector } from 'react-redux';
 import { pictureSelector } from '../../../reducers/pictures';

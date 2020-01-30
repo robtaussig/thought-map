@@ -9,7 +9,7 @@ import { useLoadedDB } from '../../hooks/useDB';
 import useCrypto from '../../hooks/useCrypto';
 import { getVersion } from '../Settings/components/Backup/api';
 import { openConfirmation } from '../../lib/util';
-import { jsonDump, download } from '../Settings/components/data';
+import { jsonDump, download } from '../Settings/components/Data';
 import { CHUNK_LENGTH } from '../Settings/components/Backup/constants';
 import { chunkData, buildDechunker } from '../Settings/components/Backup/util';
 import { updateChunk, fetchBackup } from '../Settings/components/Backup/api';
@@ -19,7 +19,7 @@ interface BackupsProps {
 }
 
 export const Backups: FC<BackupsProps> = () => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const classes = useStyles({});
   const { encrypt, decrypt } = useCrypto();
   const backups = useSelector(backupSelector);
@@ -71,7 +71,7 @@ export const Backups: FC<BackupsProps> = () => {
           ...backup,
           version: Number(response.version),
         });
-        download(decrypted);
+        download(decrypted, `${backupId}_${response.version}`);
       }
     } catch(e) {
       alert(e);

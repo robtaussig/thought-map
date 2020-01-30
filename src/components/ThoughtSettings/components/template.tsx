@@ -27,7 +27,7 @@ interface TemplateType {
 
 export const Template: FC<TemplateProps> = ({ classes, onClose, thought, notes, tags }) => {
   const [inputValue, setInputValue] = useState<string>('');
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

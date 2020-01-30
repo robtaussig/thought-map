@@ -18,7 +18,7 @@ interface StagedItemProps {
 }
 
 export const StagedItem: FC<StagedItemProps> = ({ classes, isStaging, item, style }) => {
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const { history } = useApp();
 
   const handleClickItem = () => {

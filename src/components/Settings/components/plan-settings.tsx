@@ -36,7 +36,7 @@ const SETTINGS_PATH_REGEX = /settings.*/;
 
 export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, typeOptions, connections }) => {
   const { history } = useApp();
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const [inputtedName, setInputtedName] = useState<string>(plan.name);
   const [hasChange, setHasChange] = useState<boolean>(false);
   const canAddThoughts: AddOrRemovableThoughts[] = useMemo(() => {

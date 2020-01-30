@@ -22,7 +22,7 @@ import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reduce
 import { settingSelector } from '../../reducers/settings';
 import { backupSelector } from '../../reducers/backups';
 import { thoughts as thoughtActions, backups as backupActions } from '../../actions';
-import { jsonDump } from '../Settings/components/data';
+import { jsonDump } from '../Settings/components/Data';
 import { CHUNK_LENGTH } from '../Settings/components/Backup/constants';
 import { chunkData } from '../Settings/components/Backup/util';
 import { updateChunk, getVersion } from '../Settings/components/Backup/api';
@@ -66,7 +66,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const [updating, setUpdating] = useState<boolean>(false);
   const [updated, setUpdated] = useState<boolean>(false);
   const { history } = useApp();
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const { encrypt } = useCrypto();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const tutorial = useSelector(tutorialSelector);

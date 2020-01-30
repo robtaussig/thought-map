@@ -33,7 +33,7 @@ interface ContentProps {
 export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptions, typeOptions, from }) => {
   const dispatch = useDispatch();
   const thoughtMap = useRef<Graph>(new Graph());
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const [openModal] = useModal();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);

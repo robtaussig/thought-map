@@ -17,7 +17,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
   const classes = useBulkStyles({});
   const [inputValue, setInputValue] = useState<string>('');
   const plans = useSelector(planSelector);
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const { history } = useApp();
   const planId = getIdFromUrl(history, 'plan');
   const plan = plans.find(plan => plan.id === planId);

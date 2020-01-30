@@ -49,7 +49,7 @@ const styles = (theme: any): StyleRules => ({
 export const CustomTypes: FC<CustomTypesProps> = ({ classes, onClose }) => {
   const settings = useSelector(settingSelector);
   const [inputtedValue, setInputtedValue] = useState<string>('');
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const customTypes = useMemo(() => {
     return Array.isArray(settings.customTypes) ? settings.customTypes : [];
   }, [settings]);

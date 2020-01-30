@@ -34,7 +34,7 @@ const styles = (theme: any): StyleRules => ({
 export const EditPictureDescription: FC<EditPictureDescriptionProps> = ({ classes, onClose, picture }) => {
   const [inputtedValue, setInputtedValue] = useState<string>(picture.description || '');
   const disableSubmit = (inputtedValue === picture.description) || (inputtedValue === '' && !picture.description);
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (disableSubmit === false) {

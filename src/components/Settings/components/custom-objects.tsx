@@ -84,7 +84,7 @@ export const CustomObjects: FC<CustomObjectsProps> = ({ classes, settings }) => 
   const [side, setSide] = useState<Side>(Side.TOP);
   const [openModal, closeModal] = useModal();
   const rootRef = useRef(null);
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const handleClickClose = useCallback(() => {
     setSide(Side.TOP);
   }, []);

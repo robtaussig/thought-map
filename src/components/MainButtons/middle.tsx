@@ -59,7 +59,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   const thoughts = useSelector(thoughtSelector);
   const tutorial = useSelector(tutorialSelector);
   const dispatch = useDispatch();
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const [canStage, setCanStage] = useState<boolean>(false);
   const [hideButton, setHideButton] = useState<boolean>(false);
   const { history } = useApp();

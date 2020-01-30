@@ -87,7 +87,7 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
 
   const rootRef = useRef(null);
   const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
   const handleClickClose = useCallback(() => {
     setSide(Side.TOP);
   }, []);

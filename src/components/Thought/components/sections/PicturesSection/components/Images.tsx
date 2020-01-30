@@ -21,7 +21,7 @@ interface ImagesProps {
 export const Images: FC<ImagesProps> = ({ classes, relatedPictures, loaded, deleteImage }) => {
   const [fullScreenImage, setFullScreenImage] = useState<Picture>(null);
   const [openModal, closeModal] = useModal();
-  const db = useLoadedDB();
+  const { db } = useLoadedDB();
 
   const handleClickImage = (idx: number) => () => {
     const picture = relatedPictures[idx];
