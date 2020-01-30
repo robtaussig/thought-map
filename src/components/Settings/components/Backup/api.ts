@@ -14,7 +14,7 @@ export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string
       part,
       chunk: ab2str(chunk),
       password,
-      version: 1,
+      version: nextVersion,
     }),
   });
   if (!res.ok) return new Error(res.statusText);
