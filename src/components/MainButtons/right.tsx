@@ -25,7 +25,7 @@ import { thoughts as thoughtActions, backups as backupActions } from '../../acti
 import { jsonDump } from '../Settings/components/data';
 import { CHUNK_LENGTH } from '../Settings/components/Backup/constants';
 import { chunkData } from '../Settings/components/Backup/util';
-import { updateChunk } from '../Settings/components/Backup/api';
+import { updateChunk, getVersion } from '../Settings/components/Backup/api';
 
 interface RightButtonProps {
   classes: any;
@@ -137,7 +137,8 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
         const activeBackup = backups.find(backup => backup.isActive);
         if (activeBackup) {
           const { password, privateKey, backupId, version } = activeBackup;
-          const nextVersion = version + 1;
+          const currentVersion = await getVersion(backupId);
+          const nextVersion = Number(currentVersion?.version ?? version) + 1;
           const data = await jsonDump(db);
           const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
           const chunks = chunkData(data, NUM_CHUNKS);

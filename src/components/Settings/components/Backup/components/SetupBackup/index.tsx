@@ -9,7 +9,7 @@ import { useStyles } from './styles';
 import { SetupStages } from './types';
 import { jsonDump } from '../../../data';
 import { chunkData } from '../../util';
-import { updateChunk } from '../../api';
+import { updateChunk, getVersion } from '../../api';
 import { backups as backupActions } from '../../../../../../actions';
 
 interface SetupBackupProps {
@@ -53,7 +53,8 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
     const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
     const chunks = chunkData(data, NUM_CHUNKS);
     const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
-    const nextVersion = 1;
+    const currentVersion = await getVersion(id);
+    const nextVersion = Number(currentVersion?.version ?? 1);
     try {
       const responses = await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, id, password, nextVersion)))
       if (responses.some(response => response instanceof Error)) {
