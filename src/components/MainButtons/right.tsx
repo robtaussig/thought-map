@@ -20,7 +20,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
 import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
 import { settingSelector } from '../../reducers/settings';
-import { thoughts as thoughtActions } from '../../actions';
+import { backupSelector } from '../../reducers/backups';
+import { thoughts as thoughtActions, backups as backupActions } from '../../actions';
 import { jsonDump } from '../Settings/components/data';
 import { CHUNK_LENGTH } from '../Settings/components/Backup/constants';
 import { chunkData } from '../Settings/components/Backup/util';
@@ -70,6 +71,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const tutorial = useSelector(tutorialSelector);
   const settings = useSelector(settingSelector);
+  const backups = useSelector(backupSelector);
 
   useEffect(() => {
     setHideButton(/(stage|settings|backups)$/.test(history.location.pathname));
@@ -132,18 +134,26 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     const handleDemandBackup = async () => {
       setUpdating(true);
       try {
-        const id = localStorage.getItem('backupId');
-        const password = localStorage.getItem('password');
-        const privateKey = localStorage.getItem('privateKey');
-        const data = await jsonDump(db);
-        const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
-        const chunks = chunkData(data, NUM_CHUNKS);
-        const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
-        await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, id, password)));
-        setUpdated(true);
-        setTimeout(() => {
-          setUpdated(false);
-        }, 2000);
+        const activeBackup = backups.find(backup => backup.isActive);
+        if (activeBackup) {
+          const { password, privateKey, backupId, version } = activeBackup;
+          const nextVersion = version + 1;
+          const data = await jsonDump(db);
+          const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
+          const chunks = chunkData(data, NUM_CHUNKS);
+          const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
+          await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion)));
+          backupActions.editBackup(db, {
+            ...activeBackup,
+            version: nextVersion,
+          });
+          setUpdated(true);
+          setTimeout(() => {
+            setUpdated(false);
+          }, 2000);
+        } else {
+          throw new Error('No active backup');
+        }
       } catch (e) {
         alert(e);
       } finally {

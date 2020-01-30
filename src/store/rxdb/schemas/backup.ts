@@ -5,6 +5,7 @@ export interface Backup {
   backupId: string;
   privateKey: string;
   isActive?: boolean;
+  version?: number;
   password: string;
   created?: number;
   updated?: number;
@@ -12,7 +13,7 @@ export interface Backup {
 
 export default ['backup', {
   "title": "Backup schema",
-  "version": 1,
+  "version": 2,
   "description": "A Backup",
   "type": "object",
   "properties": {
@@ -32,6 +33,9 @@ export default ['backup', {
     "privateKey": {
       "type": "string",
     },
+    "version": {
+      "type": "number",
+    },
     "created": {
       "type": "number",
     },
@@ -47,6 +51,10 @@ export default ['backup', {
   "migrationStrategies": {
     1: (oldBackup: RxDocument<Backup>) => {
       oldBackup.isActive = false;
+      return oldBackup;
+    },
+    2: (oldBackup: RxDocument<Backup>) => {
+      oldBackup.version = 1;
       return oldBackup;
     },
   },

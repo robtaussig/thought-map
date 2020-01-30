@@ -3,7 +3,6 @@ import { useStyles } from './styles';
 import Nav from './components/Nav';
 import Upload from './components/Upload';
 import Retrieve from './components/Retrieve';
-import Update from './components/Update';
 import { NavOptions } from './types';
 
 interface BackupProps {
@@ -24,7 +23,6 @@ export const Backup: FC<BackupProps> = ({ toggleLock }) => {
       />
       {currentOption === NavOptions.Upload && <Upload rootRef={rootRef} toggleLock={toggleLock} classes={classes}/>}
       {currentOption === NavOptions.Retrieve && <Retrieve rootRef={rootRef} toggleLock={toggleLock} classes={classes}/>}
-      {currentOption === NavOptions.Update && <Update rootRef={rootRef} toggleLock={toggleLock} classes={classes}/>}
     </div>
   );
 };

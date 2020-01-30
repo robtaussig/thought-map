@@ -41,9 +41,10 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef, toggleLock }) => {
     updateText('Encrypting Data...');
     const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, key)));
     setCopied(false);
+    const nextVersion = 1;
     try {
       updateText('Uploading Data...');
-      const responses = await Promise.all(encryptedChunks.map((chunk, idx) => uploadChunk(chunk, idx, id, password)))
+      const responses = await Promise.all(encryptedChunks.map((chunk, idx) => uploadChunk(chunk, idx, id, password, nextVersion)))
       if (responses.some(response => response instanceof Error)) {
         setError(responses.find(response => response instanceof Error).message);
       } else {
@@ -51,6 +52,7 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef, toggleLock }) => {
           backupId: id,
           password,
           privateKey: key,
+          version: nextVersion,
         });
         setPrivateKey(key);
       }

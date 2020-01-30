@@ -53,8 +53,9 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
     const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
     const chunks = chunkData(data, NUM_CHUNKS);
     const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
+    const nextVersion = 1;
     try {
-      const responses = await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, id, password)))
+      const responses = await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, id, password, nextVersion)))
       if (responses.some(response => response instanceof Error)) {
         stopLoading();
         setError(responses.find(response => response instanceof Error).message);
@@ -63,6 +64,8 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
           backupId: id,
           password,
           privateKey,
+          version: nextVersion,
+          isActive: true,
         });
         stopLoading();
         onClose();

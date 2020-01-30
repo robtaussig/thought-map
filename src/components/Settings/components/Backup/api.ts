@@ -2,7 +2,7 @@ import { API } from './constants';
 import { ab2str } from '../../../../hooks/useCrypto/util';
 import { BackupResponse } from './types';
 
-export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string, password: string = ''): Promise<any | Error> => {
+export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string, password: string = '', nextVersion: number): Promise<any | Error> => {
   const res = await fetch(`${API}/thought-map/api/backup`, {
     method: 'POST',
     headers: {
@@ -14,6 +14,7 @@ export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string
       part,
       chunk: ab2str(chunk),
       password,
+      version: 1,
     }),
   });
   if (!res.ok) return new Error(res.statusText);
@@ -21,7 +22,7 @@ export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string
   return true;
 };
 
-export const updateChunk = async (chunk: ArrayBuffer, part: number, uuid: string, password: string = ''): Promise<any | Error> => {
+export const updateChunk = async (chunk: ArrayBuffer, part: number, uuid: string, password: string = '', nextVersion: number): Promise<any | Error> => {
   const res = await fetch(`${API}/thought-map/api/backup`, {
     method: 'PUT',
     headers: {
@@ -33,6 +34,7 @@ export const updateChunk = async (chunk: ArrayBuffer, part: number, uuid: string
       part,
       chunk: ab2str(chunk),
       password,
+      version: nextVersion,
     }),
   });
   if (!res.ok) return new Error(res.statusText);
@@ -50,3 +52,14 @@ export const fetchBackup = async (uuid: string, password: string = ''): Promise<
 
   return res.json();
 }
+
+export const getVersion = async (uuid: string): Promise<{ version: number }> => {
+  const res = await fetch(`${API}/thought-map/api/latest-version/${uuid}?date=${+new Date()}`, {
+    headers: {
+      'Accept': 'application/json',
+    },
+  });
+
+  if (!res.ok) return { version: null };
+  return res.json();
+};

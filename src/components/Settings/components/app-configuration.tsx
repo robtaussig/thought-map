@@ -6,9 +6,11 @@ import CheckBox from '../../../components/General/CheckBox';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
 import useModal from '../../../hooks/useModal';
+import { useSelector } from 'react-redux';
 import { SettingState } from '../../../types';
 import { settings as settingsActions } from '../../../actions';
 import SetupBackup from '../components/Backup/components/SetupBackup';
+import { backupSelector } from '../../../reducers/backups';
 
 interface AppConfigurationProps {
   classes: any;
@@ -95,6 +97,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
   const [side, setSide] = useState<Side>(Side.TOP);
   const rootRef = useRef(null);
   const db = useLoadedDB();
+  const backups = useSelector(backupSelector);
   const [openModal, closeModal] = useModal();
   const handleClickClose = useCallback(() => {
     setSide(Side.TOP);
@@ -170,8 +173,10 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
       field: 'enableBackupOnDemand',
       value: e.target.checked,
     });
+
+    const hasActiveBackup = Boolean(backups.find(backup => backup.isActive));
     
-    if (e.target.checked) {
+    if (!hasActiveBackup && e.target.checked) {
       openModal(<SetupBackup onClose={closeModal}/>,'Set Up Backup on Demand')
     }
   }, []);
