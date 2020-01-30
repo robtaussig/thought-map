@@ -22,6 +22,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef, toggleLock }) =>
   const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
   const [privateKey, setPrivateKey] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [version, setVersion] = useState<number>(null);
   const [encryptedChunks, setEncryptedChunks] = useState<string[]>(null);
   const [decrypted, setDecrypted] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -38,6 +39,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef, toggleLock }) =>
       if (response instanceof Error) {
         setError(response.message);
       } else {
+        setVersion(response.version);
         setEncryptedChunks(response.chunks);
       }
     } catch (e) {
@@ -59,6 +61,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef, toggleLock }) =>
         backupId: id,
         password,
         privateKey,
+        version,
       });
       setDecrypted(true);
       updateText('Downloading...');
