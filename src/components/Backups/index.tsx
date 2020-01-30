@@ -69,7 +69,7 @@ export const Backups: FC<BackupsProps> = () => {
         const decrypted = await dechunker(response.chunks, privateKey);
         backupActions.editBackup(db, {
           ...backup,
-          version: response.version,
+          version: Number(response.version),
         });
         download(decrypted);
       }
@@ -114,7 +114,7 @@ export const Backups: FC<BackupsProps> = () => {
     const getLatestVersions = async () => {
       const versions: { version: number }[] = await Promise.all(backups.map(backup => getVersion(backup.backupId)));
       setCurrentVersions(backups.reduce((next, { backupId }, idx) => {
-        next[backupId] = versions[idx].version;
+        next[backupId] = Number(versions[idx].version);
         return next;
       }, {} as { [backupId: string]: number }))
     };

@@ -61,7 +61,7 @@ export const Retrieve: FC<RetrieveProps> = ({ classes, rootRef, toggleLock }) =>
         backupId: id,
         password,
         privateKey,
-        version,
+        version: Number(version),
       });
       setDecrypted(true);
       updateText('Downloading...');
