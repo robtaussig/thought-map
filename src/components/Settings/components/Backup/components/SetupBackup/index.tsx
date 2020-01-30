@@ -54,7 +54,7 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
     const chunks = chunkData(data, NUM_CHUNKS);
     const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
     const currentVersion = await getVersion(id);
-    const nextVersion = Number(currentVersion?.version ?? 1);
+    const nextVersion = Number(currentVersion?.version ?? 0) + 1;
     try {
       const responses = await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, id, password, nextVersion)))
       if (responses.some(response => response instanceof Error)) {
