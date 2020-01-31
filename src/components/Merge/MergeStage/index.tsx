@@ -5,9 +5,10 @@ interface MergeStageProps {
   classes: any;
   itemsToAdd: Item[];
   onClick: (index: number) => void;
+  currentItemIndex: number;
 }
 
-export const MergeStage: FC<MergeStageProps> = ({ classes, itemsToAdd, onClick }) => {
+export const MergeStage: FC<MergeStageProps> = ({ classes, itemsToAdd, onClick, currentItemIndex }) => {
 
   return (
     <div className={classes.mergeStage}>

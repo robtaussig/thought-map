@@ -58,8 +58,18 @@ export const Merge: FC = () => {
           onPick={handlePick}
         />
       )}
-      <CompareQueue classes={classes} comparables={comparables} onClick={handleClickCompareQueue} />
-      <MergeStage classes={classes} itemsToAdd={itemsToAdd} onClick={handleClickMergeStage} />
+      <CompareQueue
+        classes={classes}
+        comparables={comparables}
+        currentItemIndex={currentItem.compareIndex}
+        onClick={handleClickCompareQueue}
+      />
+      <MergeStage
+        classes={classes}
+        itemsToAdd={itemsToAdd}
+        currentItemIndex={currentItem.reviewIndex}
+        onClick={handleClickMergeStage}
+      />
     </div>
   );
 };
