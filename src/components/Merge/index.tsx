@@ -34,8 +34,8 @@ export const Merge: FC = () => {
 
   return (
     <div className={classes.root}>
-      {currentItem.reviewIndex !== null && <CurrentReview classes={classes} />}
-      {currentItem.compareIndex !== null && <CurrentCompare classes={classes} />}
+      {currentItem.reviewIndex !== null && <CurrentReview classes={classes} item={itemsToAdd[currentItem.reviewIndex]} />}
+      {currentItem.compareIndex !== null && <CurrentCompare classes={classes} comparable={comparables[currentItem.compareIndex]} />}
       <CompareQueue classes={classes} comparables={comparables} onClick={handleClickCompareQueue} />
       <MergeStage classes={classes} itemsToAdd={itemsToAdd} onClick={handleClickMergeStage} />
     </div>
