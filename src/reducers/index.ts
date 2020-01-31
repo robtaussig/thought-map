@@ -16,6 +16,7 @@ import stage from './stage';
 import tutorial from './tutorial';
 import backups from './backups';
 import customTheme from './customTheme';
+import mergeResults from './mergeResults';
 
 const rootReducer = combineReducers({
   connections,
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   tutorial,
   customTheme,
   backups,
+  mergeResults,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

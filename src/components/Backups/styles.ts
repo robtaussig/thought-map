@@ -23,8 +23,8 @@ export const useStyles = makeStyles((theme: any) => ({
     marginTop: 0,
     display: 'grid',
     gridTemplateAreas: `"backup-id update-status update-status"
-                        "private-key private-key active"
-                        "delete pull push"`,
+                        "private-key delete active"
+                        "merge pull push"`,
     gridTemplateRows: 'max-content max-content max-content',
     gridTemplateColumns: 'repeat(3, minmax(max-content, 1fr))',
     gridRowGap: '10px',
@@ -77,6 +77,9 @@ export const useStyles = makeStyles((theme: any) => ({
     cursor: 'pointer',
     '&.privateKey': {
       gridArea: 'private-key',
+    },
+    '&.merge': {
+      gridArea: 'merge',
     },
     '&.pull': {
       gridArea: 'pull',

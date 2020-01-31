@@ -54,6 +54,10 @@ export const Backups: FC<BackupsProps> = () => {
     openConfirmation('Are you sure you want to delete this backup?', confirm);
   }
 
+  const handleMerge = (backup: Backup) => async () => {
+
+  };
+
   const handlePull = (backup: Backup) => async () => {
     const { backupId, password, privateKey } = backup;
     setUpdating(prev => ({
@@ -155,6 +159,15 @@ export const Backups: FC<BackupsProps> = () => {
               onClick={handleCopyPrivateKey(backup)}
             >
               {justCopied ? 'Copied' : 'Copy private key'}
+            </button>
+            <button
+              className={classNames(classes.button, {
+                merge: true,
+              })}
+              onClick={handleMerge(backup)}
+              disabled={isUpdating || isUpToDate}
+            >
+              Merge
             </button>
             <button
               className={classNames(classes.button, {

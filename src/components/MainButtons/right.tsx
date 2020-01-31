@@ -74,7 +74,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const backups = useSelector(backupSelector);
 
   useEffect(() => {
-    setHideButton(/(stage|settings|backups)$/.test(history.location.pathname));
+    setHideButton(/(stage|settings|backups|merge)$/.test(history.location.pathname));
 
     return () => dispatch(toggle(false));
   }, [history.location.pathname])

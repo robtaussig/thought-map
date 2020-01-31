@@ -11,6 +11,7 @@ import Home from './components/Home';
 import Backups from './components/Backups';
 import Settings from './components/Settings';
 import Thought from './components/Thought';
+import Merge from './components/Merge';
 import MiddleButton from './components/MainButtons/middle';
 import RightButton from './components/MainButtons/right';
 import LeftButton from './components/MainButtons/left';
@@ -117,6 +118,9 @@ const App: FC<AppProps> = ({ classes, history }) => {
               </Route>
               <Route path={'/backups'}>
                 {dbReadyState && <Backups/>}
+              </Route>
+              <Route path={'/merge'}>
+                {dbReadyState && <Merge/>}
               </Route>
             </Switch> 
           </Div100vh>
