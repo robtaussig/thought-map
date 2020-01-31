@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useStyles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { mergeResultsSelector } from '../../reducers/mergeResults';
+import { mergeResultsSelector, removeItem, resolveComparable } from '../../reducers/mergeResults';
 import { thoughtSelector } from '../../reducers/thoughts';
 import CurrentCompare from './CurrentCompare';
 import CompareQueue from './CompareQueue';
@@ -11,6 +11,7 @@ import { CurrentItem, Item } from './types';
 
 export const Merge: FC = () => {
   const classes = useStyles({});
+  const dispatch = useDispatch();
   const { itemsToAdd, comparables } = useSelector(mergeResultsSelector);
   const thoughts = useSelector(thoughtSelector);
   const [currentItem, setCurrentItem] = useState<CurrentItem>({
@@ -34,10 +35,12 @@ export const Merge: FC = () => {
 
   const handleRemoveReview = () => {
     console.log('remove');
+    dispatch(removeItem(currentItem.reviewIndex));
   };
 
   const handlePick = (item: Item) => {
     console.log(item);
+    dispatch(resolveComparable({ comparable: comparables[currentItem.compareIndex], item }));
   };
 
   return (
