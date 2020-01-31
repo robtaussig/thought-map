@@ -7,7 +7,7 @@ import CurrentCompare from './CurrentCompare';
 import CompareQueue from './CompareQueue';
 import CurrentReview from './CurrentReview';
 import MergeStage from './MergeStage';
-import { CurrentItem } from './types';
+import { CurrentItem, Item } from './types';
 
 export const Merge: FC = () => {
   const classes = useStyles({});
@@ -32,10 +32,18 @@ export const Merge: FC = () => {
     });
   };
 
+  const handleRemoveReview = () => {
+    console.log('remove');
+  };
+
+  const handlePick = (item: Item) => {
+    console.log(item);
+  };
+
   return (
     <div className={classes.root}>
-      {currentItem.reviewIndex !== null && <CurrentReview classes={classes} item={itemsToAdd[currentItem.reviewIndex]} />}
-      {currentItem.compareIndex !== null && <CurrentCompare classes={classes} comparable={comparables[currentItem.compareIndex]} />}
+      {currentItem.reviewIndex !== null && <CurrentReview classes={classes} item={itemsToAdd[currentItem.reviewIndex]} onRemove={handleRemoveReview} />}
+      {currentItem.compareIndex !== null && <CurrentCompare classes={classes} comparable={comparables[currentItem.compareIndex]} onPick={handlePick} />}
       <CompareQueue classes={classes} comparables={comparables} onClick={handleClickCompareQueue} />
       <MergeStage classes={classes} itemsToAdd={itemsToAdd} onClick={handleClickMergeStage} />
     </div>
