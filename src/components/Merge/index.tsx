@@ -55,7 +55,7 @@ export const Merge: FC = () => {
       )}
       {currentItem.compareIndex !== null && (
         <CurrentCompare
-          classes={classes}
+          rootClassName={classes.currentCompare}
           thoughts={thoughts}
           comparable={comparables[currentItem.compareIndex]}
           onPick={handlePick}

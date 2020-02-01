@@ -13,6 +13,7 @@ import useApp from '../../../../hooks/useApp';
 import { useModal } from '../../../../hooks/useModal';
 import Tooltip from '../../../General/Tooltip';
 import { settingSelector } from '../../../../reducers/settings';
+import { setMergeResults } from '../../../../reducers/mergeResults';
 import { settings as settingActions } from '../../../../actions';
 import {
   DataProps,
@@ -31,6 +32,8 @@ import {
   CREATE_BACKUP_TOOLTIP_TEXT,
 } from './constants';
 import { runDiagnosis } from './util';
+import { merge } from '../../../Merge/util';
+import { Dump } from '../../../Merge/types';
 
 export const jsonDump = async (db: RxDatabase): Promise<string> => {
   const json = await db.dump();
@@ -102,17 +105,28 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
       fr.onload = e => {
         const json = JSON.parse((e.target as any).result);
 
+        // const importJSON = async () => {
+        //   (window as any).blockDBSubscriptions = true;
+        //   if (settings.disableBackupOnImport !== true) {
+        //     await handleClickExportDataJSON();
+        //   }
+        //   setLoading();
+        //   dispatch({ type: 'RESET' });
+        //   await db.remove();
+        //   const newDb = await initialize();
+        //   await newDb.importDump(json);
+        //   location.href = '/';
+        // };
+
         const importJSON = async () => {
-          (window as any).blockDBSubscriptions = true;
-          if (settings.disableBackupOnImport !== true) {
-            await handleClickExportDataJSON();
-          }
-          setLoading();
-          dispatch({ type: 'RESET' });
-          await db.remove();
-          const newDb = await initialize();
-          await newDb.importDump(json);
-          location.href = '/';
+          const dump: Dump = await db.dump();
+          const { itemsToAdd, comparables } = merge(dump, json);
+
+          dispatch(setMergeResults({
+            itemsToAdd, comparables
+          }));
+
+          history.push('/merge');
         };
 
         importJSON().catch(() => location.href = '/');

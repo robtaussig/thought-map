@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { Comparable } from '../../types';
 import classNames from 'classnames';
+import { generateFieldsToPick } from '../../CurrentCompare/util';
 
 interface CompareItemProps {
   classes: any;
@@ -13,12 +14,7 @@ interface CompareItemProps {
 export const CompareItem: FC<CompareItemProps> = ({ classes, rootClassName, item, onClick, selected }) => {
   const [left, right] = item;
   const diffFields = useMemo(() => {
-    const diffs: string[] = [];
-    Object.entries(left.item).forEach(([field, value]) => {
-      if (field !== 'updated' && right.item[field] !== value) {
-        diffs.push(field);
-      }
-    });
+    const diffs: string[] = generateFieldsToPick(left.item, right.item);    
     return diffs.join(', ');
   },[left, right]);
 
