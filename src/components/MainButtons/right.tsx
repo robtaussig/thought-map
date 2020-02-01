@@ -21,6 +21,7 @@ import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayTh
 import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
 import { settingSelector } from '../../reducers/settings';
 import { backupSelector } from '../../reducers/backups';
+import { mergeResultsSelector } from '../../reducers/mergeResults';
 import { thoughts as thoughtActions, backups as backupActions } from '../../actions';
 import { jsonDump } from '../Settings/components/Data';
 import { CHUNK_LENGTH } from '../Settings/components/Backup/constants';
@@ -56,6 +57,12 @@ const styles = (theme: any): StyleRules => ({
       border: `2px solid limegreen`,
       backgroundColor: 'limegreen',
     },
+    '&#merge': {
+      '&:disabled': {
+        border: `2px solid gray`,
+        backgroundColor: 'gray',
+      },
+    },
   }),
 });
 
@@ -72,9 +79,10 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const tutorial = useSelector(tutorialSelector);
   const settings = useSelector(settingSelector);
   const backups = useSelector(backupSelector);
+  const { comparables } = useSelector(mergeResultsSelector);
 
   useEffect(() => {
-    setHideButton(/(stage|settings|backups|merge)$/.test(history.location.pathname));
+    setHideButton(/(stage|settings|backups)$/.test(history.location.pathname));
 
     return () => dispatch(toggle(false));
   }, [history.location.pathname])
@@ -162,6 +170,10 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       }
     };
 
+    const handleClickMerge = () => {
+      console.log('merging');
+    };
+
     if (updated) return [Check, 'Updated', null, 'updated', null];
     if (updating) return [Refresh, 'Updating', null, 'updating-button', null];
 
@@ -173,12 +185,18 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       } else {
         return [Link, 'History', handleClickViewConnections, 'has-secondary', handleClickViewHistory, History];
       }
+    } else if (/merge/.test(history.location.pathname)) {
+      if (comparables.length === 0) {
+        return [Check, 'Merge', handleClickMerge, 'merge', null, null];
+      } else {
+        return [Check, 'Merge', null, 'merge', null, null];
+      }
     } else {
       return settings.enableBackupOnDemand ?
         [Add, 'Create Thought', handleAddThought, 'thought-button', handleDemandBackup, CloudUpload] :
         [Add, 'Create Thought', handleAddThought, 'thought-button', null, null];
     }
-  }, [history.location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating, updated]);
+  }, [history.location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating, updated, comparables]);
 
   if (hideButton) return null;
 
