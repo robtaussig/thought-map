@@ -62,13 +62,13 @@ export const Merge: FC = () => {
         />
       )}
       <CompareQueue
-        classes={classes}
+        rootClassName={classes.compareQueue}
         comparables={comparables}
         currentItemIndex={currentItem.compareIndex}
         onClick={handleClickCompareQueue}
       />
       <MergeStage
-        classes={classes}
+        rootClassName={classes.mergeStage}
         itemsToAdd={itemsToAdd}
         currentItemIndex={currentItem.reviewIndex}
         onClick={handleClickMergeStage}

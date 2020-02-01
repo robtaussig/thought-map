@@ -6,6 +6,7 @@ export interface CurrentItem {
 export interface Doc {
   id: string;
   updated: number;
+  [field: string]: any;
 }
 
 export interface Collection {

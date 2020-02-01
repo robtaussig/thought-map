@@ -1,4 +1,3 @@
-import { RxDatabase } from 'rxdb';
 import {
   Doc,
   Dump,
@@ -10,9 +9,7 @@ import {
   MergeResults,
 } from './types';
 
-export const merge = async (db: RxDatabase, right: Dump): Promise<MergeResults> => {
-  const left: Dump = await db.dump();
-
+export const merge = (left: Dump, right: Dump): MergeResults => {
   const leftMap: DiffMap = {};
   const rightMap: DiffMap = {};
   const diffPairs: DiffPair[] = [];
@@ -62,19 +59,14 @@ export const merge = async (db: RxDatabase, right: Dump): Promise<MergeResults> 
       });
     });
   });
-  
+
   diffPairs.forEach(diffPair => {
     if (!diffPair.left) {
       itemsToAdd.push({
         collectionName: diffPair.collectionName,
         item: diffPair.right,
       });
-    } else if (!diffPair.right) {
-      itemsToAdd.push({
-        collectionName: diffPair.collectionName,
-        item: diffPair.left,
-      });
-    } else {
+    } else if (diffPair.right) {
       comparables.push([
         {
           collectionName: diffPair.collectionName,
