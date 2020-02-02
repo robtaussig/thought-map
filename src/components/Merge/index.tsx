@@ -41,6 +41,10 @@ export const Merge: FC = () => {
     dispatch(resolveComparable({ comparableIndex: currentItem.compareIndex, item }));
   };
 
+  const handleMerge = () => {
+    console.log('merging');
+  };
+
   return (
     <div className={classes.root}>
       {itemsToAdd[currentItem.reviewIndex] && (
@@ -58,6 +62,11 @@ export const Merge: FC = () => {
           comparable={comparables[currentItem.compareIndex]}
           onPick={handlePick}
         />
+      )}
+      {currentItem.compareIndex !== null && !comparables[currentItem.compareIndex] && (
+        <button className={classes.readyToMergeButton} onClick={handleMerge}>
+          Ready to merge!
+        </button>
       )}
       <CompareQueue
         rootClassName={classes.compareQueue}

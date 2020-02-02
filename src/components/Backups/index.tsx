@@ -1,18 +1,22 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useStyles } from './styles';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { backupSelector } from '../../reducers/backups';
 import { Backup } from '../../store/rxdb/schemas/backup';
 import { backups as backupActions } from '../../actions';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../hooks/useDB';
 import useCrypto from '../../hooks/useCrypto';
+import useApp from '../../hooks/useApp';
 import { getVersion } from '../Settings/components/Backup/api';
 import { openConfirmation } from '../../lib/util';
 import { jsonDump, download } from '../Settings/components/Data';
 import { CHUNK_LENGTH } from '../Settings/components/Backup/constants';
 import { chunkData, buildDechunker } from '../Settings/components/Backup/util';
 import { updateChunk, fetchBackup } from '../Settings/components/Backup/api';
+import { Dump } from '../Merge/types';
+import { merge } from '../Merge/util';
+import { setMergeResults } from '../../reducers/mergeResults';
 
 interface BackupsProps {
   
@@ -20,6 +24,8 @@ interface BackupsProps {
 
 export const Backups: FC<BackupsProps> = () => {
   const { db } = useLoadedDB();
+  const dispatch = useDispatch();
+  const { history } = useApp();
   const classes = useStyles({});
   const { encrypt, decrypt } = useCrypto();
   const backups = useSelector(backupSelector);
@@ -55,7 +61,42 @@ export const Backups: FC<BackupsProps> = () => {
   }
 
   const handleMerge = (backup: Backup) => async () => {
+    const { backupId, password, privateKey } = backup;
+    setUpdating(prev => ({
+      ...prev,
+      [backup.backupId]: true,
+    }));
 
+    try {
+      const response = await fetchBackup(backupId, password);
+      if (response instanceof Error) {
+        setUpdating(prev => ({
+          ...prev,
+          [backup.backupId]: false,
+        }));
+        alert(response);
+      } else {
+        const dechunker = buildDechunker(decrypt);
+        const decrypted = await dechunker(response.chunks, privateKey);
+
+        const decoded = decodeURIComponent(decrypted).slice('data:application/json;charset=utf-8,'.length);
+        const parsed = JSON.parse(decoded);
+        const dump: Dump = await db.dump();
+        const { itemsToAdd, comparables } = merge(dump, parsed);
+
+        dispatch(setMergeResults({
+          itemsToAdd, comparables
+        }));
+
+        history.push('/merge');
+      }
+    } catch(e) {
+      setUpdating(prev => ({
+        ...prev,
+        [backup.backupId]: false,
+      }));
+      alert(e);
+    }
   };
 
   const handlePull = (backup: Backup) => async () => {

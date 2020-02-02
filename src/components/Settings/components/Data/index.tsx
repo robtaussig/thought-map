@@ -32,8 +32,6 @@ import {
   CREATE_BACKUP_TOOLTIP_TEXT,
 } from './constants';
 import { runDiagnosis } from './util';
-import { merge } from '../../../Merge/util';
-import { Dump } from '../../../Merge/types';
 
 export const jsonDump = async (db: RxDatabase): Promise<string> => {
   const json = await db.dump();
@@ -105,28 +103,17 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
       fr.onload = e => {
         const json = JSON.parse((e.target as any).result);
 
-        // const importJSON = async () => {
-        //   (window as any).blockDBSubscriptions = true;
-        //   if (settings.disableBackupOnImport !== true) {
-        //     await handleClickExportDataJSON();
-        //   }
-        //   setLoading();
-        //   dispatch({ type: 'RESET' });
-        //   await db.remove();
-        //   const newDb = await initialize();
-        //   await newDb.importDump(json);
-        //   location.href = '/';
-        // };
-
         const importJSON = async () => {
-          const dump: Dump = await db.dump();
-          const { itemsToAdd, comparables } = merge(dump, json);
-
-          dispatch(setMergeResults({
-            itemsToAdd, comparables
-          }));
-
-          history.push('/merge');
+          (window as any).blockDBSubscriptions = true;
+          if (settings.disableBackupOnImport !== true) {
+            await handleClickExportDataJSON();
+          }
+          setLoading();
+          dispatch({ type: 'RESET' });
+          await db.remove();
+          const newDb = await initialize();
+          await newDb.importDump(json);
+          location.href = '/';
         };
 
         importJSON().catch(() => location.href = '/');

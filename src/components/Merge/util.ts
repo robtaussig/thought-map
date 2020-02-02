@@ -8,6 +8,7 @@ import {
   Comparable,
   MergeResults,
 } from './types';
+import { COLLECTIONS_TO_IGNORE } from './CurrentCompare/constants';
 
 export const merge = (left: Dump, right: Dump): MergeResults => {
   const leftMap: DiffMap = {};
@@ -18,7 +19,7 @@ export const merge = (left: Dump, right: Dump): MergeResults => {
   const itemsToAdd: Item[] = [];
   const comparables: Comparable[] = [];
   
-  left.collections.forEach(collection => {
+  left.collections.filter(({ name }) => !COLLECTIONS_TO_IGNORE.includes(name)).forEach(collection => {
     leftVisited[collection.name] = new Set<string>();
     leftMap[collection.name] = {};
     collection.docs.forEach(doc => {
@@ -28,7 +29,7 @@ export const merge = (left: Dump, right: Dump): MergeResults => {
     });
   });
 
-  right.collections.forEach(collection => {
+  right.collections.filter(({ name }) => !COLLECTIONS_TO_IGNORE.includes(name)).forEach(collection => {
     rightMap[collection.name] = {};
     collection.docs.forEach(doc => {
       if (leftVisited[collection.name].has(doc.id)) {
