@@ -34,13 +34,11 @@ export const Merge: FC = () => {
   };
 
   const handleRemoveReview = () => {
-    console.log('remove');
     dispatch(removeItem(currentItem.reviewIndex));
   };
 
   const handlePick = (item: Item) => {
-    console.log(item);
-    dispatch(resolveComparable({ comparable: comparables[currentItem.compareIndex], item }));
+    dispatch(resolveComparable({ comparableIndex: currentItem.compareIndex, item }));
   };
 
   return (

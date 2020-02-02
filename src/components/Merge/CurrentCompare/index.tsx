@@ -1,13 +1,16 @@
-import React, { FC, useReducer } from 'react';
+import React, { FC, useReducer, useMemo, useCallback, useEffect } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Comparable, Item } from '../types';
-import { compareReducer, generateInitialState } from './state';
+import { compareReducer, generateInitialState, ActionTypes } from './state';
 import Fields from './Fields';
 import Side from './Side';
-import Merged from './Merged';
+import Custom from './Custom';
 import ParentThought from './ParentThought';
+import FieldHeaders from './FieldHeaders';
 import classNames from 'classnames';
 import { useStyles } from './styles';
+import { generateFieldsToPick } from './util';
+import { FIELDS_TO_HIDE } from './constants';
 
 interface CurrentCompareProps {
   rootClassName: string;
@@ -17,15 +20,103 @@ interface CurrentCompareProps {
 }
 
 export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, comparable, onPick, thoughts }) => {
-  const classes = useStyles({});
   const [state, dispatch] = useReducer(compareReducer, generateInitialState(comparable));
+  const [left, right] = comparable;
+  
+  const [mutualFields, fieldsToPick] = useMemo(() => {
+    const showableFieldsFilter = (field: string) => !FIELDS_TO_HIDE.includes(field);
+    const hasValueFilter = (field: string) => {
+      return ![undefined, '', null].includes(left.item[field]) ||
+        ![undefined, '', null].includes(right.item[field]);
+    };
+
+    const toPick = generateFieldsToPick(left.item, right.item)
+      .filter(showableFieldsFilter)
+      .sort();
+    const allFields = Object.keys(left.item)
+      .filter(showableFieldsFilter)
+      .filter(field => !toPick.includes(field))
+      .filter(hasValueFilter)
+      .sort();
+
+    return [allFields, toPick];
+  }, [left, right]);
+
+  const classes = useStyles({
+    fieldCount: mutualFields.length + fieldsToPick.length,
+  });
+
+  const handleClickStage = () => {
+    onPick(state.merged);
+  };
+
+  const handleSelectSide = useCallback((field: string, value: string) => {
+    dispatch({
+      type: ActionTypes.Pick,
+      payload: { field, value },
+    });
+  }, []);
+
+  const handleCustomInput = useCallback((field: string, value: string) => {
+    dispatch({
+      type: ActionTypes.InputCustom,
+      payload: { field, value },
+    });
+  }, []);
+
+  const thoughtToDisplay = useMemo(() => {
+    //TEMP
+    if (true) return thoughts[0];
+  
+    if (left.item.thoughtId) return thoughts.find(({ id }) => id === left.item.thoughtId);
+    if (left.item.from) return thoughts.find(({ id }) => id === left.item.from);
+    if (left.item.to) return thoughts.find(({ id }) => id === left.item.to);
+  }, [thoughts, left, right]);
+
+  useEffect(() => {
+    dispatch({
+      type: ActionTypes.SetState,
+      payload: generateInitialState(comparable),
+    });
+  }, [comparable]);
+
   return (
     <div className={classNames(classes.root, rootClassName)}>
-      <ParentThought classes={classes}/>
-      <Fields classes={classes}/>
-      <Side classes={classes} rootClassName={'left'}/>
-      <Side classes={classes} rootClassName={'right'}/>
-      <Merged classes={classes}/>
+      {thoughtToDisplay && <ParentThought classes={classes} thought={thoughtToDisplay}/>}
+      <FieldHeaders classes={classes} type={left.collectionName}/>
+      <div className={classes.mergeData}>
+        <Fields classes={classes} mutualFields={mutualFields} toPick={fieldsToPick}/>
+        <Side
+          classes={classes}
+          rootClassName={'left'}
+          mutualFields={mutualFields}
+          toPick={fieldsToPick}
+          item={left.item}
+          merged={state.merged}
+          onSelect={handleSelectSide}
+        />
+        <Side
+          classes={classes}
+          rootClassName={'right'}
+          mutualFields={mutualFields}
+          toPick={fieldsToPick}
+          item={right.item}
+          merged={state.merged}
+          onSelect={handleSelectSide}
+        />
+        <Custom classes={classes}
+          onChange={handleCustomInput}
+          customInput={state.customInput}
+          mutualFields={mutualFields}
+          toPick={fieldsToPick}
+        />
+      </div>
+      <button
+        className={classes.stageButton}
+        onClick={handleClickStage}
+      >
+        Stage
+      </button>
     </div>
   );
 };

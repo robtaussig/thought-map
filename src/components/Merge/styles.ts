@@ -65,7 +65,7 @@ export const useCompareQueueStyles = makeStyles((theme: any) => ({
     transition: 'all 0.2s linear',
     boxShadow: '0px 0px 3px 0px black',
     '&.selected': {
-      transform: 'scale(1.1)',
+      transform: 'scaleY(1.1)',
       boxShadow: '0px 0px 6px -1px black',
     },
   }),
@@ -124,7 +124,7 @@ export const useMergeStageStyles = makeStyles((theme: any) => ({
     transition: 'all 0.2s linear',
     boxShadow: '0px 0px 3px 0px black',
     '&.selected': {
-      transform: 'scale(1.1)',
+      transform: 'scaleY(1.1)',
       boxShadow: '0px 0px 6px -1px black',
     },
   }),

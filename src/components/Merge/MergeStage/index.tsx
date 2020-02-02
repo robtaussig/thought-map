@@ -27,7 +27,7 @@ export const MergeStage: FC<MergeStageProps> = ({ rootClassName, itemsToAdd, onC
 
   return (
     <div className={classNames(classes.root, rootClassName)}>
-      <h2 className={classes.title}>To be added</h2>
+      <h2 className={classes.title}>To be added ({itemsToAdd.length})</h2>
       <button
         className={classes.scanLeftButton}
         onClick={() => setScanIndex(prev => prev - 1)}
