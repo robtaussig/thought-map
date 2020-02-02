@@ -43,7 +43,7 @@ export const Merge: FC = () => {
 
   return (
     <div className={classes.root}>
-      {currentItem.reviewIndex !== null && (
+      {itemsToAdd[currentItem.reviewIndex] && (
         <CurrentReview
           classes={classes}
           thoughts={thoughts}
@@ -51,7 +51,7 @@ export const Merge: FC = () => {
           onRemove={handleRemoveReview}
         />
       )}
-      {currentItem.compareIndex !== null && (
+      {comparables[currentItem.compareIndex] && (
         <CurrentCompare
           rootClassName={classes.currentCompare}
           thoughts={thoughts}

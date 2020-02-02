@@ -41,6 +41,15 @@ type Action = {
   payload: InputCustomPayload;
 }
 
+export const INITIAL_STATE: CompareState = {
+  fieldsToPick: [],
+  fieldsPicked: [],
+  customInput: {},
+  left: null,
+  right: null,
+  merged: null,
+};
+
 export const generateInitialState = ([left, right]: Comparable): CompareState => ({
   fieldsToPick: generateFieldsToPick(left.item, right.item),
   fieldsPicked: [],

@@ -64,9 +64,11 @@ export const useStyles = makeStyles((theme: any) => ({
   }),
   mutualField: (params: any) => ({
     gridColumn: 'fields',
+    fontWeight: 600,
   }),
   pickableField: (params: any) => ({
     gridColumn: 'fields',
+    fontWeight: 600,
   }),
   custom: (params: any) => ({
     gridColumn: 'custom',
@@ -127,8 +129,7 @@ export const useStyles = makeStyles((theme: any) => ({
       gridColumn: 'right',
     },
     '&.selected': {
-      backgroundColor: theme.palette.secondary[500],
-      fontWeight: 600,
+      backgroundColor: theme.palette.secondary[600],
     },
   }),
   mutualValue: (params: any) => ({
@@ -142,7 +143,7 @@ export const useStyles = makeStyles((theme: any) => ({
       gridColumn: 'right',
     },
     '&.selected': {
-      color: theme.palette.secondary[300],
+      color: theme.palette.secondary[600],
     },
   }),
   stageButton: (params: any) => ({
@@ -153,8 +154,11 @@ export const useStyles = makeStyles((theme: any) => ({
     padding: '3px 25px',
     borderRadius: 5,
     fontWeight: 600,
-    backgroundColor: theme.palette.primary[500],
+    backgroundColor: theme.palette.primary[600],
     color: 'white',
     cursor: 'pointer',
+    '&:disabled': {
+      backgroundColor: '#ccc',
+    }
   }),
 }));

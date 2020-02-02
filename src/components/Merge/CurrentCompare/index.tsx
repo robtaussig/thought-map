@@ -1,7 +1,7 @@
 import React, { FC, useReducer, useMemo, useCallback, useEffect } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Comparable, Item } from '../types';
-import { compareReducer, generateInitialState, ActionTypes } from './state';
+import { compareReducer, generateInitialState, ActionTypes, INITIAL_STATE } from './state';
 import Fields from './Fields';
 import Side from './Side';
 import Custom from './Custom';
@@ -20,7 +20,7 @@ interface CurrentCompareProps {
 }
 
 export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, comparable, onPick, thoughts }) => {
-  const [state, dispatch] = useReducer(compareReducer, generateInitialState(comparable));
+  const [state, dispatch] = useReducer(compareReducer, INITIAL_STATE);
   const [left, right] = comparable;
   
   const [mutualFields, fieldsToPick] = useMemo(() => {
@@ -50,6 +50,11 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
     onPick(state.merged);
   };
 
+  const isStageDisabled = () => {
+    return fieldsToPick
+      .some(field => [undefined, null, ''].includes(state.merged.item[field]));
+  };
+
   const handleSelectSide = useCallback((field: string, value: string) => {
     dispatch({
       type: ActionTypes.Pick,
@@ -74,10 +79,12 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
   }, [thoughts, left, right]);
 
   useEffect(() => {
-    dispatch({
-      type: ActionTypes.SetState,
-      payload: generateInitialState(comparable),
-    });
+    if (comparable) {
+      dispatch({
+        type: ActionTypes.SetState,
+        payload: generateInitialState(comparable),
+      });
+    }
   }, [comparable]);
 
   return (
@@ -86,7 +93,7 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
       <FieldHeaders classes={classes} type={left.collectionName}/>
       <div className={classes.mergeData}>
         <Fields classes={classes} mutualFields={mutualFields} toPick={fieldsToPick}/>
-        <Side
+        {state.merged && (<Side
           classes={classes}
           rootClassName={'left'}
           mutualFields={mutualFields}
@@ -94,8 +101,8 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
           item={left.item}
           merged={state.merged}
           onSelect={handleSelectSide}
-        />
-        <Side
+        />)}
+        {state.merged && (<Side
           classes={classes}
           rootClassName={'right'}
           mutualFields={mutualFields}
@@ -103,7 +110,7 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
           item={right.item}
           merged={state.merged}
           onSelect={handleSelectSide}
-        />
+        />)}
         <Custom classes={classes}
           onChange={handleCustomInput}
           customInput={state.customInput}
@@ -111,12 +118,13 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
           toPick={fieldsToPick}
         />
       </div>
-      <button
+      {state.merged && (<button
         className={classes.stageButton}
         onClick={handleClickStage}
+        disabled={isStageDisabled()}
       >
         Stage
-      </button>
+      </button>)}
     </div>
   );
 };

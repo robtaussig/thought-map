@@ -59,8 +59,8 @@ const styles = (theme: any): StyleRules => ({
     },
     '&#merge': {
       '&:disabled': {
-        border: `2px solid gray`,
-        backgroundColor: 'gray',
+        border: `2px solid #ccc`,
+        backgroundColor: '#ccc',
       },
     },
   }),

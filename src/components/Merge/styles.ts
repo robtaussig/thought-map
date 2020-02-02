@@ -88,8 +88,7 @@ export const useCompareQueueStyles = makeStyles((theme: any) => ({
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    color: theme.palette.secondary[100],
-    textShadow: '0px 0px 3px black',
+    color: theme.palette.secondary[700],
   }),
 }));
 
