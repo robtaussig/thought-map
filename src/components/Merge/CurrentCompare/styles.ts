@@ -20,8 +20,8 @@ export const useStyles = makeStyles((theme: any) => ({
     overflow: 'auto',
     gridGap: '5px',
     gridTemplateRows: `repeat(${fieldCount}, max-content) [buttons] max-content`,
-    gridTemplateColumns: '[fields] 80px [left] 1fr [right] 1fr [custom] 80px',
-    margin: 10,
+    gridTemplateColumns: '[fields] minmax(80px, max-content) [left] 1fr [right] 1fr [custom] 20px',
+    margin: '0 10px',
     padding: 10,
     backgroundColor: theme.palette.background[200],
     boxShadow: 'inset 0px 0px 4px 0px black',
@@ -31,8 +31,8 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'grid',
     gridTemplateAreas: `"type left right custom"`,
     gridTemplateRows: 'max-content',
-    gridTemplateColumns: '80px 1fr 1fr 80px',
-    margin: '0 20px',
+    gridTemplateColumns: '80px 1fr 1fr 20px',
+    margin: '10px 20px',
     '& > *': {
       fontWeight: 600,
     },
@@ -70,13 +70,39 @@ export const useStyles = makeStyles((theme: any) => ({
     gridColumn: 'fields',
     fontWeight: 600,
   }),
-  custom: (params: any) => ({
+  editCustomField: (params: any) => ({
     gridColumn: 'custom',
+    ...theme.defaults.centered,
+    '& svg': {
+      height: '0.7em',
+      width: '0.7em',
+    },
+  }),
+  customInputForm: (params: any) => ({
+    display: 'grid',
+    gridGap: '10px',
+    gridTemplateAreas: `"label submit"
+                        "label submit"`,
+    gridTemplateRows: 'max-content max-content',
+    gridTemplateColumns: '1fr max-content',
+    '& label': {
+      gridArea: 'label',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    '& button': {
+      gridArea: 'submit',
+      backgroundColor: theme.palette.primary[600],
+      color: 'white',
+      borderRadius: 5,
+      padding: '0 20px',
+    },
   }),
   parentThought: (params: any) => ({
     gridArea: 'thought',
     display: 'grid',
-    margin: 10,
+    margin: '0 10px',
+    marginTop: 10,
     padding: 10,
     backgroundColor: theme.palette.background[200],
     gridTemplateAreas: `"header header"
@@ -117,25 +143,26 @@ export const useStyles = makeStyles((theme: any) => ({
     },
   }),
   pickableValue: (params: any) => ({
-    whiteSpace: 'pre-line',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
+    overflow: 'auto',
     color: 'white',
     backgroundColor: theme.palette.negative[500],
+    padding: '0 5px',
     '&.left': {
       gridColumn: 'left',
     },
     '&.right': {
       gridColumn: 'right',
     },
+    '&.both': {
+      gridColumn: 'left / span 2',
+    },
     '&.selected': {
       backgroundColor: theme.palette.secondary[600],
     },
   }),
   mutualValue: (params: any) => ({
-    whiteSpace: 'pre-line',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
+    overflow: 'auto',
+    padding: '0 5px',
     '&.left': {
       gridColumn: 'left',
     },
@@ -149,7 +176,6 @@ export const useStyles = makeStyles((theme: any) => ({
   stageButton: (params: any) => ({
     gridRow: 'buttons',
     margin: 10,
-    marginTop: 0,
     marginLeft: 'auto',
     padding: '3px 25px',
     borderRadius: 5,

@@ -85,6 +85,13 @@ export const compareReducer = (state: CompareState, action: Action): CompareStat
           ...state.customInput,
           [action.payload.field]: action.payload.value,
         },
+        merged: {
+          ...state.merged,
+          item: {
+            ...state.merged.item,
+            [action.payload.field]: action.payload.value,
+          },
+        }
       };
   
     default:

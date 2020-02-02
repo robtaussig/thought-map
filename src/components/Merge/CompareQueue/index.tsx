@@ -21,13 +21,14 @@ export const CompareQueue: FC<CompareQueueProps> = ({ rootClassName, comparables
   const middleItem = comparables[scanIndex];
   const rightItem = comparables[scanIndex + 1];
 
-  const handleClickItem = useCallback((item) => {
+  const handleClickItem = (increment: number) => (item: Comparable) => {
     onClick(comparables.indexOf(item));
-  }, [comparables]);
+    setScanIndex(prev => Math.max(0, Math.min(prev + increment, comparables.length - 1)))
+  };
 
   return (
     <div className={classNames(classes.root, rootClassName)}>
-      <h2 className={classes.title}>Pick from both</h2>
+      <h2 className={classes.title}>Pick from both ({comparables.length})</h2>
       <button
         className={classes.scanLeftButton}
         onClick={() => setScanIndex(prev => prev - 1)}
@@ -40,7 +41,7 @@ export const CompareQueue: FC<CompareQueueProps> = ({ rootClassName, comparables
           classes={classes}
           rootClassName={classes.leftItem}
           item={leftItem}
-          onClick={handleClickItem}
+          onClick={handleClickItem(-1)}
           selected={comparables.indexOf(leftItem) === currentItemIndex}
         />
       )}
@@ -49,7 +50,7 @@ export const CompareQueue: FC<CompareQueueProps> = ({ rootClassName, comparables
           classes={classes}
           rootClassName={classes.middleItem}
           item={middleItem}
-          onClick={handleClickItem}
+          onClick={handleClickItem(0)}
           selected={comparables.indexOf(middleItem) === currentItemIndex}
         />
       )}
@@ -58,7 +59,7 @@ export const CompareQueue: FC<CompareQueueProps> = ({ rootClassName, comparables
           classes={classes}
           rootClassName={classes.rightItem}
           item={rightItem}
-          onClick={handleClickItem}
+          onClick={handleClickItem(1)}
           selected={comparables.indexOf(rightItem) === currentItemIndex}
         />
       )}

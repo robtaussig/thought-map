@@ -69,10 +69,7 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
     });
   }, []);
 
-  const thoughtToDisplay = useMemo(() => {
-    //TEMP
-    if (true) return thoughts[0];
-  
+  const thoughtToDisplay = useMemo(() => {  
     if (left.item.thoughtId) return thoughts.find(({ id }) => id === left.item.thoughtId);
     if (left.item.from) return thoughts.find(({ id }) => id === left.item.from);
     if (left.item.to) return thoughts.find(({ id }) => id === left.item.to);
@@ -97,6 +94,7 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
           classes={classes}
           rootClassName={'left'}
           mutualFields={mutualFields}
+          customInput={state.customInput}
           toPick={fieldsToPick}
           item={left.item}
           merged={state.merged}
@@ -106,17 +104,19 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
           classes={classes}
           rootClassName={'right'}
           mutualFields={mutualFields}
+          customInput={state.customInput}
           toPick={fieldsToPick}
           item={right.item}
           merged={state.merged}
           onSelect={handleSelectSide}
         />)}
-        <Custom classes={classes}
+        {state.merged && (<Custom classes={classes}
           onChange={handleCustomInput}
           customInput={state.customInput}
           mutualFields={mutualFields}
           toPick={fieldsToPick}
-        />
+          mergedItem={state.merged.item}
+        />)}
       </div>
       {state.merged && (<button
         className={classes.stageButton}
