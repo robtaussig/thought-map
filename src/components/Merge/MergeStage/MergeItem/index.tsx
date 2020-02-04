@@ -4,20 +4,19 @@ import classNames from 'classnames';
 
 interface MergeItemProps {
   classes: any;
-  rootClassName: string;
   item: Item;
-  onClick: (item: Item) => void;
+  onClick: (event: any, item: Item) => void;
   selected: boolean;
 }
 
-export const MergeItem: FC<MergeItemProps> = ({ classes, rootClassName, item, onClick, selected }) => {
+export const MergeItem: FC<MergeItemProps> = ({ classes, item, onClick, selected }) => {
 
   return (
     <div
-      className={classNames(classes.mergeItem, rootClassName, {
+      className={classNames(classes.mergeItem, {
         selected,
       })}
-      onClick={() => onClick(item)}
+      onClick={(e) => onClick(e, item)}
     >
       <span className={classes.mergeItemCollectionName}>
         {item.collectionName}

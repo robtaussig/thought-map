@@ -44,26 +44,29 @@ export const useCompareQueueStyles = makeStyles((theme: any) => ({
     display: 'grid',
     padding: 10,
     gridGap: '10px',
-    gridTemplateAreas: `"title title title title title"
-                        "left-scan left-item middle-item right-item right-scan"`,
+    gridTemplateAreas: `"title "
+                        "items"`,
     gridTemplateRows: 'max-content 1fr',
-    gridTemplateColumns: 'max-content 1fr 1fr 1fr max-content',
+    gridTemplateColumns: '1fr',
   },
   title: {
     gridArea: 'title',
     fontWeight: 600,
     color: theme.palette.background[800],
   },
-  scanLeftButton: {
-    gridArea: 'left-scan',
-  },
-  scanRightButton: {
-    gridArea: 'right-scan',
+  items: {
+    gridArea: 'items',
+    overflow: 'auto',
+    display: 'grid',
+    gridAutoFlow: 'column',
+    gridColumnGap: '20px',
   },
   compareItem: (params: any) => ({
     backgroundColor: theme.palette.background[300],
+    color: theme.palette.secondary[700],
     display: 'grid',
     padding: 5,
+    width: 80,
     gridTemplateAreas: `"collection-name"
                         "diff-fields"`,
     gridTemplateRows: 'max-content 1fr',
@@ -71,30 +74,20 @@ export const useCompareQueueStyles = makeStyles((theme: any) => ({
     transition: 'all 0.2s linear',
     boxShadow: '0px 0px 3px 0px black',
     '&.selected': {
-      transform: 'scaleY(1.1)',
       boxShadow: '0px 0px 6px -1px black',
+      color: theme.palette.background[300],
+      backgroundColor: theme.palette.secondary[700],
     },
-  }),
-  leftItem: (params: any) => ({
-    gridArea: 'left-item',
-  }),
-  middleItem: (params: any) => ({
-    gridArea: 'middle-item',
-  }),
-  rightItem: (params: any) => ({
-    gridArea: 'right-item',
   }),
   compareItemCollectionName: (params: any) => ({
     gridArea: 'collection-name',
-    fontWeight: 600,
-    color: theme.palette.secondary[700],
+    fontWeight: 600,    
   }),
   compareItemDiffFields: (params: any) => ({
     gridArea: 'diff-fields',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    color: theme.palette.secondary[700],
   }),
 }));
 
@@ -103,49 +96,43 @@ export const useMergeStageStyles = makeStyles((theme: any) => ({
     display: 'grid',
     padding: 10,
     gridGap: '10px',
-    gridTemplateAreas: `"title title title title title"
-                        "left-scan left-item middle-item right-item right-scan"`,
+    gridTemplateAreas: `"title"
+                        "items"`,
     gridTemplateRows: 'max-content 1fr',
-    gridTemplateColumns: 'max-content 1fr 1fr 1fr max-content',
+    gridTemplateColumns: '1fr',
   },
   title: {
     gridArea: 'title',
     fontWeight: 600,
     color: theme.palette.background[800],
   },
-  scanLeftButton: {
-    gridArea: 'left-scan',
-  },
-  scanRightButton: {
-    gridArea: 'right-scan',
+  items: {
+    gridArea: 'items',
+    overflow: 'auto',
+    display: 'grid',
+    gridAutoFlow: 'column',
+    gridColumnGap: '20px',
   },
   mergeItem: (params: any) => ({
     backgroundColor: theme.palette.background[300],
+    color: theme.palette.secondary[700],
     display: 'grid',
     padding: 5,
+    width: 80,
     gridTemplateAreas: `"collection-name"`,
     gridTemplateRows: '1fr',
     gridTemplateColumns: '1fr',
     transition: 'all 0.2s linear',
     boxShadow: '0px 0px 3px 0px black',
     '&.selected': {
-      transform: 'scaleY(1.1)',
       boxShadow: '0px 0px 6px -1px black',
+      color: theme.palette.background[300],
+      backgroundColor: theme.palette.secondary[700],
     },
-  }),
-  leftItem: (params: any) => ({
-    gridArea: 'left-item',
-  }),
-  middleItem: (params: any) => ({
-    gridArea: 'middle-item',
-  }),
-  rightItem: (params: any) => ({
-    gridArea: 'right-item',
   }),
   mergeItemCollectionName: (params: any) => ({
     gridArea: 'collection-name',
-    fontWeight: 600,
-    color: theme.palette.secondary[700],
+    fontWeight: 600,    
     ...theme.defaults.centered,
   }),
 }));

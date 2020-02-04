@@ -1,5 +1,6 @@
 import React, { FC, useReducer, useMemo, useCallback, useEffect } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
+import { Plan } from '../../../store/rxdb/schemas/plan';
 import { Comparable, Item } from '../types';
 import { compareReducer, generateInitialState, ActionTypes, INITIAL_STATE } from './state';
 import Fields from './Fields';
@@ -17,12 +18,12 @@ interface CurrentCompareProps {
   comparable: Comparable;
   onPick: (item: Item) => void;
   thoughts: Thought[];
+  plans: Plan[];
 }
 
-export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, comparable, onPick, thoughts }) => {
+export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, comparable, onPick, thoughts, plans }) => {
   const [state, dispatch] = useReducer(compareReducer, INITIAL_STATE);
   const [left, right] = comparable;
-  
   const [mutualFields, fieldsToPick] = useMemo(() => {
     const showableFieldsFilter = (field: string) => !FIELDS_TO_HIDE.includes(field);
     const hasValueFilter = (field: string) => {
@@ -99,6 +100,7 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
           item={left.item}
           merged={state.merged}
           onSelect={handleSelectSide}
+          plans={plans}
         />)}
         {state.merged && (<Side
           classes={classes}
@@ -109,6 +111,7 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
           item={right.item}
           merged={state.merged}
           onSelect={handleSelectSide}
+          plans={plans}
         />)}
         {state.merged && (<Custom classes={classes}
           onChange={handleCustomInput}

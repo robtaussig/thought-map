@@ -8,6 +8,12 @@ export const generateFieldsToPick = (left: Doc, right: Doc): string[] => {
     }
   });
 
+  Object.entries(right).forEach(([field, value]) => {
+    if (left.hasOwnProperty(field) === false) {
+      diffs.push(field);
+    }
+  });
+
   return diffs;
 };
 

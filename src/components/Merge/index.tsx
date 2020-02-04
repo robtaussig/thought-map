@@ -3,6 +3,7 @@ import { useStyles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { mergeResultsSelector, removeItem, resolveComparable } from '../../reducers/mergeResults';
 import { thoughtSelector } from '../../reducers/thoughts';
+import { planSelector } from '../../reducers/plans';
 import CurrentCompare from './CurrentCompare';
 import CompareQueue from './CompareQueue';
 import CurrentReview from './CurrentReview';
@@ -14,6 +15,7 @@ export const Merge: FC = () => {
   const dispatch = useDispatch();
   const { itemsToAdd, comparables } = useSelector(mergeResultsSelector);
   const thoughts = useSelector(thoughtSelector);
+  const plans = useSelector(planSelector);
   const [currentItem, setCurrentItem] = useState<CurrentItem>({
     compareIndex: 0,
     reviewIndex: null,
@@ -61,6 +63,7 @@ export const Merge: FC = () => {
           thoughts={thoughts}
           comparable={comparables[currentItem.compareIndex]}
           onPick={handlePick}
+          plans={plans}
         />
       )}
       {currentItem.compareIndex !== null && !comparables[currentItem.compareIndex] && (
