@@ -61,6 +61,10 @@ export const Backups: FC<BackupsProps> = () => {
   }
 
   const handleMerge = (backup: Backup) => async () => {
+    if (!backup) {
+      alert('No backup')
+      return;
+    }
     const { backupId, password, privateKey } = backup;
     setUpdating(prev => ({
       ...prev,
