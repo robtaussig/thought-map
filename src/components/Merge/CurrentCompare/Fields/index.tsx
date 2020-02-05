@@ -6,6 +6,11 @@ interface FieldsProps {
   toPick: string[];
 }
 
+const parseField = (field: string): string => {
+  if (field === 'planId') return 'plan';
+  return field;
+};
+
 export const Fields: FC<FieldsProps> = ({ classes, mutualFields, toPick }) => {
 
   return (
@@ -13,14 +18,14 @@ export const Fields: FC<FieldsProps> = ({ classes, mutualFields, toPick }) => {
       {toPick.map(field => {
         return (
           <span key={`to-pick-${field}`} className={classes.pickableField}>
-            {field}
+            {parseField(field)}
           </span>
         );
       })}
       {mutualFields.map(field => {
         return (
           <span key={`mutual-field-${field}`} className={classes.mutualField}>
-            {field}
+            {parseField(field)}
           </span>
         );
       })}

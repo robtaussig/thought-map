@@ -1,6 +1,7 @@
 import React, { FC, Fragment } from 'react';
 import { CustomInput } from '../state';
 import { Doc } from '../../types';
+import { Plan } from '../../../../store/rxdb/schemas/plan';
 import Edit from '@material-ui/icons/Edit';
 import Check from '@material-ui/icons/Check';
 import useModal from '../../../../hooks/useModal';
@@ -11,9 +12,18 @@ interface CustomProps {
   onChange: (field: string, value: string) => void;
   customInput: CustomInput;
   mutualFields: string[];
+  plans: Plan[];
   toPick: string[];
   mergedItem: Doc;
 }
+
+const parseValue = (field: string, value: any, plans: Plan[]): string => {
+  if (field === 'planId') {
+    return plans.find(({ id }) => id === value).name;
+  }
+
+  return String(value);
+};
 
 export const Custom: FC<CustomProps> = ({
   classes,
@@ -22,6 +32,7 @@ export const Custom: FC<CustomProps> = ({
   mutualFields,
   toPick,
   mergedItem,
+  plans,
 }) => {
   const [openModal, closeModal] = useModal();
 
@@ -66,7 +77,7 @@ export const Custom: FC<CustomProps> = ({
                   selected: true,
                 })}
               >
-                {mergedItem[field]}
+                {parseValue(field, mergedItem[field], plans)}
               </span>
             )}
           </Fragment>
@@ -81,7 +92,7 @@ export const Custom: FC<CustomProps> = ({
               selected: true,
             })}
           >
-            {mergedItem[field]}
+            {parseValue(field, mergedItem[field], plans)}
           </span>
         );
       })}

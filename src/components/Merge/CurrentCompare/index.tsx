@@ -119,6 +119,7 @@ export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, compara
           mutualFields={mutualFields}
           toPick={fieldsToPick}
           mergedItem={state.merged.item}
+          plans={plans}
         />)}
       </div>
       {state.merged && (<button

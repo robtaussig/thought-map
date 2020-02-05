@@ -14,7 +14,7 @@ export const Plan: FC<PlanProps> = ({
   rootClassName,
   plan,
 }) => {
-  const { id, created, ...restOfPlan } = plan;
+  const { id, updated, created, ...restOfPlan } = plan;
 
   return (
     <Base
