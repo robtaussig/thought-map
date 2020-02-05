@@ -27,7 +27,7 @@ export const Thought: FC<ThoughtProps> = ({
     items.find(({ item }) => item.id === thought.planId)?.item ||
     MOCK_PLAN;
 
-  const { title, id, updated, ...restOfThought } = thought;
+  const { title, id, planId, updated, ...restOfThought } = thought;
 
   return (
     <Base
