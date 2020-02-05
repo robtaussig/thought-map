@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useMemo } from 'react';
 import { useStyles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { mergeResultsSelector, removeItem, resolveComparable } from '../../reducers/mergeResults';
@@ -14,6 +14,8 @@ export const Merge: FC = () => {
   const classes = useStyles({});
   const dispatch = useDispatch();
   const { itemsToAdd, comparables } = useSelector(mergeResultsSelector);
+  const itemsToAddWithoutStatuses = useMemo(() => itemsToAdd
+    .filter(({ collectionName }) => collectionName !== 'status'), [itemsToAdd]);
   const thoughts = useSelector(thoughtSelector);
   const plans = useSelector(planSelector);
   const [currentItem, setCurrentItem] = useState<CurrentItem>({
@@ -49,13 +51,13 @@ export const Merge: FC = () => {
 
   return (
     <div className={classes.root}>
-      {itemsToAdd[currentItem.reviewIndex] && (
+      {itemsToAddWithoutStatuses[currentItem.reviewIndex] && (
         <CurrentReview
           rootClassName={classes.currentReview}
           thoughts={thoughts}
-          item={itemsToAdd[currentItem.reviewIndex]}
+          item={itemsToAddWithoutStatuses[currentItem.reviewIndex]}
           plans={plans}
-          items={itemsToAdd}
+          items={itemsToAddWithoutStatuses}
         />
       )}
       {comparables[currentItem.compareIndex] && (
@@ -80,7 +82,7 @@ export const Merge: FC = () => {
       />
       <MergeStage
         rootClassName={classes.mergeStage}
-        itemsToAdd={itemsToAdd}
+        itemsToAdd={itemsToAddWithoutStatuses}
         currentItemIndex={currentItem.reviewIndex}
         onClick={handleClickMergeStage}
         onRemove={handleRemoveReview}
