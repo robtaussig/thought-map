@@ -69,7 +69,7 @@ export const Merge: FC = () => {
           plans={plans}
         />
       )}
-      {comparables.length === 0 && (
+      {comparables.length === 0 && currentItem.compareIndex === null && (
         <button className={classes.readyToMergeButton} onClick={handleMerge}>
           Ready to merge!
         </button>
