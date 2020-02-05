@@ -51,10 +51,11 @@ export const Merge: FC = () => {
     <div className={classes.root}>
       {itemsToAdd[currentItem.reviewIndex] && (
         <CurrentReview
-          classes={classes}
+          rootClassName={classes.currentReview}
           thoughts={thoughts}
           item={itemsToAdd[currentItem.reviewIndex]}
-          onRemove={handleRemoveReview}
+          plans={plans}
+          items={itemsToAdd}
         />
       )}
       {comparables[currentItem.compareIndex] && (
@@ -82,6 +83,7 @@ export const Merge: FC = () => {
         itemsToAdd={itemsToAdd}
         currentItemIndex={currentItem.reviewIndex}
         onClick={handleClickMergeStage}
+        onRemove={handleRemoveReview}
       />
     </div>
   );

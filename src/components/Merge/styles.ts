@@ -66,7 +66,7 @@ export const useCompareQueueStyles = makeStyles((theme: any) => ({
     color: theme.palette.secondary[700],
     display: 'grid',
     padding: 5,
-    width: 80,
+    width: 100,
     gridTemplateAreas: `"collection-name"
                         "diff-fields"`,
     gridTemplateRows: 'max-content 1fr',
@@ -118,7 +118,7 @@ export const useMergeStageStyles = makeStyles((theme: any) => ({
     color: theme.palette.secondary[700],
     display: 'grid',
     padding: 5,
-    width: 80,
+    width: 100,
     gridTemplateAreas: `"collection-name"`,
     gridTemplateRows: '1fr',
     gridTemplateColumns: '1fr',
@@ -134,5 +134,10 @@ export const useMergeStageStyles = makeStyles((theme: any) => ({
     gridArea: 'collection-name',
     fontWeight: 600,    
     ...theme.defaults.centered,
+  }),
+  removeButton: (params: any) => ({
+    '& svg': {
+      color: 'white',
+    },
   }),
 }));
