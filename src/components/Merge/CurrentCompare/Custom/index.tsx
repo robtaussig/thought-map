@@ -77,7 +77,7 @@ export const Custom: FC<CustomProps> = ({
                   selected: true,
                 })}
               >
-                {parseValue(field, mergedItem[field], plans)}
+                {customInput[field]}
               </span>
             )}
           </Fragment>
