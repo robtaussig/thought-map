@@ -19,7 +19,7 @@ interface CustomProps {
 
 const parseValue = (field: string, value: any, plans: Plan[]): string => {
   if (field === 'planId') {
-    return plans.find(({ id }) => id === value).name;
+    return plans.find(({ id }) => id === value)?.name ?? 'Plan not found';
   }
 
   return String(value);
