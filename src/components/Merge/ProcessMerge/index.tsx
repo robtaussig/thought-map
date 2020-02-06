@@ -32,6 +32,7 @@ export const ProcessMerge: FC<ProcessMergeProps> = () => {
 
   const handleClickMerge = async () => {
     loading('Merging data...');
+    (window as any).blockDBSubscriptions = true;
     await Promise.all(filteredItemsToAdd.map(({ collectionName, item }) => {
       return db[collectionName].atomicUpsert(item);
     }));
@@ -46,6 +47,7 @@ export const ProcessMerge: FC<ProcessMergeProps> = () => {
       });
     }
   
+    (window as any).blockDBSubscriptions = false;
     history.push('/');
   };
 
