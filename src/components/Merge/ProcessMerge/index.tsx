@@ -48,7 +48,7 @@ export const ProcessMerge: FC<ProcessMergeProps> = () => {
     }
   
     (window as any).blockDBSubscriptions = false;
-    history.push('/');
+    location.href = '/';
   };
 
   useEffect(() => {
