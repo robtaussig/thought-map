@@ -1,5 +1,6 @@
 import React, { FC, useState, useMemo } from 'react';
 import { useStyles } from './styles';
+import useApp from '../../hooks/useApp';
 import { useDispatch, useSelector } from 'react-redux';
 import { mergeResultsSelector, removeItem, resolveComparable } from '../../reducers/mergeResults';
 import { thoughtSelector } from '../../reducers/thoughts';
@@ -12,6 +13,7 @@ import { CurrentItem, Item } from './types';
 
 export const Merge: FC = () => {
   const classes = useStyles({});
+  const { history } = useApp();
   const dispatch = useDispatch();
   const { itemsToAdd, comparables } = useSelector(mergeResultsSelector);
   const itemsToAddWithoutStatuses = useMemo(() => itemsToAdd
@@ -46,7 +48,7 @@ export const Merge: FC = () => {
   };
 
   const handleMerge = () => {
-    console.log('merging');
+    history.push('/process-merge');
   };
 
   return (
@@ -69,7 +71,7 @@ export const Merge: FC = () => {
           plans={plans}
         />
       )}
-      {comparables.length === 0 && currentItem.compareIndex === null && (
+      {comparables.length === 0 && currentItem.reviewIndex === null && (
         <button className={classes.readyToMergeButton} onClick={handleMerge}>
           Ready to merge!
         </button>

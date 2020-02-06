@@ -82,7 +82,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const { comparables } = useSelector(mergeResultsSelector);
 
   useEffect(() => {
-    setHideButton(/(stage|settings|backups)$/.test(history.location.pathname));
+    setHideButton(/(stage|settings|backups|process-merge)$/.test(history.location.pathname));
 
     return () => dispatch(toggle(false));
   }, [history.location.pathname])
@@ -171,7 +171,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     };
 
     const handleClickMerge = () => {
-      console.log('merging');
+      history.push('/process-merge');
     };
 
     if (updated) return [Check, 'Updated', null, 'updated', null];

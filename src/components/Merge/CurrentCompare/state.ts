@@ -65,6 +65,10 @@ export const compareReducer = (state: CompareState, action: Action): CompareStat
       return action.payload;
 
     case ActionTypes.Pick:
+      const updated = state.right.item[action.payload.field] === action.payload.value ?
+        state.right.item.updated :
+        state.left.item.updated;
+
       return {
         ...state,
         fieldsToPick: state.fieldsToPick.filter(field => field !== action.payload.field),
@@ -74,6 +78,7 @@ export const compareReducer = (state: CompareState, action: Action): CompareStat
           item: {
             ...state.merged.item,
             [action.payload.field]: action.payload.value,
+            updated,
           },
         }
       };
@@ -90,6 +95,7 @@ export const compareReducer = (state: CompareState, action: Action): CompareStat
           item: {
             ...state.merged.item,
             [action.payload.field]: action.payload.value,
+            updated: +new Date(),
           },
         }
       };
