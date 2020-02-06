@@ -92,7 +92,7 @@ export const Backups: FC<BackupsProps> = () => {
           itemsToAdd, comparables
         }));
 
-        history.push('/merge');
+        history.push(`/merge/${backupId}?v=${response.version}`);
       }
     } catch(e) {
       setUpdating(prev => ({
@@ -116,10 +116,6 @@ export const Backups: FC<BackupsProps> = () => {
       } else {
         const dechunker = buildDechunker(decrypt);
         const decrypted = await dechunker(response.chunks, privateKey);
-        backupActions.editBackup(db, {
-          ...backup,
-          version: Number(response.version),
-        });
         download(decrypted, `${backupId}_${response.version}`);
       }
     } catch(e) {
@@ -152,6 +148,7 @@ export const Backups: FC<BackupsProps> = () => {
       backupActions.editBackup(db, {
         ...backup,
         version: nextVersion,
+        merged: false,
       });
     } catch (e) {
       alert(e);
@@ -193,7 +190,9 @@ export const Backups: FC<BackupsProps> = () => {
             <div className={classNames(classes.updateStatus, {
               updateAvailable: remoteVersion > backup.version,
             })}>
-              <span className={classes.version}>Local: v{backup.version}</span>
+              <span className={classNames(classes.version, {
+                merged: backup.merged,
+              })}>Local: v{backup.version}{backup.merged ? '*' : ''}</span>
               <span className={classes.version}>Remote: v{remoteVersion}</span>
             </div>
             <button

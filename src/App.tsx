@@ -120,10 +120,10 @@ const App: FC<AppProps> = ({ classes, history }) => {
               <Route path={'/backups'}>
                 {dbReadyState && <Backups/>}
               </Route>
-              <Route path={'/merge'}>
+              <Route path={'/merge/:backupId'}>
                 {dbReadyState && <Merge/>}
               </Route>
-              <Route path={'/process-merge'}>
+              <Route path={'/process-merge/:backupId'}>
                 {dbReadyState && <ProcessMerge/>}
               </Route>
             </Switch> 

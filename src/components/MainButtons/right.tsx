@@ -15,7 +15,7 @@ import Check from '@material-ui/icons/Check';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import Delete from '@material-ui/icons/Delete';
-import { getIdFromUrl, homeUrl, openConfirmation } from '../../lib/util';
+import { getIdFromUrl, homeUrl, openConfirmation, getSearchParam } from '../../lib/util';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
 import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
@@ -27,6 +27,7 @@ import { jsonDump } from '../Settings/components/Data';
 import { CHUNK_LENGTH } from '../Settings/components/Backup/constants';
 import { chunkData } from '../Settings/components/Backup/util';
 import { updateChunk, getVersion } from '../Settings/components/Backup/api';
+import { getBackupIdFromHistory } from '../Merge/util';
 
 interface RightButtonProps {
   classes: any;
@@ -82,7 +83,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const { comparables } = useSelector(mergeResultsSelector);
 
   useEffect(() => {
-    setHideButton(/(stage|settings|backups|process-merge)$/.test(history.location.pathname));
+    setHideButton(/^\/(stage|settings|backups|process-merge)/.test(history.location.pathname));
 
     return () => dispatch(toggle(false));
   }, [history.location.pathname])
@@ -155,6 +156,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
           backupActions.editBackup(db, {
             ...activeBackup,
             version: nextVersion,
+            merged: false,
           });
           setUpdated(true);
           setTimeout(() => {
@@ -171,7 +173,9 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     };
 
     const handleClickMerge = () => {
-      history.push('/process-merge');
+      const backupId = getBackupIdFromHistory(history);
+      const version = getSearchParam(history, 'v');
+      history.push(`/process-merge/${backupId}?v=${version}`);
     };
 
     if (updated) return [Check, 'Updated', null, 'updated', null];

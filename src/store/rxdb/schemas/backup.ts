@@ -5,6 +5,7 @@ export interface Backup {
   backupId: string;
   privateKey: string;
   isActive?: boolean;
+  merged?: boolean;
   version?: number;
   password: string;
   created?: number;
@@ -13,7 +14,7 @@ export interface Backup {
 
 export default ['backup', {
   "title": "Backup schema",
-  "version": 2,
+  "version": 3,
   "description": "A Backup",
   "type": "object",
   "properties": {
@@ -23,6 +24,9 @@ export default ['backup', {
     },
     "backupId": {
       "type": "string",
+    },
+    "merged": {
+      "type": "boolean",
     },
     "password": {
       "type": "string",
@@ -55,6 +59,10 @@ export default ['backup', {
     },
     2: (oldBackup: RxDocument<Backup>) => {
       oldBackup.version = 1;
+      return oldBackup;
+    },
+    3: (oldBackup: RxDocument<Backup>) => {
+      oldBackup.merged = false;
       return oldBackup;
     },
   },

@@ -3,12 +3,16 @@ import { useSelector } from 'react-redux';
 import { mergeResultsSelector } from '../../../reducers/mergeResults';
 import { thoughtSelector } from '../../../reducers/thoughts';
 import { connectionSelector } from '../../../reducers/connections';
+import { backupSelector } from '../../../reducers/backups';
 import { processItemsToAdd } from './util';
+import { getBackupIdFromHistory } from '../util';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 import { useLoadedDB } from '../../../hooks/useDB';
+import { backups as backupActions } from '../../../actions';
 import useApp from '../../../hooks/useApp';
 import { Item } from '../types';
 import { useStyles } from './styles';
+import { getSearchParam } from '../../../lib/util';
 
 interface ProcessMergeProps {
   
@@ -24,13 +28,24 @@ export const ProcessMerge: FC<ProcessMergeProps> = () => {
   const { itemsToAdd } = useSelector(mergeResultsSelector);
   const thoughts = useSelector(thoughtSelector);
   const connections = useSelector(connectionSelector);
+  const backups = useSelector(backupSelector);
 
   const handleClickMerge = async () => {
     loading('Merging data...');
     await Promise.all(filteredItemsToAdd.map(({ collectionName, item }) => {
       return db[collectionName].atomicUpsert(item);
     }));
-    stopLoading();
+    const version = getSearchParam(history, 'v');
+    const backupId = getBackupIdFromHistory(history);
+    const backup = backups.find(prev => prev.backupId === backupId);
+    if (backup) {
+      await backupActions.editBackup(db, {
+        ...backup,
+        version: Number(version),
+        merged: true,
+      });
+    }
+  
     history.push('/');
   };
 

@@ -66,7 +66,9 @@ export const useStyles = makeStyles((theme: any) => ({
     },
   }),
   version: (params: any) => ({
-
+    '&.merged': {
+      fontWeight: 600,
+    },
   }),
   button: (params: any) => ({
     border: `1px solid ${theme.palette.secondary[700]}`,

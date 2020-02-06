@@ -10,6 +10,7 @@ import CompareQueue from './CompareQueue';
 import CurrentReview from './CurrentReview';
 import MergeStage from './MergeStage';
 import { CurrentItem, Item } from './types';
+import { getBackupIdFromHistory } from './util';
 
 export const Merge: FC = () => {
   const classes = useStyles({});
@@ -48,7 +49,10 @@ export const Merge: FC = () => {
   };
 
   const handleMerge = () => {
-    history.push('/process-merge');
+    const backupId = getBackupIdFromHistory(history);
+    if (backupId) {
+      history.push(`/process-merge/${backupId}${history.location.search}`);
+    }
   };
 
   return (

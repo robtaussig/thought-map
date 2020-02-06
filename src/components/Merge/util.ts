@@ -86,3 +86,10 @@ export const merge = (left: Dump, right: Dump): MergeResults => {
     comparables,
   };
 };
+
+export const getBackupIdFromHistory = (history: any): string => {
+  const backupIdRegex = /\/(merge|process-merge)\/(.*)/.exec(history.location.pathname);
+  if (backupIdRegex && backupIdRegex[2]) return backupIdRegex[2];
+
+  return null;
+};
