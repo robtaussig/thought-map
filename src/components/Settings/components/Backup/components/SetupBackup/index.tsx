@@ -49,25 +49,27 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading('Encrypting and uploading your data');
+    const currentVersion = await getVersion(id);
+    const nextVersion = Number(currentVersion?.version ?? 0) + 1;
+    const backup = await backupActions.createBackup(db, {
+      backupId: id,
+      password,
+      privateKey,
+      version: nextVersion,
+      isActive: true,
+    });
+
     const data = await jsonDump(db);
     const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
     const chunks = chunkData(data, NUM_CHUNKS);
-    const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
-    const currentVersion = await getVersion(id);
-    const nextVersion = Number(currentVersion?.version ?? 0) + 1;
+    const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));    
     try {
       const responses = await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, id, password, nextVersion)))
       if (responses.some(response => response instanceof Error)) {
         stopLoading();
         setError(responses.find(response => response instanceof Error).message);
+        backupActions.deleteBackup(db, backup.id);
       } else {
-        backupActions.createBackup(db, {
-          backupId: id,
-          password,
-          privateKey,
-          version: nextVersion,
-          isActive: true,
-        });
         stopLoading();
         onClose();
       }

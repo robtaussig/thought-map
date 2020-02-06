@@ -34,26 +34,29 @@ export const Upload: FC<UploadProps> = ({ classes, rootRef, toggleLock }) => {
     e.preventDefault();
     if (!id || privateKey) return;
     setLoading('Exporting Data...');
+    const key = await generatePrivateKey();
+    const nextVersion = 1;
+    const backup = await await backupActions.createBackup(db, {
+      backupId: id,
+      password,
+      privateKey: key,
+      version: nextVersion,
+    });
     const data = await jsonDump(db);
     const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
     const chunks = chunkData(data, NUM_CHUNKS);
-    const key = await generatePrivateKey();
+    
     updateText('Encrypting Data...');
     const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, key)));
     setCopied(false);
-    const nextVersion = 1;
+    
     try {
       updateText('Uploading Data...');
       const responses = await Promise.all(encryptedChunks.map((chunk, idx) => uploadChunk(chunk, idx, id, password, nextVersion)))
       if (responses.some(response => response instanceof Error)) {
         setError(responses.find(response => response instanceof Error).message);
+        backupActions.deleteBackup(db, backup.id);
       } else {
-        backupActions.createBackup(db, {
-          backupId: id,
-          password,
-          privateKey: key,
-          version: nextVersion,
-        });
         setPrivateKey(key);
       }
     } catch (e) {
