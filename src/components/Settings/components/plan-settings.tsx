@@ -40,14 +40,14 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
   const [inputtedName, setInputtedName] = useState<string>(plan.name);
   const [hasChange, setHasChange] = useState<boolean>(false);
   const canAddThoughts: AddOrRemovableThoughts[] = useMemo(() => {
-    return [{ label: 'Add Thought' }].concat(
+    return [{ label: 'Add Planless Thought' }].concat(
                                         thoughts
                                           .filter(thought => !thought.planId)
                                           .map((thought, idx) => ({id: thought.id, label: `${idx + 1} - ${thought.title}`}))
                                       );
   }, [thoughts, plan]);
   const canRemoveThoughts: AddOrRemovableThoughts[] = useMemo(() => {
-    return [{ label: 'Remove Thought' }].concat(thoughts.filter(thought => {
+    return [{ label: 'Remove Thought from Plan' }].concat(thoughts.filter(thought => {
                                 return thought.planId === plan.id;
                               })
                               .map((thought, idx) => ({id: thought.id, label: `${idx + 1} - ${thought.title}`})));
@@ -161,14 +161,14 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
       <Select
         id={'add-thoughts'}
         classes={classes}
-        value={'Add Thought'}
+        value={'Add Planless Thought'}
         options={canAddThoughts.map(({ label }) => label)}
         onChange={handleAddThought}
       />
       <Select
         id={'remove-thoughts'}
         classes={classes}
-        value={'Remove Thought'}
+        value={'Remove Thought from Plan'}
         options={canRemoveThoughts.map(({ label }) => label)}
         onChange={handleRemoveThought}
       />

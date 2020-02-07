@@ -82,10 +82,10 @@ export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
 
   return (
     <div ref={rootRef} className={classes.root}>
-      <ManagePhotos pictures={pictures} />
-      <Theme />
       <AppConfiguration settings={settings} />
       <Data setLoading={setLoading} />
+      <Theme />
+      <ManagePhotos pictures={pictures} />
       <CustomObjects settings={settings} />
       <button className={classes.updateButton} onClick={handleCheckUpdates}>Check for Update (Current: {(window as any).APP_VERSION})</button>
     </div>
