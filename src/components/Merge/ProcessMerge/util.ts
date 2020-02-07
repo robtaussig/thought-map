@@ -43,9 +43,13 @@ export const processItemsToAdd = (
   });
 
   return itemsToAdd
+    .filter(filterThoughtlessItems(
+      thoughtsById,
+      thoughtsToAddById,
+    ))
     .filter(filterRedundantStatuses(
       thoughtsById,
-      thoughtsToAddById
+      thoughtsToAddById,
     ))
     .filter(filterRedundantConnections(
       connectionsByThoughtId,
@@ -101,4 +105,13 @@ const filterRedundantConnections = (
   }
   
   return true;
+};
+
+const filterThoughtlessItems = (
+  thoughtsById: Thoughts,
+  thoughtsToAddById: Thoughts,
+) => ({ collectionName, item }: Item): boolean => {
+  if (!item.thoughtId) return true;
+
+  return Boolean(thoughtsById[item.thoughtId] || thoughtsToAddById[item.thoughtId]);
 };

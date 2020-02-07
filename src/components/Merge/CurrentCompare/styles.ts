@@ -157,7 +157,10 @@ export const useStyles = makeStyles((theme: any) => ({
       gridColumn: 'left / span 2',
     },
     '&.selected': {
-      backgroundColor: theme.palette.secondary[600],
+      backgroundColor: theme.palette.secondary[500],
+      '&:not(.both)': {
+        backgroundColor: theme.palette.secondary[700],
+      },
     },
   }),
   mutualValue: (params: any) => ({
@@ -170,7 +173,7 @@ export const useStyles = makeStyles((theme: any) => ({
       gridColumn: 'right',
     },
     '&.selected': {
-      color: theme.palette.secondary[600],
+      color: theme.palette.secondary[500],
     },
   }),
   stageButton: (params: any) => ({

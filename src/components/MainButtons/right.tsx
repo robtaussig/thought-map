@@ -144,6 +144,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       setUpdating(true);
       try {
         const activeBackup = backups.find(backup => backup.isActive);
+
         if (activeBackup) {
           const { password, privateKey, backupId, version } = activeBackup;
           const currentVersion = await getVersion(backupId);
@@ -200,7 +201,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
         [Add, 'Create Thought', handleAddThought, 'thought-button', handleDemandBackup, CloudUpload] :
         [Add, 'Create Thought', handleAddThought, 'thought-button', null, null];
     }
-  }, [history.location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating, updated, comparables]);
+  }, [history.location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating, updated, comparables, backups]);
 
   if (hideButton) return null;
 
