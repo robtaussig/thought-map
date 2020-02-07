@@ -60,7 +60,7 @@ export const UpdateAvailable: FC<UpdateAvailableProps> = ({ activeBackup, latest
       }
     } catch(e) {
       stopLoading();
-      alert(e);
+      alert(`Unable to decrypt the backup. This is most likely caused by using a different private key than the one used to encrypt the backup`);
     }
   };
 

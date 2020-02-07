@@ -104,7 +104,7 @@ export const Backups: FC<BackupsProps> = () => {
         ...prev,
         [backup.backupId]: false,
       }));
-      alert(e);
+      alert(`Unable to decrypt the backup. This is most likely caused by using a different private key than the one used to encrypt the backup`);
     }
   };
 
@@ -124,7 +124,7 @@ export const Backups: FC<BackupsProps> = () => {
         download(decrypted, `${backupId}_${response.version}`);
       }
     } catch(e) {
-      alert(e);
+      alert(`Unable to decrypt the backup. This is most likely caused by using a different private key than the one used to encrypt the backup`);
     } finally {
       setUpdating(prev => ({
         ...prev,
