@@ -9,13 +9,13 @@ import { Portal } from './hooks/usePortal';
 import store from './store';
 import Themer from './lib/Themer';
 
-(window as any).APP_VERSION = '0.7';
+(window as any).APP_VERSION = '0.8';
 
 ReactDOM.render(
   (
     <BrowserRouter>
       <ReduxProvider store={store}>
-        <Themer>
+        <Themer>          
           <CssBaseline />
           <Portal>
             <App />

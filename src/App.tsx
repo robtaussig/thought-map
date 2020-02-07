@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { styles } from './App.style';
@@ -12,6 +12,7 @@ import Backups from './components/Backups';
 import Settings from './components/Settings';
 import Thought from './components/Thought';
 import Merge from './components/Merge';
+import UpdateAvailable from './components/Merge/UpdateAvailable';
 import ProcessMerge from './components/Merge/ProcessMerge';
 import MiddleButton from './components/MainButtons/middle';
 import RightButton from './components/MainButtons/right';
@@ -21,6 +22,8 @@ import Notifications from './components/Notifications';
 import Connections from './components/Connections';
 import History from './components/History';
 import { ModalProvider } from './hooks/useModal';
+import { ModalContextValue } from './hooks/useModal/types';
+import { getVersion } from './components/Settings/components/Backup/api';
 import Div100vh from 'react-div-100vh';
 import {
   AppProps,
@@ -41,17 +44,38 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const [lastNotification, setLastNotification] = useState<Notification>(null);
   const [DBProvider, dbContext, dbReadyState] = useDB();
   const rootRef = useRef(null);
+  const modalRef = useRef<ModalContextValue>(null);
 
   useEffect(() => {
     if (dbReadyState) {
-      initializeApplication(dbContext.db, dispatch).then(() => {
+      const init = async () => {
+        const backups = await initializeApplication(dbContext.db, dispatch);
         document.body.classList.remove('loader');
-      });
-      subscribeToChanges(dbContext.db, dispatch, setLastNotification);
+        const activeBackup = backups.find(({ isActive }) => Boolean(isActive));
+        if (activeBackup) {
+          const response = await getVersion(activeBackup.backupId);
+          if (response?.version > activeBackup.version) {
+            let modalId = modalRef.current.openModal(
+              <UpdateAvailable
+                activeBackup={activeBackup}
+                latestVersion={response.version}
+                onClose={() => modalRef.current.closeModal(modalId)}
+              />, 'Update Available'
+            );
+          }
+        }
+      };
+
+      const unsubscribe = subscribeToChanges(dbContext.db, dispatch, setLastNotification);
+      
+      init();
+      return () => unsubscribe();
     }
   }, [dbContext.db, dbReadyState]);
 
   const appContext = useMemo(() => ({ history }), []);
+
+  const getModalContext = useCallback(modalContext => modalRef.current = modalContext,[]);
 
   const statusOptions = useMemo(() => {
     return STATUS_OPTIONS.slice(0, STATUS_OPTIONS.length - 1).concat(
@@ -74,7 +98,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
   return (
     <AppContext.Provider value={appContext}>
       <DBProvider value={dbContext}>
-        <ModalProvider>
+        <ModalProvider getContext={getModalContext}>
           <Div100vh id={'app'} ref={rootRef} className={classes.root}>
             <Notifications lastNotification={lastNotification} />
             <LeftButton/>
@@ -128,7 +152,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
               </Route>
             </Switch> 
           </Div100vh>
-        </ModalProvider>  
+        </ModalProvider>
       </DBProvider>
     </AppContext.Provider>
   );

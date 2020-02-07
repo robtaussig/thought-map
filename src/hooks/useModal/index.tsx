@@ -1,7 +1,6 @@
-import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, FC, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, FC, useRef, useEffect } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Close from '@material-ui/icons/Close';
-import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 import uuidv4 from 'uuid/v4';
 import {
@@ -11,11 +10,11 @@ import {
   ModalContextValue,
   ModalState,
 } from './types';
-import { styles } from './styles';
+import { useStyles } from './styles';
 
 interface ModalProps {
   children: any;
-  classes: any;
+  getContext?: (contextValue: ModalContextValue) => void;
 }
 
 const ModalContext = createContext<ModalContextValue>(null);
@@ -23,7 +22,8 @@ const DEFAULT_MODAL: ModalState = { component: null, label: 'Modal', options: {}
 
 const INITIAL_STATE: ModalState[] = [DEFAULT_MODAL];
 
-export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }) => {
+export const ModalProvider: FC<ModalProps> = ({ children, getContext }) => {
+  const classes = useStyles({});
   const [modals, setModals] = useState<ModalState[]>(INITIAL_STATE);
   const modal = useMemo(() => modals[modals.length - 1] || DEFAULT_MODAL, [modals]);
 
@@ -61,6 +61,10 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
     ...(modal.options.style || {})
   };
 
+  useEffect(() => {
+    if (getContext) getContext(contextValue);
+  }, [contextValue, getContext]);
+
   return (
     <ModalContext.Provider value={contextValue}>
       <Fragment>
@@ -79,8 +83,6 @@ export const ModalProviderWithoutStyles: FC<ModalProps> = ({ classes, children }
     </ModalContext.Provider>
   );
 };
-
-export const ModalProvider = withStyles(styles)(ModalProviderWithoutStyles);
 
 export const useModal = (): [OpenModal, CloseModal, ExpandModal] => {
   const modalId = useRef<string>(null);

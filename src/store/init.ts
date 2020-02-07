@@ -31,7 +31,7 @@ export const searcherWorker = wrap<Searchable>(
   new Worker('../workers/search.worker.ts')
 );
 
-export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<any>) => {
+export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<any>): Promise<BackupsType> => {
   const setSettingsAction = (settings: SettingsType) => dispatch(setSettings(settings));
   const setThoughtsAction = (thoughts: ThoughtsType) => dispatch(setThoughts(thoughts));
   const setConnectionsAction = (connections: ConnectionsType) => dispatch(setConnections(connections));
@@ -87,7 +87,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
 
   searcherWorker.buildTree(thoughts, notesById, tagsById);
 
-  return true;
+  return backups;
 };
 
 export default initializeApplication;

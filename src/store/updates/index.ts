@@ -75,34 +75,42 @@ const matchPictureLocationIfEnabled = (db: RxDatabase) => async (picture: Pictur
   }
 };
 
-export const subscribeToChanges = async (
+export const subscribeToChanges = (
   db: RxDatabase,
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => {
-  //@ts-ignore
-  db.thought.$.subscribe(handleThoughtChange(dispatch, setLastNotification));
-  //@ts-ignore
-  db.connection.$.subscribe(handleConnectionChange(dispatch, setLastNotification));
-  //@ts-ignore
-  db.note.$.subscribe(handleNoteChange(dispatch, setLastNotification));
-  //@ts-ignore
-  db.tag.$.subscribe(handleTagChange(dispatch, setLastNotification));
-  //@ts-ignore
-  db.plan.$.subscribe(handlePlanChange(dispatch, setLastNotification));
-  //@ts-ignore
-  db.template.$.subscribe(handleTemplateChange(dispatch, setLastNotification));
-  //@ts-ignore
-  db.picture.$.subscribe(handlePictureChange(dispatch, setLastNotification, matchPictureLocationIfEnabled(db)));
-  // @ts-ignore
-  db.setting.$.subscribe(handleSettingChange(dispatch, setLastNotification));
-  // @ts-ignore
-  db.backup.$.subscribe(handleBackupChange(dispatch, setLastNotification));
-  //@ts-ignore
-  db.status.$.subscribe(handleStatusChange(
-    dispatch,
-    setLastNotification,
-    matchStatusLocationIfEnabled(db),
-    recreateThoughtIfRecurring(db)),
-  );
+): (() => void) => {
+  const subscriptions = [
+    //@ts-ignore
+    db.thought.$.subscribe(handleThoughtChange(dispatch, setLastNotification)),
+    //@ts-ignore
+    db.connection.$.subscribe(handleConnectionChange(dispatch, setLastNotification)),
+    //@ts-ignore
+    db.note.$.subscribe(handleNoteChange(dispatch, setLastNotification)),
+    //@ts-ignore
+    db.tag.$.subscribe(handleTagChange(dispatch, setLastNotification)),
+    //@ts-ignore
+    db.plan.$.subscribe(handlePlanChange(dispatch, setLastNotification)),
+    //@ts-ignore
+    db.template.$.subscribe(handleTemplateChange(dispatch, setLastNotification)),
+    //@ts-ignore
+    db.picture.$.subscribe(handlePictureChange(dispatch, setLastNotification, matchPictureLocationIfEnabled(db))),
+    // @ts-ignore
+    db.setting.$.subscribe(handleSettingChange(dispatch, setLastNotification)),
+    // @ts-ignore
+    db.backup.$.subscribe(handleBackupChange(dispatch, setLastNotification)),
+    //@ts-ignore
+    db.status.$.subscribe(handleStatusChange(
+      dispatch,
+      setLastNotification,
+      matchStatusLocationIfEnabled(db),
+      recreateThoughtIfRecurring(db)),
+    ),
+  ];
+
+  return () => {
+    subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+  };
 };
