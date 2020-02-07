@@ -75,16 +75,12 @@ export const Merge: FC = () => {
           plans={plans}
         />
       )}
-      {comparables.length === 0 && currentItem.reviewIndex === null && (
-        <button className={classes.readyToMergeButton} onClick={handleMerge}>
-          Ready to merge!
-        </button>
-      )}
       <CompareQueue
         rootClassName={classes.compareQueue}
         comparables={comparables}
         currentItemIndex={currentItem.compareIndex}
         onClick={handleClickCompareQueue}
+        onMerge={handleMerge}
       />
       <MergeStage
         rootClassName={classes.mergeStage}

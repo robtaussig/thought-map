@@ -31,12 +31,6 @@ export const useStyles = makeStyles((theme: any) => ({
   mergeStage: (params: any) => ({
     gridArea: 'stage',
   }),
-  readyToMergeButton: (params: any) => ({
-    fontWeight: 600,
-    ...theme.defaults.centered,
-    fontSize: 20,
-    color: theme.palette.primary[700],
-  }),
 }));
 
 export const useCompareQueueStyles = makeStyles((theme: any) => ({
@@ -88,6 +82,12 @@ export const useCompareQueueStyles = makeStyles((theme: any) => ({
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
+  }),
+  readyToMergeButton: (params: any) => ({
+    fontWeight: 600,
+    ...theme.defaults.centered,
+    fontSize: 20,
+    color: theme.palette.primary[700],
   }),
 }));
 
