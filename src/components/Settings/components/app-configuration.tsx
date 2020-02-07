@@ -9,7 +9,7 @@ import useModal from '../../../hooks/useModal';
 import { useSelector } from 'react-redux';
 import { SettingState } from '../../../types';
 import { settings as settingsActions } from '../../../actions';
-import SetupBackup from '../components/Backup/components/SetupBackup';
+import SetupBackup from '../components/SetupBackup';
 import { backupSelector } from '../../../reducers/backups';
 
 interface AppConfigurationProps {

@@ -5,7 +5,8 @@ export interface BackupResponse {
 
 export type Decryptor = (data: ArrayBuffer, key: string) => Promise<string>;
 
-export enum NavOptions {
-  Upload = 'Upload',
-  Retrieve = 'Retrieve',
+export enum SetupStages {
+  Id,
+  Password,
+  PrivateKey,
 }

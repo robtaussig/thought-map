@@ -24,9 +24,9 @@ import { backupSelector } from '../../reducers/backups';
 import { mergeResultsSelector } from '../../reducers/mergeResults';
 import { thoughts as thoughtActions, backups as backupActions } from '../../actions';
 import { jsonDump } from '../Settings/components/Data';
-import { CHUNK_LENGTH } from '../Settings/components/Backup/constants';
-import { chunkData } from '../Settings/components/Backup/util';
-import { updateChunk, getVersion } from '../Settings/components/Backup/api';
+import { CHUNK_LENGTH } from '../Settings/components/SetupBackup/constants';
+import { chunkData } from '../Settings/components/SetupBackup/util';
+import { updateChunk, getVersion } from '../Settings/components/SetupBackup/api';
 import { getBackupIdFromHistory } from '../Merge/util';
 
 interface RightButtonProps {

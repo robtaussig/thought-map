@@ -9,8 +9,8 @@ import useApp from '../../../hooks/useApp';
 import Tooltip from '../../General/Tooltip';
 import { setMergeResults } from '../../../reducers/mergeResults';
 import classNames from 'classnames';
-import { fetchBackup } from '../../Settings/components/Backup/api';
-import { buildDechunker } from '../../Settings/components/Backup/util';
+import { fetchBackup } from '../../Settings/components/SetupBackup/api';
+import { buildDechunker } from '../../Settings/components/SetupBackup/util';
 import { merge } from '../util';
 import { Dump } from '../types';
 

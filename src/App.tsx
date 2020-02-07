@@ -23,7 +23,7 @@ import Connections from './components/Connections';
 import History from './components/History';
 import { ModalProvider } from './hooks/useModal';
 import { ModalContextValue } from './hooks/useModal/types';
-import { getVersion } from './components/Settings/components/Backup/api';
+import { getVersion } from './components/Settings/components/SetupBackup/api';
 import Div100vh from 'react-div-100vh';
 import {
   AppProps,

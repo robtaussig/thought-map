@@ -1,32 +1,29 @@
 import React, { FC, useState, useRef } from 'react';
-import Input from '../../../../../General/Input';
-import TextArea from '../../../../../General/TextArea';
-import useCrypto from '../../../../../../hooks/useCrypto';
-import { CHUNK_LENGTH } from '../../constants';
-import { useLoadedDB } from '../../../../../../hooks/useDB';
-import { useLoadingOverlay } from '../../../../../../hooks/useLoadingOverlay';
+import Input from '../../../General/Input';
+import TextArea from '../../../General/TextArea';
+import useCrypto from '../../../../hooks/useCrypto';
+import { useLoadedDB } from '../../../../hooks/useDB';
 import { useStyles } from './styles';
 import { SetupStages } from './types';
-import { jsonDump } from '../../../Data';
-import { chunkData } from '../../util';
-import { updateChunk, getVersion } from '../../api';
-import { backups as backupActions } from '../../../../../../actions';
+import useApp from '../../../../hooks/useApp';
+import { Backup } from '../../../../store/rxdb/schemas/backup';
+import { backups as backupActions } from '../../../../actions';
 
 interface SetupBackupProps {
   onClose: () => void;
+  backup?: Backup;
 }
 
-export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
+export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
   const classes = useStyles({});
   const rootRef = useRef(null);
+  const { history } = useApp();
   const { db } = useLoadedDB();
   const [stage, setStage] = useState<SetupStages>(SetupStages.Id);
-  const [id, setId] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [privateKey, setPrivateKey] = useState<string>('');
-  const [error, setError] = useState<string>('');
-  const { encrypt, generatePrivateKey } = useCrypto();
-  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
+  const [id, setId] = useState<string>(backup?.backupId ?? '');
+  const [password, setPassword] = useState<string>(backup?.password ?? '');
+  const [privateKey, setPrivateKey] = useState<string>(backup?.privateKey ?? '');
+  const { generatePrivateKey } = useCrypto();
 
   const handleSubmitId = (e: any) => {
     e.preventDefault();
@@ -48,10 +45,9 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setLoading('Encrypting and uploading your data');
-    const currentVersion = await getVersion(id);
-    const nextVersion = Number(currentVersion?.version ?? 0) + 1;
-    const backup = await backupActions.createBackup(db, {
+    
+    const nextVersion = 1;
+    await backupActions.createBackup(db, {
       backupId: id,
       password,
       privateKey,
@@ -59,24 +55,8 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
       isActive: true,
     });
 
-    const data = await jsonDump(db);
-    const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
-    const chunks = chunkData(data, NUM_CHUNKS);
-    const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));    
-    try {
-      const responses = await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, id, password, nextVersion)))
-      if (responses.some(response => response instanceof Error)) {
-        stopLoading();
-        setError(responses.find(response => response instanceof Error).message);
-        backupActions.deleteBackup(db, backup.id);
-      } else {
-        stopLoading();
-        onClose();
-      }
-    } catch (e) {
-      stopLoading();
-      setError(e?.message ?? e);
-    }
+    history.push('/backups');
+    onClose();
   };
 
   return (
@@ -145,9 +125,6 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose }) => {
             </button>
           )}
         </form>
-      )}
-      {error && (
-        <span className={classes.errorMessage}>{error}</span>
       )}
     </div>
   );

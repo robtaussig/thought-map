@@ -3,7 +3,7 @@ import Close from '@material-ui/icons/Close';
 import CircleButton from '../../../../components/General/CircleButton';
 import CheckBox from '../../../../components/General/CheckBox';
 import Diagnosis from '../diagnosis';
-import CreateBackup from '../Backup';
+import SetupBackup from '../SetupBackup';
 import { useDispatch, useSelector } from 'react-redux';
 import { RxDatabase } from 'rxdb';
 import { openConfirmation } from '../../../../lib/util';
@@ -13,7 +13,6 @@ import useApp from '../../../../hooks/useApp';
 import { useModal } from '../../../../hooks/useModal';
 import Tooltip from '../../../General/Tooltip';
 import { settingSelector } from '../../../../reducers/settings';
-import { setMergeResults } from '../../../../reducers/mergeResults';
 import { settings as settingActions } from '../../../../actions';
 import {
   DataProps,
@@ -86,7 +85,7 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
   const handleClickCreateBackup = useCallback(async () => {
     let closeLock = false;
     openModal(
-      <CreateBackup toggleLock={(lock: boolean) => { closeLock = lock }}/>,
+      <SetupBackup onClose={closeModal}/>,
       'Backup',
       { afterClose: () => closeLock }
     );

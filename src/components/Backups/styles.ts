@@ -22,11 +22,11 @@ export const useStyles = makeStyles((theme: any) => ({
     borderRadius: '3px',
     marginTop: 0,
     display: 'grid',
-    gridTemplateAreas: `"backup-id update-status update-status"
-                        "private-key delete active"
-                        "merge pull push"`,
+    gridTemplateAreas: `"backup-id update-status update-status edit"
+                        "private-key delete active active"
+                        "merge pull push push"`,
     gridTemplateRows: 'max-content max-content max-content',
-    gridTemplateColumns: 'repeat(3, minmax(max-content, 1fr))',
+    gridTemplateColumns: 'repeat(3, minmax(max-content, 1fr)) 30px',
     gridRowGap: '10px',
     gridColumnGap: '5px',
     '&.isUpdating': {
@@ -53,6 +53,17 @@ export const useStyles = makeStyles((theme: any) => ({
     gridArea: 'backup-id',
     color: theme.palette.primary[600],
     fontWeight: 600,
+    ...theme.defaults.centered,
+    marginRight: 'auto',
+  }),
+  editButton: (params: any) => ({
+    gridArea: 'edit',
+    color: theme.palette.negative[500],
+    ...theme.defaults.centered,
+    '& svg': {
+      height: '0.75em',
+      width: '0.75em',
+    },
   }),
   updateStatus: (params: any) => ({
     gridArea: 'update-status',        
@@ -66,6 +77,7 @@ export const useStyles = makeStyles((theme: any) => ({
     },
   }),
   version: (params: any) => ({
+    ...theme.defaults.centered,
     '&.merged': {
       fontWeight: 600,
     },
