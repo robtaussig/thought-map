@@ -26,7 +26,7 @@ import { ModalProvider } from './hooks/useModal';
 import { ModalContextValue } from './hooks/useModal/types';
 import { getVersion } from './components/Settings/components/SetupBackup/api';
 import Div100vh from 'react-div-100vh';
-import { useSocketIO } from 'react-use-websocket';
+import { useSocketIO, ReadyState } from 'react-use-websocket';
 import { Options } from 'react-use-websocket/src/lib/use-websocket';
 import {
   AppProps,
@@ -64,7 +64,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
   useEffect(() => {
     const payloadToSocketIOMessage = (payload: [string, any?]) => `42${JSON.stringify(payload)}`;
 
-    if (readyState === 1) {
+    if (readyState === ReadyState.OPEN) {
       sendMessage(payloadToSocketIOMessage(['subscribe-backup']));
     }
   }, [readyState]);
