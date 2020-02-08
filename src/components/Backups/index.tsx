@@ -3,9 +3,9 @@ import { useStyles } from './styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { backupSelector } from '../../reducers/backups';
 import { Backup } from '../../store/rxdb/schemas/backup';
-import Edit from '@material-ui/icons/Edit';
 import { backups as backupActions } from '../../actions';
-import classNames from 'classnames';
+import BackupItem from './Backup';
+import Add from '@material-ui/icons/Add';
 import { useLoadedDB } from '../../hooks/useDB';
 import useCrypto from '../../hooks/useCrypto';
 import useApp from '../../hooks/useApp';
@@ -21,11 +21,7 @@ import SetupBackup from '../Settings/components/SetupBackup';
 import { merge } from '../Merge/util';
 import { setMergeResults } from '../../reducers/mergeResults';
 
-interface BackupsProps {
-  
-}
-
-export const Backups: FC<BackupsProps> = () => {
+export const Backups: FC = () => {
   const { db } = useLoadedDB();
   const dispatch = useDispatch();
   const { history } = useApp();
@@ -219,105 +215,42 @@ export const Backups: FC<BackupsProps> = () => {
     }
   }, [backups]);
 
-  if (backups.length === 0) return (
-    <div className={classes.root}>
-      <button
-        className={classes.setupBackupTargetButton}
-        onClick={handleClickEdit()}
-      >
-        Setup Backup Target
-      </button>
-    </div>
-  );
-
   return (
     <div className={classes.root}>
       <h1 className={classes.header}>Backups</h1>
-      {backups.map((backup, idx) => {
-        const justCopied = lastCopied === backup.backupId;
-        const remoteVersion = currentVersions[backup.backupId] ?? '...';
-        const isUpdating = Boolean(updating[backup.backupId]);
-        const isUpToDate = remoteVersion === backup.version;
+      <ul className={classes.backupsList}>
+        {backups.map((backup, idx) => {
+          const justCopied = lastCopied === backup.backupId;
+          const remoteVersion = currentVersions[backup.backupId] ?? '...';
+          const isUpdating = Boolean(updating[backup.backupId]);
+          const isUpToDate = remoteVersion === backup.version;
 
-        return (
-          <div key={backup.backupId} className={classNames(classes.backup, {
-            isUpdating,
-          })}>
-            <h3 className={classes.backupId}>
-              {backup?.backupId ?? 'Loading...'}
-            </h3>
-            <div className={classNames(classes.updateStatus, {
-              updateAvailable: remoteVersion > backup.version,
-            })}>
-              <span className={classNames(classes.version, {
-                merged: backup.merged,
-              })}>Local: v{backup.version}{backup.merged ? '*' : ''}</span>
-              <span className={classes.version}>Remote: v{remoteVersion}</span>
-            </div>
-            <button
-              className={classes.editButton}
-              onClick={handleClickEdit(backup)}
-            >
-              <Edit/>
-            </button>
-            <button
-              className={classNames(classes.button, {
-                privateKey: true,
-                lastCopied: justCopied,
-              })}
-              onClick={handleCopyPrivateKey(backup)}
-            >
-              {justCopied ? 'Copied' : 'Copy private key'}
-            </button>
-            <button
-              className={classNames(classes.button, {
-                merge: true,
-              })}
-              onClick={handleMerge(backup)}
-              disabled={isUpdating || isUpToDate}
-            >
-              Merge
-            </button>
-            <button
-              className={classNames(classes.button, {
-                pull: true,
-              })}
-              onClick={handlePull(backup)}
-              disabled={isUpdating || isUpToDate}
-            >
-              Pull
-            </button>
-            <button
-              className={classNames(classes.button, {
-                push: true,
-              })}
-              onClick={handlePush(backup)}
-              disabled={isUpdating}
-            >
-              Push
-            </button>
-            <button
-              className={classNames(classes.button, {
-                delete: true,
-              })}
-              onClick={handleDelete(backup)}
-              disabled={isUpdating}
-            >
-              Delete
-            </button>
-            <button
-              className={classNames(classes.button, {
-                active: true,
-                isActive: backup.isActive,
-              })}
-              disabled={Boolean(backup.isActive || isUpdating)}
-              onClick={handleSetActive(backup)}
-            >
-              {backup.isActive ? 'Active' : 'Set Active'}
-            </button>
-          </div>
-        );
-      })}
+          return (
+            <BackupItem
+              key={backup.id}
+              classes={classes}
+              backup={backup}
+              isUpdating={isUpdating}
+              remoteVersion={remoteVersion}
+              justCopied={justCopied}
+              isUpToDate={isUpToDate}
+              onClickEdit={handleClickEdit}
+              onCopyPrivateKey={handleCopyPrivateKey}
+              onMerge={handleMerge}
+              onPull={handlePull}
+              onPush={handlePush}
+              onDelete={handleDelete}
+              onSetActive={handleSetActive}
+            />
+          );
+        })}
+      </ul>
+      <button
+        className={classes.addButton}
+        onClick={handleClickEdit()}
+      >
+        <Add/>
+      </button>
     </div>
   );
 };

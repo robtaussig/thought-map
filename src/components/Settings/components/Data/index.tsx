@@ -3,7 +3,6 @@ import Close from '@material-ui/icons/Close';
 import CircleButton from '../../../../components/General/CircleButton';
 import CheckBox from '../../../../components/General/CheckBox';
 import Diagnosis from '../diagnosis';
-import SetupBackup from '../SetupBackup';
 import { useDispatch, useSelector } from 'react-redux';
 import { RxDatabase } from 'rxdb';
 import { openConfirmation } from '../../../../lib/util';
@@ -28,7 +27,6 @@ import {
   CONTINUE_DELETE_TEXT,
   DIAGNOSIS_TOOLTIP_TEXT,
   DELETE_DATA_TOOLTIP,
-  CREATE_BACKUP_TOOLTIP_TEXT,
 } from './constants';
 import { runDiagnosis } from './util';
 
@@ -82,15 +80,6 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
     openModal(<Diagnosis diagnosisChunks={diagnosisChunks} onFix={closeModal} />);
   }, []);
 
-  const handleClickCreateBackup = useCallback(async () => {
-    let closeLock = false;
-    openModal(
-      <SetupBackup onClose={closeModal}/>,
-      'Backup',
-      { afterClose: () => closeLock }
-    );
-  }, []);
-
   const handleClickManageBackups = useCallback(() => {
     history.push('/backups');
   }, []);
@@ -124,6 +113,10 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
     };
 
     importJSONRef.current.addEventListener('change', handleChange);
+
+    return () => {
+      importJSONRef.current.removeEventListener('change', handleChange);
+    };
   }, [settings.disableBackupOnImport]);
 
   const handleClickDeleteDatabase = () => {
@@ -186,10 +179,6 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
         <div className={classes.buttonWrapper}>
           <button className={classes.tooltipButton} onClick={handleClickRunDiagnosis}>Run diagnosis</button>
           <Tooltip className={'tooltip'} text={DIAGNOSIS_TOOLTIP_TEXT} />
-        </div>
-        <div className={classes.buttonWrapper}>
-          <button className={classes.tooltipButton} onClick={handleClickCreateBackup}>Create/Restore Backup</button>
-          <Tooltip className={'tooltip'} text={CREATE_BACKUP_TOOLTIP_TEXT} />
         </div>
         <div className={classes.buttonWrapper}>
           <button className={classes.tooltipButton} onClick={handleClickManageBackups}>Manage Backups</button>

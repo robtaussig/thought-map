@@ -2,27 +2,35 @@ import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
   root: (params: any) => ({
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateAreas: `"header header header"
+                        "backups-list backups-list backups-list"
+                        ". add-button ."`,
+    gridTemplateColumns: '1fr max-content 1fr',
+    gridTemplateRows: 'max-content 1fr 105px',
+    overflow: 'hidden',
     height: '100%',
     width: '100%',
     backgroundColor: theme.palette.background[700],
   }),
-  setupBackupTargetButton: (params: any) => ({
-    margin: 'auto auto',
-    color: theme.palette.background[700],
-    backgroundColor: theme.palette.background[200],
-    fontWeight: 600,
-    fontSize: 24,
-    border: `1px solid ${theme.palette.background[700]}`,
-    padding: '10px 20px',
-    borderRadius: 6,
-  }),
   header: (params: any) => ({
+    gridArea: 'header',
     fontWeight: 900,
     fontSize: 20,
     color: theme.palette.secondary[200],
     padding: 20,
+  }),
+  backupsList: (params: any) => ({
+    gridArea: 'backups-list',
+    overflow: 'auto',
+  }),
+  addButton: (params: any) => ({
+    gridArea: 'add-button',
+    color: theme.palette.background[200],
+    '& svg': {
+      height: '1.5em',
+      width: '1.5em',
+    },
   }),
   backup: (params: any) => ({
     backgroundColor: theme.palette.background[100],
