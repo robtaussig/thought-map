@@ -8,6 +8,16 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '100%',
     backgroundColor: theme.palette.background[700],
   }),
+  setupBackupTargetButton: (params: any) => ({
+    margin: 'auto auto',
+    color: theme.palette.background[700],
+    backgroundColor: theme.palette.background[200],
+    fontWeight: 600,
+    fontSize: 24,
+    border: `1px solid ${theme.palette.background[700]}`,
+    padding: '10px 20px',
+    borderRadius: 6,
+  }),
   header: (params: any) => ({
     fontWeight: 900,
     fontSize: 20,

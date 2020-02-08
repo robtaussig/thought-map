@@ -20,13 +20,13 @@ const thoughts = createSlice({
       return action.payload.sort(sortThoughtsByLastUpdated);
     },
     insert(state, action: PayloadAction<Thought>) {
-      return state.concat(action.payload).sort(sortThoughtsByLastUpdated);
+      return [action.payload, ...state];
     },
     remove(state, action: PayloadAction<Thought>) {
       return state.filter(thought => thought.id !== action.payload.id);
     },
     update(state, action: PayloadAction<Thought>) {
-      return state.map(thought => thought.id == action.payload.id ? action.payload : thought).sort(sortThoughtsByLastUpdated);
+      return [action.payload, ...state.filter(({ id }) => id !== action.payload.id)];
     },
   },
 });

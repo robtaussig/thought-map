@@ -172,7 +172,7 @@ export const Backups: FC<BackupsProps> = () => {
     }
   };
 
-  const handleClickEdit = (backup: Backup) => () => {
+  const handleClickEdit = (backup?: Backup) => () => {
     openModal(
       <SetupBackup
         onClose={closeModal}
@@ -218,6 +218,17 @@ export const Backups: FC<BackupsProps> = () => {
       ensureSingleActiveBackup();
     }
   }, [backups]);
+
+  if (backups.length === 0) return (
+    <div className={classes.root}>
+      <button
+        className={classes.setupBackupTargetButton}
+        onClick={handleClickEdit()}
+      >
+        Setup Backup Target
+      </button>
+    </div>
+  );
 
   return (
     <div className={classes.root}>

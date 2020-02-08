@@ -96,7 +96,9 @@ export interface CustomTheme {
   };
 };
 
-const initialState: CustomTheme = {
+let savedCustomTheme = localStorage.getItem('customTheme');
+
+const initialState: CustomTheme = savedCustomTheme ? JSON.parse(savedCustomTheme) : {
   palette: {
     primary: primaryColor,
     secondary: secondaryColor,

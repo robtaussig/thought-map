@@ -115,7 +115,9 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
           location.href = '/';
         };
 
-        importJSON().catch(() => location.href = '/');
+        importJSON().catch((e) => {
+          alert(e);
+        });
       };
 
       fr.readAsText((event.target as any).files[0]);

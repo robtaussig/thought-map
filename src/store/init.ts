@@ -57,6 +57,11 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
     backupActions.getBackups(db),
   ]);
 
+  const customTheme = settings.find(({ field }) => field === 'customTheme');
+  if (customTheme) {
+    localStorage.setItem('customTheme', JSON.stringify(customTheme.value));
+  }
+
   const statusesById = intoMap(statuses);
   const notesById = intoMap(notes);
   const tagsById = intoMap(tags);

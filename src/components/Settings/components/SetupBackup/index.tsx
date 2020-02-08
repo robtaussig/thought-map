@@ -69,7 +69,8 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
             value={id}
             id={'id-input'}
             onChange={e => setId(e.target.value)}
-            label={'Set a unique ID that will be used to identify your backup'}
+            label={'Enter backup target'}
+            autoFocus={true}
           />
           <button
             className={classes.nextButton}
@@ -89,6 +90,7 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
             onChange={e => setPassword(e.target.value)}
             label={'Set a password that will be required to write over your existing backup'}
             type={'password'}
+            autoFocus={true}
           />
           <button
             className={classes.nextButton}
@@ -108,6 +110,7 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
             onChange={e => setPrivateKey(e.target.value)}
             label={'Generate a private key (or use one previously generated). It will be used to encrypt and decrypt your data client-side.'}
             inputProps={{ rows: 5 }}
+            autoFocus={true}
           />
           {privateKey === '' ? (
             <button
