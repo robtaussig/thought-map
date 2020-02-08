@@ -153,7 +153,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
           const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
           const chunks = chunkData(data, NUM_CHUNKS);
           const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
-          await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion)));
+          await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion, encryptedChunks.length)));
           backupActions.editBackup(db, {
             ...activeBackup,
             version: nextVersion,

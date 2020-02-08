@@ -6,6 +6,7 @@ import { Context as AppContext } from './store';
 import { useDispatch, useSelector, Selector } from 'react-redux';
 import { subscribeToChanges } from './store/updates';
 import initializeApplication from './store/init';
+import { backupSelector } from './reducers/backups';
 import { useDB } from './hooks/useDB';
 import Home from './components/Home';
 import Backups from './components/Backups';
@@ -25,6 +26,7 @@ import { ModalProvider } from './hooks/useModal';
 import { ModalContextValue } from './hooks/useModal/types';
 import { getVersion } from './components/Settings/components/SetupBackup/api';
 import Div100vh from 'react-div-100vh';
+import { useSocketIO } from 'react-use-websocket';
 import {
   AppProps,
   Notification,
@@ -41,10 +43,20 @@ const settingsSelector: Selector<RootState, SettingsType> = state => state.setti
 const App: FC<AppProps> = ({ classes, history }) => {
   const dispatch = useDispatch();
   const settings = useSelector(settingsSelector);
+  const backups = useSelector(backupSelector);
   const [lastNotification, setLastNotification] = useState<Notification>(null);
   const [DBProvider, dbContext, dbReadyState] = useDB();
   const rootRef = useRef(null);
   const modalRef = useRef<ModalContextValue>(null);
+  const [sendMessage, lastMessage, readyState] = useSocketIO('https://robtaussig.com/');
+
+  useEffect(() => {
+    const payloadToSocketIOMessage = (payload: [string, any?]) => `42${JSON.stringify(payload)}`;
+
+    if (readyState === 1) {
+      sendMessage(payloadToSocketIOMessage(['subscribe-backup']));
+    }
+  }, [readyState]);
 
   useEffect(() => {
     if (dbReadyState) {
@@ -72,6 +84,21 @@ const App: FC<AppProps> = ({ classes, history }) => {
       return () => unsubscribe();
     }
   }, [dbContext.db, dbReadyState]);
+
+  useEffect(() => {
+    if (lastMessage && lastMessage.type === 'update-backup') {
+      const updatedBackup = backups.find(({ backupId }) => backupId === lastMessage.payload.uuid);
+      if (updatedBackup && updatedBackup.version < lastMessage.payload.version) {
+        let modalId = modalRef.current.openModal(
+          <UpdateAvailable
+            activeBackup={updatedBackup}
+            latestVersion={lastMessage.payload.version}
+            onClose={() => modalRef.current.closeModal(modalId)}
+          />, 'Update Available'
+        );
+      }
+    }
+  }, [lastMessage, backups]);
 
   const appContext = useMemo(() => ({ history }), []);
 

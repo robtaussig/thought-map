@@ -147,7 +147,7 @@ export const Backups: FC = () => {
       const chunks = chunkData(data, NUM_CHUNKS);
       const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
       const results = await Promise.all(
-        encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion))
+        encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion, encryptedChunks.length))
       );
       if (results.some(result => result instanceof Error)) {
         backupActions.editBackup(db, backup);

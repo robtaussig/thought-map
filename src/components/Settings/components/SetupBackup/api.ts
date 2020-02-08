@@ -22,7 +22,7 @@ export const uploadChunk = async (chunk: ArrayBuffer, part: number, uuid: string
   return true;
 };
 
-export const updateChunk = async (chunk: ArrayBuffer, part: number, uuid: string, password: string = '', nextVersion: number): Promise<any | Error> => {
+export const updateChunk = async (chunk: ArrayBuffer, part: number, uuid: string, password: string = '', nextVersion: number, numChunks: number): Promise<any | Error> => {
   const res = await fetch(`${API}/thought-map/api/backup`, {
     method: 'PUT',
     headers: {
@@ -35,6 +35,7 @@ export const updateChunk = async (chunk: ArrayBuffer, part: number, uuid: string
       chunk: ab2str(chunk),
       password,
       version: nextVersion,
+      numChunks,
     }),
   });
   if (!res.ok) return new Error(res.statusText);
