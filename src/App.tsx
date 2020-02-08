@@ -27,6 +27,7 @@ import { ModalContextValue } from './hooks/useModal/types';
 import { getVersion } from './components/Settings/components/SetupBackup/api';
 import Div100vh from 'react-div-100vh';
 import { useSocketIO } from 'react-use-websocket';
+import { Options } from 'react-use-websocket/src/lib/use-websocket';
 import {
   AppProps,
   Notification,
@@ -48,7 +49,17 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const [DBProvider, dbContext, dbReadyState] = useDB();
   const rootRef = useRef(null);
   const modalRef = useRef<ModalContextValue>(null);
-  const [sendMessage, lastMessage, readyState] = useSocketIO('https://robtaussig.com/');
+
+  const options: Options = useMemo(() =>({
+    shouldReconnect: () => {
+      return true;
+    },
+    reconnectAttempts: 100,
+    reconnectInterval: 20000,
+    retryOnError: true,
+  }), []);
+
+  const [sendMessage, lastMessage, readyState] = useSocketIO('https://robtaussig.com/', options);
 
   useEffect(() => {
     const payloadToSocketIOMessage = (payload: [string, any?]) => `42${JSON.stringify(payload)}`;
