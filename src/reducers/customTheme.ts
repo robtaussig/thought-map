@@ -98,7 +98,7 @@ export interface CustomTheme {
 
 let savedCustomTheme = localStorage.getItem('customTheme');
 
-const initialState: CustomTheme = savedCustomTheme ? JSON.parse(savedCustomTheme) : {
+const defaultState = {
   palette: {
     primary: primaryColor,
     secondary: secondaryColor,
@@ -114,6 +114,8 @@ const initialState: CustomTheme = savedCustomTheme ? JSON.parse(savedCustomTheme
   },
 };
 
+const initialState: CustomTheme = savedCustomTheme ? JSON.parse(savedCustomTheme) : defaultState;
+
 const customTheme = createSlice({
   name: 'customTheme',
   initialState,
@@ -122,7 +124,7 @@ const customTheme = createSlice({
       const [colorType, value] = action.payload;
       state.palette[colorType] = value;
     },
-    resetDefault: (state) => initialState,
+    resetDefault: (state) => defaultState,
     toggleDarkMode: (state, action: PayloadAction<boolean>) => {
       state.useDarkMode = action.payload === undefined ?
         !state.useDarkMode :

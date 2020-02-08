@@ -34,6 +34,7 @@ export const Theme: FC<ThemeProps> = () => {
   };
 
   const handleSave = () => {
+    localStorage.setItem('customTheme', JSON.stringify(customTheme));
     settingActions.createSetting(db, {
       field: 'customTheme',
       value: customTheme,
