@@ -72,8 +72,8 @@ const App: FC<AppProps> = ({ classes, history }) => {
   useEffect(() => {
     const handleCheckWebSocket = () => {
       if (document.visibilityState === 'visible') {
-        if (getWebSocket().readyState !== ReadyState.OPEN) {
-          (getWebSocket() as any).reconnect?.current?.() ?? alert('This did not work');
+        if (getWebSocket()?.readyState !== ReadyState.OPEN) {
+          (getWebSocket() as any)?.reconnect?.current?.() ?? alert('This did not work');
         }
       }
     }
