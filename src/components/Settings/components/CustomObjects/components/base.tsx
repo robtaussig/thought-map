@@ -46,6 +46,7 @@ export const CustomObjectsBase: FC<CustomObjectsBaseProps> = ({ objectType }) =>
 
   return (
     <div className={classes.root}>
+      <h2 className={classes.header}>Custom {objectType}</h2>
       <form className={classes.form} onSubmit={handleSubmit}>
         <Input
           classes={classes}
@@ -53,16 +54,18 @@ export const CustomObjectsBase: FC<CustomObjectsBaseProps> = ({ objectType }) =>
           onChange={e => setInputtedValue(e.target.value)}
           autoFocus
         />
-        <button>Create</button>
+        <button className={classes.createButton}>Create</button>
       </form>
-      {objects.map(object => {
-        return (
-          <div key={object.value} className={classes.customObject}>
-            <span>{object.value}</span>
-            <button className={classes.deleteCustomObject} onClick={deleteCustomObject(object)}><Delete /></button>
-          </div>
-        );
-      })}
+      <div className={classes.customObjects}>
+        {objects.map(object => {
+          return (
+            <div key={object.value} className={classes.customObject}>
+              <span>{object.value}</span>
+              <button className={classes.deleteCustomObject} onClick={deleteCustomObject(object)}><Delete /></button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

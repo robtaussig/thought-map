@@ -61,12 +61,25 @@ export const useCustomObjectStyles = makeStyles((theme: any) => ({
 
 export const useBaseCustomObjectStyles = makeStyles((theme: any) => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateAreas: `"header . ."
+                        "form form form"
+                        "items items items"`,
+    gridTemplateColumns: 'max-content 1fr max-content',
+    gridTemplateRows: 'max-content max-content 1fr',
+    gridGap: '5px',
+    overflow: 'hidden',
+    maxHeight: '50vh',
   },
+  header: (params: any) => ({
+    fontWeight: 600,
+    color: theme.palette.secondary[700],
+    gridArea: 'header',
+    textTransform: 'capitalize',
+  }),
   form: (params: any) => ({
+    gridArea: 'form',
     display: 'flex',
-    marginBottom: 20,
     '& button': {
       fontWeight: 600,
       cursor: 'pointer',
@@ -80,6 +93,15 @@ export const useBaseCustomObjectStyles = makeStyles((theme: any) => ({
       width: '100%',
     },
   },
+  createButton: (params: any) => ({
+
+  }),
+  customObjects: (params: any) => ({
+    gridArea: 'items',
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'auto',
+  }),
   customObject: {
     display: 'flex',
     alignItems: 'center',
