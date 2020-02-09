@@ -30,7 +30,7 @@ import { useSocketIO, ReadyState } from 'react-use-websocket';
 import { Options } from 'react-use-websocket/src/lib/use-websocket';
 import {
   AppProps,
-  Notification,
+  Notification as NotificationType,
 } from './types';
 import { RootState } from './reducers/';
 import { Settings as SettingsType } from './reducers/settings';
@@ -45,7 +45,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const dispatch = useDispatch();
   const settings = useSelector(settingsSelector);
   const backups = useSelector(backupSelector);
-  const [lastNotification, setLastNotification] = useState<Notification>(null);
+  const [lastNotification, setLastNotification] = useState<NotificationType>(null);
   const [DBProvider, dbContext, dbReadyState] = useDB();
   const rootRef = useRef(null);
   const modalRef = useRef<ModalContextValue>(null);
@@ -112,6 +112,12 @@ const App: FC<AppProps> = ({ classes, history }) => {
     if (lastMessage && lastMessage.type === 'update-backup') {
       const updatedBackup = backups.find(({ backupId }) => backupId === lastMessage.payload.uuid);
       if (updatedBackup && updatedBackup.version < lastMessage.payload.version) {
+        if (document.visibilityState !== 'visible') {
+          const notification = new Notification(`An update to ${updatedBackup.backupId} is available`, {
+            requireInteraction: true,
+          });
+          notification.onclick = () => window.focus();
+        }
         let modalId = modalRef.current.openModal(
           <UpdateAvailable
             activeBackup={updatedBackup}
