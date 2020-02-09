@@ -65,7 +65,14 @@ const App: FC<AppProps> = ({ classes, history }) => {
     const payloadToSocketIOMessage = (payload: [string, any?]) => `42${JSON.stringify(payload)}`;
 
     if (readyState === ReadyState.OPEN) {
+      const handleCheckWebSocket = () => {
+        if (document.visibilityState === 'visible') {
+          alert('This works');
+        }
+      }
+      document.addEventListener("visibilitychange", handleCheckWebSocket);
       sendMessage(payloadToSocketIOMessage(['subscribe-backup']));
+      return () => document.removeEventListener("visibilitychange", handleCheckWebSocket);
     }
   }, [readyState]);
 
