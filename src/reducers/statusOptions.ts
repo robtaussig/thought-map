@@ -23,18 +23,18 @@ const statusOptions = createSlice({
       return state.concat(
         action.payload
           .filter(({ type }) => {
-            return type === CustomObjectType.Tag;
+            return type === CustomObjectType.Status;
           })
           .map(({ value }) => value)
       );
     },
     [insert as any]: (state, action: PayloadAction<CustomObject>) => {
-      if (action.payload.type === CustomObjectType.Tag) {
+      if (action.payload.type === CustomObjectType.Status) {
         return state.concat(action.payload.value);
       }
     },
     [remove as any]: (state, action: PayloadAction<CustomObject>) => {
-      if (action.payload.type === CustomObjectType.Tag) {
+      if (action.payload.type === CustomObjectType.Status) {
         return state.filter(prev => prev !== action.payload.value);
       }
     },
