@@ -17,6 +17,10 @@ import tutorial from './tutorial';
 import backups from './backups';
 import customTheme from './customTheme';
 import mergeResults from './mergeResults';
+import customObjects from './customObjects';
+import typeOptions from './typeOptions';
+import tagOptions from './tagOptions';
+import statusOptions from './statusOptions';
 
 const rootReducer = combineReducers({
   connections,
@@ -37,6 +41,10 @@ const rootReducer = combineReducers({
   customTheme,
   backups,
   mergeResults,
+  customObjects,
+  typeOptions,
+  tagOptions,
+  statusOptions,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -8,6 +8,7 @@ import { handleTagChange } from './tags';
 import { handlePlanChange } from './plans';
 import { handleTemplateChange } from './templates';
 import { handleStatusChange } from './statuses';
+import { handleCustomObjectChange } from './customObjects';
 import { Notification } from '../../types';
 import {
   Picture as PictureType,
@@ -99,6 +100,8 @@ export const subscribeToChanges = (
     db.setting.$.subscribe(handleSettingChange(dispatch, setLastNotification)),
     // @ts-ignore
     db.backup.$.subscribe(handleBackupChange(dispatch, setLastNotification)),
+    // @ts-ignore
+    db.custom_object.$.subscribe(handleCustomObjectChange(dispatch, setLastNotification)),
     //@ts-ignore
     db.status.$.subscribe(handleStatusChange(
       dispatch,

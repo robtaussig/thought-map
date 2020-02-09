@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import ManagePhotos from './manage-photos';
-import CustomObjects from './custom-objects';
+import CustomObjects from './CustomObjects';
 import AppConfiguration from './app-configuration';
 import Theme from './theme';
 import Data from './Data';
@@ -86,7 +86,7 @@ export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
       <Data setLoading={setLoading} />
       <Theme />
       <ManagePhotos pictures={pictures} />
-      <CustomObjects settings={settings} />
+      <CustomObjects />
       <button className={classes.updateButton} onClick={handleCheckUpdates}>Check for Update (Current: {(window as any).APP_VERSION})</button>
     </div>
   );

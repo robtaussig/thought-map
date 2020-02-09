@@ -17,7 +17,6 @@ export interface Classes {
 }
 
 export interface AppProps extends RouteComponentProps {
-  classes: Classes;
   history: History;
 }
 

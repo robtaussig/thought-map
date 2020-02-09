@@ -8,6 +8,8 @@ import { Backups as BackupsType, setBackups } from '../reducers/backups';
 import { Plans as PlansType, setPlans } from '../reducers/plans';
 import { Templates as TemplatesType, setTemplates } from '../reducers/templates';
 import { Pictures as PicturesType, setPictures } from '../reducers/pictures';
+import { setCustomObjects } from '../reducers/customObjects';
+import { CustomObject } from './rxdb/schemas/customObject';
 import { Statuses as StatusesType, setStatuses } from '../reducers/statuses';
 import { StatusesByThought as StatusesByThoughtType, setStatusesByThought } from '../reducers/statusesByThought';
 import { intoMap } from '../lib/util';
@@ -23,6 +25,7 @@ import {
   settings as settingActions,
   statuses as statusActions,
   backups as backupActions,
+  customObjects as customObjectActions,
 } from '../actions';
 import { Searchable } from '../components/Home/ThoughtSearch';
 import { wrap } from 'comlink';
@@ -43,8 +46,10 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
   const setBackupsAction = (backups: BackupsType) => dispatch(setBackups(backups));
   const setStatusesAction = (statuses: StatusesType) => dispatch(setStatuses(statuses));
   const setStatusesByThoughtAction = (statusesByThought: StatusesByThoughtType) => dispatch(setStatusesByThought(statusesByThought));
+  const setCustomObjectsAction = (customObjects: CustomObject[]) => dispatch(setCustomObjects(customObjects));
 
-  const [thoughts, connections, plans, notes, tags, templates, pictures, settings, statuses, backups] = await Promise.all([
+  //Need to split by groups of 10, due to bug with TypeScript: https://github.com/Microsoft/TypeScript/issues/22469
+  const [thoughts, connections, plans, notes, tags, templates, pictures, settings, statuses] = await Promise.all([
     thoughtActions.getThoughts(db),
     connectionActions.getConnections(db),
     planActions.getPlans(db),
@@ -54,8 +59,12 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
     pictureActions.getPictures(db),
     settingActions.getSettings(db),
     statusActions.getStatuses(db),
-    backupActions.getBackups(db),
   ]);
+
+  const [backups, customObjects] = await Promise.all([
+    backupActions.getBackups(db),
+    customObjectActions.getCustomObjects(db),
+  ]); 
 
   const statusesById = intoMap(statuses);
   const notesById = intoMap(notes);
@@ -84,6 +93,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
   setStatusesAction(statusesById);
   setStatusesByThoughtAction(statusesByThought);
   setBackupsAction(backups);
+  setCustomObjectsAction(customObjects);
 
   searcherWorker.buildTree(thoughts, notesById, tagsById);
 

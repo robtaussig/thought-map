@@ -8,6 +8,7 @@ import Pictures from '../models/pictures';
 import Settings from '../models/settings';
 import Statuses from '../models/statuses';
 import Backups from '../models/backups';
+import CustomObjects from '../models/customObjects';
 
 export const thoughts = {
   getThoughts: Thoughts.fetchAll,
@@ -88,4 +89,12 @@ export const backups = {
   createBackup: Backups.upsert,
   deleteBackup: Backups.delete,
   editBackup: Backups.update,
+}
+
+export const customObjects = {
+  getCustomObjects: CustomObjects.fetchAll,
+  getCustomObject: CustomObjects.fetch,
+  createCustomObject: CustomObjects.add,
+  deleteCustomObject: CustomObjects.delete,
+  editCustomObject: CustomObjects.update,
 }

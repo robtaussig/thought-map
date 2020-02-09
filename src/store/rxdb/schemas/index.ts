@@ -9,6 +9,7 @@ import picture from './picture';
 import setting from './setting';
 import status from './status';
 import backup from './backup';
+import customObject from './customObject';
 
 type SchemaTuple = [string, RxJsonSchema, RxCollectionCreator?];
 
@@ -23,7 +24,9 @@ export default [
   setting,
   status,
   backup,
+  customObject,
 ] as [
+  SchemaTuple,
   SchemaTuple,
   SchemaTuple,
   SchemaTuple,
