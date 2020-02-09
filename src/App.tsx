@@ -26,8 +26,6 @@ import { ModalProvider } from './hooks/useModal';
 import { ModalContextValue } from './hooks/useModal/types';
 import { getVersion } from './components/Settings/components/SetupBackup/api';
 import Div100vh from 'react-div-100vh';
-import { useSocketIO, ReadyState } from 'react-use-websocket';
-import { Options } from 'react-use-websocket/src/lib/use-websocket';
 import {
   AppProps,
   Notification as NotificationType,
@@ -50,28 +48,27 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const rootRef = useRef(null);
   const modalRef = useRef<ModalContextValue>(null);
 
-  const options: Options = useMemo(() =>({
-    shouldReconnect: () => {
-      return true;
-    },
-    reconnectAttempts: 100,
-    reconnectInterval: 20000,
-    retryOnError: true,
-  }), []);
-
-  const [sendMessage, lastMessage, readyState, getWebSocket] = useSocketIO('https://robtaussig.com/', options);
-
   useEffect(() => {
-    const handleCheckWebSocket = () => {
+    const checkLatestVersion = async () => {
       if (document.visibilityState === 'visible') {
-        if (getWebSocket()?.readyState !== ReadyState.OPEN) {
-          (getWebSocket() as any)?.reconnect?.current?.();
+        const activeBackup = backups.find(({ isActive }) => Boolean(isActive));
+        if (activeBackup) {
+          const response = await getVersion(activeBackup.backupId);
+          if (response?.version > activeBackup.version) {
+            let modalId = modalRef.current.openModal(
+              <UpdateAvailable
+                activeBackup={activeBackup}
+                latestVersion={response.version}
+                onClose={() => modalRef.current.closeModal(modalId)}
+              />, 'Update Available'
+            );
+          }
         }
       }
     }
-    document.addEventListener("visibilitychange", handleCheckWebSocket);
-    return () => document.removeEventListener("visibilitychange", handleCheckWebSocket);
-  }, []);
+    document.addEventListener("visibilitychange", checkLatestVersion);
+    return () => document.removeEventListener("visibilitychange", checkLatestVersion);
+  }, [backups]);
 
   useEffect(() => {
     if (dbReadyState) {
@@ -99,29 +96,6 @@ const App: FC<AppProps> = ({ classes, history }) => {
       return () => unsubscribe();
     }
   }, [dbContext.db, dbReadyState]);
-
-  useEffect(() => {
-    if (lastMessage && lastMessage.type === 'update-backup') {
-      const updatedBackup = backups.find(({ backupId }) => backupId === lastMessage.payload.uuid);
-      if (updatedBackup && updatedBackup.version < lastMessage.payload.version) {
-        if (document.visibilityState !== 'visible') {
-          if (settings.usePushNotifications) {
-            const notification = new Notification(`An update to ${updatedBackup.backupId} is available`, {
-              requireInteraction: true,
-            });
-            notification.onclick = () => window.focus();
-          }
-        }
-        let modalId = modalRef.current.openModal(
-          <UpdateAvailable
-            activeBackup={updatedBackup}
-            latestVersion={lastMessage.payload.version}
-            onClose={() => modalRef.current.closeModal(modalId)}
-          />, 'Update Available'
-        );
-      }
-    }
-  }, [lastMessage, backups, settings.usePushNotifications]);
 
   const appContext = useMemo(() => ({ history }), []);
 
