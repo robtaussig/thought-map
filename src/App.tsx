@@ -59,22 +59,27 @@ const App: FC<AppProps> = ({ classes, history }) => {
     retryOnError: true,
   }), []);
 
-  const [sendMessage, lastMessage, readyState] = useSocketIO('https://robtaussig.com/', options);
+  const [sendMessage, lastMessage, readyState, getWebSocket] = useSocketIO('https://robtaussig.com/', options);
 
   useEffect(() => {
     const payloadToSocketIOMessage = (payload: [string, any?]) => `42${JSON.stringify(payload)}`;
 
     if (readyState === ReadyState.OPEN) {
-      const handleCheckWebSocket = () => {
-        if (document.visibilityState === 'visible') {
-          alert('This works');
-        }
-      }
-      document.addEventListener("visibilitychange", handleCheckWebSocket);
       sendMessage(payloadToSocketIOMessage(['subscribe-backup']));
-      return () => document.removeEventListener("visibilitychange", handleCheckWebSocket);
     }
   }, [readyState]);
+
+  useEffect(() => {
+    const handleCheckWebSocket = () => {
+      if (document.visibilityState === 'visible') {
+        if (getWebSocket().readyState !== ReadyState.OPEN) {
+          (getWebSocket() as any).reconnect?.current?.() ?? alert('This did not work');
+        }
+      }
+    }
+    document.addEventListener("visibilitychange", handleCheckWebSocket);
+    return () => document.removeEventListener("visibilitychange", handleCheckWebSocket);
+  }, []);
 
   useEffect(() => {
     if (dbReadyState) {
