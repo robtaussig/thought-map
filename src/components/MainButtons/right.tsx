@@ -142,8 +142,9 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
 
     const handleDemandBackup = async () => {
       setUpdating(true);
+      let activeBackup;
       try {
-        const activeBackup = backups.find(backup => backup.isActive);
+        activeBackup = backups.find(backup => backup.isActive);
 
         if (activeBackup) {
           const { password, privateKey, backupId, version } = activeBackup;
@@ -152,13 +153,14 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
           const data = await jsonDump(db);
           const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
           const chunks = chunkData(data, NUM_CHUNKS);
-          const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
-          await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion, encryptedChunks.length)));
-          backupActions.editBackup(db, {
+          await backupActions.editBackup(db, {
             ...activeBackup,
             version: nextVersion,
             merged: false,
           });
+          const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
+          await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion, encryptedChunks.length)));
+          
           setUpdated(true);
           setTimeout(() => {
             setUpdated(false);
@@ -167,6 +169,11 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
           throw new Error('No active backup');
         }
       } catch (e) {
+        backupActions.editBackup(db, {
+          ...activeBackup,
+          version: activeBackup.version,
+          merged: false,
+        });
         alert(e);
       } finally {
         setUpdating(false);
