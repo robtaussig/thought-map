@@ -113,10 +113,12 @@ const App: FC<AppProps> = ({ classes, history }) => {
       const updatedBackup = backups.find(({ backupId }) => backupId === lastMessage.payload.uuid);
       if (updatedBackup && updatedBackup.version < lastMessage.payload.version) {
         if (document.visibilityState !== 'visible') {
-          const notification = new Notification(`An update to ${updatedBackup.backupId} is available`, {
-            requireInteraction: true,
-          });
-          notification.onclick = () => window.focus();
+          if (settings.usePushNotifications) {
+            const notification = new Notification(`An update to ${updatedBackup.backupId} is available`, {
+              requireInteraction: true,
+            });
+            notification.onclick = () => window.focus();
+          }
         }
         let modalId = modalRef.current.openModal(
           <UpdateAvailable
@@ -127,7 +129,7 @@ const App: FC<AppProps> = ({ classes, history }) => {
         );
       }
     }
-  }, [lastMessage, backups]);
+  }, [lastMessage, backups, settings.usePushNotifications]);
 
   const appContext = useMemo(() => ({ history }), []);
 
