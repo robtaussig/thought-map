@@ -7,14 +7,13 @@ interface BackupProps {
   classes: any;
   backup: any;
   isUpdating: boolean;
-  justCopied: boolean;
   remoteVersion: number | string;
   isUpToDate: boolean;
   onClickEdit: (backup: BackupType) => () => void;
-  onCopyPrivateKey: (backup: BackupType) => () => void;
   onMerge: (backup: BackupType) => () => void;
   onPull: (backup: BackupType) => () => void;
   onPush: (backup: BackupType) => () => void;
+  onViewPrivateKey: (backup: BackupType) => () => void;
   onDelete: (backup: BackupType) => () => void;
   onSetActive: (backup: BackupType) => () => void;
 }
@@ -24,10 +23,9 @@ export const Backup: FC<BackupProps> = ({
   backup,
   isUpdating,
   remoteVersion,
-  justCopied,
   isUpToDate,
   onClickEdit,
-  onCopyPrivateKey,
+  onViewPrivateKey,
   onMerge,
   onPull,
   onPush,
@@ -57,11 +55,10 @@ export const Backup: FC<BackupProps> = ({
     <button
       className={classNames(classes.button, {
         privateKey: true,
-        lastCopied: justCopied,
       })}
-      onClick={onCopyPrivateKey(backup)}
+      onClick={onViewPrivateKey(backup)}
     >
-      {justCopied ? 'Copied' : 'Copy private key'}
+      View Private Key
     </button>
     <button
       className={classNames(classes.button, {

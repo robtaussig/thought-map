@@ -1,25 +1,26 @@
 import React, { FC, useState, useEffect, useRef } from 'react';
-import { useStyles } from './styles';
-import { useSelector, useDispatch } from 'react-redux';
-import { backupSelector } from '../../reducers/backups';
 import { Backup } from '../../store/rxdb/schemas/backup';
 import { backups as backupActions } from '../../actions';
-import BackupItem from './Backup';
-import Add from '@material-ui/icons/Add';
-import { useLoadedDB } from '../../hooks/useDB';
-import useCrypto from '../../hooks/useCrypto';
-import useApp from '../../hooks/useApp';
-import useModal from '../../hooks/useModal';
-import { getVersion } from '../Settings/components/SetupBackup/api';
-import { openConfirmation } from '../../lib/util';
-import { jsonDump, download } from '../Settings/components/Data';
+import { backupSelector } from '../../reducers/backups';
 import { CHUNK_LENGTH } from '../Settings/components/SetupBackup/constants';
 import { chunkData, buildDechunker } from '../Settings/components/SetupBackup/util';
-import { updateChunk, fetchBackup } from '../Settings/components/SetupBackup/api';
 import { Dump } from '../Merge/types';
-import SetupBackup from '../Settings/components/SetupBackup';
+import { getVersion } from '../Settings/components/SetupBackup/api';
+import { jsonDump, download } from '../Settings/components/Data';
 import { merge } from '../Merge/util';
+import { openConfirmation } from '../../lib/util';
 import { setMergeResults } from '../../reducers/mergeResults';
+import { updateChunk, fetchBackup } from '../Settings/components/SetupBackup/api';
+import { useLoadedDB } from '../../hooks/useDB';
+import { useSelector, useDispatch } from 'react-redux';
+import { useStyles } from './styles';
+import Add from '@material-ui/icons/Add';
+import BackupItem from './Backup';
+import ViewPrivateKey from './ViewPrivateKey';
+import SetupBackup from '../Settings/components/SetupBackup';
+import useApp from '../../hooks/useApp';
+import useCrypto from '../../hooks/useCrypto';
+import useModal from '../../hooks/useModal';
 
 export const Backups: FC = () => {
   const { db } = useLoadedDB();
@@ -32,12 +33,6 @@ export const Backups: FC = () => {
   const hasEnforcedSingleBackup = useRef<boolean>(false);
   const [currentVersions, setCurrentVersions] = useState<{ [backupId: string]: number }>({});
   const [updating, setUpdating] = useState<{ [backupId: string]: boolean }>({});
-  const [lastCopied, setLastCopied] = useState<string>(null);
-
-  const handleCopyPrivateKey = (backup: Backup) => () => {
-    navigator.clipboard.writeText(backup.privateKey);
-    setLastCopied(backup.backupId);
-  };
 
   const handleSetActive = (backup: Backup) => async () => {
     const previousActive = backups.find(prevBackup => prevBackup.isActive);
@@ -177,6 +172,14 @@ export const Backups: FC = () => {
     );
   };
 
+  const handleViewPrivateKey = (backup: Backup) => () => {
+    openModal(
+      <ViewPrivateKey
+        backup={backup}
+      />, 'PrivateKey'
+    );
+  };
+
   useEffect(() => {
     const getLatestVersions = async () => {
       const versions: { version: number }[] = await Promise.all(backups.map(backup => getVersion(backup.backupId)));
@@ -220,7 +223,6 @@ export const Backups: FC = () => {
       <h1 className={classes.header}>Backups</h1>
       <ul className={classes.backupsList}>
         {backups.map((backup, idx) => {
-          const justCopied = lastCopied === backup.backupId;
           const remoteVersion = currentVersions[backup.backupId] ?? '...';
           const isUpdating = Boolean(updating[backup.backupId]);
           const isUpToDate = remoteVersion === backup.version;
@@ -232,15 +234,14 @@ export const Backups: FC = () => {
               backup={backup}
               isUpdating={isUpdating}
               remoteVersion={remoteVersion}
-              justCopied={justCopied}
               isUpToDate={isUpToDate}
               onClickEdit={handleClickEdit}
-              onCopyPrivateKey={handleCopyPrivateKey}
               onMerge={handleMerge}
               onPull={handlePull}
               onPush={handlePush}
               onDelete={handleDelete}
               onSetActive={handleSetActive}
+              onViewPrivateKey={handleViewPrivateKey}
             />
           );
         })}
