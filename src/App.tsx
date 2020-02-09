@@ -62,14 +62,6 @@ const App: FC<AppProps> = ({ classes, history }) => {
   const [sendMessage, lastMessage, readyState, getWebSocket] = useSocketIO('https://robtaussig.com/', options);
 
   useEffect(() => {
-    const payloadToSocketIOMessage = (payload: [string, any?]) => `42${JSON.stringify(payload)}`;
-
-    if (readyState === ReadyState.OPEN) {
-      sendMessage(payloadToSocketIOMessage(['subscribe-backup']));
-    }
-  }, [readyState]);
-
-  useEffect(() => {
     const handleCheckWebSocket = () => {
       if (document.visibilityState === 'visible') {
         if (getWebSocket()?.readyState !== ReadyState.OPEN) {
