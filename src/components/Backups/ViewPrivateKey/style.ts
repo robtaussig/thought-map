@@ -40,5 +40,6 @@ export const useStyles = makeStyles((theme: any) => ({
   privateKeyText: (params: any) => ({
     gridArea: 'private-key',
     overflow: 'auto',
+    userSelect: 'all',
   }),
 }));
