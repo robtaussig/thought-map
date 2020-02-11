@@ -2,7 +2,6 @@ import React, { FC, useEffect, useMemo, useRef, useState, useCallback } from 're
 import { AppProps, Notification as NotificationType } from '../types';
 import { backupSelector } from '../reducers/backups';
 import { Context as AppContext } from '../store';
-import { getVersion } from '../components/Settings/components/SetupBackup/api';
 import { ModalContextValue } from '../hooks/useModal/types';
 import { ModalProvider } from '../hooks/useModal';
 import { statusOptionsSelector } from '../reducers/statusOptions';
@@ -27,8 +26,8 @@ import ProcessMerge from '../components/Merge/ProcessMerge';
 import RightButton from '../components/MainButtons/right';
 import Settings from '../components/Settings';
 import Stage from '../components/Stage';
+import Timeline from '../components/Timeline';
 import Thought from '../components/Thought';
-import UpdateAvailable from '../components/Merge/UpdateAvailable';
 import { checkVersionAndOpenModalIfUpdate } from './util';
 
 const App: FC<AppProps> = ({ history }) => {
@@ -93,11 +92,11 @@ const App: FC<AppProps> = ({ history }) => {
               <Route path={'/thought/:id/connections'}>
                 {dbReadyState && <Connections statusOptions={statusOptions}/>}
               </Route>
-              <Route path={'/plan/:id/history'}>
-                {dbReadyState && <History statusOptions={statusOptions}/>}
-              </Route>
               <Route path={'/thought/:id/history'}>
                 {dbReadyState && <History statusOptions={statusOptions}/>}
+              </Route>
+              <Route path={'/plan/:id/timeline'}>
+                {dbReadyState && <Timeline/>}
               </Route>
               <Route path={'/plan/:id/thought/:id/history'}>
                 {dbReadyState && <History statusOptions={statusOptions}/>}
@@ -128,6 +127,9 @@ const App: FC<AppProps> = ({ history }) => {
               </Route>
               <Route path={'/process-merge/:backupId'}>
                 {dbReadyState && <ProcessMerge/>}
+              </Route>
+              <Route path={'/timeline'}>
+                {dbReadyState && <Timeline allPlans={true}/>}
               </Route>
             </Switch> 
           </Div100vh>

@@ -3,6 +3,7 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import Select from '../../../General/Select';
 import { ReviewPeriods } from '../types';
 import Review from './review';
+import useApp from '../../../../hooks/useApp';
 import { useSelector } from 'react-redux';
 import { planSelector } from '../../../../reducers/plans';
 import { thoughtSelector } from '../../../../reducers/thoughts';
@@ -52,9 +53,17 @@ const styles = (theme: any): StyleRules => ({
   reviewStatValue: {
 
   },
+  timelineButton: (params: any) => ({
+    backgroundColor: theme.palette.secondary[700],
+    color: 'white',
+    marginTop: 10,
+    padding: '10px 15px',
+    borderRadius: 5,
+  }),
 });
 
 export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId, onClose }) => {
+  const { history } = useApp();
   const [currentReviewPeriod, setCurrentReviewPeriopd] = useState<ReviewPeriods>(ReviewPeriods.Week);
   const plans = useSelector(planSelector);
   const stateThoughts = useSelector(thoughtSelector);
@@ -62,6 +71,15 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
   const statuses = useSelector(statusSelector);
   const plan = plans.find(({ id }) => id === planId);
   const thoughts = stateThoughts.filter(thought => typeof planId === 'boolean' || thought.planId === planId);
+
+  const handleClickTimeline = () => {
+    onClose();
+    if (typeof planId === 'boolean') {
+      history.push('/timeline');
+    } else {
+      history.push(`/plan/${planId}/timeline`);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -82,6 +100,12 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
         statusesByThought={statusesByThought}
         statuses={statuses}
       />
+      <button
+        className={classes.timelineButton}
+        onClick={handleClickTimeline}
+      >
+        View Timeline
+      </button>
     </div>
   );
 };

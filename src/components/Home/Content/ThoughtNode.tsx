@@ -28,7 +28,7 @@ interface ThoughtNodeProps {
   isLastChild?: boolean;
 }
 
-const STATUS_TO_COLOR: { [key: string]: string } = {
+export const STATUS_TO_COLOR: { [key: string]: string } = {
   'new': '#0282d0',
   'in progress': '#06922c',
   'won\'t fix': '#c71b1b',

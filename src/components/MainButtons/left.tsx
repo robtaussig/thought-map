@@ -52,7 +52,7 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
   const { history } = useApp();
 
   useEffect(() => {
-    setHideButton(/(stage|history|connections)$/.test(history.location.pathname));
+    setHideButton(/(stage|history|connections|timeline)$/.test(history.location.pathname));
   }, [history.location.pathname])
 
   const [

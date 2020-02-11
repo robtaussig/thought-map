@@ -189,7 +189,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     if (updated) return [Check, 'Updated', null, 'updated', null];
     if (updating) return [Refresh, 'Updating', null, 'updating-button', null];
 
-    if (/(history|connections)$/.test(history.location.pathname)) {
+    if (/(history|connections|timeline)$/.test(history.location.pathname)) {
       return [ArrowBack, 'Back', handleBack, 'thought-button', null];
     } else if (/thought/.test(history.location.pathname)) {
       if (displayThoughtSettings) {
