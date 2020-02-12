@@ -181,7 +181,7 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
           <Tooltip className={'tooltip'} text={DIAGNOSIS_TOOLTIP_TEXT} />
         </div>
         <div className={classes.buttonWrapper}>
-          <button className={classes.tooltipButton} onClick={handleClickManageBackups}>Manage Backups</button>
+          <button className={classes.tooltipButton} onClick={handleClickManageBackups}>Manage Pools</button>
         </div>
         <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close} />
       </div>

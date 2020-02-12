@@ -53,12 +53,12 @@ export const Backups: FC = () => {
       backupActions.deleteBackup(db, backup.id);
     };
 
-    openConfirmation('Are you sure you want to delete this backup?', confirm);
+    openConfirmation('Are you sure you want to delete this pool?', confirm);
   }
 
   const handleMerge = (backup: Backup) => async () => {
     if (!backup) {
-      alert('No backup')
+      alert('No pool')
       return;
     }
     const { backupId, password, privateKey } = backup;
@@ -95,7 +95,7 @@ export const Backups: FC = () => {
         ...prev,
         [backup.backupId]: false,
       }));
-      alert(`Unable to decrypt the backup. This is most likely caused by using a different private key than the one used to encrypt the backup`);
+      alert(`Unable to decrypt the pool. This is most likely caused by using a different private key than the one used to encrypt the pool`);
     }
   };
 
@@ -115,7 +115,7 @@ export const Backups: FC = () => {
         download(decrypted, `${backupId}_${response.version}`);
       }
     } catch(e) {
-      alert(`Unable to decrypt the backup. This is most likely caused by using a different private key than the one used to encrypt the backup`);
+      alert(`Unable to decrypt the pool. This is most likely caused by using a different private key than the one used to encrypt the pool`);
     } finally {
       setUpdating(prev => ({
         ...prev,
@@ -220,7 +220,7 @@ export const Backups: FC = () => {
 
   return (
     <div className={classes.root}>
-      <h1 className={classes.header}>Backups</h1>
+      <h1 className={classes.header}>Pools</h1>
       <ul className={classes.backupsList}>
         {backups.map((backup, idx) => {
           const remoteVersion = currentVersions[backup.backupId] ?? '...';
