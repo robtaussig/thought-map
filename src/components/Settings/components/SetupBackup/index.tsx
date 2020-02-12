@@ -61,7 +61,7 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
 
   return (
     <div className={classes.root} ref={rootRef}>
-      <h1 className={classes.header}>Set up Automatic backups</h1>
+      <h1 className={classes.header}>Set up Pool</h1>
       {stage === SetupStages.Id && (
         <form className={classes.inputForm} onSubmit={handleSubmitId}>
           <Input
@@ -69,7 +69,7 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
             value={id}
             id={'id-input'}
             onChange={e => setId(e.target.value)}
-            label={'Enter backup target'}
+            label={'Enter pool name'}
             autoFocus={true}
           />
           <button
@@ -88,7 +88,7 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
             value={password}
             id={'password-input'}
             onChange={e => setPassword(e.target.value)}
-            label={'Set a password that will be required to write over your existing backup'}
+            label={'Set a password that will be required to interact with your pool'}
             type={'password'}
             autoFocus={true}
           />
@@ -108,7 +108,7 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
             id={'private-key-textarea'}
             value={privateKey}
             onChange={e => setPrivateKey(e.target.value)}
-            label={'Generate a private key (or use one previously generated). It will be used to encrypt and decrypt your data client-side.'}
+            label={'Generate a private key (or use one previously generated). It will be used to encrypt and decrypt your pool-data client-side.'}
             inputProps={{ rows: 5 }}
             autoFocus={true}
           />

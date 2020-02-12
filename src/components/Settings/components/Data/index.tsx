@@ -173,7 +173,6 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
         </label>        
         <div className={classes.buttonWrapper}>
           <button className={classes.tooltipButton} onClick={handleClickDeleteDatabase}>Delete Data</button>
-          <Tooltip className={'tooltip'} text={DELETE_DATA_TOOLTIP} />
         </div>
         <button className={classes.button} onClick={handleClickExportDataJSON}>Export Data to JSON</button>
         <div className={classes.buttonWrapper}>

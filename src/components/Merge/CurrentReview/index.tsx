@@ -6,6 +6,7 @@ import { Plan as PlanType } from '../../../store/rxdb/schemas/plan';
 import { Item } from '../types';
 import Connection from './Connection';
 import Thought from './Thought';
+import Base from './Base';
 import Plan from './Plan';
 import ThoughtAssociation from './ThoughtAssociation';
 
@@ -53,6 +54,17 @@ export const CurrentReview: FC<CurrentReviewProps> = ({
           thought={item.item as ThoughtType}
           plans={plans}
           items={items}
+        />
+      );
+    case 'custom_object':
+      return (
+        <Base
+          classes={classes}
+          rootClassName={rootClassName}
+          header={'Custom Object'}
+          subHeader={item.item.type}
+          mainField={item.item.value}
+          fields={item.item}
         />
       );
     default:
