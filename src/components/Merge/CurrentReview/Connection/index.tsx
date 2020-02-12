@@ -13,7 +13,7 @@ interface ConnectionProps {
 }
 
 const MOCK_THOUGHT = {
-  title: 'Mock Thought',
+  title: 'Unknown Thought',
 };
 
 export const Connection: FC<ConnectionProps> = ({

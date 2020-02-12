@@ -9,6 +9,7 @@ import Settings from '../models/settings';
 import Statuses from '../models/statuses';
 import Backups from '../models/backups';
 import CustomObjects from '../models/customObjects';
+import Deletions from '../models/deletions';
 
 export const thoughts = {
   getThoughts: Thoughts.fetchAll,
@@ -98,3 +99,11 @@ export const customObjects = {
   deleteCustomObject: CustomObjects.delete,
   editCustomObject: CustomObjects.update,
 }
+
+export const deletions = {
+  getDeletions: Deletions.fetchAll,
+  getDeletion: Deletions.fetch,
+  createDeletion: Deletions.add,
+  deleteDeletion: Deletions.delete,
+  editDeletion: Deletions.update,
+};

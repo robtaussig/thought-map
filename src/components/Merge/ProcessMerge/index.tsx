@@ -13,19 +13,16 @@ import useApp from '../../../hooks/useApp';
 import { Item } from '../types';
 import { useStyles } from './styles';
 import { getSearchParam } from '../../../lib/util';
+import uuidv4 from 'uuid/v4';
 
-interface ProcessMergeProps {
-  
-}
-
-export const ProcessMerge: FC<ProcessMergeProps> = () => {
+export const ProcessMerge: FC = () => {
   const classes = useStyles({});
   const { db } = useLoadedDB();
   const { history } = useApp();
   const rootRef = useRef<HTMLDivElement>(null);
   const [loading, stopLoading] = useLoadingOverlay(rootRef);
   const [filteredItemsToAdd, setFilteredItemsToAdd] = useState<Item[]>(null);
-  const { itemsToAdd } = useSelector(mergeResultsSelector);
+  const { itemsToAdd, deletionsToAdd, itemsToRemove } = useSelector(mergeResultsSelector);
   const thoughts = useSelector(thoughtSelector);
   const connections = useSelector(connectionSelector);
   const backups = useSelector(backupSelector);
@@ -33,9 +30,23 @@ export const ProcessMerge: FC<ProcessMergeProps> = () => {
   const handleClickMerge = async () => {
     loading('Merging data...');
     (window as any).blockDBSubscriptions = true;
-    await Promise.all(filteredItemsToAdd.map(({ collectionName, item }) => {
-      return db[collectionName].atomicUpsert(item);
-    }));
+    await Promise.all(
+      filteredItemsToAdd.map(({ collectionName, item }) => {
+        return db[collectionName].atomicUpsert(item);
+      }).concat(
+        deletionsToAdd.map(deletion => {
+          return db['deletion'].atomicUpsert({
+            id: uuidv4(),
+            ...deletion,
+          });
+        })
+      ).concat(
+        itemsToRemove.map(({ collectionName, item}) => {
+          const query = db[collectionName].find({ id: { $eq: item.id } });
+          return query.remove();
+        })
+      ),
+    );
     const version = getSearchParam(history, 'v');
     const backupId = getBackupIdFromHistory(history);
     const backup = backups.find(prev => prev.backupId === backupId);
@@ -57,8 +68,10 @@ export const ProcessMerge: FC<ProcessMergeProps> = () => {
       const filtered = processItemsToAdd(itemsToAdd, thoughts, connections);
       setFilteredItemsToAdd(filtered);
       stopLoading();
+    } else if (deletionsToAdd.length > 0 || itemsToRemove.length > 0) {
+      setFilteredItemsToAdd([]);
     }
-  }, [itemsToAdd, thoughts, connections]);
+  }, [itemsToAdd, thoughts, connections, deletionsToAdd, itemsToRemove]);
 
   return (
     <div ref={rootRef} className={classes.root}>

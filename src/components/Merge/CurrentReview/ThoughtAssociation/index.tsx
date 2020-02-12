@@ -14,11 +14,11 @@ interface ThoughtAssociationProps {
 }
 
 const MOCK_THOUGHT = {
-  title: 'Mock Thought'
+  title: 'Unkown Thought'
 };
 
 const MOCK_PLAN = {
-  name: 'Mock Plan',
+  name: 'Unkown Plan',
 };
 
 export const ThoughtAssociation: FC<ThoughtAssociationProps> = ({

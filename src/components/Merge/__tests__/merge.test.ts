@@ -12,7 +12,7 @@ const generateCollection = (name: string, docs: Doc[]): Collection => ({
   docs,
 });
 
-const genrateDoc = (fields: { [field: string]: any }, id: string = uuidv4(), updated: number = +new Date()): Doc => ({
+const generateDoc = (fields: { [field: string]: any }, id: string = uuidv4(), updated: number = +new Date()): Doc => ({
   id,
   updated,
   ...fields,
@@ -21,26 +21,26 @@ const genrateDoc = (fields: { [field: string]: any }, id: string = uuidv4(), upd
 describe('merge', () => {
   test('It finds documents unique to the right side', () => {
     const sameThoughtItems: Doc[] = [
-      genrateDoc({ name: 'thought 1' }),
-      genrateDoc({ name: 'thought 2' }),
-      genrateDoc({ name: 'thought 3' }),
-      genrateDoc({ name: 'thought 4' }),
+      generateDoc({ name: 'thought 1' }),
+      generateDoc({ name: 'thought 2' }),
+      generateDoc({ name: 'thought 3' }),
+      generateDoc({ name: 'thought 4' }),
     ];
 
     const samePlanItems: Doc[] = [
-      genrateDoc({ name: 'plan 1' }),
-      genrateDoc({ name: 'plan 2' }),
-      genrateDoc({ name: 'plan 3' }),
-      genrateDoc({ name: 'plan 4' }),
+      generateDoc({ name: 'plan 1' }),
+      generateDoc({ name: 'plan 2' }),
+      generateDoc({ name: 'plan 3' }),
+      generateDoc({ name: 'plan 4' }),
     ];
 
     const uniqueRightThoughtItems: Doc[] = [
-      genrateDoc({ name: 'thought 5' }),
-      genrateDoc({ name: 'thought 6' }),
+      generateDoc({ name: 'thought 5' }),
+      generateDoc({ name: 'thought 6' }),
     ];
 
     const uniqueRightPlanItems: Doc[] = [
-      genrateDoc({ name: 'plan 5' }),
+      generateDoc({ name: 'plan 5' }),
     ];
   
     const left: Dump = {
@@ -76,26 +76,26 @@ describe('merge', () => {
 
   test('It does not return items unique to left side, because left side will be used as base of merge results', () => {
     const sameThoughtItems: Doc[] = [
-      genrateDoc({ name: 'thought 1' }),
-      genrateDoc({ name: 'thought 2' }),
-      genrateDoc({ name: 'thought 3' }),
-      genrateDoc({ name: 'thought 4' }),
+      generateDoc({ name: 'thought 1' }),
+      generateDoc({ name: 'thought 2' }),
+      generateDoc({ name: 'thought 3' }),
+      generateDoc({ name: 'thought 4' }),
     ];
 
     const samePlanItems: Doc[] = [
-      genrateDoc({ name: 'plan 1' }),
-      genrateDoc({ name: 'plan 2' }),
-      genrateDoc({ name: 'plan 3' }),
-      genrateDoc({ name: 'plan 4' }),
+      generateDoc({ name: 'plan 1' }),
+      generateDoc({ name: 'plan 2' }),
+      generateDoc({ name: 'plan 3' }),
+      generateDoc({ name: 'plan 4' }),
     ];
 
     const uniqueLeftThoughtItems: Doc[] = [
-      genrateDoc({ name: 'thought 5' }),
-      genrateDoc({ name: 'thought 6' }),
+      generateDoc({ name: 'thought 5' }),
+      generateDoc({ name: 'thought 6' }),
     ];
 
     const uniqueLeftPlanItems: Doc[] = [
-      genrateDoc({ name: 'plan 5' }),
+      generateDoc({ name: 'plan 5' }),
     ];
   
     const left: Dump = {
@@ -130,14 +130,14 @@ describe('merge', () => {
 
   test('Finds comparables that exist on both sides with different update times', () => {
     const sameThoughtItems: Doc[] = [
-      genrateDoc({ name: 'thought 1' }),
-      genrateDoc({ name: 'thought 2' }),
-      genrateDoc({ name: 'thought 3' }),
+      generateDoc({ name: 'thought 1' }),
+      generateDoc({ name: 'thought 2' }),
+      generateDoc({ name: 'thought 3' }),
     ];
 
     const similarThoughtItems: Doc[] = [
-      genrateDoc({ name: 'thought 4' }),
-      genrateDoc({ name: 'thought 5' }),
+      generateDoc({ name: 'thought 4' }),
+      generateDoc({ name: 'thought 5' }),
     ];
   
     const left: Dump = {
@@ -168,5 +168,83 @@ describe('merge', () => {
     expect(itemsToAdd).toHaveLength(0);
     expect(comparables[0][0].item.name).toEqual('thought 4_updated');
     expect(comparables[0][1].item.name).toEqual('thought 4');
+  });
+
+  test(
+    `It returns the set differences in deletion docs between left and right 
+    side, using itemId as comparator, not deletion id. It only returns
+    deletions where item exists on other side. It does not return addables 
+    where deletion exists`, () => {
+    const thought1Id = uuidv4();
+    const thought2Id = uuidv4();
+    const thought3Id = uuidv4();
+    const thought4Id = uuidv4();
+    const thought5Id = uuidv4();
+    
+    const sharedDeletionItems: Doc[] = [
+      generateDoc({ collectionName: 'thought', itemId: thought1Id }),
+      generateDoc({ collectionName: 'thought', itemId: thought2Id }),
+      generateDoc({ collectionName: 'thought', itemId: uuidv4() }),
+      generateDoc({ collectionName: 'thought', itemId: uuidv4() }),
+      generateDoc({ collectionName: 'thought', itemId: uuidv4() }),
+      generateDoc({ collectionName: 'thought', itemId: uuidv4() }),
+    ];
+
+    const uniqueLeftDeletionItems: Doc[] = [
+      generateDoc({ collectionName: 'thought', itemId: thought3Id }),
+      generateDoc({ collectionName: 'thought', itemId: thought4Id }),
+      generateDoc({ collectionName: 'thought', itemId: uuidv4() }),
+    ];
+
+    const uniqueRightDeletionItems: Doc[] = [
+      generateDoc({ collectionName: 'thought', itemId: thought5Id }),
+      generateDoc({ collectionName: 'thought', itemId: uuidv4() }),
+    ];
+
+    const leftThoughts: Doc[] = [
+      generateDoc({ id: thought5Id }),
+      generateDoc({ id: uuidv4() }),
+      generateDoc({ id: uuidv4() }),
+    ];
+
+    const rightThoughts: Doc[] = [
+      generateDoc({ id: thought3Id }),
+      generateDoc({ id: thought4Id }),
+      generateDoc({ id: uuidv4() }),
+      generateDoc({ id: uuidv4() }),
+      generateDoc({ id: uuidv4() }),
+    ];
+
+    const left: Dump = {
+      collections: [
+        generateCollection('deletion', [
+          ...sharedDeletionItems,
+          ...uniqueLeftDeletionItems,
+        ]),
+        generateCollection('thought', [
+          ...leftThoughts,
+        ]),
+      ],
+    };
+  
+    const right: Dump = {
+      collections: [
+        generateCollection('deletion', [
+          ...sharedDeletionItems,
+          ...uniqueRightDeletionItems,
+        ]),
+        generateCollection('thought', [
+          ...rightThoughts,
+        ]),
+      ],
+    };
+
+    const { itemsToAdd, removables }: MergeResults = merge(left, right);
+    //5 items - 2 corresponding deletions
+    expect(itemsToAdd).toHaveLength(3);
+    expect(removables).toHaveLength(1);
+    expect(
+      removables.map(([deletionItem]) => deletionItem).includes(uniqueRightDeletionItems[0] as any)
+    ).toBe(true);
   });
 });

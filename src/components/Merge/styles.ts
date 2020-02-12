@@ -10,9 +10,10 @@ export const useStyles = makeStyles((theme: any) => ({
     gridRowGap: '10px',
     gridTemplateAreas: `"compare"
                         "queue"
+                        "remove"
                         "stage"
                         "."`,
-    gridTemplateRows: '1fr 100px 100px 95px',
+    gridTemplateRows: '1fr 100px 100px 100px 95px',
     gridTemplateColumns: '1fr',
     '& > *': {
       boxShadow: '0px 0px 5px 2px black',
@@ -28,8 +29,14 @@ export const useStyles = makeStyles((theme: any) => ({
   compareQueue: (params: any) => ({
     gridArea: 'queue',
   }),
+  removableQueue: (params: any) => ({
+    gridArea: 'remove',
+  }),
   mergeStage: (params: any) => ({
     gridArea: 'stage',
+  }),
+  currentRemovable: (params: any) => ({
+    gridArea: 'compare',
   }),
 }));
 
@@ -140,4 +147,34 @@ export const useMergeStageStyles = makeStyles((theme: any) => ({
       color: 'white',
     },
   }),
+}));
+
+export const useRemovableQueueStyles = makeStyles((theme: any) => ({
+  root: {
+    display: 'grid',
+    padding: 10,
+    gridGap: '10px',
+    gridTemplateAreas: `"title "
+                        "items"`,
+    gridTemplateRows: 'max-content 1fr',
+    gridTemplateColumns: '1fr',
+  },
+  title: {
+    gridArea: 'title',
+    fontWeight: 600,
+    color: theme.palette.background[800],
+  },
+  items: {
+    gridArea: 'items',
+    overflow: 'auto',
+    display: 'grid',
+    gridAutoFlow: 'column',
+    gridColumnGap: '20px',
+  },
+  removableItem: {
+
+  },
+  removableItemCollectionName: {
+
+  },
 }));

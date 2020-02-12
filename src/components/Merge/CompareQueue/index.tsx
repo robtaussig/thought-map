@@ -9,6 +9,7 @@ interface CompareQueueProps {
   comparables: Comparable[];
   onClick: (index: number) => void;
   currentItemIndex: number;
+  mergable: boolean;
   onMerge: () => void;
 }
 
@@ -17,6 +18,7 @@ export const CompareQueue: FC<CompareQueueProps> = ({
   comparables,
   onClick,
   currentItemIndex,
+  mergable,
   onMerge,
 }) => {
   const classes = useCompareQueueStyles({});
@@ -30,7 +32,7 @@ export const CompareQueue: FC<CompareQueueProps> = ({
     <div className={classNames(classes.root, rootClassName)}>
       <h2 className={classes.title}>Comparables ({comparables.length})</h2>
       <ul className={classes.items}>
-        {comparables.length === 0 && (
+        {mergable && (
           <button className={classes.readyToMergeButton} onClick={onMerge}>
             Ready to merge!
           </button>

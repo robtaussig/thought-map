@@ -3,6 +3,7 @@ import { Deletion } from '../../store/rxdb/schemas/deletion';
 export interface CurrentItem {
   compareIndex: number;
   reviewIndex: number;
+  removableIndex: number;
 }
 
 export interface Doc {
@@ -46,11 +47,12 @@ export interface Item {
 
 export type Comparable = [Item, Item];
 
+export type Removable = [Deletion, Doc];
+
 export interface MergeResults {
   itemsToAdd: Item[];
+  deletionsToAdd: Deletion[];
+  itemsToRemove: Item[];
   comparables: Comparable[];
-  removables: {
-    left: Deletion[];
-    right: Deletion[];
-  };
+  removables:  Removable[];
 }

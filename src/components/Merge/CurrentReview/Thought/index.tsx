@@ -13,7 +13,7 @@ interface ThoughtProps {
 }
 
 const MOCK_PLAN = {
-  name: 'Mock Plan',
+  name: 'Unknown Plan',
 };
 
 export const Thought: FC<ThoughtProps> = ({

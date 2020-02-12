@@ -243,8 +243,8 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
         />
         <CheckBox
           classes={classes}
-          value={'Enable backup on demand'}
-          label={'Enable backup on demand'}
+          value={'Enable direct pushing to pool'}
+          label={'Enable direct pushing to pool'}
           isChecked={enableBackupOnDemand}
           onChange={handleChangeUseAutomaticBackups}
           tooltip={'If enabled, long pressing thought-creation button encrypts and backs up your data to a remote server'}

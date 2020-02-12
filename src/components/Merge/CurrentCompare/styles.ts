@@ -32,7 +32,7 @@ export const useStyles = makeStyles((theme: any) => ({
     gridTemplateAreas: `"type left right custom"`,
     gridTemplateRows: 'max-content',
     gridTemplateColumns: '80px 1fr 1fr 20px',
-    margin: '10px 20px',
+    margin: '10px 0px',
     '& > *': {
       fontWeight: 600,
     },
