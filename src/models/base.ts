@@ -1,5 +1,6 @@
 import uuidv4 from 'uuid/v4';
 import { RxDatabase, RxDocumentTypeWithRev } from 'rxdb';
+import { Deletion } from '../store/rxdb/schemas/deletion';
 
 const toJSON = (res: RxDocumentTypeWithRev<any>) => res.toJSON();
 
@@ -8,7 +9,7 @@ interface Sortable {
   updated?: number;
 }
 
-interface Deletion {
+interface AssociationsToDelete {
   tableName: string;
   key: string;
 }
@@ -54,7 +55,11 @@ export default class Base {
   static delete = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
     const query = db[tableName].find({ id: { $eq: id } });
     const response = await query.remove();
-
+    await db['deletion'].insert({
+      id: uuidv4(),
+      collectionName: tableName,
+      itemId: id,
+    } as Deletion);
     return response;
   }
 
@@ -68,7 +73,7 @@ export default class Base {
     return results ? results.map((result: any) => result.toJSON()) : null;
   }
 
-  static deleteAssociations = async (db: RxDatabase, deletions: Deletion[], id: string): Promise<any> => {
+  static deleteAssociations = async (db: RxDatabase, deletions: AssociationsToDelete[], id: string): Promise<any> => {
     return Promise.all(deletions.map(({ tableName, key }) => {
       const query = db[tableName].find({ [key]: { $eq: id } });
       return query.remove();

@@ -10,6 +10,7 @@ import setting from './setting';
 import status from './status';
 import backup from './backup';
 import customObject from './customObject';
+import deletion from './deletion';
 
 type SchemaTuple = [string, RxJsonSchema, RxCollectionCreator?];
 
@@ -25,7 +26,9 @@ export default [
   status,
   backup,
   customObject,
+  deletion,
 ] as [
+  SchemaTuple,
   SchemaTuple,
   SchemaTuple,
   SchemaTuple,
