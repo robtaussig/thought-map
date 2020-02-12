@@ -8,6 +8,7 @@ import {
   Comparable,
   MergeResults,
 } from './types';
+import { Deletion } from '../../store/rxdb/schemas/deletion';
 import { COLLECTIONS_TO_IGNORE } from './CurrentCompare/constants';
 
 export const merge = (left: Dump, right: Dump): MergeResults => {
@@ -18,6 +19,7 @@ export const merge = (left: Dump, right: Dump): MergeResults => {
   const leftDocMap: { [docId: string]: Doc } = {};
   const itemsToAdd: Item[] = [];
   const comparables: Comparable[] = [];
+  const [uniqueLeftDeletions, uniqueRightDeletions]: [Deletion[], Deletion[]] = getDeletionSets(left, right);
   
   left.collections.filter(({ name }) => !COLLECTIONS_TO_IGNORE.includes(name)).forEach(collection => {
     leftVisited[collection.name] = new Set<string>();
@@ -84,6 +86,10 @@ export const merge = (left: Dump, right: Dump): MergeResults => {
   return {
     itemsToAdd,
     comparables,
+    removables: {
+      left: uniqueLeftDeletions,
+      right: uniqueRightDeletions,
+    },
   };
 };
 
@@ -93,3 +99,8 @@ export const getBackupIdFromHistory = (history: any): string => {
 
   return null;
 };
+
+const getDeletionSets = (left: Dump, right: Dump): [Deletion[], Deletion[]] => {
+  //CONTINUE
+  return [[], []];
+}

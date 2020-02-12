@@ -8,6 +8,10 @@ export const mergeResultsSelector: Selector<RootState, MergeResults> = state => 
 const initialState: MergeResults = {
   itemsToAdd: [],
   comparables: [],
+  removables: {
+    left: [],
+    right: [],
+  },
 };
 
 const mergeResults = createSlice({

@@ -82,11 +82,9 @@ export const Backups: FC = () => {
         const decoded = decodeURIComponent(decrypted).slice('data:application/json;charset=utf-8,'.length);
         const parsed = JSON.parse(decoded);
         const dump: Dump = await db.dump();
-        const { itemsToAdd, comparables } = merge(dump, parsed);
+        const mergeResults = merge(dump, parsed);
 
-        dispatch(setMergeResults({
-          itemsToAdd, comparables
-        }));
+        dispatch(setMergeResults(mergeResults));
 
         history.push(`/merge/${backupId}?v=${response.version}`);
       }

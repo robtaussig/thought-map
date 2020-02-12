@@ -1,3 +1,5 @@
+import { Deletion } from '../../store/rxdb/schemas/deletion';
+
 export interface CurrentItem {
   compareIndex: number;
   reviewIndex: number;
@@ -47,4 +49,8 @@ export type Comparable = [Item, Item];
 export interface MergeResults {
   itemsToAdd: Item[];
   comparables: Comparable[];
+  removables: {
+    left: Deletion[];
+    right: Deletion[];
+  };
 }
