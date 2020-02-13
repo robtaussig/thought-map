@@ -53,6 +53,15 @@ const useStyles = makeStyles<CustomTheme>((theme: CustomTheme) => ({
   }),
 }));
 
+const clearCaches = async (): Promise<boolean[]> => {
+  const cacheNames = await caches.keys();
+  return Promise.all(
+    cacheNames.map(cacheName => {
+      return caches.delete(cacheName);
+    })
+  );
+}
+
 export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
@@ -60,16 +69,17 @@ export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
   const settings = useSelector(settingSelector);
   const customTheme = useSelector(customThemeSelector);
   const classes = useStyles(customTheme);
-  const handleCheckUpdates = () => {
+  const handleCheckUpdates = async () => {
+    await clearCaches();
     localStorage.setItem(LOCAL_STORAGE_LAST_VERSION_KEY, (window as any).APP_VERSION);
     localStorage.setItem(LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY, '1');
-    location.reload();
+    location.reload(true);
   };
 
   useEffect(() => {
     if (localStorage.getItem(LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY) === '1') {
       localStorage.setItem(LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY, '2');
-      location.reload();
+      location.reload(true);
     } else if (localStorage.getItem(LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY) === '2') {
       localStorage.setItem(LOCAL_STORAGE_UPDATE_CHECK_COUNT_KEY, '0');
       if (localStorage.getItem(LOCAL_STORAGE_LAST_VERSION_KEY) === (window as any).APP_VERSION) {

@@ -37,7 +37,7 @@ export const jsonDump = async (db: RxDatabase): Promise<string> => {
   return dataUri;
 };
 
-export const download = (data: string, fileName: string = 'data') => {
+export const download = (data: string, fileName: string = 'thoughtmap_backup') => {
   const exportFileDefaultName = `${fileName}.json`;
   const linkElement = document.createElement('a');
   linkElement.setAttribute('href', data);
