@@ -7,7 +7,6 @@ import useApp from '../../hooks/useApp';
 import { getIdFromUrl, getSearchParam } from '../../lib/util';
 import { Notification } from '../../types';
 import { planSelector } from '../../reducers/plans';
-import { backupSelector } from '../../reducers/backups';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { useSelector } from 'react-redux';
 
@@ -22,7 +21,6 @@ export const Home: FC<HomeProps> = ({ classes, statusOptions, setLastNotificatio
   const { history } = useApp();
   const plans = useSelector(planSelector);
   const thoughts = useSelector(thoughtSelector);
-  const backups = useSelector(backupSelector);
   const planId = getIdFromUrl(history, 'plan');
   const from = getSearchParam(history, 'from');
   const plan = plans.find(plan => plan.id === planId);

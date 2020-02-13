@@ -57,7 +57,7 @@ export const Input: FC<InputProps> = React.memo(({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const suggestions = autoSuggest ? useAutoSuggest(
-    value, autoSuggest
+    value, autoSuggest, null, 10,
   ) : [];
   
   useEffect(() => {
