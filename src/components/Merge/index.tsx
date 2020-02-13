@@ -115,6 +115,8 @@ export const Merge: FC = () => {
           rootClassName={classes.currentRemovable}
           removable={removables[currentItem.removableIndex]}
           onPick={handlePickRemovable}
+          thoughts={thoughts}
+          plans={plans}
         />
       )}
       <CompareQueue

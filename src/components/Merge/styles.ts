@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme: any) => ({
                         "remove"
                         "stage"
                         "."`,
-    gridTemplateRows: '1fr 100px 100px 100px 95px',
+    gridTemplateRows: 'calc(100% - 395px) 100px 100px 100px 95px',
     gridTemplateColumns: '1fr',
     '& > *': {
       boxShadow: '0px 0px 5px 2px black',
