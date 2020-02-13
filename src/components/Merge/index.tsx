@@ -16,10 +16,10 @@ import CompareQueue from './CompareQueue';
 import RemovableQueue from './RemovableQueue';
 import CurrentReview from './CurrentReview';
 import MergeStage from './MergeStage';
+import UpToDate from './UpToDate';
 import CurrentRemovable from './CurrentRemovable';
 import { CurrentItem, Item } from './types';
 import { getBackupIdFromHistory } from './util';
-import { Deletion } from '../../store/rxdb/schemas/deletion';
 
 export const Merge: FC = () => {
   const classes = useStyles({});
@@ -93,9 +93,7 @@ export const Merge: FC = () => {
   const upToDate = itemsToAddWithoutStatuses.length + comparables.length + removables.length === 0;
 
   if (upToDate) return (
-    <div className={classes.upToDate}>
-      Up to date!
-    </div>
+    <UpToDate classes={classes}/>
   );
 
   return (
