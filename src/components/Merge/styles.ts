@@ -20,6 +20,14 @@ export const useStyles = makeStyles((theme: any) => ({
       backgroundColor: theme.palette.background[100],
     }
   }),
+  upToDate: (params: any) => ({
+    height: '100%',
+    width: '100%',
+    ...theme.defaults.centered,
+    fontWeight: 600,
+    fontSize: 40,
+    color: theme.palette.secondary[700],
+  }),
   currentCompare: (params: any) => ({
     gridArea: 'compare',
   }),

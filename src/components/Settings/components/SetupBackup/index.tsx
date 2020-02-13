@@ -46,13 +46,13 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     
-    const nextVersion = 1;
+    const nextVersion = 0;
     await backupActions.createBackup(db, {
       backupId: id,
       password,
       privateKey,
       version: nextVersion,
-      isActive: true,
+      isActive: false,
     });
 
     history.push('/backups');

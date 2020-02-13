@@ -90,6 +90,14 @@ export const Merge: FC = () => {
     }
   };
 
+  const upToDate = itemsToAddWithoutStatuses.length + comparables.length + removables.length === 0;
+
+  if (upToDate) return (
+    <div className={classes.upToDate}>
+      Up to date!
+    </div>
+  );
+
   return (
     <div className={classes.root}>
       {itemsToAddWithoutStatuses[currentItem.reviewIndex] && (
