@@ -83,7 +83,7 @@ export const Backup: FC<BackupProps> = ({
         push: true,
       })}
       onClick={onPush(backup)}
-      disabled={isUpdating}
+      disabled={isUpdating || !isUpToDate}
     >
       Push
     </button>
