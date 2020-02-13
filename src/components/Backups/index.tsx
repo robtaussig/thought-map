@@ -81,8 +81,9 @@ export const Backups: FC = () => {
 
         const decoded = decodeURIComponent(decrypted).slice('data:application/json;charset=utf-8,'.length);
         const parsed = JSON.parse(decoded);
-        const dump: Dump = await db.dump();
-        const mergeResults = merge(dump, parsed);
+        //Hack after upgrading rxdb
+        const dump: unknown = await db.dump();
+        const mergeResults = merge(dump as Dump, parsed);
 
         dispatch(setMergeResults(mergeResults));
 

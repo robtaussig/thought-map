@@ -49,8 +49,8 @@ export const UpdateAvailable: FC<UpdateAvailableProps> = ({ activeBackup, latest
 
         const decoded = decodeURIComponent(decrypted).slice('data:application/json;charset=utf-8,'.length);
         const parsed = JSON.parse(decoded);
-        const dump: Dump = await db.dump();
-        const mergeResults = merge(dump, parsed);
+        const dump: unknown = await db.dump();
+        const mergeResults = merge(dump as Dump, parsed);
         stopLoading();
         dispatch(setMergeResults(mergeResults));
         history.push(`/merge/${backupId}?v=${response.version}`);
