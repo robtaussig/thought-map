@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import ManagePhotos from './manage-photos';
 import CustomObjects from './CustomObjects';
-import AppConfiguration from './app-configuration';
+import AppConfiguration from './AppConfiguration';
 import Theme from './theme';
 import Data from './Data';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';

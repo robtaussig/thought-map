@@ -1,99 +1,33 @@
 import React, { FC, useState, Fragment, useCallback, useRef } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
 import Close from '@material-ui/icons/Close';
-import CircleButton from '../../../components/General/CircleButton';
-import CheckBox from '../../../components/General/CheckBox';
+import CircleButton from '../../../../components/General/CircleButton';
+import CheckBox from '../../../../components/General/CheckBox';
 import classNames from 'classnames';
-import { useLoadedDB } from '../../../hooks/useDB';
-import useModal from '../../../hooks/useModal';
+import { useLoadedDB } from '../../../../hooks/useDB';
+import useModal from '../../../../hooks/useModal';
 import { useSelector } from 'react-redux';
-import { SettingState } from '../../../types';
-import { settings as settingsActions } from '../../../actions';
-import SetupBackup from '../components/SetupBackup';
-import { backupSelector } from '../../../reducers/backups';
+import { SettingState } from '../../../../types';
+import { settings as settingsActions } from '../../../../actions';
+import SetupBackup from '../../components/SetupBackup';
+import { backupSelector } from '../../../../reducers/backups';
+import { useStyles } from './style';
+import {
+  AUTOSUGGEST_TOOLTIP_TEXT,
+  DISABLE_TIP_TOOLTIP_TEXT,
+  DISABLE_REPORT_BUGS_TOOLTIP_TEXT,
+  AUTO_CREATE_CALENDAR_TOOLTIP_TEXT,
+  PUSH_NOTIFICATIONS_TOOLTIP_TEXT,
+  DIRECT_PUSH_TOOLTIP_TEXT,
+  LOCATION_TOOLTIP_TEXT,
+} from './constants';
+import { Side } from './types';
 
 interface AppConfigurationProps {
-  classes: any;
   settings: SettingState;
 }
 
-enum Side {
-  TOP = 'left',
-  MIDDLE = 'middle',
-}
-
-const styles = (theme: any): StyleRules => ({
-  container: () => ({
-    position: 'fixed',
-    height: '100%',
-    left: 0,
-    right: 0,
-    top: 0,
-    backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[500],
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    transition: 'all 0.2s ease-out',
-    zIndex: 100,
-    '&.hidden': {
-      '& #submit': {
-        display: 'none',
-      }
-    }
-  }),
-  header: () => ({
-    flex: '0 0 80px',
-    backgroundColor: theme.palette.primary[500],
-    boxShadow: `0px 0px 5px 0px black`,
-    width: '100%',
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    fontSize: 24,
-  }),
-  button: () => ({
-    border: `2px solid ${theme.palette.secondary[0]}`,
-    padding: '3px 0',
-    marginTop: 40,
-    width: '70%',
-    borderRadius: '3px',
-    backgroundColor: theme.palette.secondary[500],
-    color: theme.palette.background[0],
-    '&:active': {
-      backgroundColor: theme.palette.background[700],
-      boxShadow: 'none!important',
-    },
-    '&:disabled': {
-      backgroundColor: theme.palette.background[300],
-      color: theme.palette.background[0],
-    },
-    '&:not(:disabled)': {
-      boxShadow: `0px 0px 5px 2px black`,
-    }
-  }),
-  circleButton: () => ({
-    ...theme.defaults.circleButton,
-    backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
-    '&#submit': {
-      right: 10,
-      bottom: 10,
-    },
-  }),
-  checkboxLabel: () => ({
-    marginTop: 40,
-    width: '70%',
-    padding: '3px 0',
-    display: 'flex',
-    alignItems: 'center',
-    height: 30,
-    color: theme.palette.background[0],
-    '& > input': {
-      marginRight: 5,
-    }
-  }),
-});
-
-export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings }) => {
+export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
+  const classes = useStyles({});
   const [side, setSide] = useState<Side>(Side.TOP);
   const rootRef = useRef(null);
   const { db } = useLoadedDB();
@@ -168,6 +102,13 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
     }
   }, []);
 
+  const handleChangePropagateUpdates = useCallback(e => {
+    settingsActions.editSetting(db, {
+      field: 'propagateUpdates',
+      value: e.target.checked,
+    });
+  }, []);
+
   const handleChangeUseAutomaticBackups = useCallback(e => {
     settingsActions.editSetting(db, {
       field: 'enableBackupOnDemand',
@@ -188,6 +129,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
   const usePushNotifications = Boolean(settings && settings.usePushNotifications);
   const autoCreateCalendarEvent = Boolean(settings && settings.autoCreateCalendarEvent);
   const enableBackupOnDemand = Boolean(settings && settings.enableBackupOnDemand);
+  const propagateUpdates = Boolean(settings && settings.propagateUpdates);
 
   return (
     <Fragment>
@@ -207,7 +149,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Disable Tips'}
           isChecked={disableTips}
           onChange={handleChangeDisableTips}
-          tooltip={'By default, you will periodically receive context-based suggestions pointing to available features'}
+          tooltip={DISABLE_TIP_TOOLTIP_TEXT}
         />
         <CheckBox
           classes={classes}
@@ -215,7 +157,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Report Bugs'}
           isChecked={reportBugs}
           onChange={handleChangeReportBugs}
-          tooltip={'Agree to automatically submit bug reports on caught errors that will help the developers patch any related issues on future releases.'}
+          tooltip={DISABLE_REPORT_BUGS_TOOLTIP_TEXT}
         />
         <CheckBox
           classes={classes}
@@ -223,7 +165,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Use AutoSuggest'}
           isChecked={useAutoSuggest}
           onChange={handleChangeUseAutoSuggest}
-          tooltip={'If enabled, certain inputs will produce suggestions that draw from previous entries. Suggestions will be a combination of word completions and word sequences, and will be displayed as an overlay. This is different from any browser/device-based auto-suggestions which don\'t necessarily consider context.'}
+          tooltip={AUTOSUGGEST_TOOLTIP_TEXT}
         />
         <CheckBox
           classes={classes}
@@ -231,7 +173,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Automatically create calendar events'}
           isChecked={autoCreateCalendarEvent}
           onChange={handleChangeAutoCreateCalendarEvent}
-          tooltip={'If enabled, calendar events will be created automatically whenever a thought\'s date/time is modified'}
+          tooltip={AUTO_CREATE_CALENDAR_TOOLTIP_TEXT}
         />
         <CheckBox
           classes={classes}
@@ -239,7 +181,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Enable Push Notifications'}
           isChecked={usePushNotifications}
           onChange={handleChangeUsePushNotifications}
-          tooltip={'In order to use reminders and other related features, push notifications must be enabled'}
+          tooltip={PUSH_NOTIFICATIONS_TOOLTIP_TEXT}
         />
         <CheckBox
           classes={classes}
@@ -247,7 +189,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Enable direct pushing to pool'}
           isChecked={enableBackupOnDemand}
           onChange={handleChangeUseAutomaticBackups}
-          tooltip={'If enabled, long pressing thought-creation button encrypts and backs up your data to a remote server'}
+          tooltip={DIRECT_PUSH_TOOLTIP_TEXT}
         />
         {'geolocation' in navigator && <CheckBox
           classes={classes}
@@ -255,7 +197,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
           label={'Use Location'}
           isChecked={useLocation}
           onChange={handleChangeUseLocation}
-          tooltip={'If enabled, and permission to use geolocation granted, your location will be saved along with updates to thought statuses. This will allow for a more comprehensive context behind thought transitions.'}
+          tooltip={LOCATION_TOOLTIP_TEXT}
         />}
         <CircleButton classes={classes} id={'submit'} onClick={handleClickClose} label={'Submit'} Icon={Close} />
       </div>
@@ -263,4 +205,4 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ classes, settings 
   );
 };
 
-export default withStyles(styles)(AppConfiguration);
+export default AppConfiguration;

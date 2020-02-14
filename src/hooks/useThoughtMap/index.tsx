@@ -57,38 +57,42 @@ export const useThoughtMap = (thoughtId: string) => {
   }
 
   useEffect(() => {
-    const update = async () => {
-      const newThoughtIds = thoughts
-        .filter(hasNotVisited)
-        .map(visitAndGetId);
-
-      const thoughtMap = await getInstance();
-      if (newThoughtIds.length > 0) {
-        await thoughtMap.addThoughts(newThoughtIds);
+    if (thoughtId) {
+      const update = async () => {
+        const newThoughtIds = thoughts
+          .filter(hasNotVisited)
+          .map(visitAndGetId);
+  
+        const thoughtMap = await getInstance();
+        if (newThoughtIds.length > 0) {
+          await thoughtMap.addThoughts(newThoughtIds);
+        }
+  
+        updateState();
       }
-
-      updateState();
+  
+      update();
     }
-
-    update();
   }, [thoughts, thoughtId]);
   
   useEffect(() => {
-    const update = async () => {
-
-      const newConnectionIds = Object.values(connections)
-        .filter(hasNotVisited)
-        .map(visitAndGetFromTo);
-
-      const thoughtMap = await getInstance();
-
-      if (newConnectionIds.length > 0) {
-        await thoughtMap.addConnections(newConnectionIds);
+    if (thoughtId) {
+      const update = async () => {
+  
+        const newConnectionIds = Object.values(connections)
+          .filter(hasNotVisited)
+          .map(visitAndGetFromTo);
+  
+        const thoughtMap = await getInstance();
+  
+        if (newConnectionIds.length > 0) {
+          await thoughtMap.addConnections(newConnectionIds);
+        }
+        updateState();
       }
-      updateState();
+  
+      update();
     }
-
-    update();
   }, [connections, thoughtId]);
 
   return tree;
