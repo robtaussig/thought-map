@@ -1,8 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, CSSProperties } from 'react';
 import {
   StatusUpdate
 } from '../types';
-import { CSSProperties } from '@material-ui/styles';
 import classNames from 'classnames';
 import useApp from '../../../hooks/useApp';
 import useLongPress from '../../../hooks/useLongPress';

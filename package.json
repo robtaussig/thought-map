@@ -5,24 +5,8 @@
   "main": "src/index.js",
   "babel": {
     "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ],
+      "@babel/preset-env",
       "@babel/preset-react"
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-class-properties",
-      [
-        "@babel/plugin-transform-runtime",
-        {
-          "regenerator": true
-        }
-      ]
     ]
   },
   "jest": {
@@ -77,6 +61,8 @@
     "@types/react-test-renderer": "^16.9.0",
     "@types/uuid": "^3.4.5",
     "babel-jest": "^24.8.0",
+    "concurrently": "^5.3.0",
+    "cross-env": "^7.0.2",
     "jest": "^24.8.0",
     "parcel-bundler": "^1.12.4",
     "react-test-renderer": "^16.12.0",
@@ -86,8 +72,8 @@
   },
   "scripts": {
     "cleanup": "rm -rf .cache dist",
-    "test": "$(npm bin)/jest",
-    "build": "$(npm bin)/jest && $(npm bin)/parcel build ./src/public/index.html --no-source-maps && cp ./src/public/_redirects ./dist",
-    "start": "npm run cleanup && $(npm bin)/tsc --noEmit --watch & $(npm bin)/parcel ./src/public/index.html"
+    "test": "cross-env node_modules/.bin/jest",
+    "build": "cross-env node_modules/.bin/parcel build ./src/index.html --no-source-maps && cp ./src/public/_redirects ./dist",
+    "start": "concurrently \"cross-env node_modules/.bin/tsc --noEmit --watch\" \"cross-env node_modules/.bin/parcel ./src/public/index.html\""
   }
 }

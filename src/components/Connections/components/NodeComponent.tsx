@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-import { CSSProperties } from '@material-ui/styles';
+import React, { FC, CSSProperties } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import useApp from '../../../hooks/useApp';

@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import { CSSProperties } from '@material-ui/styles';
+import { Component, CSSProperties } from 'react';
 
 export interface Options {
   style?: CSSProperties;

@@ -1,5 +1,5 @@
-import React, { FC, useMemo } from 'react';
-import { withStyles, StyleRules, CSSProperties } from '@material-ui/styles';
+import React, { FC, useMemo, CSSProperties } from 'react';
+import { withStyles, StyleRules } from '@material-ui/styles';
 import { getIdFromUrl } from '../../lib/util';
 import useApp from '../../hooks/useApp';
 import ThoughtGroup from './components/thought-group';

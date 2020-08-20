@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
 import { RootState } from './';
 import { setSettings } from './settings';
-import { CSSProperties } from '@material-ui/styles';
+import { CSSProperties } from 'react';
 
 export const SHADE_OPTIONS: [Shades, number][] = [
   [0, 240],

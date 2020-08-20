@@ -1,6 +1,5 @@
 import './style.scss';
-import { MutableRefObject, useCallback, useMemo, useRef } from 'react';
-import { CSSProperties } from '@material-ui/styles';
+import { CSSProperties, MutableRefObject, useCallback, useMemo, useRef } from 'react';
 
 type SetLoading = (text?: string) => void;
 type StopLoading = () => void;
