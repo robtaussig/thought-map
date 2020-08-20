@@ -52,8 +52,6 @@ export const NodeComponent: FC<NodeComponentProps> = ({
     justifyContent: 'flex-end',
     alignItems: 'center',
     gridRow: y + 1,
-    borderBottom: '1px solid #ffffff29',
-    borderStyle: 'dotted',
   };
 
   if (titleToLeft) {
