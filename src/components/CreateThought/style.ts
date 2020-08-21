@@ -76,11 +76,12 @@ export const useBulkStyles = makeStyles((theme: any) => ({
     width: '100%',
     height: 300,
     gridGap: '15px',
-    gridTemplateAreas: `"header header header"
-                        "input input input"
-                        "bulk-list-options save-button submit-button"`,
+    gridTemplateAreas: `"header header"
+                        "input input"
+                        "bulk-list-options bulk-list-options"
+                        "save-button submit-button"`,
     gridTemplateColumns: '1fr max-content',
-    gridTemplateRows: 'max-content 1fr max-content',
+    gridTemplateRows: 'max-content 1fr max-content max-content',
   },
   header: {
     fontWeight: 600,
