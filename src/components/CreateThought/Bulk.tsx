@@ -121,6 +121,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
             value={savedListName}
             placeholder={'Enter List Name'}
             onChange={e => setSavedListName(e.target.value)}
+            autoFocus
           />
           <button className={classes.saveButton} disabled={savedListName === ''} onClick={handleSave}>
             Submit name
