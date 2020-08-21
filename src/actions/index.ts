@@ -9,6 +9,7 @@ import Settings from '../models/settings';
 import Statuses from '../models/statuses';
 import Backups from '../models/backups';
 import CustomObjects from '../models/customObjects';
+import BulkLists from '../models/bulkLists';
 import Deletions from '../models/deletions';
 
 export const thoughts = {
@@ -106,4 +107,12 @@ export const deletions = {
   createDeletion: Deletions.add,
   deleteDeletion: Deletions.delete,
   editDeletion: Deletions.update,
+};
+
+export const bulkLists = {
+  getBulkLists: BulkLists.fetchAll,
+  getBulkList: BulkLists.fetch,
+  createBulkList: BulkLists.add,
+  deleteBulkList: BulkLists.delete,
+  editBulkList: BulkLists.update,
 };

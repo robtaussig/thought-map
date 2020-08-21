@@ -6,6 +6,7 @@ import { handlePictureChange } from './pictures';
 import { handleSettingChange } from './settings';
 import { handleTagChange } from './tags';
 import { handlePlanChange } from './plans';
+import { handleBulkListChange } from './bulkLists';
 import { handleTemplateChange } from './templates';
 import { handleStatusChange } from './statuses';
 import { handleCustomObjectChange } from './customObjects';
@@ -102,6 +103,8 @@ export const subscribeToChanges = (
     db.backup.$.subscribe(handleBackupChange(dispatch, setLastNotification)),
     // @ts-ignore
     db.custom_object.$.subscribe(handleCustomObjectChange(dispatch, setLastNotification)),
+    // @ts-ignore
+    db.bulk_list.$.subscribe(handleBulkListChange(dispatch, setLastNotification)),
     //@ts-ignore
     db.status.$.subscribe(handleStatusChange(
       dispatch,

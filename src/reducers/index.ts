@@ -3,6 +3,7 @@ import connections from './connections';
 import notes from './notes';
 import pictures from './pictures';
 import plans from './plans';
+import bulkLists from './bulkLists';
 import settings from './settings';
 import sortFilterSettings from './sortFilterSettings';
 import statuses from './statuses';
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
   typeOptions,
   tagOptions,
   statusOptions,
+  bulkLists,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

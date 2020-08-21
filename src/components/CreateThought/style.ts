@@ -76,9 +76,9 @@ export const useBulkStyles = makeStyles((theme: any) => ({
     width: '100%',
     height: 300,
     gridGap: '15px',
-    gridTemplateAreas: `"header header"
-                        "input input"
-                        ". submit-button"`,
+    gridTemplateAreas: `"header header header"
+                        "input input input"
+                        "bulk-list-options save-button submit-button"`,
     gridTemplateColumns: '1fr max-content',
     gridTemplateRows: 'max-content 1fr max-content',
   },
@@ -93,6 +93,25 @@ export const useBulkStyles = makeStyles((theme: any) => ({
     '& textarea': {
       height: '100%',
       width: '100%',
+    },
+  },
+  savedListInput: {
+    gridArea: 'bulk-list-options',
+  },
+  bulkListOptions: {
+    gridArea: 'bulk-list-options',
+  },
+  saveButton: {
+    gridArea: 'save-button',
+    cursor: 'pointer',
+    fontWeight: 600,
+    color: theme.palette.secondary[700],
+    border: `1px solid ${theme.palette.secondary[700]}`,
+    padding: '5px 12px',
+    borderRadius: '5px',
+    '&:disabled': {
+      color: 'gray',
+      border: '1px solid gray',
     },
   },
   submitButton: {

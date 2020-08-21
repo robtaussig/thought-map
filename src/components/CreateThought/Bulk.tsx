@@ -7,8 +7,10 @@ import { createWholeThought } from '../../actions/complex';
 import { getIdFromUrl } from '../../lib/util';
 import { useSelector } from 'react-redux';
 import { planSelector } from '../../reducers/plans';
+import { bulkListSelector } from '../../reducers/bulkLists';
 import { useBulkStyles } from './style';
-import { connections as connectionsActions } from '../../actions';
+import { connections as connectionsActions, bulkLists as bulkListsActions } from '../../actions';
+
 interface CreateBulkThoughtProps {
   onClose: () => void;
 }
@@ -20,7 +22,9 @@ const stripLeadingDashes = (title: string) => title.replace(depthRegex,'');
 export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
   const classes = useBulkStyles({});
   const [inputValue, setInputValue] = useState<string>('');
+  const [savedListName, setSavedListName] = useState<string>(null);
   const plans = useSelector(planSelector);
+  const bulkLists = useSelector(bulkListSelector);
   const { db } = useLoadedDB();
   const { history } = useApp();
   const planId = getIdFromUrl(history, 'plan');
@@ -29,6 +33,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const indexMap: { [idx: number]: number } = {};
+    onClose();
     const thoughtTitles = inputValue
       .split('\n')
       .filter(Boolean)
@@ -46,6 +51,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
         }
       }
     });
+    (window as any).blockNotifications = true;
 
     const thoughts = await Promise.all(thoughtTitles.map(title => createWholeThought(db, {
       ...DEFAULT_STATE,
@@ -61,8 +67,25 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
           to: thought.id,
         });
       }
-    }))
-    onClose();
+    }));
+
+    (window as any).blockNotifications = false;
+  };
+
+  const handleSave = async () => {
+    await bulkListsActions.createBulkList(db, {
+      list: inputValue,
+      name: savedListName,
+    });
+
+    setSavedListName(null);
+  };
+
+  const handleSelectBulkList = (selected: any) => {
+    const bulkList = bulkLists.find(bulkList => bulkList.id === selected.target.value);
+    if (bulkList) {
+      setInputValue(bulkList.list);
+    }
   };
 
   return (
@@ -76,6 +99,34 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
           autoFocus
         />
       </form>
+      {savedListName === null ? (
+        <>
+          <select className={classes.bulkListOptions} onChange={handleSelectBulkList}>
+            <option value={null} label={'Bulk Lists'}/>
+            {bulkLists.map(list => {
+              return (
+                <option key={`${list.id}-list`} value={list.id} label={list.name}/>
+              );
+            })}
+          </select>
+          <button className={classes.saveButton} disabled={inputValue === ''} onClick={() => setSavedListName('')}>
+            Save List
+          </button>
+        </>
+      ): (
+        <>
+          <input
+            className={classes.savedListInput}
+            type={'text'}
+            value={savedListName}
+            placeholder={'Enter List Name'}
+            onChange={e => setSavedListName(e.target.value)}
+          />
+          <button className={classes.saveButton} disabled={savedListName === ''} onClick={handleSave}>
+            Submit name
+          </button>
+        </>
+      )}
       <button className={classes.submitButton} disabled={inputValue === ''} onClick={handleSubmit}>
         Submit
       </button>

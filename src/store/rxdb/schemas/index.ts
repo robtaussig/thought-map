@@ -11,6 +11,7 @@ import status from './status';
 import backup from './backup';
 import customObject from './customObject';
 import deletion from './deletion';
+import bulkList from './bulkList';
 
 type SchemaTuple = [string, RxJsonSchema, RxCollectionCreator?];
 
@@ -27,7 +28,9 @@ export default [
   backup,
   customObject,
   deletion,
+  bulkList,
 ] as [
+  SchemaTuple,
   SchemaTuple,
   SchemaTuple,
   SchemaTuple,
