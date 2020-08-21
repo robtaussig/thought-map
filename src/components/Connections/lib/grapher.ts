@@ -58,8 +58,8 @@ export default class Grapher {
     Object.entries(nodeMap).forEach(([fromId, { x, y, to }]) => {
       to.forEach(toId => {
         const toNode = nodeMap[toId];
-        const completed = thoughtsById[toId].status === 'completed';
-        const inProgress = !completed && thoughtsById[toId].status !== 'new';
+        const completed = thoughtsById[fromId].status === 'completed';
+        const inProgress = !completed && thoughtsById[fromId].status !== 'new';
 
         this.drawEdge([x, y], [toNode.x, toNode.y], maxX, maxY, canvas, completed, inProgress);
       });
