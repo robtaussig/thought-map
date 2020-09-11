@@ -75,36 +75,56 @@ export const useGoogleCalendar = (autoSignIn: boolean = true, config: Config = D
 
   useEffect(() => {
     if (autoSignIn) {
-      const init = async () => {
-        const [gapi, cleanup] = await loadScript().catch(setError);
-  
-        cleanupRef.current = cleanup;
-        gapiRef.current = gapi;
-  
-        await gapiRef.current.client.init(config).catch(setError);
-  
-        gapiRef.current.auth2.getAuthInstance().isSignedIn.listen(setSignedIn);
-  
-        const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
-        if (!isSignedIn) {
-          gapiRef.current.auth2.getAuthInstance().signIn();
-        }
-  
-        setSignedIn(isSignedIn);
-  
-        return true;
-      };
+      
       let unmounted = false;
       let timeout = setTimeout(() => {
         if (unmounted === false) setError(new Error('Connection timed out'));
       }, 5000);
       
-      init()
-        .then(() => clearTimeout(timeout))
-        .catch(err => {
+      if ((window as any).gapi) {
+        gapiRef.current = (window as any).gapi;
+        gapiRef.current.auth2.getAuthInstance().isSignedIn.listen((signedIn: boolean) => {
           clearTimeout(timeout);
-          if (unmounted === false) setError(err);
+          setSignedIn(signedIn);
         });
+    
+        const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
+        setSignedIn(isSignedIn);
+
+        if (!isSignedIn) {
+          gapiRef.current.auth2.getAuthInstance().signIn();
+        } else {
+          clearTimeout(timeout);
+        }
+  
+      } else {
+        const init = async () => {
+          const [gapi, cleanup] = await loadScript().catch(setError);
+    
+          cleanupRef.current = cleanup;
+          gapiRef.current = gapi;
+          
+          await gapiRef.current.client.init(config).catch(setError);
+    
+          gapiRef.current.auth2.getAuthInstance().isSignedIn.listen(setSignedIn);
+    
+          const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
+          setSignedIn(isSignedIn);
+        
+          if (!isSignedIn) {
+            gapiRef.current.auth2.getAuthInstance().signIn();
+          }
+          return true;
+        };
+
+        init()
+          .then(() => clearTimeout(timeout))
+          .catch(err => {
+            clearTimeout(timeout);
+            if (unmounted === false) setError(err);
+          });
+      }
+
   
       return () => {
         unmounted = true;
