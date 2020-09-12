@@ -25,10 +25,12 @@ export const Home: FC<HomeProps> = ({ classes, statusOptions, setLastNotificatio
   const from = getSearchParam(history, 'from');
   const plan = plans.find(plan => plan.id === planId);
   const planThoughts = useMemo(() => {
-    if (planId) {
-      return thoughts.filter(thought => thought.planId === planId);
+    if (planId === 'archive') {
+      return thoughts.filter(thought => thought.archived);
+    } else if (planId) {
+      return thoughts.filter(thought => !thought.archived && thought.planId === planId);
     } else {
-      return thoughts;
+      return thoughts.filter(thought => !thought.archived);
     }
   }, [planId, thoughts]);
 

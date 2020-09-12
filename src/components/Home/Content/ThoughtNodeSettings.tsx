@@ -81,6 +81,14 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
     });
   };
 
+  const handleClickArchive = () => {
+    onClose();
+    thoughtActions.editThought(db, {
+      ...thought,
+      archived: !thought.archived,
+    });
+  };
+
   const handleClickDelete = () => {
     openConfirmation('Are you sure you want to delete this thought?', () => {
       thoughtActions.deleteThought(db, thought.id);
@@ -117,6 +125,13 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
       <div className={classes.buttonWrapper}>
         <button className={classes.button} onClick={handleClickBump}>Bump</button>
         <Tooltip className={'tooltip'} text={BUMP_TOOLTIP_TEXT} />
+      </div>
+      <div className={classes.buttonWrapper}>
+        {thought.archived ? (
+          <button className={classes.button} onClick={handleClickArchive}>Unarchive</button>
+        ) : (
+          <button className={classes.button} onClick={handleClickArchive}>Archive</button>
+        )}
       </div>
       <div className={classes.buttonWrapper}>
         <button className={classes.button} onClick={handleClickStage}>Stage</button>

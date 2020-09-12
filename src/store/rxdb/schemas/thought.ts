@@ -11,6 +11,7 @@ export interface Thought {
   status?: string;
   sections: string;
   priority?: number;
+  archived?: boolean;
   recurring?: number;
   stagedOn?: string;
   description?: string;
@@ -24,7 +25,7 @@ export interface Thought {
 
 export default ['thought', {
   "title": "Thought schema",
-  "version": 7,
+  "version": 8,
   "description": "A Thought",
   "type": "object",
   "properties": {
@@ -56,6 +57,9 @@ export default ['thought', {
     },
     "goalPoints": {
       "type": "number",
+    },
+    "archived": {
+      "type": "boolean",
     },
     "status": {
       "type": "string",
@@ -117,6 +121,10 @@ export default ['thought', {
     },
     7: (oldThought: RxDocument<Thought>) => {
       oldThought.stagedOn = '';
+      return oldThought;
+    },
+    8: (oldThought: RxDocument<Thought>) => {
+      oldThought.archived = false;
       return oldThought;
     },
   },

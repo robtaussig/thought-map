@@ -80,6 +80,7 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
       return () => dispatch(emphasizeButton(null));
     }
   }, [thoughts.length]);
+  
   useEffect(() => {
     if (settings.didInit === true && settings.disableTips !== true) {
       if (
