@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import React, { FC, useState, useEffect, useRef, useMemo, createContext, useContext } from 'react';
 import DefaultConfig from "../../apiGoogleconfig.json";
 
 interface Config {
@@ -10,6 +10,7 @@ interface Config {
 
 export interface Actions {
   createEvent: (event: any, calendarId?: string) => any;
+  signIn: (config: Config) => void;
 }
 
 export interface Time {
@@ -67,71 +68,15 @@ const loadScript = async (): Promise<[any, () => void]> => {
   });
 };
 
-export const useGoogleCalendar = (autoSignIn: boolean = true, config: Config = DefaultConfig): [boolean, Actions, any] => {
+export type GoogleCalendarContextValue = [boolean, Actions, Error];
+
+const GoogleCalendarContext = createContext<GoogleCalendarContextValue>([false, null, null]);
+
+export const GoogleCalendarProvider: FC<any> = ({ children }) => {
   const [signedIn, setSignedIn] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
   const gapiRef = useRef<any>(null);
   const cleanupRef = useRef<() => void>(null);
-
-  useEffect(() => {
-    if (autoSignIn) {
-      
-      let unmounted = false;
-      let timeout = setTimeout(() => {
-        if (unmounted === false) setError(new Error('Connection timed out'));
-      }, 5000);
-      
-      if ((window as any).gapi) {
-        gapiRef.current = (window as any).gapi;
-        gapiRef.current.auth2.getAuthInstance().isSignedIn.listen((signedIn: boolean) => {
-          clearTimeout(timeout);
-          setSignedIn(signedIn);
-        });
-    
-        const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
-        setSignedIn(isSignedIn);
-
-        if (!isSignedIn) {
-          gapiRef.current.auth2.getAuthInstance().signIn();
-        } else {
-          clearTimeout(timeout);
-        }
-  
-      } else {
-        const init = async () => {
-          const [gapi, cleanup] = await loadScript().catch(setError);
-    
-          cleanupRef.current = cleanup;
-          gapiRef.current = gapi;
-          
-          await gapiRef.current.client.init(config).catch(setError);
-    
-          gapiRef.current.auth2.getAuthInstance().isSignedIn.listen(setSignedIn);
-    
-          const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
-          setSignedIn(isSignedIn);
-        
-          if (!isSignedIn) {
-            gapiRef.current.auth2.getAuthInstance().signIn();
-          }
-          return true;
-        };
-
-        init()
-          .then(() => clearTimeout(timeout))
-          .catch(err => {
-            clearTimeout(timeout);
-            if (unmounted === false) setError(err);
-          });
-      }
-
-  
-      return () => {
-        unmounted = true;
-        if (cleanupRef.current) cleanupRef.current();
-      };
-    }
-  }, [autoSignIn]);
 
   const actions: Actions = useMemo(() => {
 
@@ -142,10 +87,49 @@ export const useGoogleCalendar = (autoSignIn: boolean = true, config: Config = D
       });
     };
 
+    const signIn = async (config: Config = DefaultConfig) => {
+      const [gapi, cleanup] = await loadScript().catch(setError);
+  
+      cleanupRef.current = cleanup;
+      gapiRef.current = gapi;
+      
+      await gapiRef.current.client.init(config).catch(setError);
+
+      gapiRef.current.auth2.getAuthInstance().isSignedIn.listen(setSignedIn);
+
+      const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
+      setSignedIn(isSignedIn);
+    
+      gapiRef.current.auth2.getAuthInstance().signIn();
+      return true;
+    };
+  
     return {
       createEvent,
+      signIn,
     };
   }, []);
+
+  const contextValue: GoogleCalendarContextValue = useMemo(() => {
+    return [signedIn, actions, error];
+  }, [signedIn, error, actions]);
+
+  return (
+    <GoogleCalendarContext.Provider value={contextValue}>
+      {children}
+    </GoogleCalendarContext.Provider>
+  );
+};
+
+
+export const useGoogleCalendar = (autoSignIn: boolean = true, config: Config = DefaultConfig): [boolean, Actions, any] => {
+  const [signedIn, actions, error] = useContext(GoogleCalendarContext);
+  
+  useEffect(() => {
+    if (!signedIn && autoSignIn) {
+      actions.signIn(config);
+    }
+  }, [signedIn, autoSignIn, actions]);
 
   return [signedIn, actions, error];
 };

@@ -17,6 +17,7 @@ import Connections from '../components/Connections';
 import Div100vh from 'react-div-100vh';
 import History from '../components/History';
 import Home from '../components/Home';
+import { GoogleCalendarProvider } from '../hooks/useGoogleCalendar';
 import initializeApplication from '../store/init';
 import LeftButton from '../components/MainButtons/left';
 import Merge from '../components/Merge';
@@ -76,64 +77,66 @@ const App: FC<AppProps> = ({ history }) => {
   return (
     <AppContext.Provider value={appContext}>
       <DBProvider value={dbContext}>
-        <ModalProvider getContext={getModalContext}>
-          <Div100vh id={'app'} ref={rootRef} className={classes.root}>
-            <Notifications lastNotification={lastNotification} />
-            <LeftButton/>
-            <MiddleButton/>
-            <RightButton typeOptions={typeOptions}/>
-            <Switch>
-              <Route exact path={'/'}>
-                {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}
-              </Route>
-              <Route path={'/settings'}>
-                {dbReadyState && <Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>}
-              </Route>
-              <Route path={'/thought/:id/connections'}>
-                {dbReadyState && <Connections statusOptions={statusOptions}/>}
-              </Route>
-              <Route path={'/thought/:id/history'}>
-                {dbReadyState && <History statusOptions={statusOptions}/>}
-              </Route>
-              <Route path={'/plan/:id/timeline'}>
-                {dbReadyState && <Timeline/>}
-              </Route>
-              <Route path={'/plan/:id/thought/:id/history'}>
-                {dbReadyState && <History statusOptions={statusOptions}/>}
-              </Route>
-              <Route path={'/thought/:id'}>
-                {dbReadyState && <Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
-              </Route>
-              <Route path={'/plan/:id/thought/:thoughtId/connections'}>
-                {dbReadyState && <Connections statusOptions={statusOptions}/>}
-              </Route>
-              <Route path={'/plan/:id/thought/:thoughtId'}>
-                {dbReadyState && <Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
-              </Route>
-              <Route path={'/plan/:id/settings'}>
-                {dbReadyState && <Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>}
-              </Route>
-              <Route path={'/plan/:id'}>
-                {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}
-              </Route>
-              <Route path={'/stage'}>
-                {dbReadyState && <Stage/>}  
-              </Route>
-              <Route path={'/backups'}>
-                {dbReadyState && <Backups/>}
-              </Route>
-              <Route path={'/merge/:backupId'}>
-                {dbReadyState && <Merge/>}
-              </Route>
-              <Route path={'/process-merge/:backupId'}>
-                {dbReadyState && <ProcessMerge/>}
-              </Route>
-              <Route path={'/timeline'}>
-                {dbReadyState && <Timeline allPlans={true}/>}
-              </Route>
-            </Switch> 
-          </Div100vh>
-        </ModalProvider>
+        <GoogleCalendarProvider>
+          <ModalProvider getContext={getModalContext}>
+            <Div100vh id={'app'} ref={rootRef} className={classes.root}>
+              <Notifications lastNotification={lastNotification} />
+              <LeftButton/>
+              <MiddleButton/>
+              <RightButton typeOptions={typeOptions}/>
+              <Switch>
+                <Route exact path={'/'}>
+                  {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}
+                </Route>
+                <Route path={'/settings'}>
+                  {dbReadyState && <Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>}
+                </Route>
+                <Route path={'/thought/:id/connections'}>
+                  {dbReadyState && <Connections statusOptions={statusOptions}/>}
+                </Route>
+                <Route path={'/thought/:id/history'}>
+                  {dbReadyState && <History statusOptions={statusOptions}/>}
+                </Route>
+                <Route path={'/plan/:id/timeline'}>
+                  {dbReadyState && <Timeline/>}
+                </Route>
+                <Route path={'/plan/:id/thought/:id/history'}>
+                  {dbReadyState && <History statusOptions={statusOptions}/>}
+                </Route>
+                <Route path={'/thought/:id'}>
+                  {dbReadyState && <Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
+                </Route>
+                <Route path={'/plan/:id/thought/:thoughtId/connections'}>
+                  {dbReadyState && <Connections statusOptions={statusOptions}/>}
+                </Route>
+                <Route path={'/plan/:id/thought/:thoughtId'}>
+                  {dbReadyState && <Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
+                </Route>
+                <Route path={'/plan/:id/settings'}>
+                  {dbReadyState && <Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>}
+                </Route>
+                <Route path={'/plan/:id'}>
+                  {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}
+                </Route>
+                <Route path={'/stage'}>
+                  {dbReadyState && <Stage/>}  
+                </Route>
+                <Route path={'/backups'}>
+                  {dbReadyState && <Backups/>}
+                </Route>
+                <Route path={'/merge/:backupId'}>
+                  {dbReadyState && <Merge/>}
+                </Route>
+                <Route path={'/process-merge/:backupId'}>
+                  {dbReadyState && <ProcessMerge/>}
+                </Route>
+                <Route path={'/timeline'}>
+                  {dbReadyState && <Timeline allPlans={true}/>}
+                </Route>
+              </Switch> 
+            </Div100vh>
+          </ModalProvider>
+        </GoogleCalendarProvider>
       </DBProvider>
     </AppContext.Provider>
   );
