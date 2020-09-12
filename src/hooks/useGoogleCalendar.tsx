@@ -79,29 +79,40 @@ export const GoogleCalendarProvider: FC<any> = ({ children }) => {
   const cleanupRef = useRef<() => void>(null);
 
   const actions: Actions = useMemo(() => {
+    const signIn = async (config: Config = DefaultConfig): Promise<boolean> => {
+      return new Promise<boolean>(async resolve => {
+        const [gapi, cleanup] = await loadScript().catch(setError);
+  
+        cleanupRef.current = cleanup;
+        gapiRef.current = gapi;
+        
+        await gapiRef.current.client.init(config).catch(setError);
+  
+        gapiRef.current.auth2.getAuthInstance().isSignedIn.listen((signedIn: boolean) => {
+          setSignedIn(signedIn);
+          if (signedIn) {
+            resolve(signedIn);
+          }
+        });
+  
+        const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
+        setSignedIn(isSignedIn);
+      
+        gapiRef.current.auth2.getAuthInstance().signIn();
+      });
+    };
 
-    const createEvent = (event: any, calendarId: string = 'primary'): any => {
+    const createEvent = async (event: any, calendarId: string = 'primary'): Promise<any> => {
+      const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
+
+      if (!isSignedIn) {
+        await signIn();
+      }
+
       return gapiRef.current && gapiRef.current.client.calendar.events.insert({
         'calendarId': calendarId,
         'resource': event,
       });
-    };
-
-    const signIn = async (config: Config = DefaultConfig) => {
-      const [gapi, cleanup] = await loadScript().catch(setError);
-  
-      cleanupRef.current = cleanup;
-      gapiRef.current = gapi;
-      
-      await gapiRef.current.client.init(config).catch(setError);
-
-      gapiRef.current.auth2.getAuthInstance().isSignedIn.listen(setSignedIn);
-
-      const isSignedIn = gapiRef.current.auth2.getAuthInstance().isSignedIn.get();
-      setSignedIn(isSignedIn);
-    
-      gapiRef.current.auth2.getAuthInstance().signIn();
-      return true;
     };
   
     return {
