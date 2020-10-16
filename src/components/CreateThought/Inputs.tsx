@@ -1,7 +1,8 @@
-import React, { useEffect, Fragment, FC, Dispatch } from 'react';
+import React, { useEffect, Fragment, FC } from 'react';
 import Input from '../General/Input';
 import Select from '../General/Select';
 import { CreatedThought } from './';
+import { Plan } from '../../store/rxdb/schemas/plan';
 
 interface InputsProps {
   classes: any;
@@ -10,6 +11,10 @@ interface InputsProps {
   typeOptions: string[];
   onReady: (ready: boolean) => void;
   thoughtTitles: string[];
+  planId: string | boolean;
+  plans: Plan[];
+  selectedPlan: string;
+  setSelectedPlan: (plan: string) => void;
 }
 
 export const Inputs: FC<InputsProps> = React.memo(({
@@ -19,6 +24,10 @@ export const Inputs: FC<InputsProps> = React.memo(({
   typeOptions,
   thoughtTitles,
   onReady,
+  planId,
+  plans,
+  selectedPlan,
+  setSelectedPlan,
 }) => {
   const setTitle = (value: string) => setCreatedThought(prev => ({
     ...prev,
@@ -39,6 +48,15 @@ export const Inputs: FC<InputsProps> = React.memo(({
     <Fragment>
       <Input classes={classes} id={'title'} value={createdThought.title} onChange={e => setTitle(e.target.value)} autoSuggest={thoughtTitles} autoFocus/>
       <Select classes={classes} id={'type'} value={createdThought.type} options={typeOptions} onChange={e => setType(e.target.value)}/>
+      {!planId &&(
+        <Select
+          classes={classes}
+          id={'plan'}
+          value={selectedPlan}
+          options={['Plan'].concat(plans.filter(({ name }) => name !== 'Thought Archive').map(({ name }) => name))}
+          onChange={e => setSelectedPlan(e.target.value)}
+        />
+      )}
     </Fragment>
   );
 });

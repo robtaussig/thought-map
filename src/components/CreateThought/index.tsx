@@ -49,6 +49,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
   const { db } = useLoadedDB();
   const planId = getIdFromUrl(history, 'plan');
   const plan = plans.find(plan => plan.id === planId);
+  const [selectedPlan, setSelectedPlan] = useState('');
   const [createdThought, setCreatedThought] = useState<CreatedThought>({
     ...DEFAULT_STATE,
     type: (plan && plan.defaultType) || DEFAULT_STATE.type
@@ -58,7 +59,13 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
   const handleSubmit: FormEventHandler = async (e) => {
     e.preventDefault();
     if (ready) {
-      const response = await createWholeThought(db, createdThought, planId);
+      const response = await createWholeThought(
+        db,
+        createdThought,
+        selectedPlan ?
+          plans.find(({ name }) => name === selectedPlan).id :
+          planId,
+      );
       onClose();
       history.push(`${homeUrl(history)}thought/${response.thought.id}`);
     }
@@ -79,6 +86,10 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
           typeOptions={typeOptions}
           onReady={setReady}
           thoughtTitles={thoughtTitles}
+          planId={planId}
+          plans={plans}
+          selectedPlan={selectedPlan}
+          setSelectedPlan={setSelectedPlan}
         />
         <button className={classes.submitButton} disabled={!ready}>
           Submit

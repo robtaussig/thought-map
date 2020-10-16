@@ -6,8 +6,9 @@ export const styles = (theme: any): StyleRules => ({
     display: 'grid',
     gridTemplateAreas: `"title title"
                         "type type"
+                        "plan plan"
                         "bulk submit"`,
-    gridTemplateRows: 'max-content max-content max-content',
+    gridTemplateRows: 'max-content max-content max-content max-content',
     gridTemplateColumns: 'max-content 1fr',
     gridGap: '10px',
   },
@@ -34,6 +35,13 @@ export const styles = (theme: any): StyleRules => ({
   selectLabel: {
     '&#type': {
       gridArea: 'type',
+      '& select': {
+        width: '100%',
+        fontSize: 18,
+      },
+    },
+    '&#plan': {
+      gridArea: 'plan',
       '& select': {
         width: '100%',
         fontSize: 18,
