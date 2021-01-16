@@ -81,7 +81,10 @@ export const GoogleCalendarProvider: FC<any> = ({ children }) => {
   const actions: Actions = useMemo(() => {
     const signIn = async (config: Config = DefaultConfig): Promise<boolean> => {
       return new Promise<boolean>(async resolve => {
-        const [gapi, cleanup] = await loadScript().catch(setError);
+        const [gapi, cleanup] = await loadScript().catch(error => {
+          setError(error);
+          return [gapiRef.current, cleanupRef.current];
+        });
   
         cleanupRef.current = cleanup;
         gapiRef.current = gapi;

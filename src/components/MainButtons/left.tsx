@@ -87,7 +87,7 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
       dispatch(toggle());
     };
 
-    if (/settings|backups|merge/.test(history.location.pathname)) {
+    if (/settings|backups|merge|privacy/.test(history.location.pathname)) {
       return [Home, 'Return Home', handleGoBack, null];
     } else if (/thought/.test(history.location.pathname)) {
       return [Settings, 'Settings', handleClickSettings, null, true];

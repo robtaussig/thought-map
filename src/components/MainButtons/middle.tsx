@@ -54,6 +54,7 @@ enum CurrentPage {
   Backups,
   Merge,
   Timeline,
+  Privacy,
 }
 
 export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
@@ -74,6 +75,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
     if (/backups/.test(history.location.pathname)) return CurrentPage.Backups;
     if (/merge/.test(history.location.pathname)) return CurrentPage.Merge;
     if (/timeline/.test(history.location.pathname)) return CurrentPage.Timeline;
+    if (/privacy/.test(history.location.pathname)) return CurrentPage.Privacy;
     return CurrentPage.Home;
   }, [history.location.pathname]);
 
@@ -100,6 +102,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
       CurrentPage.Backups,
       CurrentPage.Merge,
       CurrentPage.Timeline,
+      CurrentPage.Privacy,
     ].includes(currentPage));
   }, [currentPage])
 

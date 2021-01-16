@@ -31,6 +31,28 @@ const useStyles = makeStyles<CustomTheme>((theme: CustomTheme) => ({
     alignItems: 'center',
     overflow: 'auto',
   }),
+  privacy: () => ({
+    border: `2px solid ${theme.palette.secondary[0]}`,
+    padding: '3px 0',
+    marginTop: 40,
+    width: '70%',
+    borderRadius: '3px',
+    backgroundColor: theme.palette.secondary[500],
+    color: theme.palette.background[0],
+    textAlign: 'center',
+    textDecoration: 'none',
+    '&:active': {
+      backgroundColor: theme.palette.background[700],
+      boxShadow: 'none!important',
+    },
+    '&:disabled': {
+      backgroundColor: theme.palette.background[300],
+      color: theme.palette.background[0],
+    },
+    '&:not(:disabled)': {
+      boxShadow: `0px 0px 5px 2px black`,
+    },
+  }),
   updateButton: () => ({
     border: `2px solid ${theme.palette.secondary[0]}`,
     padding: '3px 0',
@@ -97,6 +119,7 @@ export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
       <Theme />
       <ManagePhotos pictures={pictures} />
       <CustomObjects />
+      <a className={classes.privacy} href={'/privacy'}>Privacy Policy</a>
       <button className={classes.updateButton} onClick={handleCheckUpdates}>Check for Update (Current: {(window as any).APP_VERSION})</button>
     </div>
   );

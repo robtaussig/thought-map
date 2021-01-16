@@ -9,7 +9,7 @@ import { Portal } from './hooks/usePortal';
 import store from './store';
 import Themer from './lib/Themer';
 
-(window as any).APP_VERSION = '0.8';
+(window as any).APP_VERSION = '1.0';
 
 ReactDOM.render(
   (

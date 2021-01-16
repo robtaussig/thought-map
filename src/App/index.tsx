@@ -24,6 +24,7 @@ import Merge from '../components/Merge';
 import MiddleButton from '../components/MainButtons/middle';
 import Notifications from '../components/Notifications';
 import ProcessMerge from '../components/Merge/ProcessMerge';
+import PrivacyPolicy from '../components/PrivacyPolicy';
 import RightButton from '../components/MainButtons/right';
 import Settings from '../components/Settings';
 import Stage from '../components/Stage';
@@ -85,6 +86,9 @@ const App: FC<AppProps> = ({ history }) => {
               <MiddleButton/>
               <RightButton typeOptions={typeOptions}/>
               <Switch>
+                <Route path={'/privacy'}>
+                  <PrivacyPolicy/>
+                </Route>
                 <Route exact path={'/'}>
                   {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}
                 </Route>
