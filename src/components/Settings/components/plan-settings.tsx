@@ -186,6 +186,7 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
       <ArchiveThoughts
         classes={classes}
         thoughts={thoughts}
+        plan={plan}
       />
       <DeletePlan
         classes={classes}
