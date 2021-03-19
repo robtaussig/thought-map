@@ -35,7 +35,7 @@ export const ArchiveThoughts: FC<ArchiveThoughtsProps> = ({
     const handleClickArchiveCompleted = async () => {
         setIsLoading('Archiving thoughts...');
         await Promise.all(thoughts
-            .filter(({ status }) => status === 'completed')
+            .filter(({ status, planId }) => planId === plan.id && status === 'new')
             .map(thought => thoughtActions.editThought(db, {
                 ...thought,
                 archived: true,
