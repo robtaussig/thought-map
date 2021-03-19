@@ -26,11 +26,11 @@ export const Home: FC<HomeProps> = ({ classes, statusOptions, setLastNotificatio
   const plan = plans.find(plan => plan.id === planId);
   const planThoughts = useMemo(() => {
     if (planId === 'archive') {
-      return thoughts.filter(thought => thought.archived);
+      throw new Error('Not implemented');
     } else if (planId) {
-      return thoughts.filter(thought => !thought.archived && thought.planId === planId);
+      return thoughts.filter(thought => thought.planId === planId);
     } else {
-      return thoughts.filter(thought => !thought.archived);
+      return thoughts;
     }
   }, [planId, thoughts]);
 

@@ -53,7 +53,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
   const setBulkListsAction = (bulkLists: BulkList[]) => dispatch(setBulkLists(bulkLists));
 
   //Need to split by groups of 10, due to bug with TypeScript: https://github.com/Microsoft/TypeScript/issues/22469
-  const [allThoughts, allConnections, plans, allNotes, allTags, templates, allPictures, settings, allStatuses, bulkLists] = await Promise.all([
+  const [allThoughts, allConnections, allPlans, allNotes, allTags, templates, allPictures, settings, allStatuses, bulkLists] = await Promise.all([
     thoughtActions.getThoughts(db),
     connectionActions.getConnections(db),
     planActions.getPlans(db),
@@ -66,7 +66,10 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
     bulkListActions.getBulkLists(db),
   ]);
 
-  const thoughts = allThoughts.filter(({ archived }) => !archived);
+  const plans = allPlans.filter(({ archived }) => !archived);
+  const unarchivedPlanIds = new Set(plans.map(({ id }) => id));
+
+  const thoughts = allThoughts.filter(({ archived, planId }) => !archived && unarchivedPlanIds.has(planId));
   const unarchivedThoughtIds = new Set(thoughts.map(({ id }) => id));
 
   const [
