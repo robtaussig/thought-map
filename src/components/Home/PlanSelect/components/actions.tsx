@@ -81,6 +81,10 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
     }
   };
 
+  const handleClickArchive = () => {
+
+  };
+
   return (
     <div className={classes.root}>
       <h1 className={classes.header}>{typeof planId === 'boolean' ? 'ThoughtMap' : plan.name} ({thoughts.length} thoughts)</h1>

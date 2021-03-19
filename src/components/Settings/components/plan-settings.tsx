@@ -8,6 +8,7 @@ import Home from '@material-ui/icons/Home';
 import Check from '@material-ui/icons/Check';
 import Create from '@material-ui/icons/Create';
 import DeletePlan from './delete-plan';
+import ArchiveThoughts from './archive-thoughts';
 import useApp from '../../../hooks/useApp';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { plans as planActions, thoughts as thoughtActions } from '../../../actions';
@@ -182,6 +183,10 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
           onChange={handleSelectDefaultType}
         />
       </div>
+      <ArchiveThoughts
+        classes={classes}
+        thoughts={thoughts}
+      />
       <DeletePlan
         classes={classes}
         plan={plan}

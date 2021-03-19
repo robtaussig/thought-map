@@ -21,8 +21,9 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
                         "add-thoughts add-thoughts add-thoughts"
                         "remove-thoughts remove-thoughts remove-thoughts"
                         "default-type default-type default-type"
+                        "archive-thoughts archive-thoughts archive-thoughts"
                         "delete-plan delete-plan delete-plan"`,
-    gridTemplateRows: '50px 50px 50px 50px 50px 1fr',
+    gridTemplateRows: '50px 50px 50px 50px 50px 50px 1fr',
     gridTemplateColumns: 'max-content 1fr',
     gridRowGap: '20px',
     gridColumnGap: '10px',
@@ -118,6 +119,35 @@ export const planSettingsStyles = (theme: any): StyleRules => ({
     color: theme.palette.background[0],
     borderRadius: '4px',
     padding: '15px 30px',
+    '&:disabled': {
+      backgroundColor: theme.palette.background[300],
+    },
+  }),
+  archiveThoughts: () => ({
+    gridArea: 'archive-thoughts',
+    display: 'grid',
+    gridTemplateAreas: `"archive-header archive-header"
+                        "new-thoughts completed-thoughts"`,
+    gridTemplateRows: '20px 20px',
+    gridTemplateColumns: '1fr 1fr',
+    gridGap: '10px',
+  }),
+  archiveThoughtsHeader: () => ({
+    gridArea: 'archive-header',
+    fontWeight: 600,
+    color: theme.palette.background[0],
+  }),
+  archiveThoughtsButton: () => ({
+    backgroundColor: theme.palette.negative[500],
+    color: theme.palette.background[0],
+    borderRadius: '4px',
+    padding: '0px 30px',
+    '&.new': {
+      gridArea: 'new-thoughts',
+    },
+    '&.completed': {
+      gridArea: 'completed-thoughts',
+    },
     '&:disabled': {
       backgroundColor: theme.palette.background[300],
     },
