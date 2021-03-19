@@ -109,7 +109,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
 
   setThoughtsAction(thoughts);
   setConnectionsAction(connectionsById);
-  setPlansAction(plans);
+  setPlansAction(allPlans);
   setNotesAction(notesById);
   setTagsAction(tagsById);
   setTemplatesAction(templates);
