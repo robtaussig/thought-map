@@ -1,5 +1,5 @@
 import './style.scss';
-import { CSSProperties, MutableRefObject, useCallback, useMemo, useRef } from 'react';
+import { CSSProperties, MutableRefObject, useCallback, useMemo, useRef, useEffect } from 'react';
 
 type SetLoading = (text?: string) => void;
 type StopLoading = () => void;
@@ -7,6 +7,7 @@ type UpdateText = (text: string) => void;
 
 export const useLoadingOverlay = (containerRef: MutableRefObject<HTMLDivElement>): [SetLoading, StopLoading, UpdateText] => {
   const textNode = useRef<any>(null);
+  const wakeLock = useRef<WakeLockSentinel>(null);
 
   const loadingOverlayElement = useMemo(() => {
     const loadingOverlay = document.createElement('div');
@@ -30,7 +31,7 @@ export const useLoadingOverlay = (containerRef: MutableRefObject<HTMLDivElement>
     return loadingOverlay;
   }, []);
 
-  const setLoading: SetLoading = useCallback(string => {
+  const setLoading: SetLoading = useCallback(async string => {
     if (string && !textNode.current) {
       textNode.current = document.createElement('span');
       textNode.current.innerText = string;
@@ -41,6 +42,14 @@ export const useLoadingOverlay = (containerRef: MutableRefObject<HTMLDivElement>
       loadingOverlayElement.appendChild(textNode.current);
     }
     containerRef.current.appendChild((loadingOverlayElement));
+    if ('wakeLock' in navigator) {
+      try {
+        wakeLock.current?.release();
+        wakeLock.current = await navigator.wakeLock.request('screen');
+      } catch (e) {
+        wakeLock.current = null;
+      }
+    }
   }, []);
 
   const stopLoading: StopLoading = useCallback(() => {
@@ -49,6 +58,9 @@ export const useLoadingOverlay = (containerRef: MutableRefObject<HTMLDivElement>
       textNode.current = null;
     }
     containerRef.current.removeChild((loadingOverlayElement));
+
+    wakeLock.current?.release()
+      .then(() => wakeLock.current = null);
   }, []);
 
   const updateText = useCallback((text: string) => {
@@ -63,6 +75,8 @@ export const useLoadingOverlay = (containerRef: MutableRefObject<HTMLDivElement>
 
     loadingOverlayElement.appendChild(textNode.current);
   }, []);
+
+  useEffect(() => () => wakeLock.current?.release(), []);
 
   return [setLoading, stopLoading, updateText];
 };
