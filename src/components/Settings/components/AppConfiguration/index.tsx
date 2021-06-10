@@ -19,6 +19,7 @@ import {
   PUSH_NOTIFICATIONS_TOOLTIP_TEXT,
   DIRECT_PUSH_TOOLTIP_TEXT,
   LOCATION_TOOLTIP_TEXT,
+  DISPLAY_ARCHIVED_THOUHGTS_TOOLTIP_TEXT,
 } from './constants';
 import { Side } from './types';
 
@@ -109,6 +110,15 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
     });
   }, []);
 
+  const handleChangeDisplayArchived = useCallback(async (e) => {
+    await settingsActions.editSetting(db, {
+      field: 'displayArchived',
+      value: e.target.checked,
+    });
+
+    location.href = '/';
+  }, []);
+
   const handleChangeUseAutomaticBackups = useCallback(e => {
     settingsActions.editSetting(db, {
       field: 'enableBackupOnDemand',
@@ -124,6 +134,7 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
 
   const disableTips = Boolean(settings && settings.disableTips);
   const reportBugs = Boolean(settings && settings.reportBugs);
+  const displayArchived = Boolean(settings && settings.displayArchived);
   const useAutoSuggest = Boolean(settings && settings.useAutoSuggest);
   const useLocation = Boolean(settings && settings.useLocation);
   const usePushNotifications = Boolean(settings && settings.usePushNotifications);
@@ -153,11 +164,11 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
         />
         <CheckBox
           classes={classes}
-          value={'Report Bugs'}
-          label={'Report Bugs'}
-          isChecked={reportBugs}
-          onChange={handleChangeReportBugs}
-          tooltip={DISABLE_REPORT_BUGS_TOOLTIP_TEXT}
+          value={'Display Archived Thoughts'}
+          label={'Display Archived Thoughts'}
+          isChecked={displayArchived}
+          onChange={handleChangeDisplayArchived}
+          tooltip={DISPLAY_ARCHIVED_THOUHGTS_TOOLTIP_TEXT}
         />
         <CheckBox
           classes={classes}

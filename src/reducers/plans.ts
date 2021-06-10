@@ -13,7 +13,7 @@ const plans = createSlice({
   initialState,
   reducers: {
     setPlans(state, action: PayloadAction<Plans>) {
-      return action.payload.concat({ id: 'archive', name: 'Thought Archive'});
+      return action.payload;
     },
     insert(state, action: PayloadAction<Plan>) {
       return state.concat(action.payload);

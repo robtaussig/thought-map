@@ -66,10 +66,15 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
     bulkListActions.getBulkLists(db),
   ]);
 
-  const plans = allPlans.filter(({ archived }) => !archived);
+  const settingsMap = settings.reduce((next, { field, value }) => {
+    next[field] = value;
+    return next;
+  }, { didInit: true } as SettingsType);
+
+  const plans = allPlans.filter(({ archived }) => settingsMap.displayArchived || !archived);
   const unarchivedPlanIds = new Set(plans.map(({ id }) => id));
 
-  const thoughts = allThoughts.filter(({ archived, planId }) => !archived && unarchivedPlanIds.has(planId));
+  const thoughts = allThoughts.filter(({ archived, planId }) => (settingsMap.displayArchived || !archived) && unarchivedPlanIds.has(planId));
   const unarchivedThoughtIds = new Set(thoughts.map(({ id }) => id));
 
   const [
@@ -101,11 +106,6 @@ export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<a
     next[thoughtId].push(id);
     return next;
   }, {} as StatusesByThoughtType)
-
-  const settingsMap = settings.reduce((next, { field, value }) => {
-    next[field] = value;
-    return next;
-  }, { didInit: true } as SettingsType);
 
   setThoughtsAction(thoughts);
   setConnectionsAction(connectionsById);

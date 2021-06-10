@@ -30,3 +30,5 @@ export const LOCATION_TOOLTIP_TEXT =
   will be saved along with updates to thought statuses. This will allow 
   for a more comprehensive context behind thought transitions.`;
   
+export const DISPLAY_ARCHIVED_THOUHGTS_TOOLTIP_TEXT =
+  `If enabled, archived thoughts will be displayed, allowing you to delete/unarchive them.`;

@@ -53,7 +53,7 @@ export const Inputs: FC<InputsProps> = React.memo(({
           classes={classes}
           id={'plan'}
           value={selectedPlan}
-          options={['Plan'].concat(plans.filter(({ name }) => name !== 'Thought Archive').map(({ name }) => name))}
+          options={['Plan'].concat(plans.map(({ name }) => name))}
           onChange={e => setSelectedPlan(e.target.value)}
         />
       )}
