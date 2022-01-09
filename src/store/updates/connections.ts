@@ -12,12 +12,12 @@ const updateThoughtMap = async (from: string, to: string) => {
 export const handleConnectionChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ data }: RxChangeEvent) => {
+) => ({ documentData, operation }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
-  const connection: Connection = data.v;
+  const connection: Connection = documentData;
   let notification;
 
-  switch (data.op) {
+  switch (operation) {
     case 'INSERT':
       dispatch(insert(connection));
       notification = { message: 'Connection created' };

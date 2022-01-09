@@ -25,13 +25,9 @@ export enum Operation {
   UPDATE = 'UPDATE',
 }
 
-export interface RxChangeEventData {
-  v: any;
-  op: Operation;
-}
-
 export interface RxChangeEvent {
-  data: RxChangeEventData;
+  documentData: any;
+  operation: Operation;
 }
 
 export type ConnectionState = {

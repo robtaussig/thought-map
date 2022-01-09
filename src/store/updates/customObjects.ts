@@ -8,12 +8,12 @@ const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
 export const handleCustomObjectChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ data }: RxChangeEvent) => {
+) => ({ documentData, operation }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
-  const customObject: CustomObject = data.v;
+  const customObject: CustomObject = documentData;
   let notification;
 
-  switch (data.op) {
+  switch (operation) {
     case 'INSERT':
       dispatch(insert(customObject));
       notification = { message: `${capitalize(customObject.type)} created` };

@@ -8,12 +8,12 @@ export const handleStatusChange = (
   setLastNotification: (notification: Notification) => void,
   matchStatusLocationIfEnabled: (status: Status) => Promise<void>,
   handleRecurringThought: (thoughtId: string) => Promise<void>,
-) => ({ data }: RxChangeEvent) => {
+) => ({ documentData, operation }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
-  const status: Status = data.v;
+  const status: Status = documentData;
   let notification;
 
-  switch (data.op) {
+  switch (operation) {
     case 'INSERT':
       dispatch(insert(status));
       matchStatusLocationIfEnabled(status);

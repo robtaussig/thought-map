@@ -7,12 +7,12 @@ import { searcherWorker } from '../init';
 export const handleTagChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ data }: RxChangeEvent) => {
+) => ({ documentData, operation }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
-  const tag: Tag = data.v;
+  const tag: Tag = documentData;
   let notification;
 
-  switch (data.op) {
+  switch (operation) {
     case 'INSERT':
       dispatch(insert(tag));
       searcherWorker.buildTree(null, null, { [tag.id]: tag });

@@ -7,12 +7,12 @@ export const handlePictureChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
   matchPictureLocationIfEnabled: (picture: Picture) => void,
-) => ({ data }: RxChangeEvent) => {
+) => ({ documentData, operation }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
-  const picture: Picture = data.v;
+  const picture: Picture = documentData;
   let notification;
 
-  switch (data.op) {
+  switch (operation) {
     case 'INSERT':
       dispatch(insert(picture));
       matchPictureLocationIfEnabled(picture);

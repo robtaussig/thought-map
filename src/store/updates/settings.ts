@@ -7,12 +7,12 @@ import { Notification, RxChangeEvent } from '../../types';
 export const handleSettingChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ data }: RxChangeEvent) => {
+) => ({ documentData, operation }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
-  const setting: Setting = data.v;
+  const setting: Setting = documentData;
   let notification;
 
-  switch (data.op) {
+  switch (operation) {
     case 'INSERT':
       dispatch(insert(SettingModel.parseSetting(setting)));
       notification = { message: 'Setting updated' };

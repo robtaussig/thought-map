@@ -7,12 +7,12 @@ import { searcherWorker } from '../init';
 export const handleNoteChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ data }: RxChangeEvent) => {
+) => ({ documentData, operation }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
-  const note: Note = data.v;
+  const note: Note = documentData;
   let notification;
 
-  switch (data.op) {
+  switch (operation) {
     case 'INSERT':
       dispatch(insert(note));
       searcherWorker.buildTree(null,{ [note.id]: note }, null);
