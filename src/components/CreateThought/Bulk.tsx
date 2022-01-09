@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import TextArea from '../General/TextArea';
 import { DEFAULT_STATE } from './';
-import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../hooks/useDB';
 import { createWholeThought } from '../../actions/complex';
 import { getIdFromUrl } from '../../lib/util';
@@ -26,7 +25,6 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
   const plans = useSelector(planSelector);
   const bulkLists = useSelector(bulkListSelector);
   const { db } = useLoadedDB();
-  const navigate = useNavigate();
   const planId = getIdFromUrl('plan');
   const plan = plans.find(plan => plan.id === planId);
 

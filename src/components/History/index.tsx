@@ -1,7 +1,6 @@
 import React, { FC, useMemo, CSSProperties } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import { getIdFromUrl } from '../../lib/util';
-import { useNavigate } from 'react-router-dom';
 import ThoughtGroup from './components/thought-group';
 import {
   StatusUpdate,
@@ -25,7 +24,6 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
-  const navigate = useNavigate();
   const thoughts = useSelector(thoughtSelector);
   const stateStatusesByThought = useSelector(statusesByThoughtSelector);
   const statuses = useSelector(statusSelector);
