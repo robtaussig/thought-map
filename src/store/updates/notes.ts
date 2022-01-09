@@ -7,7 +7,7 @@ import { searcherWorker } from '../init';
 export const handleNoteChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ documentData, operation }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const note: Note = documentData;
   let notification;
@@ -19,8 +19,8 @@ export const handleNoteChange = (
       notification = { message: 'Note created' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(note));
+    case 'DELETE':
+      dispatch(remove(documentId));
       searcherWorker.invalidate(note.id);
       notification = { message: 'Note removed' };
       break;

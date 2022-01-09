@@ -7,7 +7,7 @@ import { searcherWorker } from '../init';
 export const handleTagChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ documentData, operation }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const tag: Tag = documentData;
   let notification;
@@ -19,8 +19,8 @@ export const handleTagChange = (
       notification = { message: 'Tag created' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(tag));
+    case 'DELETE':
+      dispatch(remove(documentId));
       searcherWorker.invalidate(tag.id);
       notification = { message: 'Tag removed' };
       break;

@@ -22,8 +22,8 @@ const thoughts = createSlice({
     insert(state, action: PayloadAction<Thought>) {
       return [action.payload, ...state];
     },
-    remove(state, action: PayloadAction<Thought>) {
-      return state.filter(thought => thought.id !== action.payload.id);
+    remove(state, action: PayloadAction<string>) {
+      return state.filter(thought => thought.id !== action.payload);
     },
     update(state, action: PayloadAction<Thought>) {
       return [action.payload, ...state.filter(({ id }) => id !== action.payload.id)];

@@ -21,13 +21,15 @@ export interface Notification {
 
 export enum Operation {
   INSERT = 'INSERT',
-  REMOVE = 'REMOVE',
+  DELETE = 'DELETE',
   UPDATE = 'UPDATE',
 }
 
 export interface RxChangeEvent {
   documentData: any;
+  previousDocumentData: any;
   operation: Operation;
+  documentId: string;
 }
 
 export type ConnectionState = {

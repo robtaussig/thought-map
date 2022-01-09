@@ -6,7 +6,7 @@ import { Notification, RxChangeEvent } from '../../types';
 export const handlePlanChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ documentData, operation }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const plan: Plan = documentData;
   let notification;
@@ -17,8 +17,8 @@ export const handlePlanChange = (
       notification = { message: 'Plan created' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(plan));
+    case 'DELETE':
+      dispatch(remove(documentId));
       notification = { message: 'Plan removed' };
       break;
 

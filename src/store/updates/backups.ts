@@ -6,7 +6,7 @@ import { Notification, RxChangeEvent } from '../../types';
 export const handleBackupChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ documentData, operation }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const backup: Backup = documentData;
   let notification;
@@ -17,8 +17,8 @@ export const handleBackupChange = (
       notification = { message: 'Backup created' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(backup));
+    case 'DELETE':
+      dispatch(remove(documentId));
       notification = { message: 'Backup removed' };
       break;
 

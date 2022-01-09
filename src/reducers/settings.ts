@@ -20,8 +20,8 @@ const settings = createSlice({
     insert(state, action: PayloadAction<Setting>) {
       state[action.payload.field] = action.payload.value;
     },
-    remove(state, action: PayloadAction<Setting>) {
-      delete state[action.payload.field];
+    remove(state, action: PayloadAction<string>) {
+      delete state[action.payload];
     },
     update(state, action: PayloadAction<Setting>) {
       state[action.payload.field] = action.payload.value;

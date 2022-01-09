@@ -8,7 +8,7 @@ const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
 export const handleCustomObjectChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ documentData, operation }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const customObject: CustomObject = documentData;
   let notification;
@@ -19,8 +19,8 @@ export const handleCustomObjectChange = (
       notification = { message: `${capitalize(customObject.type)} created` };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(customObject));
+    case 'DELETE':
+      dispatch(remove(documentId));
       notification = { message: `${capitalize(customObject.type)} removed` };
       break;
 

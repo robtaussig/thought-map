@@ -7,7 +7,7 @@ import { Notification, RxChangeEvent } from '../../types';
 export const handleSettingChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ documentData, operation }: RxChangeEvent) => {
+) => ({ documentData, operation, previousDocumentData }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const setting: Setting = documentData;
   let notification;
@@ -18,8 +18,8 @@ export const handleSettingChange = (
       notification = { message: 'Setting updated' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(setting));
+    case 'DELETE':
+      dispatch(remove(previousDocumentData.field));
       break;
 
     case 'UPDATE':

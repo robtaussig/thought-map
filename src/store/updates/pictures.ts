@@ -7,7 +7,7 @@ export const handlePictureChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
   matchPictureLocationIfEnabled: (picture: Picture) => void,
-) => ({ documentData, operation }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const picture: Picture = documentData;
   let notification;
@@ -19,8 +19,8 @@ export const handlePictureChange = (
       notification = { message: 'Picture created' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(picture));
+    case 'DELETE':
+      dispatch(remove(documentId));
       notification = { message: 'Picture removed' };
       break;
 

@@ -20,8 +20,8 @@ const tags = createSlice({
     insert(state, action: PayloadAction<Tag>) {
       state[action.payload.id] = action.payload;
     },
-    remove(state, action: PayloadAction<Tag>) {
-      delete state[action.payload.id];
+    remove(state, action: PayloadAction<string>) {
+      delete state[action.payload];
     },
     update(state, action: PayloadAction<Tag>) {
       state[action.payload.id] = action.payload;

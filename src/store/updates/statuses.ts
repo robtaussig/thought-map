@@ -8,7 +8,7 @@ export const handleStatusChange = (
   setLastNotification: (notification: Notification) => void,
   matchStatusLocationIfEnabled: (status: Status) => Promise<void>,
   handleRecurringThought: (thoughtId: string) => Promise<void>,
-) => ({ documentData, operation }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const status: Status = documentData;
   let notification;
@@ -23,8 +23,8 @@ export const handleStatusChange = (
       notification = { message: 'Thought updated' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(status));
+    case 'DELETE':
+      dispatch(remove(documentId));
       break;
 
     case 'UPDATE':

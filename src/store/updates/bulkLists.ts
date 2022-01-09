@@ -6,7 +6,7 @@ import { Notification, RxChangeEvent } from '../../types';
 export const handleBulkListChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ documentData, operation }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const bulkList: BulkList = documentData;
   let notification;
@@ -17,8 +17,8 @@ export const handleBulkListChange = (
       notification = { message: 'BulkList created' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(bulkList));
+    case 'DELETE':
+      dispatch(remove(documentId));
       notification = { message: 'BulkList removed' };
       break;
 
