@@ -6,7 +6,7 @@ import { thoughtSelector } from '../../reducers/thoughts';
 import { toggle } from '../../reducers/displayPriorities';
 import { useDispatch } from 'react-redux';
 import { thoughts as thoughtActions } from '../../actions';
-import useApp from '../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../hooks/useDB';
 import CircleButton from '../General/CircleButton';
 import Bookmark from '@material-ui/icons/Bookmark';
@@ -65,32 +65,32 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   const { db } = useLoadedDB();
   const [canStage, setCanStage] = useState<boolean>(false);
   const [hideButton, setHideButton] = useState<boolean>(false);
-  const { history } = useApp();
-  const isStaging = history.location.pathname === STAGING_PATH_NAME;
+  const navigate = useNavigate();
+  const isStaging = location.pathname === STAGING_PATH_NAME;
   const currentPage = useMemo(() => {
-    if (/history$/.test(history.location.pathname)) return CurrentPage.History;
-    if (/connections$/.test(history.location.pathname)) return CurrentPage.Connections;
-    if (/settings/.test(history.location.pathname)) return CurrentPage.Settings;
-    if (/thought/.test(history.location.pathname)) return CurrentPage.Thought;
-    if (/backups/.test(history.location.pathname)) return CurrentPage.Backups;
-    if (/merge/.test(history.location.pathname)) return CurrentPage.Merge;
-    if (/timeline/.test(history.location.pathname)) return CurrentPage.Timeline;
-    if (/privacy/.test(history.location.pathname)) return CurrentPage.Privacy;
+    if (/history$/.test(location.pathname)) return CurrentPage.History;
+    if (/connections$/.test(location.pathname)) return CurrentPage.Connections;
+    if (/settings/.test(location.pathname)) return CurrentPage.Settings;
+    if (/thought/.test(location.pathname)) return CurrentPage.Thought;
+    if (/backups/.test(location.pathname)) return CurrentPage.Backups;
+    if (/merge/.test(location.pathname)) return CurrentPage.Merge;
+    if (/timeline/.test(location.pathname)) return CurrentPage.Timeline;
+    if (/privacy/.test(location.pathname)) return CurrentPage.Privacy;
     return CurrentPage.Home;
-  }, [history.location.pathname]);
+  }, [location.pathname]);
 
   const handleClick = async () => {
     if (isStaging) {
-      history.goBack();
+      navigate(-1);
     } else {
-      history.push(`${STAGING_PATH_NAME}`);
+      navigate(`${STAGING_PATH_NAME}`);
     }
   };
 
   useEffect(() => {
     setCanStage(
       currentPage === CurrentPage.Thought &&
-      stage.current.includes(String(getIdFromUrl(history, 'thought'))) === false
+      stage.current.includes(String(getIdFromUrl('thought'))) === false
     );
   }, [stage, currentPage]);
 
@@ -111,7 +111,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
       dispatch(toggle());
     } else if (canStage) {
       let thoughtQuery = '';
-      const thoughtId = getIdFromUrl(history, 'thought');
+      const thoughtId = getIdFromUrl('thought');
       if (typeof thoughtId === 'string') {
         const thought = thoughts.find(({ id }) => id === thoughtId);
         if (thought && thought.status !== 'completed') {
@@ -122,7 +122,7 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
           thoughtQuery = `?from=${thoughtId}`;
         }
       }
-      history.push(`${STAGING_PATH_NAME}${thoughtQuery}`);
+      navigate(`${STAGING_PATH_NAME}${thoughtQuery}`);
     }
   };
 

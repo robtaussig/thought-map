@@ -6,7 +6,7 @@ import {defaults as defaultInteractions} from 'ol/interaction';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import {fromLonLat} from 'ol/proj';
-import uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import {Vector as VectorLayer} from 'ol/layer';

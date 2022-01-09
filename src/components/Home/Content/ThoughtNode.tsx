@@ -1,5 +1,5 @@
 import React, { useCallback, FC, useRef, useEffect, useState, useMemo, MutableRefObject } from 'react';
-import useApp from '../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
 import { statuses as statusActions, thoughts as thoughtActions } from '../../../actions';
@@ -74,14 +74,14 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
   left,
   isLastChild,
 }) => {
-  const { history } = useApp();
+  const navigate = useNavigate();
   const { db } = useLoadedDB();
   const [showConnections, setShowConnections] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [openModal, closeModal] = useModal();
 
   const handleClick = () => {
-    history.push(`${homeUrl(history)}thought/${thought.id}`);
+    navigate(`${homeUrl()}thought/${thought.id}`);
   };
 
   const handleLongPress = useLongPress(() => {

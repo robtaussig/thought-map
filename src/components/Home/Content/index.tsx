@@ -77,7 +77,9 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
     if (thoughts.length === 0) {
       dispatch(emphasizeButton(ButtonPositions.Right));
 
-      return () => dispatch(emphasizeButton(null));
+      return () => {
+        dispatch(emphasizeButton(null));
+      };
     }
   }, [thoughts.length]);
   

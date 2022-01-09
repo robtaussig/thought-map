@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import { RxDatabase } from 'rxdb';
 import { Status } from 'store/rxdb/schemas/status';
 import Base from './base';

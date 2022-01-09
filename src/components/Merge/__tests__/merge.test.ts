@@ -5,7 +5,7 @@ import {
   Collection,
   MergeResults,
 } from '../types';
-import uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 
 const generateCollection = (name: string, docs: Doc[]): Collection => ({
   name,

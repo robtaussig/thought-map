@@ -1,4 +1,5 @@
 import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import './styles.css';
 
 export const styles = (theme: any): StyleRules => ({
@@ -220,3 +221,5 @@ export const styles = (theme: any): StyleRules => ({
     },
   }),
 });
+
+export const useStyles = makeStyles(styles);

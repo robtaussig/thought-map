@@ -1,7 +1,7 @@
 import React, { FC, useMemo, CSSProperties } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import { getIdFromUrl } from '../../lib/util';
-import useApp from '../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import ThoughtGroup from './components/thought-group';
 import {
   StatusUpdate,
@@ -25,11 +25,11 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
-  const { history } = useApp();
+  const navigate = useNavigate();
   const thoughts = useSelector(thoughtSelector);
   const stateStatusesByThought = useSelector(statusesByThoughtSelector);
   const statuses = useSelector(statusSelector);
-  const thoughtId = getIdFromUrl(history, 'thought');
+  const thoughtId = getIdFromUrl('thought');
   const { descendants } = useThoughtMap(thoughtId as string);
   const statusUpdates = useMemo(() => {
     return descendants.reduce((next, relatedThoughtId) => {

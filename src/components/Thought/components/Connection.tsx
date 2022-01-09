@@ -1,7 +1,7 @@
 import React, { useState, FC } from 'react';
 import { connections as connectionActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';
-import { useApp } from '../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import Add from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
 import { Thought } from 'store/rxdb/schemas/thought';
@@ -18,7 +18,7 @@ interface ConnectionProps {
 export const Connection: FC<ConnectionProps> = ({ classes, targetThought, sourceThought, connected, from, to }) => {
   const { db } = useLoadedDB();
   const [loading, setLoading] = useState(false);
-  const { history } = useApp();
+  const navigate = useNavigate();
 
   const handleToggleConnection = async () => {
     setLoading(true);
@@ -34,7 +34,7 @@ export const Connection: FC<ConnectionProps> = ({ classes, targetThought, source
   };
 
   const handleGoToThought = () => {
-    history.push(`/thought/${targetThought.id}`);
+    navigate(`/thought/${targetThought.id}`);
   };
 
   const isConnected = Boolean(connected);

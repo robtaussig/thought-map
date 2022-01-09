@@ -3,7 +3,7 @@ import {
   StatusUpdate
 } from '../types';
 import classNames from 'classnames';
-import useApp from '../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import useLongPress from '../../../hooks/useLongPress';
 import { homeUrl } from '../../../lib/util';
 import { format } from 'date-fns';
@@ -54,7 +54,7 @@ const generatePartStyle = (part: StatusUpdate, row: number, col: number, colCoun
 };
 
 export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIndex, isSelected, onLongPress }) => {
-  const { history } = useApp();
+  const navigate = useNavigate();
   const handleLongPress = useLongPress(() => {
     onLongPress(part);
   }, 300);
@@ -71,7 +71,7 @@ export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIn
   const partStyle = part ? generatePartStyle(part, row, col, colCount, isStart) : {};
 
   const handleClickTitle = () => {
-    history.push(`${homeUrl(history)}thought/${part.thoughtId}`);
+    navigate(`${homeUrl()}thought/${part.thoughtId}`);
   };
 
   return (

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef, FC } from 'react';
 import Select from '../../General/Select';
 import { useModal } from '../../../hooks/useModal';
-import useApp from '../../../hooks/useApp'; 
+import { useNavigate } from 'react-router-dom'; 
 import CreatePlan from './components/create';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Plan } from 'store/rxdb/schemas/plan';
@@ -37,7 +37,7 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
     showArchived ? HIDE_ARCHIVED : SHOW_ARCHIVED,
     CREATE_NEW_PLAN
   ];
-  const { history } = useApp();
+  const navigate = useNavigate();
 
   const onClosePriorityList = useCallback(() => {
     dispatch(toggle());
@@ -69,13 +69,13 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
         break;
 
       case HOME_NAME:
-        history.push('/');
+        navigate('/');
         break;
     
       default:
         const plan = plans.find(({ name }) => name === value);
         if (plan) {
-          history.push(`/plan/${plan.id}/`);
+          navigate(`/plan/${plan.id}/`);
         } else {
           console.error('plan not found');
         }

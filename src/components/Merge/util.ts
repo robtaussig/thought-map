@@ -119,8 +119,8 @@ const filterDeletionsAndConvertToRemovable = (
     .map(deletion => [deletion, otherSideDocs[deletion.itemId]]);
 };
 
-export const getBackupIdFromHistory = (history: any): string => {
-  const backupIdRegex = /\/(merge|process-merge)\/(.*)/.exec(history.location.pathname);
+export const getBackupIdFromHistory = (): string => {
+  const backupIdRegex = /\/(merge|process-merge)\/(.*)/.exec(location.pathname);
   if (backupIdRegex && backupIdRegex[2]) return backupIdRegex[2];
 
   return null;

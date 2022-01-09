@@ -3,7 +3,7 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import Select from '../../../General/Select';
 import { ReviewPeriods } from '../types';
 import Review from './review';
-import useApp from '../../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { planSelector } from '../../../../reducers/plans';
 import { thoughtSelector } from '../../../../reducers/thoughts';
@@ -63,7 +63,7 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId, onClose }) => {
-  const { history } = useApp();
+  const navigate = useNavigate();
   const [currentReviewPeriod, setCurrentReviewPeriopd] = useState<ReviewPeriods>(ReviewPeriods.Week);
   const plans = useSelector(planSelector);
   const stateThoughts = useSelector(thoughtSelector);
@@ -75,9 +75,9 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
   const handleClickTimeline = () => {
     onClose();
     if (typeof planId === 'boolean') {
-      history.push('/timeline');
+      navigate('/timeline');
     } else {
-      history.push(`/plan/${planId}/timeline`);
+      navigate(`/plan/${planId}/timeline`);
     }
   };
 

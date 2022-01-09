@@ -13,7 +13,7 @@ import customObject from './customObject';
 import deletion from './deletion';
 import bulkList from './bulkList';
 
-type SchemaTuple = [string, RxJsonSchema, RxCollectionCreator?];
+type SchemaTuple = [string, RxJsonSchema<any>, RxCollectionCreator?];
 
 export default [
   plan,

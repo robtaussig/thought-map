@@ -14,10 +14,10 @@ export default ['note', {
   "version": 0,
   "description": "A Note",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "thoughtId": {
       "ref": "thought",
@@ -40,4 +40,4 @@ export default ['note', {
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema<Note>];

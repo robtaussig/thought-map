@@ -13,10 +13,10 @@ export default ['template', {
   "version": 0,
   "description": "A Template",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "name": {
       "type": "string",
@@ -35,4 +35,4 @@ export default ['template', {
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema<Template>];

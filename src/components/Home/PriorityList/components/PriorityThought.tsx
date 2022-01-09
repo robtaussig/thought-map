@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import useApp from '../../../../hooks/useApp'
 import { homeUrl } from '../../../../lib/util';
 import classNames from 'classnames';
 import { Thought } from 'store/rxdb/schemas/thought';
+import { useNavigate } from 'react-router-dom';
 
 interface PriorityThoughtProps {
   classes: any;
@@ -11,10 +11,10 @@ interface PriorityThoughtProps {
 }
 
 export const PriorityThought: FC<PriorityThoughtProps> = ({ classes, thought, onMinimize }) => {
-  const { history } = useApp();
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    history.push(`${homeUrl(history)}thought/${thought.id}`);
+    navigate(`${homeUrl()}thought/${thought.id}`);
     onMinimize();
   };
 

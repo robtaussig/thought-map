@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { thoughts as thoughtActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';
-import useApp from '../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import Undo from '@material-ui/icons/Undo';
 import Autorenew from '@material-ui/icons/Autorenew';
 import { format} from 'date-fns';
@@ -19,10 +19,10 @@ interface StagedItemProps {
 
 export const StagedItem: FC<StagedItemProps> = ({ classes, isStaging, item, style }) => {
   const { db } = useLoadedDB();
-  const { history } = useApp();
+  const navigate = useNavigate();
 
   const handleClickItem = () => {
-    history.push(`thought/${item.id}`);
+    navigate(`thought/${item.id}`);
   };
 
   const handleClickUnstage = () => {
@@ -39,7 +39,7 @@ export const StagedItem: FC<StagedItemProps> = ({ classes, isStaging, item, styl
     });
   };
 
-  const from = useMemo(() => getSearchParam(history, 'from') === item.id,[item.id]);
+  const from = useMemo(() => getSearchParam('from') === item.id,[item.id]);
 
   return (
     <animated.div className={classNames(classes.stagedItem, { from })} style={style}>

@@ -5,7 +5,7 @@ import useCrypto from '../../../../hooks/useCrypto';
 import { useLoadedDB } from '../../../../hooks/useDB';
 import { useStyles } from './styles';
 import { SetupStages } from './types';
-import useApp from '../../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { Backup } from '../../../../store/rxdb/schemas/backup';
 import { backups as backupActions } from '../../../../actions';
 
@@ -17,7 +17,7 @@ interface SetupBackupProps {
 export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
   const classes = useStyles({});
   const rootRef = useRef(null);
-  const { history } = useApp();
+  const navigate = useNavigate();
   const { db } = useLoadedDB();
   const [stage, setStage] = useState<SetupStages>(SetupStages.Id);
   const [id, setId] = useState<string>(backup?.backupId ?? '');
@@ -55,7 +55,7 @@ export const SetupBackup: FC<SetupBackupProps> = ({ onClose, backup }) => {
       isActive: false,
     });
 
-    history.push('/backups');
+    navigate('/backups');
     onClose();
   };
 

@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback, FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import useApp from '../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
 import { getIdFromUrl, getSearchParam } from '../../lib/util';
 import NavBar from './components/nav-bar';
@@ -26,9 +26,9 @@ interface NavBarItem {
 }
 
 export const Settings: FC<SettingsProps> = ({ classes, typeOptions, setLastNotification }) => {
-  const { history } = useApp();
-  const planId = getIdFromUrl(history, 'plan');
-  const type = getSearchParam(history, 'type');
+  const navigate = useNavigate();
+  const planId = getIdFromUrl('plan');
+  const type = getSearchParam('type');
 
   const plans = useSelector(planSelector);
   const thoughts = useSelector(thoughtSelector);
@@ -36,7 +36,7 @@ export const Settings: FC<SettingsProps> = ({ classes, typeOptions, setLastNotif
 
   const plan = useMemo(() => plans.find(({ id }) => id === planId), [plans, planId]);
   const handleClick = useCallback(type => () => {
-    history.push(`?type=${type}`);
+    navigate(`?type=${type}`);
   }, []);
 
   const items = useMemo(() => {

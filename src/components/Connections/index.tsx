@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import useApp from '../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { getIdFromUrl } from '../../lib/util';
 import ConnectionGraph from './components/ConnectionGraph';
 import { useSelector } from 'react-redux';
@@ -11,11 +11,11 @@ interface ConnectionsProps {
 }
 
 export const Connections: FC<ConnectionsProps> = ({ statusOptions }) => {
-  const { history } = useApp();
+  const navigate = useNavigate();
   const thoughts = useSelector(thoughtSelector);
   const connections = useSelector(connectionSelector);
 
-  const thoughtId = getIdFromUrl(history, 'thought');
+  const thoughtId = getIdFromUrl('thought');
   const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
 
   return (

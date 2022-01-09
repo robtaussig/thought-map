@@ -47,8 +47,8 @@ export const thoughtStatuses = (statuses: Status[]): StatusesByThought => {
   return statusesByThought;
 };
 
-export const homeUrl = (history: History) => {
-  const pathName = history.location.pathname;
+export const homeUrl = () => {
+  const pathName = location.pathname;
   const split = pathName.split('/');
 
   if (split[1] === 'plan') {
@@ -58,8 +58,8 @@ export const homeUrl = (history: History) => {
   }
 };
 
-export const getIdFromUrl = (history: History, key: string) => {
-  const path = history.location.pathname;
+export const getIdFromUrl = (key: string) => {
+  const path = location.pathname;
 
   return path.split('/').reduce((id, part) => {
     if (id === true) return part;
@@ -69,8 +69,7 @@ export const getIdFromUrl = (history: History, key: string) => {
   }, false);
 };
 
-export const getSearchParam = (history: History, key: string) => {
-  const { search } = history.location;
-  const searchParams = new URLSearchParams(search);
+export const getSearchParam = (key: string) => {
+  const searchParams = new URLSearchParams(location.search);
   return searchParams.get(key);
 };

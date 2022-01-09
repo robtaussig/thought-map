@@ -9,7 +9,7 @@ import Check from '@material-ui/icons/Check';
 import Create from '@material-ui/icons/Create';
 import DeletePlan from './delete-plan';
 import ArchiveThoughts from './archive-thoughts';
-import useApp from '../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { plans as planActions, thoughts as thoughtActions } from '../../../actions';
 import { planSettingsStyles } from '../styles';
@@ -36,7 +36,7 @@ interface AddOrRemovableThoughts {
 const SETTINGS_PATH_REGEX = /settings.*/;
 
 export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, typeOptions, connections }) => {
-  const { history } = useApp();
+  const navigate = useNavigate();
   const { db } = useLoadedDB();
   const [inputtedName, setInputtedName] = useState<string>(plan.name);
   const [hasChange, setHasChange] = useState<boolean>(false);
@@ -56,10 +56,10 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
 
   const handleClickReturnHome = () => {
     const nextUrl = location.pathname.replace(SETTINGS_PATH_REGEX, '');
-    history.push(nextUrl);
+    navigate(nextUrl);
   }
 
-  const handleReturnHomeAfterDelete = () => history.push('/');
+  const handleReturnHomeAfterDelete = () => navigate('/');
 
   const handleClickSubmitChanges = async () => {
     const editedPlan = Object.assign({}, plan, {

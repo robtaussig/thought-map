@@ -1,13 +1,12 @@
-import React, { FC, useEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { AppProps, Notification as NotificationType } from '../types';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import { Notification as NotificationType } from '../types';
 import { backupSelector } from '../reducers/backups';
-import { Context as AppContext } from '../store';
 import { ModalContextValue } from '../hooks/useModal/types';
 import { ModalProvider } from '../hooks/useModal';
 import { statusOptionsSelector } from '../reducers/statusOptions';
 import { useAppStyles } from './style';
 import { subscribeToChanges } from '../store/updates';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { tagOptionsSelector } from '../reducers/tagOptions';
 import { typeOptionsSelector } from '../reducers/typeOptions';
 import { useDB } from '../hooks/useDB';
@@ -32,7 +31,7 @@ import Timeline from '../components/Timeline';
 import Thought from '../components/Thought';
 import { checkVersionAndOpenModalIfUpdate } from './util';
 
-const App: FC<AppProps> = ({ history }) => {
+const App = () => {
   const [DBProvider, dbContext, dbReadyState] = useDB();
   const dispatch = useDispatch();
   const classes = useAppStyles({});
@@ -73,77 +72,43 @@ const App: FC<AppProps> = ({ history }) => {
       init();
       return () => unsubscribe();
     }
-  }, [dbContext.db, dbReadyState]);  
+  }, [dbContext.db, dbReadyState]);
+
+  if (!dbReadyState) return null;
 
   return (
-    <AppContext.Provider value={appContext}>
-      <DBProvider value={dbContext}>
-        <GoogleCalendarProvider>
-          <ModalProvider getContext={getModalContext}>
-            <Div100vh id={'app'} ref={rootRef} className={classes.root}>
-              <Notifications lastNotification={lastNotification} />
-              <LeftButton/>
-              <MiddleButton/>
-              <RightButton typeOptions={typeOptions}/>
-              <Switch>
-                <Route path={'/privacy'}>
-                  <PrivacyPolicy/>
-                </Route>
-                <Route exact path={'/'}>
-                  {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}
-                </Route>
-                <Route path={'/settings'}>
-                  {dbReadyState && <Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>}
-                </Route>
-                <Route path={'/thought/:id/connections'}>
-                  {dbReadyState && <Connections statusOptions={statusOptions}/>}
-                </Route>
-                <Route path={'/thought/:id/history'}>
-                  {dbReadyState && <History statusOptions={statusOptions}/>}
-                </Route>
-                <Route path={'/plan/:id/timeline'}>
-                  {dbReadyState && <Timeline/>}
-                </Route>
-                <Route path={'/plan/:id/thought/:id/history'}>
-                  {dbReadyState && <History statusOptions={statusOptions}/>}
-                </Route>
-                <Route path={'/thought/:id'}>
-                  {dbReadyState && <Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
-                </Route>
-                <Route path={'/plan/:id/thought/:thoughtId/connections'}>
-                  {dbReadyState && <Connections statusOptions={statusOptions}/>}
-                </Route>
-                <Route path={'/plan/:id/thought/:thoughtId'}>
-                  {dbReadyState && <Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>}
-                </Route>
-                <Route path={'/plan/:id/settings'}>
-                  {dbReadyState && <Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>}
-                </Route>
-                <Route path={'/plan/:id'}>
-                  {dbReadyState && <Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}
-                </Route>
-                <Route path={'/stage'}>
-                  {dbReadyState && <Stage/>}  
-                </Route>
-                <Route path={'/backups'}>
-                  {dbReadyState && <Backups/>}
-                </Route>
-                <Route path={'/merge/:backupId'}>
-                  {dbReadyState && <Merge/>}
-                </Route>
-                <Route path={'/process-merge/:backupId'}>
-                  {dbReadyState && <ProcessMerge/>}
-                </Route>
-                <Route path={'/timeline'}>
-                  {dbReadyState && <Timeline allPlans={true}/>}
-                </Route>
-              </Switch> 
-            </Div100vh>
-          </ModalProvider>
-        </GoogleCalendarProvider>
-      </DBProvider>
-    </AppContext.Provider>
+    <DBProvider value={dbContext}>
+      <GoogleCalendarProvider>
+        <ModalProvider getContext={getModalContext}>
+          <Div100vh id={'app'} ref={rootRef} className={classes.root}>
+            <Notifications lastNotification={lastNotification} />
+            <LeftButton/>
+            <MiddleButton/>
+            <RightButton typeOptions={typeOptions}/>
+            <Routes>
+              <Route path={'/privacy'} element={<PrivacyPolicy/>}/>
+              <Route path={'/'} element={<Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}/>
+              <Route path={'/settings'} element={<Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>} />
+              <Route path={'/thought/:id/connections'} element={<Connections statusOptions={statusOptions}/>} />
+              <Route path={'/thought/:id/history'} element={<History statusOptions={statusOptions}/>} />
+              <Route path={'/plan/:id/timeline'} element={<Timeline/>} />
+              <Route path={'/plan/:id/thought/:id/history'} element={<History statusOptions={statusOptions}/>} />
+              <Route path={'/thought/:id'} element={<Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>} />
+              <Route path={'/plan/:id/thought/:thoughtId/connections'} element={<Connections statusOptions={statusOptions}/>} />
+              <Route path={'/plan/:id/thought/:thoughtId'} element={<Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>} />
+              <Route path={'/plan/:id/settings'} element={<Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>} />
+              <Route path={'/plan/:id'} element={<Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>} />
+              <Route path={'/stage'} element={<Stage/>} />
+              <Route path={'/backups'} element={<Backups/>} />
+              <Route path={'/merge/:backupId'} element={<Merge/>} />
+              <Route path={'/process-merge/:backupId'} element={<ProcessMerge/>} />
+              <Route path={'/timeline'} element={<Timeline allPlans={true}/>} />
+            </Routes> 
+          </Div100vh>
+        </ModalProvider>
+      </GoogleCalendarProvider>
+    </DBProvider>
   );
 };
 
-export default withRouter(App);
+export default App;

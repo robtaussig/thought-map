@@ -1,9 +1,7 @@
 import React, { useMemo, FC } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Content from './Content/index';
 import PlanSelect from './PlanSelect';
-import { styles } from './styles';
-import useApp from '../../hooks/useApp';
+import { useStyles } from './styles';
 import { getIdFromUrl, getSearchParam } from '../../lib/util';
 import { Notification } from '../../types';
 import { planSelector } from '../../reducers/plans';
@@ -11,18 +9,17 @@ import { thoughtSelector } from '../../reducers/thoughts';
 import { useSelector } from 'react-redux';
 
 interface HomeProps {
-  classes: any;
   statusOptions: string[];
   setLastNotification: (notification: Notification) => void;
   typeOptions: string[];
 }
 
-export const Home: FC<HomeProps> = ({ classes, statusOptions, setLastNotification, typeOptions }) => {
-  const { history } = useApp();
+export const Home: FC<HomeProps> = ({ statusOptions, setLastNotification, typeOptions }) => {
   const plans = useSelector(planSelector);
+  const classes = useStyles();
   const thoughts = useSelector(thoughtSelector);
-  const planId = getIdFromUrl(history, 'plan');
-  const from = getSearchParam(history, 'from');
+  const planId = getIdFromUrl('plan');
+  const from = getSearchParam('from');
   const plan = plans.find(plan => plan.id === planId);
   const planThoughts = useMemo(() => {
     if (planId === 'archive') {
@@ -49,4 +46,4 @@ export const Home: FC<HomeProps> = ({ classes, statusOptions, setLastNotificatio
   );
 };
 
-export default withStyles(styles)(Home);
+export default Home;

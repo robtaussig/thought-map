@@ -5,7 +5,7 @@ import { Backup } from '../../../store/rxdb/schemas/backup';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 import useCrypto from '../../../hooks/useCrypto';
 import { useLoadedDB } from '../../../hooks/useDB';
-import useApp from '../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import Tooltip from '../../General/Tooltip';
 import { setMergeResults } from '../../../reducers/mergeResults';
 import classNames from 'classnames';
@@ -27,7 +27,7 @@ const MERGE_TOOLTIP_TEXT =
 export const UpdateAvailable: FC<UpdateAvailableProps> = ({ activeBackup, latestVersion, onClose }) => {
   const classes = useStyles({});
   const dispatch = useDispatch();
-  const { history } = useApp();
+  const navigate = useNavigate();
   const rootRef = useRef<HTMLDivElement>(null);
   const { db } = useLoadedDB();
   const { decrypt } = useCrypto();
@@ -49,11 +49,11 @@ export const UpdateAvailable: FC<UpdateAvailableProps> = ({ activeBackup, latest
 
         const decoded = decodeURIComponent(decrypted).slice('data:application/json;charset=utf-8,'.length);
         const parsed = JSON.parse(decoded);
-        const dump: unknown = await db.dump();
+        const dump: unknown = await db.exportJSON(true);
         const mergeResults = merge(dump as Dump, parsed);
         stopLoading();
         dispatch(setMergeResults(mergeResults));
-        history.push(`/merge/${backupId}?v=${response.version}`);
+        navigate(`/merge/${backupId}?v=${response.version}`);
         onClose();
       }
     } catch(e) {

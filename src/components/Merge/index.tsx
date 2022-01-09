@@ -1,6 +1,6 @@
 import React, { FC, useState, useMemo } from 'react';
 import { useStyles } from './styles';
-import useApp from '../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   mergeResultsSelector,
@@ -23,7 +23,7 @@ import { getBackupIdFromHistory } from './util';
 
 export const Merge: FC = () => {
   const classes = useStyles({});
-  const { history } = useApp();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     itemsToAdd,
@@ -84,9 +84,9 @@ export const Merge: FC = () => {
   };
 
   const handleMerge = () => {
-    const backupId = getBackupIdFromHistory(history);
+    const backupId = getBackupIdFromHistory();
     if (backupId) {
-      history.push(`/process-merge/${backupId}${history.location.search}`);
+      navigate(`/process-merge/${backupId}${location.search}`);
     }
   };
 

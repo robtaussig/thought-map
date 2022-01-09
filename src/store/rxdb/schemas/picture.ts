@@ -17,10 +17,10 @@ export default ['picture', {
   "version": 2,
   "description": "A Picture",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "thoughtId": {
       "ref": "thought",
@@ -52,7 +52,7 @@ export default ['picture', {
   "attachments": {
 
   }
-} as RxJsonSchema, {
+} as RxJsonSchema<Picture>, {
   "migrationStrategies": {
     1: (oldPicture: RxDocument<Picture>) => {
       return oldPicture;

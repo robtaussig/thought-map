@@ -19,10 +19,10 @@ export default ['custom_object', {
   "version": 0,
   "description": "A CustomObject",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "type": {
       "type": "string",
@@ -41,4 +41,4 @@ export default ['custom_object', {
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema<CustomObject>];

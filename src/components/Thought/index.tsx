@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useState, FC, useEffect } from 'react';
-import useApp from '../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home';
@@ -65,11 +65,11 @@ export const DEFAULT_SECTIONS = 'type-status-priority-description-datetime-notes
 export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions, tagOptions }) => {
   const { db } = useLoadedDB();
   const dispatch = useDispatch();
-  const { history } = useApp();
+  const navigate = useNavigate();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const [editAllSections, setEditAllSections] = useState<boolean>(false);
   const [threeSecondsElapsed, setThreeSecondsElapsed] = useState<boolean>(false);
-  const thoughtId = getIdFromUrl(history, 'thought');
+  const thoughtId = getIdFromUrl('thought');
   const thoughts = useSelector(thoughtSelector);
   const tags = useSelector(tagSelector);
   const notes = useSelector(noteSelector);
@@ -126,7 +126,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   }, [thoughtId, pictures]);
 
   const handleClickHome = (): void => {
-    history.push(`${homeUrl(history)}?from=${thoughtId}`);
+    navigate(`${homeUrl()}?from=${thoughtId}`);
   };
 
   const handleUpdate = useCallback(async updatedThought => {

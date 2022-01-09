@@ -8,7 +8,7 @@ import { RxDatabase } from 'rxdb';
 import { openConfirmation } from '../../../../lib/util';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../../hooks/useDB';
-import useApp from '../../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { useModal } from '../../../../hooks/useModal';
 import Tooltip from '../../../General/Tooltip';
 import { settingSelector } from '../../../../reducers/settings';
@@ -31,7 +31,7 @@ import {
 import { runDiagnosis } from './util';
 
 export const jsonDump = async (db: RxDatabase): Promise<string> => {
-  const json = await db.dump();
+  const json = await db.exportJSON(true);
   const dataStr = JSON.stringify(json);
   const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
   return dataUri;
@@ -48,7 +48,7 @@ export const download = (data: string, fileName: string = 'thoughtmap_backup') =
 export const Data: FC<DataProps> = ({ setLoading }) => {
   const importJSONRef = useRef<HTMLInputElement>(null);
   const [side, setSide] = useState<Side>(Side.TOP);
-  const { history } = useApp();
+  const navigate = useNavigate();
   const classes = useStyles({});
   const dispatch = useDispatch();
   const settings = useSelector(settingSelector);
@@ -81,7 +81,7 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
   }, []);
 
   const handleClickManageBackups = useCallback(() => {
-    history.push('/backups');
+    navigate('/backups');
   }, []);
 
   useEffect(() => {
@@ -100,7 +100,7 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
           dispatch({ type: 'RESET' });
           await db.remove();
           const newDb = await initialize();
-          await newDb.importDump(json);
+          await newDb.importJSON(json);
           location.href = '/';
         };
 

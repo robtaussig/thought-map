@@ -2,7 +2,7 @@ import { RxDatabase } from 'rxdb';
 import { Backup } from 'store/rxdb/schemas/backup';
 import Base from './base';
 
-export const TABLE_NAME = 'backup';
+export const TABLE_NAME = 'doc_backup';
 
 export default class Backups extends Base {
   static fetchAll = (db: RxDatabase): Promise<Backup[]> => Base.fetchAll(db, TABLE_NAME)

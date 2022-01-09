@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import ThoughtSection from '../ThoughtSection';
 import Link from '@material-ui/icons/Link';
 import useModal from '../../../../../hooks/useModal';
-import useApp from '../../../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { ConnectionSummary } from '../../../';
 import ConnectionsModal from './components/ConnectionsModal';
 import { SectionState } from '../../../types';
@@ -35,7 +35,7 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
   const [openModal, closeModal] = useModal();
   const thoughts = useSelector(thoughtSelector);
   const thoughtTitles = thoughts.map(({ title }) => title);
-  const { history } = useApp();
+  const navigate = useNavigate();
   const handleEdit = () => {
     openModal(
       <ConnectionsModal
@@ -47,7 +47,7 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
 
   const handleClickItem = (item: string, idx: number) => {
     const { id, planId } = connections[idx].otherThought;
-    history.push(`/${planId ? `plan/${planId}/` : ''}thought/${id}`);
+    navigate(`/${planId ? `plan/${planId}/` : ''}thought/${id}`);
   };
 
   const toConnections = connections.filter(({ isParent }) => Boolean(isParent));

@@ -1,4 +1,3 @@
-import { History } from 'history';
 import { RouteComponentProps } from 'react-router-dom';
 import {
   Thought as ThoughtType,
@@ -14,10 +13,6 @@ import {
 
 export interface Classes {
   [className: string]: string;
-}
-
-export interface AppProps extends RouteComponentProps {
-  history: History;
 }
 
 export interface Notification {

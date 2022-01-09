@@ -17,10 +17,10 @@ export default ['plan', {
   "version": 5,
   "description": "A Plan",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "name": {
       "type": "string",
@@ -51,7 +51,7 @@ export default ['plan', {
   "attachments": {
 
   },
-} as RxJsonSchema, {
+} as RxJsonSchema<Plan>, {
   "migrationStrategies": {
     1: (oldPlan: RxDocument<Plan>) => {
       oldPlan.showCompleted = false;

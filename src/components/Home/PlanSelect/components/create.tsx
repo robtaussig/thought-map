@@ -1,7 +1,7 @@
 import React, { FC, useState, FormEvent } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import Input from '../../../General/Input';
-import useApp from '../../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../../../hooks/useDB';
 import { plans as planActions } from '../../../../actions';
 
@@ -45,7 +45,7 @@ const styles = (theme: any): StyleRules => ({
 export const CreatePlan: FC<CreatePlanProps> = ({ classes, onClose }) => {
   const [inputtedValue, setInputtedValue] = useState('');
   const { db } = useLoadedDB();
-  const { history } = useApp();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ export const CreatePlan: FC<CreatePlanProps> = ({ classes, onClose }) => {
       name: inputtedValue.trim(),
     });
 
-    history.push(`/plan/${plan.id}/`);
+    navigate(`/plan/${plan.id}/`);
     onClose();
   }
 

@@ -13,10 +13,10 @@ export default ['bulk_list', {
   "version": 1,
   "description": "A BulkList",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "name": {
       "type": "string",
@@ -35,7 +35,7 @@ export default ['bulk_list', {
   "attachments": {
 
   },
-} as RxJsonSchema, {
+} as RxJsonSchema<BulkList>, {
     "migrationStrategies": {
       1: (oldBulkList: RxDocument<BulkList>) => {
           oldBulkList.name = 'Unknown';

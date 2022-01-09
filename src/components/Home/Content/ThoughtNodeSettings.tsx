@@ -3,7 +3,7 @@ import { withStyles, StyleRules } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
-import useApp from '../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import Tooltip from '../../General/Tooltip';
 import { thoughts as thoughtActions } from '../../../actions';
 import { openConfirmation, homeUrl } from '../../../lib/util';
@@ -71,7 +71,7 @@ const STAGE_TOOLTIP_TEXT = 'Staging a thought flags it as being relevant on the 
 
 export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, thought, onClose }) => {
   const { db } = useLoadedDB();
-  const { history } = useApp();
+  const navigate = useNavigate();
   const connections = useSelector(connectionSelector);
 
   const handleClickBump = () => {
@@ -98,12 +98,12 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
 
   const handleClickViewConnections = () => {
     onClose();
-    history.push(`${homeUrl(history)}thought/${thought.id}/connections`);
+    navigate(`${homeUrl()}thought/${thought.id}/connections`);
   };
 
   const handleClickViewHistory = () => {
     onClose();
-    history.push(`${homeUrl(history)}thought/${thought.id}/history`);
+    navigate(`${homeUrl()}thought/${thought.id}/history`);
   };
 
   const handleClickStage = () => {
