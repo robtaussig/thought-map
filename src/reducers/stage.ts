@@ -31,8 +31,8 @@ const stage = createSlice({
       }
     },
   },
-  extraReducers: {
-    [insertThought as any]: (state, action: PayloadAction<Thought>) => {
+  extraReducers: builder => {
+    builder.addCase(insertThought, (state, action) => {
       if (action.payload.stagedOn) {
         const today = format(new Date(), 'yyyy-MM-dd');
         if (action.payload.stagedOn === today) {
@@ -41,8 +41,8 @@ const stage = createSlice({
           state.backlog.push(action.payload.id);
         }
       }
-    },
-    [updateThought as any]: (state, action: PayloadAction<Thought>) => {
+    });
+    builder.addCase(updateThought, (state, action) => {
       const isCurrent = state.current.includes(action.payload.id);
       const isBacklog = state.backlog.includes(action.payload.id);
 
@@ -67,8 +67,8 @@ const stage = createSlice({
         if (isCurrent) state.current = state.current.filter(prev => prev !== action.payload.id);
         if (isBacklog) state.backlog = state.backlog.filter(prev => prev !== action.payload.id);
       }
-    },
-    [setThoughts as any]: (state, action: PayloadAction<Thoughts>) => {
+    });
+    builder.addCase(setThoughts, (state, action) => {
       state.current = [];
       state.backlog = [];
       const today = format(new Date(), 'yyyy-MM-dd');
@@ -82,13 +82,13 @@ const stage = createSlice({
           }
         }
       });
-    },
-    [removeThought as any]: (state, action: PayloadAction<Thought>) => {
-      const isCurrent = state.current.includes(action.payload.id);
-      const isBacklog = state.backlog.includes(action.payload.id);
-      if (isCurrent) state.current = state.current.filter(prev => prev !== action.payload.id);
-      if (isBacklog) state.backlog = state.backlog.filter(prev => prev !== action.payload.id);
-    }
+    });
+    builder.addCase(removeThought, (state, action) => {
+      const isCurrent = state.current.includes(action.payload);
+      const isBacklog = state.backlog.includes(action.payload);
+      if (isCurrent) state.current = state.current.filter(prev => prev !== action.payload);
+      if (isBacklog) state.backlog = state.backlog.filter(prev => prev !== action.payload);
+    });
   },
 });
 
