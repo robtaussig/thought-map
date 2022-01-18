@@ -10,14 +10,14 @@ import { Status } from './status';
 import { Backup } from './backup';
 
 export {
-    Thought,
-    Plan,
-    Note,
-    Tag,
-    Connection,
-    Template,
-    Picture,
-    Setting,
-    Status,
-    Backup,
+  Thought,
+  Plan,
+  Note,
+  Tag,
+  Connection,
+  Template,
+  Picture,
+  Setting,
+  Status,
+  Backup,
 };

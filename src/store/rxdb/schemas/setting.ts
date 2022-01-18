@@ -9,30 +9,30 @@ export interface Setting {
 }
 
 export default ['setting', {
-    'title': 'Setting schema',
-    'version': 0,
-    'description': 'A Setting',
-    'type': 'object',
-    'primaryKey': 'id',
-    'properties': {
-        'id': {
-            'type': 'string',
-        },
-        'field': {
-            'type': 'string',
-        },
-        'value': {
-            'type': 'string',
-        },
-        'created': {
-            'type': 'number',
-        },
-        'updated': {
-            'type': 'number',
-        },
+  'title': 'Setting schema',
+  'version': 0,
+  'description': 'A Setting',
+  'type': 'object',
+  'primaryKey': 'id',
+  'properties': {
+    'id': {
+      'type': 'string',
     },
-    'required': ['field', 'value'],
-    'attachments': {
+    'field': {
+      'type': 'string',
+    },
+    'value': {
+      'type': 'string',
+    },
+    'created': {
+      'type': 'number',
+    },
+    'updated': {
+      'type': 'number',
+    },
+  },
+  'required': ['field', 'value'],
+  'attachments': {
 
-    }
+  }
 } as RxJsonSchema<Setting>];

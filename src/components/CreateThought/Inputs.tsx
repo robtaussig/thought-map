@@ -18,51 +18,51 @@ interface InputsProps {
 }
 
 export const Inputs: FC<InputsProps> = React.memo(({
-    classes,
-    createdThought,
-    setCreatedThought,
-    typeOptions,
-    thoughtTitles,
-    onReady,
-    planId,
-    plans,
-    selectedPlan,
-    setSelectedPlan,
+  classes,
+  createdThought,
+  setCreatedThought,
+  typeOptions,
+  thoughtTitles,
+  onReady,
+  planId,
+  plans,
+  selectedPlan,
+  setSelectedPlan,
 }) => {
-    const setTitle = (value: string) => setCreatedThought(prev => ({
-        ...prev,
-        title: value,
-    }));
-    const setType = (value: string) => setCreatedThought(prev => ({
-        ...prev,
-        type: value,
-    }));
+  const setTitle = (value: string) => setCreatedThought(prev => ({
+    ...prev,
+    title: value,
+  }));
+  const setType = (value: string) => setCreatedThought(prev => ({
+    ...prev,
+    type: value,
+  }));
 
-    const isReady = validateInputs(createdThought.title);
+  const isReady = validateInputs(createdThought.title);
 
-    useEffect(() => {
-        onReady(isReady);
-    }, [isReady]);
+  useEffect(() => {
+    onReady(isReady);
+  }, [isReady]);
 
-    return (
-        <Fragment>
-            <Input classes={classes} id={'title'} value={createdThought.title} onChange={e => setTitle(e.target.value)} autoSuggest={thoughtTitles} autoFocus/>
-            <Select classes={classes} id={'type'} value={createdThought.type} options={typeOptions} onChange={e => setType(e.target.value)}/>
-            {!planId &&(
-                <Select
-                    classes={classes}
-                    id={'plan'}
-                    value={selectedPlan}
-                    options={['Plan'].concat(plans.map(({ name }) => name))}
-                    onChange={e => setSelectedPlan(e.target.value)}
-                />
-            )}
-        </Fragment>
-    );
+  return (
+    <Fragment>
+      <Input classes={classes} id={'title'} value={createdThought.title} onChange={e => setTitle(e.target.value)} autoSuggest={thoughtTitles} autoFocus/>
+      <Select classes={classes} id={'type'} value={createdThought.type} options={typeOptions} onChange={e => setType(e.target.value)}/>
+      {!planId &&(
+        <Select
+          classes={classes}
+          id={'plan'}
+          value={selectedPlan}
+          options={['Plan'].concat(plans.map(({ name }) => name))}
+          onChange={e => setSelectedPlan(e.target.value)}
+        />
+      )}
+    </Fragment>
+  );
 });
 
 export default Inputs;
 
 const validateInputs = (title: string): boolean => {
-    return title !== '';
+  return title !== '';
 };

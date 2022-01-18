@@ -11,42 +11,42 @@ interface QuickAddModalProps {
 }
 
 export const QuickAddModal: FC<QuickAddModalProps> = ({ classes, onClose, onSubmit, options, autoSuggest }) => {
-    const [inputtedValue, setInputtedValue] = useState<string>('');
+  const [inputtedValue, setInputtedValue] = useState<string>('');
 
-    const handleSubmit: FormEventHandler = e => {
-        e.preventDefault();
-        onSubmit(inputtedValue.trim());
-    };
+  const handleSubmit: FormEventHandler = e => {
+    e.preventDefault();
+    onSubmit(inputtedValue.trim());
+  };
 
-    const handleClickCancel: MouseEventHandler = e => {
-        e.preventDefault();
-        onClose();
-    };
+  const handleClickCancel: MouseEventHandler = e => {
+    e.preventDefault();
+    onClose();
+  };
 
-    return options ? (
-        <Select
-            classes={classes}
-            id={'tag-select'}
-            value={'Select Tag'} //Improve
-            onChange={e => onSubmit(e.target.value)}
-            options={options}
-            aria-label={'Options'}
-        />
-    ) : (
-        <form className={classes.quickAddForm} onSubmit={handleSubmit}>
-            <Input
-                classes={classes}
-                id={'quick-add'}
-                value={inputtedValue}
-                onChange={e => setInputtedValue(e.target.value)}
-                aria-label={'Item Name'}
-                autoSuggest={autoSuggest}
-                autoFocus
-            />
-            <button className={classes.submitQuickAddButton} disabled={inputtedValue === ''}>Submit</button>
-            <button className={classes.cancelQuickAddButton} onClick={handleClickCancel}>Cancel</button>
-        </form>
-    );
+  return options ? (
+    <Select
+      classes={classes}
+      id={'tag-select'}
+      value={'Select Tag'} //Improve
+      onChange={e => onSubmit(e.target.value)}
+      options={options}
+      aria-label={'Options'}
+    />
+  ) : (
+    <form className={classes.quickAddForm} onSubmit={handleSubmit}>
+      <Input
+        classes={classes}
+        id={'quick-add'}
+        value={inputtedValue}
+        onChange={e => setInputtedValue(e.target.value)}
+        aria-label={'Item Name'}
+        autoSuggest={autoSuggest}
+        autoFocus
+      />
+      <button className={classes.submitQuickAddButton} disabled={inputtedValue === ''}>Submit</button>
+      <button className={classes.cancelQuickAddButton} onClick={handleClickCancel}>Cancel</button>
+    </form>
+  );
 };
 
 export default QuickAddModal;

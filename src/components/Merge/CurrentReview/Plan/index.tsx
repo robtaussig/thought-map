@@ -10,22 +10,22 @@ interface PlanProps {
 }
 
 export const Plan: FC<PlanProps> = ({
-    classes,
-    rootClassName,
-    plan,
+  classes,
+  rootClassName,
+  plan,
 }) => {
-    const { id, updated, created, ...restOfPlan } = plan;
+  const { id, updated, created, ...restOfPlan } = plan;
 
-    return (
-        <Base
-            classes={classes}
-            rootClassName={rootClassName}
-            header={'Plan'}
-            subHeader={plan.name}
-            mainField={`Created ${format(plan.created, 'yyyy-MM-dd HH:mm')}`}
-            fields={restOfPlan}
-        />
-    );
+  return (
+    <Base
+      classes={classes}
+      rootClassName={rootClassName}
+      header={'Plan'}
+      subHeader={plan.name}
+      mainField={`Created ${format(plan.created, 'yyyy-MM-dd HH:mm')}`}
+      fields={restOfPlan}
+    />
+  );
 };
 
 export default Plan;

@@ -15,68 +15,68 @@ interface AssociationsToDelete {
 }
 
 export const sortByDateUpdated = (resLeft: Sortable, resRight: Sortable): number => {
-    return resRight.updated > resLeft.updated ? 1 : -1;
+  return resRight.updated > resLeft.updated ? 1 : -1;
 };
 
 export default class Base {
-    static fetchAll = async (db: RxDatabase, tableName: string): Promise<any[]> => {
-        const query = db[tableName].find();
-        const results = await query.exec();
-        return results
-            .map(toJSON)
-            .sort(sortByDateUpdated);
-    };
+  static fetchAll = async (db: RxDatabase, tableName: string): Promise<any[]> => {
+    const query = db[tableName].find();
+    const results = await query.exec();
+    return results
+      .map(toJSON)
+      .sort(sortByDateUpdated);
+  };
 
-    static fetch = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
-        const query = db[tableName].find().where('id').eq(id);
-        const result: RxDocument<any> = await query.exec();
+  static fetch = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
+    const query = db[tableName].find().where('id').eq(id);
+    const result: RxDocument<any> = await query.exec();
 
-        return result && result[0] ? result[0].toJSON() : null;
-    };
+    return result && result[0] ? result[0].toJSON() : null;
+  };
 
-    static add = async (db: RxDatabase, object: RxDocument<any>, tableName: string): Promise<any> => {
-        const timestamp = +new Date();
-        const result = await db[tableName].insert(Object.assign({}, object, {
-            id: uuidv4(),
-            created: timestamp,
-            updated: timestamp,
-        }));
-        return result.toJSON();
-    };
+  static add = async (db: RxDatabase, object: RxDocument<any>, tableName: string): Promise<any> => {
+    const timestamp = +new Date();
+    const result = await db[tableName].insert(Object.assign({}, object, {
+      id: uuidv4(),
+      created: timestamp,
+      updated: timestamp,
+    }));
+    return result.toJSON();
+  };
 
-    static update = async (db: RxDatabase, object: RxDocument<any>, tableName: string): Promise<any> => {
-        const timestamp = +new Date();
-        const result = await db[tableName].upsert(Object.assign({}, object, {
-            updated: timestamp,
-        }));
-        return result.toJSON();
-    };
+  static update = async (db: RxDatabase, object: RxDocument<any>, tableName: string): Promise<any> => {
+    const timestamp = +new Date();
+    const result = await db[tableName].upsert(Object.assign({}, object, {
+      updated: timestamp,
+    }));
+    return result.toJSON();
+  };
 
-    static delete = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
-        const query = db[tableName].find().where('id').eq(id);
-        const response = await query.remove();
-        await db['deletion'].insert({
-            id: uuidv4(),
-            collectionName: tableName,
-            itemId: id,
-        } as Deletion);
-        return response;
-    };
+  static delete = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
+    const query = db[tableName].find().where('id').eq(id);
+    const response = await query.remove();
+    await db['deletion'].insert({
+      id: uuidv4(),
+      collectionName: tableName,
+      itemId: id,
+    } as Deletion);
+    return response;
+  };
 
-    static find = async (db: RxDatabase, field: string, value: any, tableName: string): Promise<any> => {
-        const query = db[tableName]
-            .find()
-            .where(field)
-            .eq(value);
-        const results: RxDocument<any> = await query.exec();
+  static find = async (db: RxDatabase, field: string, value: any, tableName: string): Promise<any> => {
+    const query = db[tableName]
+      .find()
+      .where(field)
+      .eq(value);
+    const results: RxDocument<any> = await query.exec();
 
-        return results ? results.map((result: any) => result.toJSON()) : null;
-    };
+    return results ? results.map((result: any) => result.toJSON()) : null;
+  };
 
-    static deleteAssociations = async (db: RxDatabase, deletions: AssociationsToDelete[], id: string): Promise<any> => {
-        return Promise.all(deletions.map(({ tableName, key }) => {
-            const query = db[tableName].find().where(key).eq(id);
-            return query.remove();
-        }));
-    };
+  static deleteAssociations = async (db: RxDatabase, deletions: AssociationsToDelete[], id: string): Promise<any> => {
+    return Promise.all(deletions.map(({ tableName, key }) => {
+      const query = db[tableName].find().where(key).eq(id);
+      return query.remove();
+    }));
+  };
 }

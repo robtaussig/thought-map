@@ -8,26 +8,26 @@ import { templateSelector } from '../../../../../reducers/templates';
 import { useDeleteTemplateStyles } from '../styles';
 
 export const DeleteTemplates: FC = () => {
-    const classes = useDeleteTemplateStyles({});
-    const { db } = useLoadedDB();
-    const templates = useSelector(templateSelector);
+  const classes = useDeleteTemplateStyles({});
+  const { db } = useLoadedDB();
+  const templates = useSelector(templateSelector);
 
-    const deleteTemplate = (templateId: string) => {
-        openConfirmation('Are you sure you want to delete this template?', () => templateActions.deleteTemplate(db, templateId));
-    };
+  const deleteTemplate = (templateId: string) => {
+    openConfirmation('Are you sure you want to delete this template?', () => templateActions.deleteTemplate(db, templateId));
+  };
 
-    return (
-        <div className={classes.root}>
-            {templates.map(template => {
-                return (
-                    <div key={template.name} className={classes.template}>
-                        <span className={classes.templateText}>{template.name}</span>
-                        <button className={classes.deleteTemplate} onClick={() => deleteTemplate(template.id)}><Delete /></button>
-                    </div>
-                );
-            })}
-        </div>
-    );
+  return (
+    <div className={classes.root}>
+      {templates.map(template => {
+        return (
+          <div key={template.name} className={classes.template}>
+            <span className={classes.templateText}>{template.name}</span>
+            <button className={classes.deleteTemplate} onClick={() => deleteTemplate(template.id)}><Delete /></button>
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default DeleteTemplates;

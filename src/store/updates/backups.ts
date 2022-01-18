@@ -4,33 +4,33 @@ import { Notification, RxChangeEvent } from '../../types';
 import { AppDispatch } from '~store';
 
 export const handleBackupChange = (
-    dispatch: AppDispatch,
-    setLastNotification: (notification: Notification) => void,
+  dispatch: AppDispatch,
+  setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
-    if ((window as any).blockDBSubscriptions === true) return;
-    const backup: Backup = documentData;
-    let notification;
+  if ((window as any).blockDBSubscriptions === true) return;
+  const backup: Backup = documentData;
+  let notification;
 
-    switch (operation) {
-    case 'INSERT':
-        dispatch(insert(backup));
-        notification = { message: 'Backup created' };
-        break;
+  switch (operation) {
+  case 'INSERT':
+    dispatch(insert(backup));
+    notification = { message: 'Backup created' };
+    break;
     
-    case 'DELETE':
-        dispatch(remove(documentId));
-        notification = { message: 'Backup removed' };
-        break;
+  case 'DELETE':
+    dispatch(remove(documentId));
+    notification = { message: 'Backup removed' };
+    break;
 
-    case 'UPDATE':
-        dispatch(update(backup));
-        notification = { message: 'Backup updated' };
-        break;
+  case 'UPDATE':
+    dispatch(update(backup));
+    notification = { message: 'Backup updated' };
+    break;
   
-    default:
-        break;
-    }
+  default:
+    break;
+  }
 
-    if ((window as any).blockNotifications) return;
-    setLastNotification(notification);  
+  if ((window as any).blockNotifications) return;
+  setLastNotification(notification);  
 };

@@ -10,14 +10,14 @@ interface ConnectionStatusProps {
 }
 
 export const ConnectionStatus: FC<ConnectionStatusProps> = ({ classes, connectionStatus, expanded, onToggle }) => {
-    const [completed, total] = connectionStatus;
+  const [completed, total] = connectionStatus;
 
-    return (
-        <div className={classes.connectionStatus} onClick={() => onToggle(!expanded)}>
-            <span>{expanded ? (<ExpandMore/>) : (<ExpandLess/>)}</span>
-            <span>{completed} / {total}</span>
-        </div>
-    );
+  return (
+    <div className={classes.connectionStatus} onClick={() => onToggle(!expanded)}>
+      <span>{expanded ? (<ExpandMore/>) : (<ExpandLess/>)}</span>
+      <span>{completed} / {total}</span>
+    </div>
+  );
 };
 
 export default ConnectionStatus;

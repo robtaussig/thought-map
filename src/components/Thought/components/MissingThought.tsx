@@ -2,14 +2,14 @@ import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme: any) => ({
-    root: {
-        height: '100%',
-        margin: 50,
-        textAlign: 'center',
-        ...theme.defaults.centered,
-        fontSize: 30,
-        color: theme.palette.negative[100],
-    },
+  root: {
+    height: '100%',
+    margin: 50,
+    textAlign: 'center',
+    ...theme.defaults.centered,
+    fontSize: 30,
+    color: theme.palette.negative[100],
+  },
 }));
 
 interface MissingThoughtProps {
@@ -17,13 +17,13 @@ interface MissingThoughtProps {
 }
 
 export const MissingThought: FC<MissingThoughtProps> = () => {
-    const classes = useStyles({});
+  const classes = useStyles({});
 
-    return (
-        <div className={classes.root}>
+  return (
+    <div className={classes.root}>
       Uh oh, this thought doesn't exist (yet)!
-        </div>
-    );
+    </div>
+  );
 };
 
 export default MissingThought;

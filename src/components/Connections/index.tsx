@@ -10,15 +10,15 @@ interface ConnectionsProps {
 }
 
 export const Connections: FC<ConnectionsProps> = ({ statusOptions }) => {
-    const thoughts = useSelector(thoughtSelector);
-    const connections = useSelector(connectionSelector);
+  const thoughts = useSelector(thoughtSelector);
+  const connections = useSelector(connectionSelector);
 
-    const thoughtId = useIdFromUrl('thought');
-    const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
+  const thoughtId = useIdFromUrl('thought');
+  const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
 
-    return (
-        <ConnectionGraph thought={thought} thoughts={thoughts} connections={connections} statusOptions={statusOptions}/>
-    );
+  return (
+    <ConnectionGraph thought={thought} thoughts={thoughts} connections={connections} statusOptions={statusOptions}/>
+  );
 };
 
 export default Connections;

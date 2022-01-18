@@ -13,40 +13,40 @@ interface ConnectionProps {
 }
 
 const MOCK_THOUGHT = {
-    title: 'Unknown Thought',
+  title: 'Unknown Thought',
 };
 
 export const Connection: FC<ConnectionProps> = ({
-    classes,
-    rootClassName,
-    thoughts,
-    connection,
-    items,
+  classes,
+  rootClassName,
+  thoughts,
+  connection,
+  items,
 }) => {
 
-    const fromThought = thoughts.find(({ id }) => id === connection.from) ||
+  const fromThought = thoughts.find(({ id }) => id === connection.from) ||
     items.find(({ item }) => item.id === connection.from)?.item ||
     MOCK_THOUGHT;
-    const toThought = thoughts.find(({ id }) => id === connection.to) ||
+  const toThought = thoughts.find(({ id }) => id === connection.to) ||
     items.find(({ item }) => item.id === connection.to)?.item ||
     MOCK_THOUGHT;
 
-    return (
-        <div className={classNames(classes.root, rootClassName, 'connection')}>
-            <h2 className={classes.header}>Connection</h2>
-            <div className={classNames(classes.connectionThought, 'from')}>
-                <span className={'thought-title'}>Thought</span>
-                {fromThought.title}
-            </div>
-            <div className={classNames(classes.connectionText, 'from')}>From</div>
-            <div className={classes.connection}/>
-            <div className={classNames(classes.connectionText, 'to')}>To</div>
-            <div className={classNames(classes.connectionThought, 'to')}>
-                <span className={'thought-title'}>Thought</span>
-                {toThought.title}
-            </div>
-        </div>
-    );
+  return (
+    <div className={classNames(classes.root, rootClassName, 'connection')}>
+      <h2 className={classes.header}>Connection</h2>
+      <div className={classNames(classes.connectionThought, 'from')}>
+        <span className={'thought-title'}>Thought</span>
+        {fromThought.title}
+      </div>
+      <div className={classNames(classes.connectionText, 'from')}>From</div>
+      <div className={classes.connection}/>
+      <div className={classNames(classes.connectionText, 'to')}>To</div>
+      <div className={classNames(classes.connectionThought, 'to')}>
+        <span className={'thought-title'}>Thought</span>
+        {toThought.title}
+      </div>
+    </div>
+  );
 };
 
 export default Connection;

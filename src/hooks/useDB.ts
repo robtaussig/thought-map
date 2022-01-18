@@ -9,27 +9,27 @@ export interface DBContext {
 const DBContext = createContext<DBContext>(null);
 
 export const useDB = (): [Provider<DBContext>, DBContext, boolean] => {
-    const dbContext = useRef<DBContext>({ db: null, initialize: null });
-    const [readyState, setReadyState] = useState(false);
+  const dbContext = useRef<DBContext>({ db: null, initialize: null });
+  const [readyState, setReadyState] = useState(false);
 
-    useEffect(() => {
-        dbContext.current.initialize = async () => {
-            const db = await createRxDatabase(DB_SETTINGS);
-            await initializeCollections(db);
+  useEffect(() => {
+    dbContext.current.initialize = async () => {
+      const db = await createRxDatabase(DB_SETTINGS);
+      await initializeCollections(db);
 
-            dbContext.current.db = db;
-            setReadyState(true);
-            return dbContext.current.db;
-        };
+      dbContext.current.db = db;
+      setReadyState(true);
+      return dbContext.current.db;
+    };
 
-        dbContext.current.initialize();
-    }, []);
+    dbContext.current.initialize();
+  }, []);
 
-    return [DBContext.Provider, dbContext.current, readyState];
+  return [DBContext.Provider, dbContext.current, readyState];
 };
 
 export const useLoadedDB = (): DBContext => {
-    const dbContext = useContext(DBContext);
+  const dbContext = useContext(DBContext);
 
-    return dbContext;
+  return dbContext;
 };

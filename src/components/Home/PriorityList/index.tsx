@@ -13,40 +13,40 @@ interface PriorityListProps {
   onClose?: () => void;
 }
 export const PriorityList: FC<PriorityListProps> = ({ classes, onClose, thoughts }) => {
-    const [openModal, closeModal] = useModal();
-    const [isMinimized, setIsMinimized] = useState<boolean>(false);
-    const hasInitialized = useRef<boolean>(false);
-    const stateThoughts = useSelector(thoughtSelector);
-    const thoughtsToUse = thoughts || stateThoughts;
+  const [openModal, closeModal] = useModal();
+  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const hasInitialized = useRef<boolean>(false);
+  const stateThoughts = useSelector(thoughtSelector);
+  const thoughtsToUse = thoughts || stateThoughts;
 
-    const handleMinimize = () => {
-        setIsMinimized(true);
-        closeModal();
-    };
+  const handleMinimize = () => {
+    setIsMinimized(true);
+    closeModal();
+  };
 
-    const openPriorityList = () => {
-        setIsMinimized(false);
-        openModal(
-            <PriorityListModal classes={classes} onMinimize={handleMinimize} thoughts={thoughtsToUse} onClose={onClose}/>,
-            'Priorities',
-            {
-                afterClose: onClose,
-            }
-        );
-    };
+  const openPriorityList = () => {
+    setIsMinimized(false);
+    openModal(
+      <PriorityListModal classes={classes} onMinimize={handleMinimize} thoughts={thoughtsToUse} onClose={onClose}/>,
+      'Priorities',
+      {
+        afterClose: onClose,
+      }
+    );
+  };
 
-    useEffect(() => {
-        if (thoughtsToUse.length > 0 && hasInitialized.current === false) {
-            openPriorityList();
-            hasInitialized.current = true;
-        }
-    }, [thoughtsToUse]);
+  useEffect(() => {
+    if (thoughtsToUse.length > 0 && hasInitialized.current === false) {
+      openPriorityList();
+      hasInitialized.current = true;
+    }
+  }, [thoughtsToUse]);
 
-    return isMinimized ? (
-        <button className={classes.prioritiesButton} onClick={openPriorityList}>
+  return isMinimized ? (
+    <button className={classes.prioritiesButton} onClick={openPriorityList}>
       Priorities
-        </button>
-    ) : null;
+    </button>
+  ) : null;
 };
 
 export default withStyles(styles)(PriorityList);

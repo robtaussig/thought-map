@@ -10,27 +10,27 @@ interface UpToDateProps {
 }
 
 export const UpToDate: FC<UpToDateProps> = ({ classes }) => {
-    const { db } = useLoadedDB();
-    const backups = useSelector(backupSelector);
-    const backupId = useIdFromUrl('merge');
-    const localBackup = backups.find(prev => prev.backupId === backupId);
+  const { db } = useLoadedDB();
+  const backups = useSelector(backupSelector);
+  const backupId = useIdFromUrl('merge');
+  const localBackup = backups.find(prev => prev.backupId === backupId);
 
-    useEffect(() => {
-        const version = getSearchParam('v');
+  useEffect(() => {
+    const version = getSearchParam('v');
     
-        if (localBackup && version && Number(version) !== localBackup.version) {
-            backupActions.editBackup(db, {
-                ...localBackup,
-                version: Number(version),
-            });
-        }
-    }, [localBackup]);
+    if (localBackup && version && Number(version) !== localBackup.version) {
+      backupActions.editBackup(db, {
+        ...localBackup,
+        version: Number(version),
+      });
+    }
+  }, [localBackup]);
 
-    return (
-        <div className={classes.upToDate}>
+  return (
+    <div className={classes.upToDate}>
       Up to date!
-        </div>
-    );
+    </div>
+  );
 };
 
 export default UpToDate;

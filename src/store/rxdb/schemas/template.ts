@@ -9,30 +9,30 @@ export interface Template {
 }
 
 export default ['template', {
-    'title': 'Template schema',
-    'version': 0,
-    'description': 'A Template',
-    'type': 'object',
-    'primaryKey': 'id',
-    'properties': {
-        'id': {
-            'type': 'string',
-        },
-        'name': {
-            'type': 'string',
-        },
-        'template': {
-            'type': 'string',
-        },
-        'created': {
-            'type': 'number',
-        },
-        'updated': {
-            'type': 'number',
-        },
+  'title': 'Template schema',
+  'version': 0,
+  'description': 'A Template',
+  'type': 'object',
+  'primaryKey': 'id',
+  'properties': {
+    'id': {
+      'type': 'string',
     },
-    'required': ['name', 'template'],
-    'attachments': {
+    'name': {
+      'type': 'string',
+    },
+    'template': {
+      'type': 'string',
+    },
+    'created': {
+      'type': 'number',
+    },
+    'updated': {
+      'type': 'number',
+    },
+  },
+  'required': ['name', 'template'],
+  'attachments': {
 
-    }
+  }
 } as RxJsonSchema<Template>];

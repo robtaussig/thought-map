@@ -11,29 +11,29 @@ export interface Statuses {
 const initialState: Statuses = {};
 
 const statuses = createSlice({
-    name: 'statuses',
-    initialState,
-    reducers: {
-        setStatuses(state, action: PayloadAction<Statuses>) {
-            return action.payload;
-        },
-        insert(state, action: PayloadAction<Status>) {
-            state[action.payload.id] = action.payload;
-        },
-        remove(state, action: PayloadAction<string>) {
-            delete state[action.payload];
-        },
-        update(state, action: PayloadAction<Status>) {
-            state[action.payload.id] = action.payload;
-        },
-    }
+  name: 'statuses',
+  initialState,
+  reducers: {
+    setStatuses(state, action: PayloadAction<Statuses>) {
+      return action.payload;
+    },
+    insert(state, action: PayloadAction<Status>) {
+      state[action.payload.id] = action.payload;
+    },
+    remove(state, action: PayloadAction<string>) {
+      delete state[action.payload];
+    },
+    update(state, action: PayloadAction<Status>) {
+      state[action.payload.id] = action.payload;
+    },
+  }
 });
 
 export const {
-    setStatuses,
-    insert,
-    remove,
-    update,
+  setStatuses,
+  insert,
+  remove,
+  update,
 } = statuses.actions;
 
 export default statuses.reducer;

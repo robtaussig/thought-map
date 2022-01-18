@@ -19,66 +19,66 @@ interface CurrentReviewProps {
 }
 
 export const CurrentReview: FC<CurrentReviewProps> = ({
-    rootClassName,
-    item,
-    thoughts,
-    plans,
-    items,
+  rootClassName,
+  item,
+  thoughts,
+  plans,
+  items,
 }) => {
-    const classes = useStyles({});
+  const classes = useStyles({});
 
-    switch (item.collectionName) {
-    case 'connection':
-        return (
-            <Connection
-                classes={classes}
-                rootClassName={rootClassName}
-                thoughts={thoughts}
-                connection={item.item as ConnectionType}
-                items={items}
-            />
-        );
-    case 'plan':
-        return (
-            <Plan
-                classes={classes}
-                rootClassName={rootClassName}
-                plan={item.item as PlanType}
-            />
-        );
-    case 'thought':
-        return (
-            <Thought
-                classes={classes}
-                rootClassName={rootClassName}
-                thought={item.item as ThoughtType}
-                plans={plans}
-                items={items}
-            />
-        );
-    case 'custom_object':
-        return (
-            <Base
-                classes={classes}
-                rootClassName={rootClassName}
-                header={'Custom Object'}
-                subHeader={item.item.type}
-                mainField={item.item.value}
-                fields={item.item}
-            />
-        );
-    default:
-        return (
-            <ThoughtAssociation
-                classes={classes}
-                rootClassName={rootClassName}
-                thoughts={thoughts}
-                item={item}
-                items={items}
-                plans={plans}
-            />
-        );
-    }
+  switch (item.collectionName) {
+  case 'connection':
+    return (
+      <Connection
+        classes={classes}
+        rootClassName={rootClassName}
+        thoughts={thoughts}
+        connection={item.item as ConnectionType}
+        items={items}
+      />
+    );
+  case 'plan':
+    return (
+      <Plan
+        classes={classes}
+        rootClassName={rootClassName}
+        plan={item.item as PlanType}
+      />
+    );
+  case 'thought':
+    return (
+      <Thought
+        classes={classes}
+        rootClassName={rootClassName}
+        thought={item.item as ThoughtType}
+        plans={plans}
+        items={items}
+      />
+    );
+  case 'custom_object':
+    return (
+      <Base
+        classes={classes}
+        rootClassName={rootClassName}
+        header={'Custom Object'}
+        subHeader={item.item.type}
+        mainField={item.item.value}
+        fields={item.item}
+      />
+    );
+  default:
+    return (
+      <ThoughtAssociation
+        classes={classes}
+        rootClassName={rootClassName}
+        thoughts={thoughts}
+        item={item}
+        items={items}
+        plans={plans}
+      />
+    );
+  }
 };
 
 export default CurrentReview;

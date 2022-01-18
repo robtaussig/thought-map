@@ -14,49 +14,49 @@ interface LocationModalProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-    root: {
-        height: '100%',
+  root: {
+    height: '100%',
+  },
+  mapSection: {
+    '&:not(:last-child)': {
+      marginBottom: 20,
     },
-    mapSection: {
-        '&:not(:last-child)': {
-            marginBottom: 20,
-        },
-    },
-    statusText: {
-        fontWeight: 600,
-    },
+  },
+  statusText: {
+    fontWeight: 600,
+  },
 });
 
 export const LocationModal: FC<LocationModalProps> = ({ classes, thought, onClose }) => {
-    const statusesByThought = useSelector(statusesByThoughtSelector);
-    const stateStatuses = useSelector(statusSelector);
-    const statusIds = statusesByThought[thought.id];
-    const statuses = statusIds.map(statusId => {
-        return stateStatuses[statusId];
-    });
+  const statusesByThought = useSelector(statusesByThoughtSelector);
+  const stateStatuses = useSelector(statusSelector);
+  const statusIds = statusesByThought[thought.id];
+  const statuses = statusIds.map(statusId => {
+    return stateStatuses[statusId];
+  });
 
-    return (
-        <div className={classes.root}>
-            {statuses
-                .filter(({ location }) => Boolean(location))
-                .sort((a, b) => a.created - b.created)
-                .map(({ id, location, text, created }) => {
-                    const [latitude, longitude] = location.split(',');
+  return (
+    <div className={classes.root}>
+      {statuses
+        .filter(({ location }) => Boolean(location))
+        .sort((a, b) => a.created - b.created)
+        .map(({ id, location, text, created }) => {
+          const [latitude, longitude] = location.split(',');
 
-                    return (
-                        <section key={id} className={classes.mapSection}>
-                            <span className={classes.statusText}>
-                                {`[${format(new Date(created), 'yyyy-MM-dd HH:mm')}] ${text}`}
-                            </span>
-                            <Map
-                                latitude={Number(latitude)}
-                                longitude={Number(longitude)}
-                            />
-                        </section>
-                    );
-                })}
-        </div>
-    );
+          return (
+            <section key={id} className={classes.mapSection}>
+              <span className={classes.statusText}>
+                {`[${format(new Date(created), 'yyyy-MM-dd HH:mm')}] ${text}`}
+              </span>
+              <Map
+                latitude={Number(latitude)}
+                longitude={Number(longitude)}
+              />
+            </section>
+          );
+        })}
+    </div>
+  );
 };
 
 export default withStyles(styles)(LocationModal);

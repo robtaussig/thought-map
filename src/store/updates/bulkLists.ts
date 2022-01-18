@@ -4,33 +4,33 @@ import { Notification, RxChangeEvent } from '../../types';
 import { AppDispatch } from '~store';
 
 export const handleBulkListChange = (
-    dispatch: AppDispatch,
-    setLastNotification: (notification: Notification) => void,
+  dispatch: AppDispatch,
+  setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
-    if ((window as any).blockDBSubscriptions === true) return;
-    const bulkList: BulkList = documentData;
-    let notification;
+  if ((window as any).blockDBSubscriptions === true) return;
+  const bulkList: BulkList = documentData;
+  let notification;
 
-    switch (operation) {
-    case 'INSERT':
-        dispatch(insert(bulkList));
-        notification = { message: 'BulkList created' };
-        break;
+  switch (operation) {
+  case 'INSERT':
+    dispatch(insert(bulkList));
+    notification = { message: 'BulkList created' };
+    break;
     
-    case 'DELETE':
-        dispatch(remove(documentId));
-        notification = { message: 'BulkList removed' };
-        break;
+  case 'DELETE':
+    dispatch(remove(documentId));
+    notification = { message: 'BulkList removed' };
+    break;
 
-    case 'UPDATE':
-        dispatch(update(bulkList));
-        notification = { message: 'BulkList updated' };
-        break;
+  case 'UPDATE':
+    dispatch(update(bulkList));
+    notification = { message: 'BulkList updated' };
+    break;
   
-    default:
-        break;
-    }
+  default:
+    break;
+  }
 
-    if ((window as any).blockNotifications) return;
-    setLastNotification(notification);  
+  if ((window as any).blockNotifications) return;
+  setLastNotification(notification);  
 };

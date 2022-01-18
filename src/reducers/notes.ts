@@ -11,29 +11,29 @@ export interface Notes {
 const initialState: Notes = {};
 
 const notes = createSlice({
-    name: 'notes',
-    initialState,
-    reducers: {
-        setNotes(state, action: PayloadAction<Notes>) {
-            return action.payload;
-        },
-        insert(state, action: PayloadAction<Note>) {
-            state[action.payload.id] = action.payload;
-        },
-        remove(state, action: PayloadAction<string>) {
-            delete state[action.payload];
-        },
-        update(state, action: PayloadAction<Note>) {
-            state[action.payload.id] = action.payload;
-        },
-    }
+  name: 'notes',
+  initialState,
+  reducers: {
+    setNotes(state, action: PayloadAction<Notes>) {
+      return action.payload;
+    },
+    insert(state, action: PayloadAction<Note>) {
+      state[action.payload.id] = action.payload;
+    },
+    remove(state, action: PayloadAction<string>) {
+      delete state[action.payload];
+    },
+    update(state, action: PayloadAction<Note>) {
+      state[action.payload.id] = action.payload;
+    },
+  }
 });
 
 export const {
-    setNotes,
-    insert,
-    remove,
-    update,
+  setNotes,
+  insert,
+  remove,
+  update,
 } = notes.actions;
 
 export default notes.reducer;

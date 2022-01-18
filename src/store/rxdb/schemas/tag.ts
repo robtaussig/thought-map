@@ -10,34 +10,34 @@ export interface Tag {
 }
 
 export default ['tag', {
-    'title': 'Tag schema',
-    'version': 0,
-    'description': 'A Tag',
-    'type': 'object',
-    'primaryKey': 'id',
-    'properties': {
-        'id': {
-            'type': 'string',
-        },
-        'thoughtId': {
-            'ref': 'thought',
-            'type': 'string',
-        },
-        'text': {
-            'type': 'string',
-        },
-        'index': {
-            'type': 'number',
-        },
-        'created': {
-            'type': 'number',
-        },
-        'updated': {
-            'type': 'number',
-        },
+  'title': 'Tag schema',
+  'version': 0,
+  'description': 'A Tag',
+  'type': 'object',
+  'primaryKey': 'id',
+  'properties': {
+    'id': {
+      'type': 'string',
     },
-    'required': ['text', 'thoughtId'],
-    'attachments': {
+    'thoughtId': {
+      'ref': 'thought',
+      'type': 'string',
+    },
+    'text': {
+      'type': 'string',
+    },
+    'index': {
+      'type': 'number',
+    },
+    'created': {
+      'type': 'number',
+    },
+    'updated': {
+      'type': 'number',
+    },
+  },
+  'required': ['text', 'thoughtId'],
+  'attachments': {
 
-    }
+  }
 } as RxJsonSchema<Tag>];

@@ -31,126 +31,126 @@ interface ContentProps {
 }
 
 export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptions, typeOptions, from }) => {
-    const dispatch = useDispatch();
-    const thoughtMap = useRef<Graph>(new Graph());
-    const { db } = useLoadedDB();
-    const [openModal] = useModal();
-    const [searchTerm, setSearchTerm] = useState<string>('');
-    const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
-    const stateThoughts = useSelector(thoughtSelector);
-    const stateConnections = useSelector(connectionSelector);
-    const plans = useSelector(planSelector);
-    const settings = useSelector(settingSelector);
-    const sortFilterSettings = useSelector(sortFilterSettingsSelector);
+  const dispatch = useDispatch();
+  const thoughtMap = useRef<Graph>(new Graph());
+  const { db } = useLoadedDB();
+  const [openModal] = useModal();
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
+  const stateThoughts = useSelector(thoughtSelector);
+  const stateConnections = useSelector(connectionSelector);
+  const plans = useSelector(planSelector);
+  const settings = useSelector(settingSelector);
+  const sortFilterSettings = useSelector(sortFilterSettingsSelector);
 
-    const connectionStatusByThought = useMemo(() => {
-        thoughtMap.current
-            .updateThoughts(stateThoughts)
-            .updateConnections(Object.values(stateConnections));
+  const connectionStatusByThought = useMemo(() => {
+    thoughtMap.current
+      .updateThoughts(stateThoughts)
+      .updateConnections(Object.values(stateConnections));
 
-        return Object.values(stateConnections).reduce((next, { from, to }) => {
-            if (thoughts.find(({ id }) => from === id) && thoughts.find(({ id }) => to === id)) {
-                next[from] = next[from] || [0, 0];
-                const otherThought = thoughts.find(otherThought => otherThought.id === to);
-                next[from][1]++;
-                if (otherThought.status === 'completed') next[from][0]++;
-            }
-            return next;
-        }, {} as ThoughtConnections);
-    }, [stateConnections, thoughts, stateThoughts]);
+    return Object.values(stateConnections).reduce((next, { from, to }) => {
+      if (thoughts.find(({ id }) => from === id) && thoughts.find(({ id }) => to === id)) {
+        next[from] = next[from] || [0, 0];
+        const otherThought = thoughts.find(otherThought => otherThought.id === to);
+        next[from][1]++;
+        if (otherThought.status === 'completed') next[from][0]++;
+      }
+      return next;
+    }, {} as ThoughtConnections);
+  }, [stateConnections, thoughts, stateThoughts]);
 
-    useEffect(() => {
-        const runSearch = async () => {
-            const matches = await searcherWorker.findMatches(searchTerm);
+  useEffect(() => {
+    const runSearch = async () => {
+      const matches = await searcherWorker.findMatches(searchTerm);
 
-            setMatchingThoughts(matches);
-        };
+      setMatchingThoughts(matches);
+    };
 
-        if (searchTerm?.length > 2) {
-            runSearch();
-        } else if (searchTerm?.length === 0) {
-            setMatchingThoughts(null);
-        }
-    }, [searchTerm]);
+    if (searchTerm?.length > 2) {
+      runSearch();
+    } else if (searchTerm?.length === 0) {
+      setMatchingThoughts(null);
+    }
+  }, [searchTerm]);
 
-    useEffect(() => {
-        if (thoughts.length === 0) {
-            dispatch(emphasizeButton(ButtonPositions.Right));
+  useEffect(() => {
+    if (thoughts.length === 0) {
+      dispatch(emphasizeButton(ButtonPositions.Right));
 
-            return () => {
-                dispatch(emphasizeButton(null));
-            };
-        }
-    }, [thoughts.length]);
+      return () => {
+        dispatch(emphasizeButton(null));
+      };
+    }
+  }, [thoughts.length]);
   
-    useEffect(() => {
-        if (settings.didInit === true && settings.disableTips !== true) {
-            if (
-                thoughts.length > 0 &&
+  useEffect(() => {
+    if (settings.didInit === true && settings.disableTips !== true) {
+      if (
+        thoughts.length > 0 &&
         settings.learnedLongPress !== true
-            ) {
-                dispatch(emphasizeButton(ButtonPositions.LeftAlt));
-                openModal(<LongPressTutorial />, 'About Long Press', {
-                    afterClose: () => {
-                        settingsActions.createSetting(db, {
-                            field: 'learnedLongPress',
-                            value: true,
-                        });
-                    }
-                });
-            } else if (
-                thoughts.length > 3 &&
+      ) {
+        dispatch(emphasizeButton(ButtonPositions.LeftAlt));
+        openModal(<LongPressTutorial />, 'About Long Press', {
+          afterClose: () => {
+            settingsActions.createSetting(db, {
+              field: 'learnedLongPress',
+              value: true,
+            });
+          }
+        });
+      } else if (
+        thoughts.length > 3 &&
         settings.learnedPriorityList !== true
-            ) {
-                dispatch(emphasizeButton(ButtonPositions.MiddleAlt));
-                openModal(<PriorityTutorial />, 'About Priority', {
-                    afterClose: () => {
-                        settingsActions.createSetting(db, {
-                            field: 'learnedPriorityList',
-                            value: true,
-                        });
-                    }
-                });
-            }
-        }
-    }, [settings.didInit]);
+      ) {
+        dispatch(emphasizeButton(ButtonPositions.MiddleAlt));
+        openModal(<PriorityTutorial />, 'About Priority', {
+          afterClose: () => {
+            settingsActions.createSetting(db, {
+              field: 'learnedPriorityList',
+              value: true,
+            });
+          }
+        });
+      }
+    }
+  }, [settings.didInit]);
 
-    return (
-        <Fragment>
-            <FilterAndSearch
-                classes={classes}
-                searchTerm={searchTerm}
-                sortFilterSettings={sortFilterSettings}
-                setSearchTerm={setSearchTerm}
-            />
-            {thoughts.length === 0 ? (
-                <div className={classes.content}>
-                    {new Array(10).fill(null).map((_, idx) => {
-                        return (
-                            <BlankThoughtNode
-                                key={`${idx}-blank-thought`}
-                            />
-                        );
-                    })
-                    }
-                </div>
-            ) : (
-                <ThoughtNodes
-                    classes={classes}
-                    thoughts={thoughts}
-                    matchingThoughts={matchingThoughts}
-                    plan={plan}
-                    thoughtMap={thoughtMap}
-                    sortFilterSettings={sortFilterSettings}
-                    plans={plans}
-                    statusOptions={statusOptions}
-                    typeOptions={typeOptions}
-                    from={from}
-                    connectionStatusByThought={connectionStatusByThought}
-                />
-            )}
-        </Fragment>
-    );
+  return (
+    <Fragment>
+      <FilterAndSearch
+        classes={classes}
+        searchTerm={searchTerm}
+        sortFilterSettings={sortFilterSettings}
+        setSearchTerm={setSearchTerm}
+      />
+      {thoughts.length === 0 ? (
+        <div className={classes.content}>
+          {new Array(10).fill(null).map((_, idx) => {
+            return (
+              <BlankThoughtNode
+                key={`${idx}-blank-thought`}
+              />
+            );
+          })
+          }
+        </div>
+      ) : (
+        <ThoughtNodes
+          classes={classes}
+          thoughts={thoughts}
+          matchingThoughts={matchingThoughts}
+          plan={plan}
+          thoughtMap={thoughtMap}
+          sortFilterSettings={sortFilterSettings}
+          plans={plans}
+          statusOptions={statusOptions}
+          typeOptions={typeOptions}
+          from={from}
+          connectionStatusByThought={connectionStatusByThought}
+        />
+      )}
+    </Fragment>
+  );
 };
 
 export default memo(Content);

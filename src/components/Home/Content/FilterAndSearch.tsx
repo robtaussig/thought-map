@@ -16,68 +16,68 @@ interface FilterAndSearchProps {
 }
 
 export const FilterAndSearch: FC<FilterAndSearchProps> = ({
-    classes,
-    searchTerm,
-    sortFilterSettings,
-    setSearchTerm,
+  classes,
+  searchTerm,
+  sortFilterSettings,
+  setSearchTerm,
 }) => {
-    const dispatch = useDispatch();
-    const [isSearching, setIsSearching] = useState<boolean>(false);
-    const focusSearch = useRef<any>(null);
-    const handleSubmitSearch: FormEventHandler = e => {
-        e.preventDefault();
-    };
-    const handleSortBy = (name: SortFilterField) => () => dispatch(sortBy(name));
+  const dispatch = useDispatch();
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const focusSearch = useRef<any>(null);
+  const handleSubmitSearch: FormEventHandler = e => {
+    e.preventDefault();
+  };
+  const handleSortBy = (name: SortFilterField) => () => dispatch(sortBy(name));
 
-    useEffect(() => focusSearch.current(isSearching), [isSearching]);
-    return (
-        <div className={classes.flippableWrapper}>
-            <div className={classNames(classes.sortByButtons, 'flippable', isSearching ? 'back' : 'front')}>
-                <div className={classes.sortByNames}>
-                    <button className={classNames(classes.sortButton, {
-                        selected: sortFilterSettings.field === SortFilterField.Title
-                    })} onClick={handleSortBy(SortFilterField.Title)}>
+  useEffect(() => focusSearch.current(isSearching), [isSearching]);
+  return (
+    <div className={classes.flippableWrapper}>
+      <div className={classNames(classes.sortByButtons, 'flippable', isSearching ? 'back' : 'front')}>
+        <div className={classes.sortByNames}>
+          <button className={classNames(classes.sortButton, {
+            selected: sortFilterSettings.field === SortFilterField.Title
+          })} onClick={handleSortBy(SortFilterField.Title)}>
             Name
-                        {sortFilterSettings.field === SortFilterField.Title ?
-                            (sortFilterSettings.desc ? <ExpandMore /> : <ExpandLess />) :
-                            <UnfoldMore />
-                        }
-                    </button>
-                </div>
-                <div className={classes.sortByStatus}>
-                    <button className={classNames(classes.sortButton, {
-                        selected: sortFilterSettings.field === SortFilterField.Status
-                    })} onClick={handleSortBy(SortFilterField.Status)}>
-            Status
-                    </button>
-          /
-                    <button className={classNames(classes.sortButton, {
-                        selected: sortFilterSettings.field === SortFilterField.Type
-                    })} onClick={handleSortBy(SortFilterField.Type)}>
-            Type
-                    </button>
-                    {[SortFilterField.Status, SortFilterField.Type].includes(sortFilterSettings.field) ?
-                        (sortFilterSettings.desc ? <ExpandMore /> : <ExpandLess />) :
-                        <UnfoldMore />
-                    }
-                </div>
-            </div>
-            <form className={classNames(classes.searchWrapper, 'flippable', isSearching ? 'front' : 'back')} onSubmit={handleSubmitSearch}>
-                <Input
-                    classes={classes}
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    aria-label={'Search'}
-                    autoCapitalize={'none'}
-                    setFocus={f => focusSearch.current = f}
-                />
-            </form>
-            <button className={classes.searchButton} onClick={() => {
-                setSearchTerm('');
-                setIsSearching(prev => !prev);
-            }}><Search /></button>
+            {sortFilterSettings.field === SortFilterField.Title ?
+              (sortFilterSettings.desc ? <ExpandMore /> : <ExpandLess />) :
+              <UnfoldMore />
+            }
+          </button>
         </div>
-    );
+        <div className={classes.sortByStatus}>
+          <button className={classNames(classes.sortButton, {
+            selected: sortFilterSettings.field === SortFilterField.Status
+          })} onClick={handleSortBy(SortFilterField.Status)}>
+            Status
+          </button>
+          /
+          <button className={classNames(classes.sortButton, {
+            selected: sortFilterSettings.field === SortFilterField.Type
+          })} onClick={handleSortBy(SortFilterField.Type)}>
+            Type
+          </button>
+          {[SortFilterField.Status, SortFilterField.Type].includes(sortFilterSettings.field) ?
+            (sortFilterSettings.desc ? <ExpandMore /> : <ExpandLess />) :
+            <UnfoldMore />
+          }
+        </div>
+      </div>
+      <form className={classNames(classes.searchWrapper, 'flippable', isSearching ? 'front' : 'back')} onSubmit={handleSubmitSearch}>
+        <Input
+          classes={classes}
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          aria-label={'Search'}
+          autoCapitalize={'none'}
+          setFocus={f => focusSearch.current = f}
+        />
+      </form>
+      <button className={classes.searchButton} onClick={() => {
+        setSearchTerm('');
+        setIsSearching(prev => !prev);
+      }}><Search /></button>
+    </div>
+  );
 };
 
 export default FilterAndSearch;

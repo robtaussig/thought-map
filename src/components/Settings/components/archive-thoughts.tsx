@@ -13,55 +13,55 @@ export interface ArchiveThoughtsProps {
 }
 
 export const ArchiveThoughts: FC<ArchiveThoughtsProps> = ({
-    classes,
-    thoughts,
-    plan,
+  classes,
+  thoughts,
+  plan,
 }) => {
-    const { db } = useLoadedDB();
-    const rootRef = useRef<HTMLDivElement>(null);
-    const [setIsLoading, stopIsLoading] = useLoadingOverlay(rootRef);
+  const { db } = useLoadedDB();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [setIsLoading, stopIsLoading] = useLoadingOverlay(rootRef);
 
-    const handleClickArchiveNew = async () => {
-        setIsLoading('Archiving thoughts...');
-        await Promise.all(thoughts
-            .filter(({ status, planId }) => planId === plan.id && status === 'new')
-            .map(thought => thoughtActions.editThought(db, {
-                ...thought,
-                archived: true,
-            })));
-        stopIsLoading();
-    };
+  const handleClickArchiveNew = async () => {
+    setIsLoading('Archiving thoughts...');
+    await Promise.all(thoughts
+      .filter(({ status, planId }) => planId === plan.id && status === 'new')
+      .map(thought => thoughtActions.editThought(db, {
+        ...thought,
+        archived: true,
+      })));
+    stopIsLoading();
+  };
 
-    const handleClickArchiveCompleted = async () => {
-        setIsLoading('Archiving thoughts...');
-        await Promise.all(thoughts
-            .filter(({ status, planId }) => planId === plan.id && status === 'completed')
-            .map(thought => thoughtActions.editThought(db, {
-                ...thought,
-                archived: true,
-            })));
-        stopIsLoading();
-    };
+  const handleClickArchiveCompleted = async () => {
+    setIsLoading('Archiving thoughts...');
+    await Promise.all(thoughts
+      .filter(({ status, planId }) => planId === plan.id && status === 'completed')
+      .map(thought => thoughtActions.editThought(db, {
+        ...thought,
+        archived: true,
+      })));
+    stopIsLoading();
+  };
 
-    return (
-        <div ref={rootRef} className={classes.archiveThoughts}>
-            <h3 className={classes.archiveThoughtsHeader}>
+  return (
+    <div ref={rootRef} className={classes.archiveThoughts}>
+      <h3 className={classes.archiveThoughtsHeader}>
                 Archive Thoughts
-            </h3>
-            <button
-                className={cn(classes.archiveThoughtsButton, 'new')}
-                onClick={handleClickArchiveNew}
-            >
+      </h3>
+      <button
+        className={cn(classes.archiveThoughtsButton, 'new')}
+        onClick={handleClickArchiveNew}
+      >
                 New
-            </button>
-            <button
-                className={cn(classes.archiveThoughtsButton, 'completed')}
-                onClick={handleClickArchiveCompleted}
-            >
+      </button>
+      <button
+        className={cn(classes.archiveThoughtsButton, 'completed')}
+        onClick={handleClickArchiveCompleted}
+      >
                 Completed
-            </button>
-        </div>
-    );
+      </button>
+    </div>
+  );
 };
 
 export default ArchiveThoughts;

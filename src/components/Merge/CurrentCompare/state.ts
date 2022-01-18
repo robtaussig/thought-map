@@ -42,60 +42,60 @@ type Action = {
 }
 
 export const INITIAL_STATE: CompareState = {
-    fieldsToPick: [],
-    fieldsPicked: [],
-    customInput: {},
-    left: null,
-    right: null,
-    merged: null,
+  fieldsToPick: [],
+  fieldsPicked: [],
+  customInput: {},
+  left: null,
+  right: null,
+  merged: null,
 };
 
 export const generateInitialState = ([left, right]: Comparable): CompareState => ({
-    fieldsToPick: generateFieldsToPick(left.item, right.item),
-    fieldsPicked: [],
-    left,
-    right,
-    customInput: {},
-    merged: generateIntersectItem(left, right),
+  fieldsToPick: generateFieldsToPick(left.item, right.item),
+  fieldsPicked: [],
+  left,
+  right,
+  customInput: {},
+  merged: generateIntersectItem(left, right),
 });
 
 export const compareReducer = (state: CompareState, action: Action): CompareState => {
-    switch (action.type) {
-    case ActionTypes.SetState:
-        return action.payload;
+  switch (action.type) {
+  case ActionTypes.SetState:
+    return action.payload;
 
-    case ActionTypes.Pick:
-        return {
-            ...state,
-            fieldsToPick: state.fieldsToPick.filter(field => field !== action.payload.field),
-            fieldsPicked: state.fieldsPicked.concat(action.payload.field),
-            merged: {
-                ...state.merged,
-                item: {
-                    ...state.merged.item,
-                    [action.payload.field]: action.payload.value,
-                },
-            }
-        };
+  case ActionTypes.Pick:
+    return {
+      ...state,
+      fieldsToPick: state.fieldsToPick.filter(field => field !== action.payload.field),
+      fieldsPicked: state.fieldsPicked.concat(action.payload.field),
+      merged: {
+        ...state.merged,
+        item: {
+          ...state.merged.item,
+          [action.payload.field]: action.payload.value,
+        },
+      }
+    };
 
-    case ActionTypes.InputCustom:
-        return {
-            ...state,
-            customInput: {
-                ...state.customInput,
-                [action.payload.field]: action.payload.value,
-            },
-            merged: {
-                ...state.merged,
-                item: {
-                    ...state.merged.item,
-                    [action.payload.field]: action.payload.value,
-                    updated: +new Date(),
-                },
-            }
-        };
+  case ActionTypes.InputCustom:
+    return {
+      ...state,
+      customInput: {
+        ...state.customInput,
+        [action.payload.field]: action.payload.value,
+      },
+      merged: {
+        ...state.merged,
+        item: {
+          ...state.merged.item,
+          [action.payload.field]: action.payload.value,
+          updated: +new Date(),
+        },
+      }
+    };
   
-    default:
-        throw new Error(`Unrecognized action: ${action}`);
-    }
+  default:
+    throw new Error(`Unrecognized action: ${action}`);
+  }
 };

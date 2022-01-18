@@ -9,31 +9,31 @@ export interface Deletion {
 }
 
 export default ['deletion', {
-    'title': 'Deletion schema',
-    'version': 0,
-    'description': 'A Deletion',
-    'type': 'object',
-    'primaryKey': 'id',
-    'properties': {
-        'id': {
-            'type': 'string',
-        },
-        'collectionName': {
-            'type': 'string',
-        },
-        'itemId': {
-            'type': 'string',
-        },
-        'created': {
-            'type': 'number',
-        },
-        'updated': {
-            'type': 'number',
-        },
+  'title': 'Deletion schema',
+  'version': 0,
+  'description': 'A Deletion',
+  'type': 'object',
+  'primaryKey': 'id',
+  'properties': {
+    'id': {
+      'type': 'string',
     },
-    'indexes': ['itemId'],
-    'required': ['collectionName', 'itemId'],
-    'attachments': {
+    'collectionName': {
+      'type': 'string',
+    },
+    'itemId': {
+      'type': 'string',
+    },
+    'created': {
+      'type': 'number',
+    },
+    'updated': {
+      'type': 'number',
+    },
+  },
+  'indexes': ['itemId'],
+  'required': ['collectionName', 'itemId'],
+  'attachments': {
 
-    }
+  }
 } as RxJsonSchema<Deletion>];

@@ -5,39 +5,39 @@ import { getInstance } from '../../hooks/useThoughtMap';
 import { AppDispatch } from '~store';
 
 const updateThoughtMap = async (from: string, to: string) => {
-    const thoughtMap = await getInstance();
-    await thoughtMap.removeConnection(from, to);
+  const thoughtMap = await getInstance();
+  await thoughtMap.removeConnection(from, to);
 };
 
 export const handleConnectionChange = (
-    dispatch: AppDispatch,
-    setLastNotification: (notification: Notification) => void,
+  dispatch: AppDispatch,
+  setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
-    if ((window as any).blockDBSubscriptions === true) return;
-    const connection: Connection = documentData;
-    let notification;
+  if ((window as any).blockDBSubscriptions === true) return;
+  const connection: Connection = documentData;
+  let notification;
 
-    switch (operation) {
-    case 'INSERT':
-        dispatch(insert(connection));
-        notification = { message: 'Connection created' };
-        break;
+  switch (operation) {
+  case 'INSERT':
+    dispatch(insert(connection));
+    notification = { message: 'Connection created' };
+    break;
     
-    case 'DELETE':
-        updateThoughtMap(connection.from, connection.to);
-        dispatch(remove(documentId));
-        notification = { message: 'Connection removed' };
-        break;
+  case 'DELETE':
+    updateThoughtMap(connection.from, connection.to);
+    dispatch(remove(documentId));
+    notification = { message: 'Connection removed' };
+    break;
 
-    case 'UPDATE':
-        dispatch(update(connection));
-        notification = { message: 'Connection updated' };
-        break;
+  case 'UPDATE':
+    dispatch(update(connection));
+    notification = { message: 'Connection updated' };
+    break;
   
-    default:
-        break;
-    }
+  default:
+    break;
+  }
 
-    if ((window as any).blockNotifications) return;
-    setLastNotification(notification);  
+  if ((window as any).blockNotifications) return;
+  setLastNotification(notification);  
 };

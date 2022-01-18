@@ -17,24 +17,24 @@ interface DescriptionSectionProps {
 
 export const DescriptionSection: FC<DescriptionSectionProps> = ({ classes, thought, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
-    return (
-        <ThoughtSection
-            classes={classes}
-            Icon={Description}
-            field={'Description'}
-            value={thought.description}
-            className={'description'}
-            visible={visible}
-            sectionState={sectionState}
-            onLongPress={onLongPress}
-            onDrop={onDrop}
-            onToggleVisibility={onToggleVisibility}
-            edit={{
-                type: EditTypes.TextArea,
-                onEdit,
-            }}
-        />
-    );
+  return (
+    <ThoughtSection
+      classes={classes}
+      Icon={Description}
+      field={'Description'}
+      value={thought.description}
+      className={'description'}
+      visible={visible}
+      sectionState={sectionState}
+      onLongPress={onLongPress}
+      onDrop={onDrop}
+      onToggleVisibility={onToggleVisibility}
+      edit={{
+        type: EditTypes.TextArea,
+        onEdit,
+      }}
+    />
+  );
 };
 
 export default DescriptionSection;

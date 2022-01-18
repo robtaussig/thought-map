@@ -7,20 +7,20 @@ export const displayThoughtSettingsSelector: Selector<RootState, boolean> = stat
 const initialState = false;
 
 const displayThoughtSettings = createSlice({
-    name: 'displayThoughtSettings',
-    initialState,
-    reducers: {
-        toggle(state, action: PayloadAction<boolean>) {
-            if (action.payload !== undefined) {
-                return action.payload;
-            }
-            return !state;
-        },
-    }
+  name: 'displayThoughtSettings',
+  initialState,
+  reducers: {
+    toggle(state, action: PayloadAction<boolean>) {
+      if (action.payload !== undefined) {
+        return action.payload;
+      }
+      return !state;
+    },
+  }
 });
 
 export const {
-    toggle
+  toggle
 } = displayThoughtSettings.actions;
 
 export default displayThoughtSettings.reducer;

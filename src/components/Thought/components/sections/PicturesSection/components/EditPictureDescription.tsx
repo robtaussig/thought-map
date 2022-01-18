@@ -12,56 +12,56 @@ interface EditPictureDescriptionProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  inputLabel: {
+    '& input': {
+      width: '100%',
     },
-    inputLabel: {
-        '& input': {
-            width: '100%',
-        },
-    },
-    submitButton: () => ({
-        marginTop: 10,
-        marginLeft: 'auto',
-        color: theme.palette.secondary[700],
-        fontWeight: 600,
-        cursor: 'pointer',
-        userSelect: 'none',
-    }),
+  },
+  submitButton: () => ({
+    marginTop: 10,
+    marginLeft: 'auto',
+    color: theme.palette.secondary[700],
+    fontWeight: 600,
+    cursor: 'pointer',
+    userSelect: 'none',
+  }),
 });
 
 export const EditPictureDescription: FC<EditPictureDescriptionProps> = ({ classes, onClose, picture }) => {
-    const [inputtedValue, setInputtedValue] = useState<string>(picture.description || '');
-    const disableSubmit = (inputtedValue === picture.description) || (inputtedValue === '' && !picture.description);
-    const { db } = useLoadedDB();
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (disableSubmit === false) {
-            await pictureActions.editPicture(db, {
-                ...picture,
-                description: inputtedValue.trim(),
-            });
-            onClose();
-        }
-    };
+  const [inputtedValue, setInputtedValue] = useState<string>(picture.description || '');
+  const disableSubmit = (inputtedValue === picture.description) || (inputtedValue === '' && !picture.description);
+  const { db } = useLoadedDB();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (disableSubmit === false) {
+      await pictureActions.editPicture(db, {
+        ...picture,
+        description: inputtedValue.trim(),
+      });
+      onClose();
+    }
+  };
 
-    return (
-        <form className={classes.form} onSubmit={handleSubmit}>
-            <Input
-                value={inputtedValue}
-                classes={classes}
-                autoFocus={true}
-                onChange={e => setInputtedValue(e.target.value)}
-            />
-            <button
-                className={classes.submitButton}
-                disabled={disableSubmit}
-            >
+  return (
+    <form className={classes.form} onSubmit={handleSubmit}>
+      <Input
+        value={inputtedValue}
+        classes={classes}
+        autoFocus={true}
+        onChange={e => setInputtedValue(e.target.value)}
+      />
+      <button
+        className={classes.submitButton}
+        disabled={disableSubmit}
+      >
         Update
-            </button>
-        </form>
-    );
+      </button>
+    </form>
+  );
 };
 
 export default withStyles(styles)(EditPictureDescription);

@@ -10,24 +10,24 @@ interface RemovableItemProps {
 }
 
 export const RemovableItem: FC<RemovableItemProps> = ({ classes, item, onClick, selected }) => {
-    const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
-    return (
-        <div
-            ref={rootRef}
-            className={classNames(classes.removableItem, {
-                selected,
-            })}
-            onClick={e => onClick(e)}
-        >
-            <span className={classes.removableItemCollectionName}>
+  return (
+    <div
+      ref={rootRef}
+      className={classNames(classes.removableItem, {
+        selected,
+      })}
+      onClick={e => onClick(e)}
+    >
+      <span className={classes.removableItemCollectionName}>
         
-            </span>
-            <span>
+      </span>
+      <span>
         Removable
-            </span>
-        </div>
-    );
+      </span>
+    </div>
+  );
 };
 
 export default RemovableItem;

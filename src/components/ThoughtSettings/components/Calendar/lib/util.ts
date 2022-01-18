@@ -4,65 +4,65 @@ import { Time } from '../../../../../hooks/useGoogleCalendar';
 
 export const generateHtmlLinkFromThought = (thought: Thought): string => {
 
-    return `${location.hostname}/thought/${thought.id}`;
+  return `${location.hostname}/thought/${thought.id}`;
 };
 
 const getDateFromThought = (thought: Thought): Date => {
-    if (thought.date) {
-        const [year, month, date] = thought.date.split('-');
-        return new Date(
-            Number(year),
-            Number(month) - 1,
-            Number(date),
-        );
-    }
+  if (thought.date) {
+    const [year, month, date] = thought.date.split('-');
+    return new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(date),
+    );
+  }
 
-    return new Date();
+  return new Date();
 };
 
 export const generateStartFromThought = (thought: Thought): Time => {
-    const date = getDateFromThought(thought);
+  const date = getDateFromThought(thought);
 
-    const time: Time = {
-        date: format(date, 'yyyy-MM-dd'),
-        timeZone: 'America/New_York',
+  const time: Time = {
+    date: format(date, 'yyyy-MM-dd'),
+    timeZone: 'America/New_York',
+  };
+
+  if (thought.time) {
+    const [hours, minutes] = thought.time.split(':');
+    const withHours = new Date(date.setHours(Number(hours), Number(minutes)));
+    const dateTime = format(withHours, 'yyyy-MM-dd\'T\'HH:mm:ssxxx');
+    return {
+      dateTime,
     };
+  }
 
-    if (thought.time) {
-        const [hours, minutes] = thought.time.split(':');
-        const withHours = new Date(date.setHours(Number(hours), Number(minutes)));
-        const dateTime = format(withHours, 'yyyy-MM-dd\'T\'HH:mm:ssxxx');
-        return {
-            dateTime,
-        };
-    }
-
-    return time;
+  return time;
 };
 
 export const generateEndFromThought = (thought: Thought): Time => {
-    const date = getDateFromThought(thought);
+  const date = getDateFromThought(thought);
 
-    const time: Time = {
-        date: format(date, 'yyyy-MM-dd'),
-        timeZone: 'America/New_York',
+  const time: Time = {
+    date: format(date, 'yyyy-MM-dd'),
+    timeZone: 'America/New_York',
+  };
+
+  if (thought.time) {
+    const [hours, minutes] = thought.time.split(':');
+    const withHours = new Date(date.setHours(Number(hours) + 1, Number(minutes)));
+    const dateTime = format(withHours, 'yyyy-MM-dd\'T\'HH:mm:ssxxx');
+    return {
+      dateTime,
     };
+  }
 
-    if (thought.time) {
-        const [hours, minutes] = thought.time.split(':');
-        const withHours = new Date(date.setHours(Number(hours) + 1, Number(minutes)));
-        const dateTime = format(withHours, 'yyyy-MM-dd\'T\'HH:mm:ssxxx');
-        return {
-            dateTime,
-        };
-    }
-
-    return time;
+  return time;
 };
 
 export const generateDescriptionFromThought = (thought: Thought): string => {
 
-    return `
+  return `
     <b>Description</b>\n
     ${thought.description}\n
     <b>URL:</b> ${generateHtmlLinkFromThought(thought)}
@@ -70,13 +70,13 @@ export const generateDescriptionFromThought = (thought: Thought): string => {
 };
 
 export const generateRemindersFromThought = (thought: Thought): any => {
-    return {
-        overrides: [
-            {
-                method: 'sms',
-                minutes: 30
-            }
-        ],
-        useDefault: false
-    };
+  return {
+    overrides: [
+      {
+        method: 'sms',
+        minutes: 30
+      }
+    ],
+    useDefault: false
+  };
 };

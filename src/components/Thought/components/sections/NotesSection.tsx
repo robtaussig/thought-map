@@ -21,32 +21,32 @@ interface NotesSectionProps {
 }
 
 export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, onCreate, onDelete, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
-    const settings = useSelector(settingSelector);
-    const stateNotes = useSelector(noteSelector);
-    const notesToUse = settings.useAutoSuggest ? Object.values(stateNotes) : null;
+  const settings = useSelector(settingSelector);
+  const stateNotes = useSelector(noteSelector);
+  const notesToUse = settings.useAutoSuggest ? Object.values(stateNotes) : null;
 
-    return (
-        <ThoughtSection
-            classes={classes}
-            Icon={NotesIcon}
-            field={'Notes'}
-            value={notes.map(note => note.text)}
-            className={'notes'}
-            linkifyValues={true}
-            visible={visible}
-            sectionState={sectionState}
-            onLongPress={onLongPress}
-            onDrop={onDrop}
-            onToggleVisibility={onToggleVisibility}
-            edit={{
-                type: EditTypes.Text,
-                onEdit,
-                onCreate: onCreate,
-                onDelete: onDelete,
-                autoSuggest: notesToUse ? notesToUse.map(note => note.text) : undefined,
-            }}
-        />
-    );
+  return (
+    <ThoughtSection
+      classes={classes}
+      Icon={NotesIcon}
+      field={'Notes'}
+      value={notes.map(note => note.text)}
+      className={'notes'}
+      linkifyValues={true}
+      visible={visible}
+      sectionState={sectionState}
+      onLongPress={onLongPress}
+      onDrop={onDrop}
+      onToggleVisibility={onToggleVisibility}
+      edit={{
+        type: EditTypes.Text,
+        onEdit,
+        onCreate: onCreate,
+        onDelete: onDelete,
+        autoSuggest: notesToUse ? notesToUse.map(note => note.text) : undefined,
+      }}
+    />
+  );
 };
 
 export default NotesSection;

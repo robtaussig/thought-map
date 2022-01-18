@@ -17,53 +17,53 @@ interface ThemeProps {
 }
 
 export const Theme: FC<ThemeProps> = () => {
-    const customTheme = useSelector(customThemeSelector);
-    const [saved, setSaved] = useState<boolean>(false);
-    const { db } = useLoadedDB();
-    const classes = useThemeStyles(customTheme);
-    const dispatch = useDispatch();
-    const [side, setSide] = useState<ViewPosition>(ViewPosition.Down);
-    const rootRef = useRef(null);
-    const handleClickClose = useCallback(() => {
-        setSide(ViewPosition.Down);
-    }, []);
+  const customTheme = useSelector(customThemeSelector);
+  const [saved, setSaved] = useState<boolean>(false);
+  const { db } = useLoadedDB();
+  const classes = useThemeStyles(customTheme);
+  const dispatch = useDispatch();
+  const [side, setSide] = useState<ViewPosition>(ViewPosition.Down);
+  const rootRef = useRef(null);
+  const handleClickClose = useCallback(() => {
+    setSide(ViewPosition.Down);
+  }, []);
 
-    const handleReset = () => {
-        dispatch(resetDefault());
-        setSaved(false);
-    };
+  const handleReset = () => {
+    dispatch(resetDefault());
+    setSaved(false);
+  };
 
-    const handleSave = () => {
-        localStorage.setItem('customTheme', JSON.stringify(customTheme));
-        settingActions.createSetting(db, {
-            field: 'customTheme',
-            value: customTheme,
-        });
-        setSaved(true);
-    };
+  const handleSave = () => {
+    localStorage.setItem('customTheme', JSON.stringify(customTheme));
+    settingActions.createSetting(db, {
+      field: 'customTheme',
+      value: customTheme,
+    });
+    setSaved(true);
+  };
 
-    return (
-        <Fragment>
-            <button className={classes.button} onClick={() => setSide(ViewPosition.Up)}>
+  return (
+    <Fragment>
+      <button className={classes.button} onClick={() => setSide(ViewPosition.Up)}>
         Theme
-            </button>
-            <div ref={rootRef} className={classNames(classes.container, {
-                visible: side === ViewPosition.Up,
-                hidden: side === ViewPosition.Down
-            })} style={{
-                top: side === ViewPosition.Down ? '100%' : 0,
-            }}>
-                <h1 className={classes.header}>Theme</h1>
-                <CustomizeTheme onChange={() => setSaved(false)} />
-                <button className={classes.saveButton} onClick={handleSave}>
-                    {saved ? 'Saved' : 'Save'}
-                    {saved && <Check />}
-                </button>
-                {side === ViewPosition.Up && <CircleButton classes={classes} id={'close'} onClick={handleClickClose} label={'Close'} Icon={Close} />}
-                {side === ViewPosition.Up && <CircleButton classes={classes} id={'reset'} onClick={handleReset} label={'Reset'} Icon={Refresh} />}
-            </div>
-        </Fragment>
-    );
+      </button>
+      <div ref={rootRef} className={classNames(classes.container, {
+        visible: side === ViewPosition.Up,
+        hidden: side === ViewPosition.Down
+      })} style={{
+        top: side === ViewPosition.Down ? '100%' : 0,
+      }}>
+        <h1 className={classes.header}>Theme</h1>
+        <CustomizeTheme onChange={() => setSaved(false)} />
+        <button className={classes.saveButton} onClick={handleSave}>
+          {saved ? 'Saved' : 'Save'}
+          {saved && <Check />}
+        </button>
+        {side === ViewPosition.Up && <CircleButton classes={classes} id={'close'} onClick={handleClickClose} label={'Close'} Icon={Close} />}
+        {side === ViewPosition.Up && <CircleButton classes={classes} id={'reset'} onClick={handleReset} label={'Reset'} Icon={Refresh} />}
+      </div>
+    </Fragment>
+  );
 };
 
 export default Theme;

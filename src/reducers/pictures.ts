@@ -11,29 +11,29 @@ export interface Pictures {
 const initialState: Pictures = {};
 
 const pictures = createSlice({
-    name: 'pictures',
-    initialState,
-    reducers: {
-        setPictures(state, action: PayloadAction<Pictures>) {
-            return action.payload;
-        },
-        insert(state, action: PayloadAction<Picture>) {
-            state[action.payload.id] = action.payload;
-        },
-        remove(state, action: PayloadAction<string>) {
-            delete state[action.payload];
-        },
-        update(state, action: PayloadAction<Picture>) {
-            state[action.payload.id] = action.payload;
-        },
-    }
+  name: 'pictures',
+  initialState,
+  reducers: {
+    setPictures(state, action: PayloadAction<Pictures>) {
+      return action.payload;
+    },
+    insert(state, action: PayloadAction<Picture>) {
+      state[action.payload.id] = action.payload;
+    },
+    remove(state, action: PayloadAction<string>) {
+      delete state[action.payload];
+    },
+    update(state, action: PayloadAction<Picture>) {
+      state[action.payload.id] = action.payload;
+    },
+  }
 });
 
 export const {
-    setPictures,
-    insert,
-    remove,
-    update,
+  setPictures,
+  insert,
+  remove,
+  update,
 } = pictures.actions;
 
 export default pictures.reducer;

@@ -20,28 +20,28 @@ interface PrioritySectionProps {
 
 export const PrioritySection: FC<PrioritySectionProps> = ({ classes, thought, priorityOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
-    return (
-        <ThoughtSection
-            classes={classes}
-            Icon={LowPriority}
-            field={'Priority'}
-            value={priorityOptions.find(({ value }) => value === thought.priority).label}
-            className={'priority'}
-            visible={visible}
-            quickActionButton={thought.priority !== 10 && (
-                <button className={classes.highPriorityButton} onClick={() => onEdit(10)}><PriorityHighRounded/></button>
-            )}
-            sectionState={sectionState}
-            onLongPress={onLongPress}
-            onDrop={onDrop}
-            onToggleVisibility={onToggleVisibility}
-            edit={{
-                type: EditTypes.Select,
-                options: priorityOptions.map(({ label }) => label),
-                onEdit: value => onEdit(priorityOptions.find(({ label }) => label === value).value),
-            }}
-        />
-    );
+  return (
+    <ThoughtSection
+      classes={classes}
+      Icon={LowPriority}
+      field={'Priority'}
+      value={priorityOptions.find(({ value }) => value === thought.priority).label}
+      className={'priority'}
+      visible={visible}
+      quickActionButton={thought.priority !== 10 && (
+        <button className={classes.highPriorityButton} onClick={() => onEdit(10)}><PriorityHighRounded/></button>
+      )}
+      sectionState={sectionState}
+      onLongPress={onLongPress}
+      onDrop={onDrop}
+      onToggleVisibility={onToggleVisibility}
+      edit={{
+        type: EditTypes.Select,
+        options: priorityOptions.map(({ label }) => label),
+        onEdit: value => onEdit(priorityOptions.find(({ label }) => label === value).value),
+      }}
+    />
+  );
 };
 
 export default PrioritySection;

@@ -22,115 +22,115 @@ interface CurrentCompareProps {
 }
 
 export const CurrentCompare: FC<CurrentCompareProps> = ({ rootClassName, comparable, onPick, thoughts, plans }) => {
-    const [state, dispatch] = useReducer(compareReducer, INITIAL_STATE);
-    const [left, right] = comparable;
-    const [mutualFields, fieldsToPick] = useMemo(() => {
-        const showableFieldsFilter = (field: string) => !FIELDS_TO_HIDE.includes(field);
-        const hasValueFilter = (field: string) => {
-            return ![undefined, '', null].includes(left.item[field]) ||
+  const [state, dispatch] = useReducer(compareReducer, INITIAL_STATE);
+  const [left, right] = comparable;
+  const [mutualFields, fieldsToPick] = useMemo(() => {
+    const showableFieldsFilter = (field: string) => !FIELDS_TO_HIDE.includes(field);
+    const hasValueFilter = (field: string) => {
+      return ![undefined, '', null].includes(left.item[field]) ||
         ![undefined, '', null].includes(right.item[field]);
-        };
+    };
 
-        const toPick = generateFieldsToPick(left.item, right.item)
-            .filter(showableFieldsFilter)
-            .sort();
-        const allFields = Object.keys(left.item)
-            .filter(showableFieldsFilter)
-            .filter(field => !toPick.includes(field))
-            .filter(hasValueFilter)
-            .sort();
+    const toPick = generateFieldsToPick(left.item, right.item)
+      .filter(showableFieldsFilter)
+      .sort();
+    const allFields = Object.keys(left.item)
+      .filter(showableFieldsFilter)
+      .filter(field => !toPick.includes(field))
+      .filter(hasValueFilter)
+      .sort();
 
-        return [allFields, toPick];
-    }, [left, right]);
+    return [allFields, toPick];
+  }, [left, right]);
 
-    const classes = useStyles({
-        fieldCount: mutualFields.length + fieldsToPick.length,
+  const classes = useStyles({
+    fieldCount: mutualFields.length + fieldsToPick.length,
+  });
+
+  const handleClickStage = () => {
+    onPick(state.merged);
+  };
+
+  const isStageDisabled = () => {
+    return fieldsToPick
+      .some(field => [undefined, null, ''].includes(state.merged.item[field]));
+  };
+
+  const handleSelectSide = useCallback((field: string, value: string) => {
+    dispatch({
+      type: ActionTypes.Pick,
+      payload: { field, value },
     });
+  }, []);
 
-    const handleClickStage = () => {
-        onPick(state.merged);
-    };
+  const handleCustomInput = useCallback((field: string, value: string) => {
+    dispatch({
+      type: ActionTypes.InputCustom,
+      payload: { field, value },
+    });
+  }, []);
 
-    const isStageDisabled = () => {
-        return fieldsToPick
-            .some(field => [undefined, null, ''].includes(state.merged.item[field]));
-    };
+  const thoughtToDisplay = useMemo(() => {  
+    if (left.item.thoughtId) return thoughts.find(({ id }) => id === left.item.thoughtId);
+    if (left.item.from) return thoughts.find(({ id }) => id === left.item.from);
+    if (left.item.to) return thoughts.find(({ id }) => id === left.item.to);
+  }, [thoughts, left, right]);
 
-    const handleSelectSide = useCallback((field: string, value: string) => {
-        dispatch({
-            type: ActionTypes.Pick,
-            payload: { field, value },
-        });
-    }, []);
+  useEffect(() => {
+    if (comparable) {
+      dispatch({
+        type: ActionTypes.SetState,
+        payload: generateInitialState(comparable),
+      });
+    }
+  }, [comparable]);
 
-    const handleCustomInput = useCallback((field: string, value: string) => {
-        dispatch({
-            type: ActionTypes.InputCustom,
-            payload: { field, value },
-        });
-    }, []);
-
-    const thoughtToDisplay = useMemo(() => {  
-        if (left.item.thoughtId) return thoughts.find(({ id }) => id === left.item.thoughtId);
-        if (left.item.from) return thoughts.find(({ id }) => id === left.item.from);
-        if (left.item.to) return thoughts.find(({ id }) => id === left.item.to);
-    }, [thoughts, left, right]);
-
-    useEffect(() => {
-        if (comparable) {
-            dispatch({
-                type: ActionTypes.SetState,
-                payload: generateInitialState(comparable),
-            });
-        }
-    }, [comparable]);
-
-    return (
-        <div className={classNames(classes.root, rootClassName)}>
-            {thoughtToDisplay && <ParentThought classes={classes} thought={thoughtToDisplay}/>}
-            <FieldHeaders classes={classes} type={left.collectionName}/>
-            <div className={classes.mergeData}>
-                <Fields classes={classes} mutualFields={mutualFields} toPick={fieldsToPick}/>
-                {state.merged && (<Side
-                    classes={classes}
-                    rootClassName={'left'}
-                    mutualFields={mutualFields}
-                    customInput={state.customInput}
-                    toPick={fieldsToPick}
-                    item={left.item}
-                    merged={state.merged}
-                    onSelect={handleSelectSide}
-                    plans={plans}
-                />)}
-                {state.merged && (<Side
-                    classes={classes}
-                    rootClassName={'right'}
-                    mutualFields={mutualFields}
-                    customInput={state.customInput}
-                    toPick={fieldsToPick}
-                    item={right.item}
-                    merged={state.merged}
-                    onSelect={handleSelectSide}
-                    plans={plans}
-                />)}
-                {state.merged && (<Custom classes={classes}
-                    onChange={handleCustomInput}
-                    customInput={state.customInput}
-                    mutualFields={mutualFields}
-                    toPick={fieldsToPick}
-                    mergedItem={state.merged.item}
-                    plans={plans}
-                />)}
-            </div>
-            {state.merged && (<button
-                className={classes.stageButton}
-                onClick={handleClickStage}
-                disabled={isStageDisabled()}
-            >
+  return (
+    <div className={classNames(classes.root, rootClassName)}>
+      {thoughtToDisplay && <ParentThought classes={classes} thought={thoughtToDisplay}/>}
+      <FieldHeaders classes={classes} type={left.collectionName}/>
+      <div className={classes.mergeData}>
+        <Fields classes={classes} mutualFields={mutualFields} toPick={fieldsToPick}/>
+        {state.merged && (<Side
+          classes={classes}
+          rootClassName={'left'}
+          mutualFields={mutualFields}
+          customInput={state.customInput}
+          toPick={fieldsToPick}
+          item={left.item}
+          merged={state.merged}
+          onSelect={handleSelectSide}
+          plans={plans}
+        />)}
+        {state.merged && (<Side
+          classes={classes}
+          rootClassName={'right'}
+          mutualFields={mutualFields}
+          customInput={state.customInput}
+          toPick={fieldsToPick}
+          item={right.item}
+          merged={state.merged}
+          onSelect={handleSelectSide}
+          plans={plans}
+        />)}
+        {state.merged && (<Custom classes={classes}
+          onChange={handleCustomInput}
+          customInput={state.customInput}
+          mutualFields={mutualFields}
+          toPick={fieldsToPick}
+          mergedItem={state.merged.item}
+          plans={plans}
+        />)}
+      </div>
+      {state.merged && (<button
+        className={classes.stageButton}
+        onClick={handleClickStage}
+        disabled={isStageDisabled()}
+      >
         Stage
-            </button>)}
-        </div>
-    );
+      </button>)}
+    </div>
+  );
 };
 
 export default CurrentCompare;

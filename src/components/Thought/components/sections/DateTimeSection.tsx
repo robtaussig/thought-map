@@ -16,26 +16,26 @@ interface DateTimeSectionProps {
 }
 
 export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, thought, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
-    const dateTimeText = `${thought.date},${thought.time}`;
+  const dateTimeText = `${thought.date},${thought.time}`;
 
-    return (
-        <ThoughtSection
-            classes={classes}
-            Icon={CalendarToday}
-            field={'Date/Time'}
-            value={dateTimeText}
-            className={'datetime'}
-            visible={visible}
-            sectionState={sectionState}
-            onLongPress={onLongPress}
-            onDrop={onDrop}
-            onToggleVisibility={onToggleVisibility}
-            edit={{
-                type: EditTypes.DateTime,
-                onEdit,
-            }}
-        />
-    );
+  return (
+    <ThoughtSection
+      classes={classes}
+      Icon={CalendarToday}
+      field={'Date/Time'}
+      value={dateTimeText}
+      className={'datetime'}
+      visible={visible}
+      sectionState={sectionState}
+      onLongPress={onLongPress}
+      onDrop={onDrop}
+      onToggleVisibility={onToggleVisibility}
+      edit={{
+        type: EditTypes.DateTime,
+        onEdit,
+      }}
+    />
+  );
 };
 
 export default DateTimeSection;

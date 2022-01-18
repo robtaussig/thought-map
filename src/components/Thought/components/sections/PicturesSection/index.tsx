@@ -19,45 +19,45 @@ interface PicturesSectionProps {
 }
 
 export const PicturesSection: FC<PicturesSectionProps> = ({ classes, thought, pinnedPictures, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
-    const [openModal, closeModal] = useModal();
-    const handleEdit = () => {
-        openModal(
-            <PicturesModal
-                onClose={closeModal}
-                thought={thought}
-            />
-        );
-    };
-
-    const handleCreate = (value: string) => {
-        console.log(value);
-    };
-
-    const handleClickItem = () => {
-        console.log('hit');
-    };
-
-    return (
-        <ThoughtSection
-            classes={classes}
-            Icon={CameraAlt}
-            field={'Pictures'}
-            value={pinnedPictures.map(({ imgurUrl, localUrl, description }) => [(imgurUrl || localUrl), description])}
-            className={'pictures'}
-            visible={visible}
-            sectionState={sectionState}
-            onLongPress={onLongPress}
-            onDrop={onDrop}
-            onToggleVisibility={onToggleVisibility}
-            edit={{
-                type: EditTypes.Photo,
-                onEdit: handleEdit,
-                onCreate: handleCreate,
-                onClickItem: handleClickItem,
-                disableQuickAction: true,
-            }}
-        />
+  const [openModal, closeModal] = useModal();
+  const handleEdit = () => {
+    openModal(
+      <PicturesModal
+        onClose={closeModal}
+        thought={thought}
+      />
     );
+  };
+
+  const handleCreate = (value: string) => {
+    console.log(value);
+  };
+
+  const handleClickItem = () => {
+    console.log('hit');
+  };
+
+  return (
+    <ThoughtSection
+      classes={classes}
+      Icon={CameraAlt}
+      field={'Pictures'}
+      value={pinnedPictures.map(({ imgurUrl, localUrl, description }) => [(imgurUrl || localUrl), description])}
+      className={'pictures'}
+      visible={visible}
+      sectionState={sectionState}
+      onLongPress={onLongPress}
+      onDrop={onDrop}
+      onToggleVisibility={onToggleVisibility}
+      edit={{
+        type: EditTypes.Photo,
+        onEdit: handleEdit,
+        onCreate: handleCreate,
+        onClickItem: handleClickItem,
+        disableQuickAction: true,
+      }}
+    />
+  );
 };
 
 export default PicturesSection;

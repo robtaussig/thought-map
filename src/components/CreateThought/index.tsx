@@ -24,14 +24,14 @@ export interface CreatedThought {
 }
 
 export const DEFAULT_STATE: CreatedThought = {
-    title: '',
-    type: 'Task',
-    date: '',
-    time: '',
-    description: '',
-    notes: [],
-    tags: [],
-    tagOptions: [],
+  title: '',
+  type: 'Task',
+  date: '',
+  time: '',
+  description: '',
+  notes: [],
+  tags: [],
+  tagOptions: [],
 };
 
 interface CreateThoughtProps {
@@ -42,65 +42,65 @@ interface CreateThoughtProps {
 }
 
 export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, onClose, onCreateBulk }) => {
-    const navigate = useNavigate();
-    const thoughts = useSelector(thoughtSelector);
-    const plans = useSelector(planSelector);
-    const [ready, setReady] = useState<boolean>(false);
-    const { db } = useLoadedDB();
-    const planId = useIdFromUrl('plan');
-    const plan = plans.find(plan => plan.id === planId);
-    const [selectedPlan, setSelectedPlan] = useState('');
-    const [createdThought, setCreatedThought] = useState<CreatedThought>({
-        ...DEFAULT_STATE,
-        type: (plan && plan.defaultType) || DEFAULT_STATE.type
-    });
-    const thoughtTitles = thoughts.map(({ title }) => title);
-    const homeUrl = useHomeUrl();
+  const navigate = useNavigate();
+  const thoughts = useSelector(thoughtSelector);
+  const plans = useSelector(planSelector);
+  const [ready, setReady] = useState<boolean>(false);
+  const { db } = useLoadedDB();
+  const planId = useIdFromUrl('plan');
+  const plan = plans.find(plan => plan.id === planId);
+  const [selectedPlan, setSelectedPlan] = useState('');
+  const [createdThought, setCreatedThought] = useState<CreatedThought>({
+    ...DEFAULT_STATE,
+    type: (plan && plan.defaultType) || DEFAULT_STATE.type
+  });
+  const thoughtTitles = thoughts.map(({ title }) => title);
+  const homeUrl = useHomeUrl();
 
-    const handleSubmit: FormEventHandler = async (e) => {
-        e.preventDefault();
-        if (ready) {
-            const response = await createWholeThought(
-                db,
-                createdThought,
-                selectedPlan ?
-                    plans.find(({ name }) => name === selectedPlan).id :
-                    planId,
-            );
-            onClose();
-            navigate(`${homeUrl}thought/${response.thought.id}`);
-        }
-    };
+  const handleSubmit: FormEventHandler = async (e) => {
+    e.preventDefault();
+    if (ready) {
+      const response = await createWholeThought(
+        db,
+        createdThought,
+        selectedPlan ?
+          plans.find(({ name }) => name === selectedPlan).id :
+          planId,
+      );
+      onClose();
+      navigate(`${homeUrl}thought/${response.thought.id}`);
+    }
+  };
 
-    const handleClickBulk = (e: any) => {
-        e.preventDefault();
-        onCreateBulk();
-    };
+  const handleClickBulk = (e: any) => {
+    e.preventDefault();
+    onCreateBulk();
+  };
 
-    return (
-        <Fragment>
-            <form className={classNames(classes.form)} onSubmit={handleSubmit}>
-                <Inputs
-                    classes={classes}
-                    createdThought={createdThought}
-                    setCreatedThought={setCreatedThought}
-                    typeOptions={typeOptions}
-                    onReady={setReady}
-                    thoughtTitles={thoughtTitles}
-                    planId={planId}
-                    plans={plans}
-                    selectedPlan={selectedPlan}
-                    setSelectedPlan={setSelectedPlan}
-                />
-                <button className={classes.submitButton} disabled={!ready}>
+  return (
+    <Fragment>
+      <form className={classNames(classes.form)} onSubmit={handleSubmit}>
+        <Inputs
+          classes={classes}
+          createdThought={createdThought}
+          setCreatedThought={setCreatedThought}
+          typeOptions={typeOptions}
+          onReady={setReady}
+          thoughtTitles={thoughtTitles}
+          planId={planId}
+          plans={plans}
+          selectedPlan={selectedPlan}
+          setSelectedPlan={setSelectedPlan}
+        />
+        <button className={classes.submitButton} disabled={!ready}>
           Submit
-                </button>
-                <button className={classes.bulkButton} onClick={handleClickBulk}>
+        </button>
+        <button className={classes.bulkButton} onClick={handleClickBulk}>
           Bulk
-                </button>
-            </form>
-        </Fragment>
-    );
+        </button>
+      </form>
+    </Fragment>
+  );
 };
 
 export default withStyles(styles)(CreateThought);

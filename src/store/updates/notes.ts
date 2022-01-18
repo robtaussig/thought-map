@@ -5,38 +5,38 @@ import { searcherWorker } from '../init';
 import { AppDispatch } from '~store';
 
 export const handleNoteChange = (
-    dispatch: AppDispatch,
-    setLastNotification: (notification: Notification) => void,
+  dispatch: AppDispatch,
+  setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
-    if ((window as any).blockDBSubscriptions === true) return;
-    const note: Note = documentData;
-    let notification;
+  if ((window as any).blockDBSubscriptions === true) return;
+  const note: Note = documentData;
+  let notification;
 
-    switch (operation) {
-    case 'INSERT':
-        dispatch(insert(note));
-        searcherWorker.buildTree(null,{ [note.id]: note }, null);
-        notification = { message: 'Note created' };
-        break;
+  switch (operation) {
+  case 'INSERT':
+    dispatch(insert(note));
+    searcherWorker.buildTree(null,{ [note.id]: note }, null);
+    notification = { message: 'Note created' };
+    break;
     
-    case 'DELETE':
-        dispatch(remove(documentId));
-        searcherWorker.invalidate(note.id);
-        notification = { message: 'Note removed' };
-        break;
+  case 'DELETE':
+    dispatch(remove(documentId));
+    searcherWorker.invalidate(note.id);
+    notification = { message: 'Note removed' };
+    break;
 
-    case 'UPDATE':
-        dispatch(update(note));
-        searcherWorker.invalidate(note.id).then(() => {
-            searcherWorker.buildTree(null,{ [note.id]: note }, null);
-        });
-        notification = { message: 'Note updated' };
-        break;
+  case 'UPDATE':
+    dispatch(update(note));
+    searcherWorker.invalidate(note.id).then(() => {
+      searcherWorker.buildTree(null,{ [note.id]: note }, null);
+    });
+    notification = { message: 'Note updated' };
+    break;
   
-    default:
-        break;
-    }
+  default:
+    break;
+  }
 
-    if ((window as any).blockNotifications) return;
-    setLastNotification(notification);  
+  if ((window as any).blockNotifications) return;
+  setLastNotification(notification);  
 };

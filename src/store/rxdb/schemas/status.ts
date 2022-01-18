@@ -10,43 +10,43 @@ export interface Status {
 }
 
 export default ['status', {
-    'title': 'Status schema',
-    'version': 1,
-    'description': 'A Status',
-    'type': 'object',
-    'primaryKey': 'id',
-    'properties': {
-        'id': {
-            'type': 'string',
-        },
-        'thoughtId': {
-            'ref': 'thought',
-            'type': 'string',
-        },
-        'text': {
-            'type': 'string',
-        },
-        'location': {
-            'type': 'string',
-        },
-        'index': {
-            'type': 'number',
-        },
-        'created': {
-            'type': 'number',
-        },
-        'updated': {
-            'type': 'number',
-        },
+  'title': 'Status schema',
+  'version': 1,
+  'description': 'A Status',
+  'type': 'object',
+  'primaryKey': 'id',
+  'properties': {
+    'id': {
+      'type': 'string',
     },
-    'required': ['text', 'thoughtId'],
-    'attachments': {
+    'thoughtId': {
+      'ref': 'thought',
+      'type': 'string',
+    },
+    'text': {
+      'type': 'string',
+    },
+    'location': {
+      'type': 'string',
+    },
+    'index': {
+      'type': 'number',
+    },
+    'created': {
+      'type': 'number',
+    },
+    'updated': {
+      'type': 'number',
+    },
+  },
+  'required': ['text', 'thoughtId'],
+  'attachments': {
 
-    }
+  }
 } as RxJsonSchema<Status>, {
-    'migrationStrategies': {
-        1: (oldStatus: RxDocument<Status>) => {
-            return oldStatus;
-        },
+  'migrationStrategies': {
+    1: (oldStatus: RxDocument<Status>) => {
+      return oldStatus;
     },
+  },
 }];
