@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useState } from 'react';
+import React, { CSSProperties, FC, useEffect, useRef, useState } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import cn from 'classnames';
 import Check from '@material-ui/icons/Check';
@@ -52,6 +52,7 @@ export const CreatingNextThought: FC<CreatingNextThoughtProps> = ({
   styleOverwrite = {},
   onSubmit,
 }) => {
+  const formRef = useRef<HTMLFormElement>(null);
   const [title, setTitle] = useState('');
   const [isParent, setIsParent] = useState(false);
 
@@ -60,8 +61,12 @@ export const CreatingNextThought: FC<CreatingNextThoughtProps> = ({
     onSubmit({ title, relationship: isParent ? 'from' : 'next' });
   };
 
+  useEffect(() => {
+    formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  },  []);
+
   return (
-    <form style={styleOverwrite} className={cn(classes.root, className)} onSubmit={handleSubmit}>
+    <form ref={formRef} style={styleOverwrite} className={cn(classes.root, className)} onSubmit={handleSubmit}>
       <label className={classes.titleLabel}>
         Title
         <input type={'text'} value={title} autoFocus onChange={e => setTitle(e.target.value)} />
