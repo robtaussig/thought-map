@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState, FormEventHandler, ChangeEvent, MouseEventHandler, useCallback } from 'react';
+import React, { ChangeEvent, FC, FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Edit from '@material-ui/icons/Edit';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -15,8 +15,8 @@ import useModal from '../../../../hooks/useModal';
 import useLongPress from '../../../../hooks/useLongPress';
 import FullScreenImage from './PicturesSection/components/FullScreenImage';
 import {
-  EditTypes,
   EditProps,
+  EditTypes,
   SectionState
 } from '../../types';
 import QuickAddModal from '../QuickAddModal';

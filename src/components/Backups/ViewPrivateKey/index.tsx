@@ -1,4 +1,4 @@
-import React, { FC, useRef, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Backup } from '../../../store/rxdb/schemas/backup';
 import QRCode from 'qrcode';
 import { useStyles } from './style';

@@ -1,4 +1,4 @@
-import React, { FC, useState, FormEventHandler, MouseEventHandler } from 'react';
+import React, { FC, FormEventHandler, MouseEventHandler, useState } from 'react';
 import Input from '../../General/Input';
 import Select from '../../General/Select';
 

@@ -1,5 +1,5 @@
 import './style.scss';
-import { CSSProperties, MutableRefObject, useCallback, useMemo, useRef, useEffect } from 'react';
+import { CSSProperties, MutableRefObject, useCallback, useEffect, useMemo, useRef } from 'react';
 
 type SetLoading = (text?: string) => void;
 type StopLoading = () => void;

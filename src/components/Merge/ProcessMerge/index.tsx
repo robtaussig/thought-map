@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useRef } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { mergeResultsSelector } from '../../../reducers/mergeResults';
 import { thoughtSelector } from '../../../reducers/thoughts';

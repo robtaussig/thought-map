@@ -1,4 +1,4 @@
-import { RxJsonSchema, RxDocument } from 'rxdb';
+import { RxDocument, RxJsonSchema } from 'rxdb';
 
 export interface Picture {
   id?: string;

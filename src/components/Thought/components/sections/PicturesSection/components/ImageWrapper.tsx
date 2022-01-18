@@ -1,4 +1,4 @@
-import React, { FC, useRef, useEffect } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 
 interface ImageWrapperProps {
   children: any;

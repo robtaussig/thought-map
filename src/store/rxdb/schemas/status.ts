@@ -1,4 +1,4 @@
-import { RxJsonSchema, RxDocument } from 'rxdb';
+import { RxDocument, RxJsonSchema } from 'rxdb';
 
 export interface Status {
   id?: string;

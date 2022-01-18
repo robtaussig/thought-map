@@ -1,4 +1,4 @@
-import { Component, CSSProperties } from 'react';
+import { CSSProperties, Component } from 'react';
 
 export interface Options {
   style?: CSSProperties;

@@ -1,4 +1,4 @@
-import React, { FC, CSSProperties } from 'react';
+import React, { CSSProperties, FC } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';

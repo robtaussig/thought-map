@@ -1,16 +1,15 @@
-import React, { FC, useEffect, useMemo, Fragment } from 'react';
-import { withStyles, StyleRules } from '@material-ui/core/styles';
+import React, { FC, Fragment, useMemo } from 'react';
+import { StyleRules, withStyles } from '@material-ui/core/styles';
 import { thoughts as thoughtActions } from '../../../../actions';
-import { Thought } from '../../../../store/rxdb/schemas/thought';
 import { Note } from '../../../../store/rxdb/schemas/note';
 import { Tag } from '../../../../store/rxdb/schemas/tag';
 import { useLoadedDB } from '../../../../hooks/useDB';
 import Loading from '../../../Loading';
 import {
-  generateStartFromThought,
-  generateEndFromThought,
   generateDescriptionFromThought,
+  generateEndFromThought,
   generateRemindersFromThought,
+  generateStartFromThought,
 } from './lib/util';
 import useGoogleCalendar, { GoogleCalendarEvent } from '../../../../hooks/useGoogleCalendar';
 import { useSelector } from 'react-redux';

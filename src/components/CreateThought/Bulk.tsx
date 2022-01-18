@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { planSelector } from '../../reducers/plans';
 import { bulkListSelector } from '../../reducers/bulkLists';
 import { useBulkStyles } from './style';
-import { connections as connectionsActions, bulkLists as bulkListsActions } from '../../actions';
+import { bulkLists as bulkListsActions, connections as connectionsActions } from '../../actions';
 
 interface CreateBulkThoughtProps {
   onClose: () => void;

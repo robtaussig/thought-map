@@ -1,8 +1,8 @@
 import { merge } from '../util';
 import {
-  Dump,
-  Doc,
   Collection,
+  Doc,
+  Dump,
   MergeResults,
 } from '../types';
 import { v4 as uuidv4 } from 'uuid';

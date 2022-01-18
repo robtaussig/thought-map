@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, createContext, useContext, Provider } from 'react';
+import { Provider, createContext, useContext, useEffect, useRef, useState } from 'react';
 import { DB_SETTINGS, initializeCollections } from '../store/rxdb';
 import { RxDatabase, createRxDatabase } from 'rxdb';
 

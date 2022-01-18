@@ -1,5 +1,5 @@
 import { MutableRefObject } from 'react';
-import { notes as noteActions, thoughts as thoughtActions, tags as tagActions } from '../../actions';
+import { notes as noteActions, tags as tagActions, thoughts as thoughtActions } from '../../actions';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Tag } from 'store/rxdb/schemas/tag';
 import { Note as NoteType } from 'store/rxdb/schemas/note';

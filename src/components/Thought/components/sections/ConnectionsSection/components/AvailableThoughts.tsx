@@ -1,4 +1,4 @@
-import React, { FC, useMemo, ChangeEvent, useState, Fragment } from 'react';
+import React, { ChangeEvent, FC, Fragment, useMemo, useState } from 'react';
 import { Thought } from 'store/rxdb/schemas/thought';
 import Add from '@material-ui/icons/Add';
 import Select from '../../../../../General/Select';

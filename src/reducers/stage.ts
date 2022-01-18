@@ -1,8 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Thought } from '../store/rxdb/schemas/thought';
+import { createSlice } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
 import { RootState } from './';
-import { insert as insertThought, update as updateThought, remove as removeThought, setThoughts, Thoughts } from './thoughts';
+import { insert as insertThought, remove as removeThought, setThoughts, update as updateThought } from './thoughts';
 import { format } from 'date-fns';
 
 export const stageSelector: Selector<RootState, Stage> = state => state.stage;

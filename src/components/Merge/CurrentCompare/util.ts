@@ -1,4 +1,4 @@
-import { Item, Doc } from '../types';
+import { Doc, Item } from '../types';
 
 export const generateFieldsToPick = (left: Doc, right: Doc): string[] => {
   const diffs: string[] = [];

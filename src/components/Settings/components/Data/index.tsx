@@ -1,4 +1,4 @@
-import React, { FC, useState, Fragment, useCallback, useRef, useEffect } from 'react';
+import React, { FC, Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import Close from '@material-ui/icons/Close';
 import CircleButton from '../../../../components/General/CircleButton';
 import CheckBox from '../../../../components/General/CheckBox';
@@ -14,19 +14,18 @@ import Tooltip from '../../../General/Tooltip';
 import { settingSelector } from '../../../../reducers/settings';
 import { settings as settingActions } from '../../../../actions';
 import {
-  DataProps,
-  Side,
-  ChunkItem,
   ChunkDetails,
+  ChunkItem,
   Chunks,
+  DataProps,
   DiagnosisChunks,
+  Side,
 } from '../../types';
 import { useStyles } from './styles';
 import {
-  RELOAD_BEFORE_IMPORT_TEXT,
   CONTINUE_DELETE_TEXT,
   DIAGNOSIS_TOOLTIP_TEXT,
-  DELETE_DATA_TOOLTIP,
+  RELOAD_BEFORE_IMPORT_TEXT,
 } from './constants';
 import { runDiagnosis } from './util';
 

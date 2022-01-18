@@ -7,7 +7,6 @@ import FullScreenImage from './FullScreenImage';
 import EditPictureDescription from './EditPictureDescription';
 import useModal from '../../../../../../hooks/useModal';
 import { useLoadedDB } from '../../../../../../hooks/useDB';
-import Close from '@material-ui/icons/Close';
 import Wallpaper from '@material-ui/icons/Wallpaper';
 import { pictures as pictureActions } from '../../../../../../actions/index';
 

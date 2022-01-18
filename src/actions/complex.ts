@@ -1,12 +1,10 @@
 import { RxDatabase } from 'rxdb';
 import { Thought } from '../store/rxdb/schemas/thought';
 import { 
-  thoughts as thoughtActions,
-  connections as connectionActions,
-  plans as planActions,
   notes as noteActions,
-  tags as tagActions,
   statuses as statusActions,
+  tags as tagActions,
+  thoughts as thoughtActions,
 } from './';
 
 interface WholeThought {

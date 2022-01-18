@@ -9,8 +9,8 @@ import { useStyles } from './styles';
 import { format } from 'date-fns';
 import DailyChunkItem from './DailyChunkItem';
 import {
-  StatusItem,
   DailyChunk,
+  StatusItem,
 } from './types';
 
 interface TimelineProps {

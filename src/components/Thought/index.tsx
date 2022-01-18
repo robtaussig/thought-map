@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, FC, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
@@ -9,7 +9,7 @@ import ThoughtInformation from './ThoughtInformation';
 import MissingThought from './components/MissingThought';
 import ThoughtSettings from '../ThoughtSettings';
 import CircleButton from '../General/CircleButton';
-import { thoughts as thoughtActions, plans as planActions } from '../../actions';
+import { plans as planActions, thoughts as thoughtActions } from '../../actions';
 import { useHomeUrl, useIdFromUrl } from '../../lib/util';
 import { Picture } from '../../store/rxdb/schemas/picture';
 import { Thought as ThoughtType } from '~store/rxdb/schemas/types';
@@ -24,7 +24,7 @@ import { statusesByThoughtSelector } from '../../reducers/statusesByThought';
 import { statusSelector } from '../../reducers/statuses';
 import { pictureSelector } from '../../reducers/pictures';
 import { settingSelector } from '../../reducers/settings';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export interface PriorityOption {
   value: number;

@@ -1,5 +1,5 @@
 import './App.scss';
-import { createTheme, responsiveFontSizes, Theme, makeStyles } from '@material-ui/core/styles';
+import { Theme, createTheme, makeStyles, responsiveFontSizes } from '@material-ui/core/styles';
 
 const CAST_SHADOW_HEAVY = {
   boxShadow: '0px 0px 20px -3px black',

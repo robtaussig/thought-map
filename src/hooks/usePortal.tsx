@@ -1,4 +1,4 @@
-import React, { createContext, Fragment, FC, useContext, useState, useEffect } from 'react';
+import React, { FC, createContext, useContext, useEffect, useState } from 'react';
 
 const PortalContext = createContext(null);
 

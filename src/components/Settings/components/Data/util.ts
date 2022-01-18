@@ -8,20 +8,20 @@ import { Setting } from '../../../../store/rxdb/schemas/setting';
 import { Connection } from '../../../../store/rxdb/schemas/connection';
 import { Status } from '../../../../store/rxdb/schemas/status';
 import {
-  thoughts as thoughtActions,
-  plans as planActions,
   connections as connectionActions,
   notes as noteActions,
-  tags as tagActions,
   pictures as pictureActions,
+  plans as planActions,
   settings as settingActions,
   statuses as statusActions,
+  tags as tagActions,
+  thoughts as thoughtActions,
 } from '../../../../actions';
 import {
-  OrphanedChildSource,
-  OrphanedChildObject,
-  FormattedResultActionEnum,
   FormattedResult,
+  FormattedResultActionEnum,
+  OrphanedChildObject,
+  OrphanedChildSource,
   SolutionTypes,
 } from '../../types';
 

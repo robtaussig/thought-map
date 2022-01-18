@@ -1,10 +1,10 @@
-import React, { FC, useMemo, CSSProperties } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import React, { CSSProperties, FC, useMemo } from 'react';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import { useIdFromUrl } from '../../lib/util';
 import ThoughtGroup from './components/thought-group';
 import {
-  StatusUpdate,
   Group,
+  StatusUpdate,
 } from './types';
 import { useSelector } from 'react-redux';
 import { thoughtSelector } from '../../reducers/thoughts';

@@ -1,8 +1,8 @@
-import React, { useMemo, FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import Content from './Content/index';
 import PlanSelect from './PlanSelect';
 import { useStyles } from './styles';
-import { useIdFromUrl, getSearchParam } from '../../lib/util';
+import { getSearchParam, useIdFromUrl } from '../../lib/util';
 import { Notification } from '../../types';
 import { planSelector } from '../../reducers/plans';
 import { thoughtSelector } from '../../reducers/thoughts';

@@ -1,4 +1,4 @@
-import { makeStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, makeStyles } from '@material-ui/styles';
 
 const styles = (theme: any): StyleRules => ({
   container: () => ({

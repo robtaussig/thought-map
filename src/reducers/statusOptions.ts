@@ -1,24 +1,19 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
 import { RootState } from './';
-import {
-  setCustomObjects,
-  insert,
-  remove,
-} from './customObjects';
-import { CustomObject, CustomObjectType } from '../store/rxdb/schemas/customObject';
+import { insert, remove, setCustomObjects } from './customObjects';
+import { CustomObjectType } from '../store/rxdb/schemas/customObject';
 
-export const statusOptionsSelector: Selector<RootState, string[]> = state => state.statusOptions;
+export const statusOptionsSelector: Selector<RootState, string[]> = (state) =>
+  state.statusOptions;
 
-const initialState: string[] = ['new', 'in progress', 'won\'t fix', 'completed'];
+const initialState: string[] = ['new', 'in progress', "won't fix", 'completed'];
 
 const statusOptions = createSlice({
   name: 'statusOptions',
   initialState,
-  reducers: {
-
-  },
-  extraReducers: builder => {
+  reducers: {},
+  extraReducers: (builder) => {
     builder.addCase(setCustomObjects, (state, action) => {
       return state.concat(
         action.payload
@@ -35,14 +30,10 @@ const statusOptions = createSlice({
     });
     builder.addCase(remove, (state, action) => {
       if (action.payload.type === CustomObjectType.Status) {
-        return state.filter(prev => prev !== action.payload.value);
+        return state.filter((prev) => prev !== action.payload.value);
       }
     });
   },
 });
-
-export const {
-
-} = statusOptions.actions;
 
 export default statusOptions.reducer;

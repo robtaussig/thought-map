@@ -1,4 +1,4 @@
-import React, { FC, useState, Fragment, useCallback, useRef } from 'react';
+import React, { FC, Fragment, useCallback, useRef, useState } from 'react';
 import Close from '@material-ui/icons/Close';
 import CircleButton from '../../../../components/General/CircleButton';
 import classNames from 'classnames';

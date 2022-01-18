@@ -1,4 +1,4 @@
-import React, { FC, ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, FC } from 'react';
 import Tooltip from './Tooltip';
 
 interface TextAreaProps {

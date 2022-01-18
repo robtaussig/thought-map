@@ -1,4 +1,4 @@
-import React, { FC, FormEventHandler, useState, useRef, useEffect } from 'react';
+import React, { FC, FormEventHandler, useEffect, useRef, useState } from 'react';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import UnfoldMore from '@material-ui/icons/UnfoldMore';
@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import Input from '../../General/Input';
 import { useDispatch } from 'react-redux';
 import Search from '@material-ui/icons/Search';
-import { sortBy, SortFilterField, SortFilterSettings } from '../../../reducers/sortFilterSettings';
+import { SortFilterField, SortFilterSettings, sortBy } from '../../../reducers/sortFilterSettings';
 
 interface FilterAndSearchProps {
   classes: any;

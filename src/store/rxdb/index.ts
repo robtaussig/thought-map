@@ -1,5 +1,5 @@
 import schemas from './schemas';
-import { RxDatabase, RxCollectionCreator, getRxStoragePouch } from 'rxdb';
+import { RxCollectionCreator, RxDatabase, getRxStoragePouch } from 'rxdb';
 import { addPouchPlugin } from 'rxdb/plugins/pouchdb';
 addPouchPlugin(require('pouchdb-adapter-idb'));
 

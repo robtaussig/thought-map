@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import Select from '../../../General/Select';
 import { ReviewPeriods } from '../types';
 import Review from './review';

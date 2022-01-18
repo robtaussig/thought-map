@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useState, useCallback, useMemo, Fragment, FC, useRef, useEffect } from 'react';
+import React, { FC, Fragment, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Close from '@material-ui/icons/Close';
 import classNames from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 import {
-  OpenModal,
   CloseModal,
   ExpandModal,
   ModalContextValue,
   ModalState,
+  OpenModal,
 } from './types';
 import { useStyles } from './styles';
 

@@ -1,12 +1,12 @@
 import {
-  Thought as ThoughtType,
-  Plan as PlanType,
-  Note as NoteType,
-  Tag as TagType,
   Connection as ConnectionType,
-  Template as TemplateType,
+  Note as NoteType,
   Picture as PictureType,
-  Status as StatusType
+  Plan as PlanType,
+  Status as StatusType,
+  Tag as TagType,
+  Template as TemplateType,
+  Thought as ThoughtType
 } from './store/rxdb/schemas/types';
 
 export interface Classes {

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import Map from '../../General/Map';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { format } from 'date-fns';

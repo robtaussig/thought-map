@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState, useMemo } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../hooks/useDB';
 import useModal from '../../hooks/useModal';
@@ -15,18 +15,18 @@ import Check from '@material-ui/icons/Check';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import Delete from '@material-ui/icons/Delete';
-import { useIdFromUrl, useHomeUrl, openConfirmation, getSearchParam } from '../../lib/util';
-import { useSelector, useDispatch } from 'react-redux';
+import { getSearchParam, openConfirmation, useHomeUrl, useIdFromUrl } from '../../lib/util';
+import { useDispatch, useSelector } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
-import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
+import { ButtonPositions, emphasizeButton, tutorialSelector } from '../../reducers/tutorial';
 import { settingSelector } from '../../reducers/settings';
 import { backupSelector } from '../../reducers/backups';
 import { mergeResultsSelector } from '../../reducers/mergeResults';
-import { thoughts as thoughtActions, backups as backupActions } from '../../actions';
+import { backups as backupActions, thoughts as thoughtActions } from '../../actions';
 import { jsonDump } from '../Settings/components/Data';
 import { CHUNK_LENGTH } from '../Settings/components/SetupBackup/constants';
 import { chunkData } from '../Settings/components/SetupBackup/util';
-import { updateChunk, getVersion } from '../Settings/components/SetupBackup/api';
+import { getVersion, updateChunk } from '../Settings/components/SetupBackup/api';
 import { useBackupIdFromHistory } from '../Merge/util';
 
 interface RightButtonProps {

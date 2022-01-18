@@ -1,4 +1,4 @@
-import React, { useRef, FC, EventHandler, MutableRefObject, memo, useMemo } from 'react';
+import React, { FC, MutableRefObject, memo, useMemo } from 'react';
 import ThoughtNode from './ThoughtNode';
 import { Plan } from '~store/rxdb/schemas/plan';
 import { Thought } from '~store/rxdb/schemas/thought';

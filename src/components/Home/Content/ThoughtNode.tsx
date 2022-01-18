@@ -1,8 +1,8 @@
-import React, { useCallback, FC, useRef, useEffect, useState, useMemo, MutableRefObject } from 'react';
+import React, { FC, MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
-import { statuses as statusActions, thoughts as thoughtActions, connections as connectionsActions, } from '../../../actions';
+import { connections as connectionsActions, statuses as statusActions, thoughts as thoughtActions, } from '../../../actions';
 import { useHomeUrl } from '../../../lib/util';
 import { Thought } from 'store/rxdb/schemas/thought';
 import useLongPress from '../../../hooks/useLongPress';

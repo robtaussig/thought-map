@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { PaletteShades, PaletteOptions } from '../../../../reducers/customTheme';
+import { PaletteOptions, PaletteShades } from '../../../../reducers/customTheme';
 import classNames from 'classnames';
 import Help from '@material-ui/icons/Help';
 import Palette from '@material-ui/icons/Palette';

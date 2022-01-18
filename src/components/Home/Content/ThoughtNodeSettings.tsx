@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useMemo } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import React, { FC, useMemo } from 'react';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';

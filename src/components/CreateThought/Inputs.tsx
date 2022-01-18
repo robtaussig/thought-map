@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, FC } from 'react';
+import React, { FC, Fragment, useEffect } from 'react';
 import Input from '../General/Input';
 import Select from '../General/Select';
 import { CreatedThought } from './';

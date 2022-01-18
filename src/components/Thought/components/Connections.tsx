@@ -1,5 +1,5 @@
-import React, { useEffect, useState, FC } from 'react';
-import { withStyles, StyleRules } from '@material-ui/core/styles';
+import React, { FC, useEffect, useState } from 'react';
+import { StyleRules, withStyles } from '@material-ui/core/styles';
 import Connection from './Connection';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { ModifiedConnection } from './CreateConnectionsFromThought';

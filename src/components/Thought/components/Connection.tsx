@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { FC, useState } from 'react';
 import { connections as connectionActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { useNavigate } from 'react-router-dom';

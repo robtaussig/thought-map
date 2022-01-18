@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import Range from '../../General/Range';
 import { useLoadedDB } from '../../../hooks/useDB';

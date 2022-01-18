@@ -1,4 +1,4 @@
-import { Searchable, Notes, Tags } from '../';
+import { Notes, Searchable, Tags } from '../';
 import { Thought } from '../../../../store/rxdb/schemas/thought';
 import { Note } from '../../../../store/rxdb/schemas/note';
 import { Tag } from '../../../../store/rxdb/schemas/tag';

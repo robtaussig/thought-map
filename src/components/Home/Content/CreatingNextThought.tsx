@@ -1,5 +1,5 @@
 import React, { CSSProperties, FC, useEffect, useRef, useState } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import cn from 'classnames';
 import Check from '@material-ui/icons/Check';
 

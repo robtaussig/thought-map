@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, FC, Fragment } from 'react';
+import React, { FC, Fragment, useEffect, useRef } from 'react';
 import Tooltip from '../Tooltip';
 import useAutoSuggest from 'react-use-autosuggest';
 import AutoSuggestPortal from './auto-suggest-portal';

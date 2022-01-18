@@ -1,5 +1,5 @@
 import { Graph, Vertex } from './graph';
-import { Visited, Node } from './types';
+import { Node, Visited } from './types';
 
 export const getDepth = (vertex: Vertex, visited: Visited, depth = 0): number => {
   visited[vertex.id] = true;

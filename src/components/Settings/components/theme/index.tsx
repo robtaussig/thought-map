@@ -1,5 +1,5 @@
-import React, { FC, useState, Fragment, useCallback, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { FC, Fragment, useCallback, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Close from '@material-ui/icons/Close';
 import Refresh from '@material-ui/icons/Refresh';
 import Check from '@material-ui/icons/Check';

@@ -1,24 +1,19 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
 import { RootState } from './';
-import {
-  setCustomObjects,
-  insert,
-  remove,
-} from './customObjects';
+import { insert, remove, setCustomObjects } from './customObjects';
 import { CustomObjectType } from '../store/rxdb/schemas/customObject';
 
-export const tagOptionsSelector: Selector<RootState, string[]> = state => state.tagOptions;
+export const tagOptionsSelector: Selector<RootState, string[]> = (state) =>
+  state.tagOptions;
 
 const initialState: string[] = ['Important', 'Misc', 'Later'];
 
 const tagOptions = createSlice({
   name: 'tagOptions',
   initialState,
-  reducers: {
-
-  },
-  extraReducers: builder => {
+  reducers: {},
+  extraReducers: (builder) => {
     builder.addCase(setCustomObjects, (state, action) => {
       return state.concat(
         action.payload
@@ -35,14 +30,10 @@ const tagOptions = createSlice({
     });
     builder.addCase(remove, (state, action) => {
       if (action.payload.type === CustomObjectType.Tag) {
-        return state.filter(prev => prev !== action.payload.value);
+        return state.filter((prev) => prev !== action.payload.value);
       }
     });
   },
 });
-
-export const {
-
-} = tagOptions.actions;
 
 export default tagOptions.reducer;

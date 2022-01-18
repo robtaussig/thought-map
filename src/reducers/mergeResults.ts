@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
-import { MergeResults, Item, Comparable, Removable } from '../components/Merge/types';
+import { Item, MergeResults } from '../components/Merge/types';
 import { RootState } from './';
 
 export const mergeResultsSelector: Selector<RootState, MergeResults> = state => state.mergeResults;

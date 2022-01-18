@@ -1,4 +1,4 @@
-import { RxJsonSchema, RxCollectionCreator } from 'rxdb';
+import { RxCollectionCreator, RxJsonSchema } from 'rxdb';
 import thought from './thought';
 import note from './note';
 import tag from './tag';

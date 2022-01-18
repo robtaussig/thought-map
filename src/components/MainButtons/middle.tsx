@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import { stageSelector } from '../../reducers/stage';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { toggle } from '../../reducers/displayPriorities';
@@ -14,7 +14,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
 import Queue from '@material-ui/icons/Queue';
 import { useIdFromUrl } from '../../lib/util';
-import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
+import { ButtonPositions, emphasizeButton, tutorialSelector } from '../../reducers/tutorial';
 import { format } from 'date-fns';
 
 interface MiddleButtonProps {

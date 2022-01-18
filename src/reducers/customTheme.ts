@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
 import { RootState } from './';
 import { setSettings } from './settings';
@@ -30,7 +30,7 @@ const primaryColor = {
   700: '#66772F',
   800: '#44503E',
   900: '#222810',
-  'A400': '#BADA55',
+  A400: '#BADA55',
 };
 
 /* Blue */
@@ -45,7 +45,7 @@ const secondaryColor = {
   700: '#19488C',
   800: '#11305D',
   900: '#09182F',
-  'A400': '#2978E8',
+  A400: '#2978E8',
 };
 
 const grays = {
@@ -59,7 +59,7 @@ const grays = {
   700: '#272727',
   800: '#161616',
   900: '#0D0D0D',
-  'A400': '#2f2f2f',
+  A400: '#2f2f2f',
 };
 
 const reds = {
@@ -73,10 +73,11 @@ const reds = {
   700: '#5A0600',
   800: '#360400',
   900: '#240300',
-  'A400': '#A10B00',
+  A400: '#A10B00',
 };
 
-export const customThemeSelector: Selector<RootState, CustomTheme> = state => state.customTheme;
+export const customThemeSelector: Selector<RootState, CustomTheme> = (state) =>
+  state.customTheme;
 export enum PaletteOptions {
   Primary = 'primary',
   Secondary = 'secondary',
@@ -84,7 +85,18 @@ export enum PaletteOptions {
   Negative = 'negative',
 }
 
-export type Shades = 0 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 'A400';
+export type Shades =
+  | 0
+  | 100
+  | 200
+  | 300
+  | 400
+  | 500
+  | 600
+  | 700
+  | 800
+  | 900
+  | 'A400';
 export type PaletteShades = Record<Shades, string>;
 export type Palette = Record<PaletteOptions, PaletteShades>;
 
@@ -114,30 +126,36 @@ const defaultState = {
   },
 };
 
-const initialState: CustomTheme = savedCustomTheme ? JSON.parse(savedCustomTheme) : defaultState;
+const initialState: CustomTheme = savedCustomTheme
+  ? JSON.parse(savedCustomTheme)
+  : defaultState;
 
 const customTheme = createSlice({
   name: 'customTheme',
   initialState,
   reducers: {
-    updatePalette: (state, action: PayloadAction<[PaletteOptions, PaletteShades]>) => {
+    updatePalette: (
+      state,
+      action: PayloadAction<[PaletteOptions, PaletteShades]>
+    ) => {
       const [colorType, value] = action.payload;
       state.palette[colorType] = value;
     },
     resetDefault: (state) => defaultState,
     toggleDarkMode: (state, action: PayloadAction<boolean>) => {
-      state.useDarkMode = action.payload === undefined ?
-        !state.useDarkMode :
-        action.payload;
+      state.useDarkMode =
+        action.payload === undefined ? !state.useDarkMode : action.payload;
 
       const previous = { ...state.palette.background };
-      SHADE_OPTIONS.slice(0, SHADE_OPTIONS.length - 1).forEach(([shade], idx) => {
-        const opposite = SHADE_OPTIONS[SHADE_OPTIONS.length - 2 - idx][0];
-        state.palette.background[shade] = previous[opposite];
-      });
-    }
+      SHADE_OPTIONS.slice(0, SHADE_OPTIONS.length - 1).forEach(
+        ([shade], idx) => {
+          const opposite = SHADE_OPTIONS[SHADE_OPTIONS.length - 2 - idx][0];
+          state.palette.background[shade] = previous[opposite];
+        }
+      );
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(setSettings, (state, action: any) => {
       if (action.payload.customTheme) {
         return action.payload.customTheme;
@@ -146,10 +164,7 @@ const customTheme = createSlice({
   },
 });
 
-export const {
-  updatePalette,
-  resetDefault,
-  toggleDarkMode,
-} = customTheme.actions;
+export const { updatePalette, resetDefault, toggleDarkMode } =
+  customTheme.actions;
 
 export default customTheme.reducer;

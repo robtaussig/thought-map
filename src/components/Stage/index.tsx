@@ -1,9 +1,9 @@
-import React, { FC, useMemo, useState, useEffect } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { withStyles } from '@material-ui/styles';
 import StagingItems from './components/staging-items';
 import NavBar from '../Settings/components/nav-bar';
-import { useSelector, useDispatch } from 'react-redux';
-import { stageSelector, refresh } from '../../reducers/stage';
+import { useDispatch, useSelector } from 'react-redux';
+import { refresh, stageSelector } from '../../reducers/stage';
 import { styles } from './style';
 
 interface StageProps {

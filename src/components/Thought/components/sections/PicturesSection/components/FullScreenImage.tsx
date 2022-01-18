@@ -1,5 +1,5 @@
 import './full-screen-image.scss';
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 
 interface FullScreenImageProps {
   onClose: () => void;

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, FC, ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, FC, useMemo, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles'; 
 import CircleButton from '../../General/CircleButton';
 import Input from '../../General/Input';

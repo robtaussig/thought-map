@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import ConnectionsModal from '../../Thought/components/sections/ConnectionsSection/components/ConnectionsModal';
 import StatusesModal from './StatusesModal';
 import VisibilityModal from './VisibilityModal';

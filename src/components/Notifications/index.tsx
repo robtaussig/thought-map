@@ -1,4 +1,4 @@
-import React, { useEffect, FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import ReactNotification, { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 

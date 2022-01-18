@@ -3,10 +3,10 @@ import { Status } from '../../../../store/rxdb/schemas/Status';
 import { Thought } from '../../../../store/rxdb/schemas/Thought';
 import {
   ReviewPeriods,
-  Stats,
   Snapshot,
-  StatusesByThought,
+  Stats,
   Statuses,
+  StatusesByThought,
 } from '../types';
 import { differenceInCalendarDays } from 'date-fns';
 import ReviewStat from './review-stat';

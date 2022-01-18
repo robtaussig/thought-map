@@ -1,4 +1,4 @@
-import React, { FC, ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import useModal from '../../hooks/useModal';
 import Template from './components/template';

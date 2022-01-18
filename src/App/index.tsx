@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Notification as NotificationType } from '../types';
 import { backupSelector } from '../reducers/backups';
 import { ModalContextValue } from '../hooks/useModal/types';
@@ -6,7 +6,7 @@ import { ModalProvider } from '../hooks/useModal';
 import { statusOptionsSelector } from '../reducers/statusOptions';
 import { useAppStyles } from './style';
 import { subscribeToChanges } from '../store/updates';
-import { Routes, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { tagOptionsSelector } from '../reducers/tagOptions';
 import { typeOptionsSelector } from '../reducers/typeOptions';
 import { useDB } from '../hooks/useDB';

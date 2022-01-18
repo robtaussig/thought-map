@@ -1,4 +1,4 @@
-import React, { useRef, FC, ChangeEvent } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import Add from '@material-ui/icons/Add';
 import LongPressCircleButton from './LongPressCircleButton';
 import StaticCircleButton from './StaticCircleButton';

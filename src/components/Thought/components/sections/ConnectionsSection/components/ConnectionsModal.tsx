@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import { ConnectionSummary } from '../../../../';
 import { Plan } from '../../../../../../store/rxdb/schemas/plan';
 import AvailableThoughts from './AvailableThoughts';

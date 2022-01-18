@@ -1,8 +1,8 @@
-import React, { FC, useReducer, useMemo, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useReducer } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Plan } from '../../../store/rxdb/schemas/plan';
 import { Comparable, Item } from '../types';
-import { compareReducer, generateInitialState, ActionTypes, INITIAL_STATE } from './state';
+import { ActionTypes, INITIAL_STATE, compareReducer, generateInitialState } from './state';
 import Fields from './Fields';
 import Side from './Side';
 import Custom from './Custom';

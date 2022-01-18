@@ -1,4 +1,4 @@
-import React, { FC, useState, Fragment, useCallback, useRef } from 'react';
+import React, { FC, Fragment, useCallback, useRef, useState } from 'react';
 import Close from '@material-ui/icons/Close';
 import CircleButton from '../../../../components/General/CircleButton';
 import CheckBox from '../../../../components/General/CheckBox';
@@ -13,13 +13,12 @@ import { backupSelector } from '../../../../reducers/backups';
 import { useStyles } from './style';
 import {
   AUTOSUGGEST_TOOLTIP_TEXT,
-  DISABLE_TIP_TOOLTIP_TEXT,
-  DISABLE_REPORT_BUGS_TOOLTIP_TEXT,
   AUTO_CREATE_CALENDAR_TOOLTIP_TEXT,
-  PUSH_NOTIFICATIONS_TOOLTIP_TEXT,
   DIRECT_PUSH_TOOLTIP_TEXT,
-  LOCATION_TOOLTIP_TEXT,
+  DISABLE_TIP_TOOLTIP_TEXT,
   DISPLAY_ARCHIVED_THOUHGTS_TOOLTIP_TEXT,
+  LOCATION_TOOLTIP_TEXT,
+  PUSH_NOTIFICATIONS_TOOLTIP_TEXT,
 } from './constants';
 import { Side } from './types';
 

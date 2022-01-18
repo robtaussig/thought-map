@@ -1,18 +1,18 @@
 
-import React, { FC, useEffect, useState, useMemo, useRef } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import Build from '@material-ui/icons/Build';
 import CircleButton from '../General/CircleButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
 import useModal from '../../hooks/useModal';
 import PlanSelectActions from '../Home/PlanSelect/components/actions';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useIdFromUrl } from '../../lib/util';
 import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import PlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck';
-import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
+import { ButtonPositions, emphasizeButton, tutorialSelector } from '../../reducers/tutorial';
 
 interface LeftButtonProps {
   classes: any;

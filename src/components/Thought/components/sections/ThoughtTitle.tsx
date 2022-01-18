@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, MouseEventHandler, FormEventHandler, useEffect } from 'react';
+import React, { FC, FormEventHandler, MouseEventHandler, useEffect, useRef, useState } from 'react';
 import Check from '@material-ui/icons/Check';
 import Close from '@material-ui/icons/Close';
 import Input from '../../../General/Input';

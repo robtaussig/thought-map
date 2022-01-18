@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useMemo, FC } from 'react';
+import React, { FC, Fragment, useMemo, useState } from 'react';
 import Timeline from '@material-ui/icons/Timeline';
 import CircleButton from '../../General/CircleButton';
 import Connections from './Connections';

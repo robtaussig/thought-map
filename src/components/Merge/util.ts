@@ -1,13 +1,13 @@
 import {
-  Doc,
-  Dump,
+  Comparable,
   DiffMap,
   DiffPair,
-  Visited,
+  Doc,
+  Dump,
   Item,
-  Comparable,
   MergeResults,
   Removable,
+  Visited,
 } from './types';
 import { Deletion } from '../../store/rxdb/schemas/deletion';
 import { COLLECTIONS_TO_IGNORE } from './CurrentCompare/constants';

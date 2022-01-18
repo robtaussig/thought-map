@@ -1,13 +1,13 @@
-import React, { FC, useState, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useStyles } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  acceptDeletion,
   mergeResultsSelector,
+  rejectDeletion,
   removeItem,
   resolveComparable,
-  acceptDeletion,
-  rejectDeletion,
 } from '../../reducers/mergeResults';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { planSelector } from '../../reducers/plans';

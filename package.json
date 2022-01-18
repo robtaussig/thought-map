@@ -74,6 +74,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "jest": "^27.4.7",
     "parcel": "^2.1.1",
     "parcel-bundler": "^1.12.4",

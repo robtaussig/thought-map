@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import 'ol/ol.css';
 import {Map, View } from 'ol';
 import {defaults as defaultInteractions} from 'ol/interaction';
@@ -11,7 +11,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import {Vector as VectorLayer} from 'ol/layer';
 import VectorSource from 'ol/source/Vector';
-import {Fill, Circle, Stroke, Style} from 'ol/style';
+import {Circle, Fill, Stroke, Style} from 'ol/style';
 
 interface MapComponentProps {
   classes: any,

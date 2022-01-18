@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState, FormEvent } from 'react';
+import React, { FC, FormEvent, useMemo, useState } from 'react';
 import Input from '../../../../General/Input';
 import { customObjects as customObjectActions } from '../../../../../actions';
 import { useLoadedDB } from '../../../../../hooks/useDB';

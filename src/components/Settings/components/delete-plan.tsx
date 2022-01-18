@@ -1,10 +1,10 @@
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import CheckBox from '../../General/CheckBox';
 import Input from '../../General/Input';
 import { openConfirmation } from '../../../lib/util';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
-import { plans as planActions, thoughts as thoughtActions, connections as connectionActions } from '../../../actions';
+import { connections as connectionActions, plans as planActions, thoughts as thoughtActions } from '../../../actions';
 import { Plan } from 'store/rxdb/schemas/plan';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Connection } from 'store/rxdb/schemas/types';

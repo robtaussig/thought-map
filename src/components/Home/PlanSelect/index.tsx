@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef, FC } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import Select from '../../General/Select';
 import { useModal } from '../../../hooks/useModal';
 import { useNavigate } from 'react-router-dom'; 
@@ -7,7 +7,7 @@ import { Thought } from 'store/rxdb/schemas/thought';
 import { Plan } from 'store/rxdb/schemas/plan';
 import { Notification } from '../../../types';
 import PriorityList from '../../Home/PriorityList/';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { displayPrioritiesSelector, toggle } from '../../../reducers/displayPriorities';
 
 interface PlanSelectProps {

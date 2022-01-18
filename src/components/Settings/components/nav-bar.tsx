@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
-import { withStyles, StyleRules } from '@material-ui/core/styles';
+import { StyleRules, withStyles } from '@material-ui/core/styles';
 
 interface NavBarProps {
   classes: any;

@@ -1,5 +1,5 @@
-import React, { FC, useState, Fragment, useCallback, useRef, useMemo } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import React, { FC, Fragment, useCallback, useMemo, useRef, useState } from 'react';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import Close from '@material-ui/icons/Close';
 import CircleButton from '../../../components/General/CircleButton';
 import classNames from 'classnames';

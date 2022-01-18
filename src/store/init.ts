@@ -16,18 +16,18 @@ import { StatusesByThought as StatusesByThoughtType, setStatusesByThought } from
 import { intoMap } from '../lib/util';
 import { RxDatabase } from 'rxdb';
 import {
-  thoughts as thoughtActions,
-  plans as planActions,
+  backups as backupActions,
+  bulkLists as bulkListActions,
   connections as connectionActions,
+  customObjects as customObjectActions,
   notes as noteActions,
-  tags as tagActions,
-  templates as templateActions,
   pictures as pictureActions,
+  plans as planActions,
   settings as settingActions,
   statuses as statusActions,
-  backups as backupActions,
-  customObjects as customObjectActions,
-  bulkLists as bulkListActions,
+  tags as tagActions,
+  templates as templateActions,
+  thoughts as thoughtActions,
 } from '../actions';
 import { Searchable } from '../components/Home/ThoughtSearch';
 import { wrap } from 'comlink';

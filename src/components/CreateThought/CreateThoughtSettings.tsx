@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, FC } from 'react';
-import { withStyles, StyleRules } from '@material-ui/core/styles';
+import React, { FC, useCallback, useMemo } from 'react';
+import { StyleRules, withStyles } from '@material-ui/core/styles';
 import Select from '../General/Select';
 import { Template } from '../../store/rxdb/schemas/template';
 

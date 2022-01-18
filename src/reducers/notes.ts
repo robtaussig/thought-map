@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Note } from '../store/rxdb/schemas/note';
 import { Selector } from 'react-redux';
 import { RootState } from './';

@@ -1,4 +1,4 @@
-import React, { Fragment, FC, useState, useCallback } from 'react';
+import React, { FC, Fragment, useCallback, useState } from 'react';
 import ImageWrapper from './ImageWrapper';
 import FullScreenImage from './FullScreenImage';
 

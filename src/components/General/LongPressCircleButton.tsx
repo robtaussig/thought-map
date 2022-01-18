@@ -1,4 +1,4 @@
-import React, { useRef, FC, ChangeEvent, CSSProperties } from 'react';
+import React, { CSSProperties, ChangeEvent, FC, useRef } from 'react';
 import Add from '@material-ui/icons/Add';
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 import useLongPress from '../../hooks/useLongPress';

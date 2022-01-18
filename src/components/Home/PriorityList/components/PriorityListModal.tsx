@@ -1,4 +1,4 @@
-import React, { useMemo, FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import PriorityList from './PriorityList';
 import { differenceInDays, differenceInHours } from 'date-fns';
 import { Thought } from 'store/rxdb/schemas/thought';

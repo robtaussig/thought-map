@@ -1,12 +1,12 @@
-import React, { useMemo, FC, useState, useRef } from 'react';
+import React, { FC, useMemo, useRef, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Close from '@material-ui/icons/Close';
 import { getTime } from './util';
 import {
-  notes as noteActions,
-  tags as tagActions,
-  statuses as statusActions,
   connections as connectionsActions,
+  notes as noteActions,
+  statuses as statusActions,
+  tags as tagActions,
   thoughts as thoughtActions,
 } from '../../actions';
 import { createWholeThought } from '../../actions/complex';
@@ -34,14 +34,14 @@ import ThoughtTitle from './components/sections/ThoughtTitle';
 import PicturesSection from './components/sections/PicturesSection';
 import RecurringSection from './components/sections/RecurringSection';
 import CircleButton from '../General/CircleButton';
-import { SectionState, ComponentMap, SectionVisibility } from './types';
+import { ComponentMap, SectionState, SectionVisibility } from './types';
 import { generateNextSectionsAfterMove, generateNextSectionsAfterToggleVisibility } from './util';
-import useGoogleCalendar, { GoogleCalendarEvent, Actions } from '../../hooks/useGoogleCalendar';
+import useGoogleCalendar, { Actions, GoogleCalendarEvent } from '../../hooks/useGoogleCalendar';
 import {
   generateDescriptionFromThought,
-  generateStartFromThought,
   generateEndFromThought,
   generateRemindersFromThought,
+  generateStartFromThought,
 } from '../ThoughtSettings/components/Calendar/lib/util';
 
 const DASH_REGEX = /-/g;

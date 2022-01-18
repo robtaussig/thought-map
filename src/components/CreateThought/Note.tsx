@@ -1,4 +1,4 @@
-import React, { Fragment, FC, ChangeEvent } from 'react';
+import React, { FC, Fragment } from 'react';
 import Input, { InputChangeHandler } from '../General/Input';
 import Delete from '@material-ui/icons/Delete';
 

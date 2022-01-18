@@ -1,5 +1,5 @@
-import React, { FC, useMemo, useEffect, useRef, CSSProperties } from 'react';
-import { withStyles, StyleRules } from '@material-ui/styles';
+import React, { CSSProperties, FC, useEffect, useMemo, useRef } from 'react';
+import { StyleRules, withStyles } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Connections } from '../../../reducers/connections';
 import NodeComponent from './NodeComponent';

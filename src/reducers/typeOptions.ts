@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Selector } from 'react-redux';
 import { RootState } from './';
-import { setCustomObjects, insert, remove } from './customObjects';
+import { insert, remove, setCustomObjects } from './customObjects';
 import { CustomObjectType } from '../store/rxdb/schemas/customObject';
 
 export const typeOptionsSelector: Selector<RootState, string[]> = (state) =>

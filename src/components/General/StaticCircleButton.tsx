@@ -1,6 +1,5 @@
-import React, { useRef, FC } from 'react';
+import React, { FC, useRef } from 'react';
 import Add from '@material-ui/icons/Add';
-import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied';
 import classNames from 'classnames';
 
 interface StaticCircleButtonProps {

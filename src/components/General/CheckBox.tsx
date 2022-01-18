@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import Tooltip from './Tooltip';
 
 interface CheckBoxProps {

@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../reducers';
 import {
   CustomTheme,
-  customThemeSelector,
-  updatePalette,
   PaletteOptions,
   PaletteShades,
-  toggleDarkMode,
   SHADE_OPTIONS,
+  customThemeSelector,
+  toggleDarkMode,
+  updatePalette,
 } from '../../../../reducers/customTheme';
 import { useCustomizeThemeStyles } from './styles';
 import PaletteColorList from './palette-color-list';

@@ -1,4 +1,4 @@
-import React, { useState, FC, FormEvent } from 'react';
+import React, { FC, FormEvent, useState } from 'react';
 import Header from '../../General/Header';
 import Input, { InputChangeHandler } from '../../General/Input';
 import { templates as templateActions } from '../../../actions';

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, FC } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
 import useModal from '../../../hooks/useModal';
