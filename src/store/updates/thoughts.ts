@@ -1,9 +1,9 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { Thought } from '../../store/rxdb/schemas/thought';
 import { insert, remove, update } from '../../reducers/thoughts';
 import { Notification, RxChangeEvent } from '../../types';
 import { getInstance } from '../../hooks/useThoughtMap';
 import { searcherWorker } from '../init';
+import { AppDispatch } from '~store';
 
 const updateThoughtMap = async (thoughtId: string) => {
     const thoughtMap = await getInstance();
@@ -11,7 +11,7 @@ const updateThoughtMap = async (thoughtId: string) => {
 };
 
 export const handleThoughtChange = (
-    dispatch: Dispatch<any>,
+    dispatch: AppDispatch,
     setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
     if ((window as any).blockDBSubscriptions === true) return;

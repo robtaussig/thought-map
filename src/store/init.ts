@@ -1,4 +1,3 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { Settings as SettingsType, setSettings } from '../reducers/settings';
 import { Thoughts as ThoughtsType, setThoughts } from '../reducers/thoughts';
 import { Connections as ConnectionsType, setConnections } from '../reducers/connections';
@@ -32,12 +31,13 @@ import {
 } from '../actions';
 import { Searchable } from '../components/Home/ThoughtSearch';
 import { wrap } from 'comlink';
+import { AppDispatch } from '~store';
 
 export const searcherWorker = wrap<Searchable>(
     new Worker('../workers/search.worker.ts')
 );
 
-export const initializeApplication = async (db: RxDatabase, dispatch: Dispatch<any>): Promise<BackupsType> => {
+export const initializeApplication = async (db: RxDatabase, dispatch: AppDispatch): Promise<BackupsType> => {
     const setSettingsAction = (settings: SettingsType) => dispatch(setSettings(settings));
     const setThoughtsAction = (thoughts: ThoughtsType) => dispatch(setThoughts(thoughts));
     const setConnectionsAction = (connections: ConnectionsType) => dispatch(setConnections(connections));

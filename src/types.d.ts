@@ -1,4 +1,3 @@
-import { RouteComponentProps } from 'react-router-dom';
 import {
     Thought as ThoughtType,
     Plan as PlanType,
@@ -7,7 +6,6 @@ import {
     Connection as ConnectionType,
     Template as TemplateType,
     Picture as PictureType,
-    Setting as SettingType,
     Status as StatusType
 } from './store/rxdb/schemas/types';
 

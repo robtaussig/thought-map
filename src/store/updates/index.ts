@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { handleThoughtChange } from './thoughts';
 import { handleConnectionChange } from './connections';
 import { handleBackupChange } from './backups';
@@ -15,7 +16,6 @@ import {
     Picture as PictureType,
     Status as StatusType,
 } from '../rxdb/schemas/types';
-import { Dispatch } from '@reduxjs/toolkit';
 import { RxDatabase } from 'rxdb';
 import {
     pictures as pictureActions,
@@ -24,6 +24,7 @@ import {
     thoughts as thoughtActions,
 } from '../../actions';
 import { addHours, format } from 'date-fns';
+import { AppDispatch } from '~store';
 
 const matchStatusLocationIfEnabled = (db: RxDatabase) => async (status: StatusType): Promise<void> => {
     const [useLocation] = await settingActions.findSetting(db, 'field', 'useLocation');
@@ -79,11 +80,11 @@ const matchPictureLocationIfEnabled = (db: RxDatabase) => async (picture: Pictur
 
 export const subscribeToChanges = (
     db: RxDatabase,
-    dispatch: Dispatch<any>,
+    dispatch: AppDispatch,
     setLastNotification: (notification: Notification) => void,
 ): (() => void) => {
     const subscriptions = [
-    //@ts-ignore
+        //@ts-ignore
         db.thought.$.subscribe(handleThoughtChange(dispatch, setLastNotification)),
         //@ts-ignore
         db.connection.$.subscribe(handleConnectionChange(dispatch, setLastNotification)),

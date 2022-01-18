@@ -1,10 +1,10 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { Status } from '../../store/rxdb/schemas/status';
 import { insert, remove, update } from '../../reducers/statuses';
 import { Notification, RxChangeEvent } from '../../types';
+import { AppDispatch } from '~store';
 
 export const handleStatusChange = (
-    dispatch: Dispatch<any>,
+    dispatch: AppDispatch,
     setLastNotification: (notification: Notification) => void,
     matchStatusLocationIfEnabled: (status: Status) => Promise<void>,
     handleRecurringThought: (thoughtId: string) => Promise<void>,

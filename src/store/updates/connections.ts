@@ -1,8 +1,8 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { Connection } from '../../store/rxdb/schemas/connection';
 import { insert, remove, update } from '../../reducers/connections';
 import { Notification, RxChangeEvent } from '../../types';
 import { getInstance } from '../../hooks/useThoughtMap';
+import { AppDispatch } from '~store';
 
 const updateThoughtMap = async (from: string, to: string) => {
     const thoughtMap = await getInstance();
@@ -10,7 +10,7 @@ const updateThoughtMap = async (from: string, to: string) => {
 };
 
 export const handleConnectionChange = (
-    dispatch: Dispatch<any>,
+    dispatch: AppDispatch,
     setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
     if ((window as any).blockDBSubscriptions === true) return;

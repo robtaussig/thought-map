@@ -1,11 +1,11 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { Setting } from '../../store/rxdb/schemas/setting';
 import SettingModel from '../../models/settings';
 import { insert, remove, update } from '../../reducers/settings';
 import { Notification, RxChangeEvent } from '../../types';
+import { AppDispatch } from '~store';
 
 export const handleSettingChange = (
-    dispatch: Dispatch<any>,
+    dispatch: AppDispatch,
     setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, previousDocumentData }: RxChangeEvent) => {
     if ((window as any).blockDBSubscriptions === true) return;

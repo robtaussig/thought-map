@@ -1,11 +1,11 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { Note } from '../../store/rxdb/schemas/note';
 import { insert, remove, update } from '../../reducers/notes';
 import { Notification, RxChangeEvent } from '../../types';
 import { searcherWorker } from '../init';
+import { AppDispatch } from '~store';
 
 export const handleNoteChange = (
-    dispatch: Dispatch<any>,
+    dispatch: AppDispatch,
     setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
     if ((window as any).blockDBSubscriptions === true) return;

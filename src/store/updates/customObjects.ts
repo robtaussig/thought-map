@@ -1,12 +1,12 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { CustomObject } from '../../store/rxdb/schemas/customObject';
 import { insert, remove, update } from '../../reducers/customObjects';
 import { Notification, RxChangeEvent } from '../../types';
+import { AppDispatch } from '~store';
 
 const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
 
 export const handleCustomObjectChange = (
-    dispatch: Dispatch<any>,
+    dispatch: AppDispatch,
     setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, previousDocumentData }: RxChangeEvent) => {
     if ((window as any).blockDBSubscriptions === true) return;

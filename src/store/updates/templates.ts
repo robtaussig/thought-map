@@ -1,10 +1,10 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { Template } from '../../store/rxdb/schemas/template';
 import { insert, remove, update } from '../../reducers/templates';
 import { Notification, RxChangeEvent } from '../../types';
+import { AppDispatch } from '~store';
 
 export const handleTemplateChange = (
-    dispatch: Dispatch<any>,
+    dispatch: AppDispatch,
     setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
     if ((window as any).blockDBSubscriptions === true) return;

@@ -1,10 +1,10 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { Picture } from '../../store/rxdb/schemas/picture';
 import { insert, remove, update } from '../../reducers/pictures';
 import { Notification, RxChangeEvent } from '../../types';
+import { AppDispatch } from '~store';
 
 export const handlePictureChange = (
-    dispatch: Dispatch<any>,
+    dispatch: AppDispatch,
     setLastNotification: (notification: Notification) => void,
     matchPictureLocationIfEnabled: (picture: Picture) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
