@@ -20,8 +20,8 @@ const connections = createSlice({
     insert(state, action: PayloadAction<Connection>) {
       state[action.payload.id] = action.payload;
     },
-    remove(state, action: PayloadAction<Connection>) {
-      delete state[action.payload.id];
+    remove(state, action: PayloadAction<string>) {
+      delete state[action.payload];
     },
     update(state, action: PayloadAction<Connection>) {
       state[action.payload.id] = action.payload;

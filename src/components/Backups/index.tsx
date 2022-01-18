@@ -18,14 +18,14 @@ import Add from '@material-ui/icons/Add';
 import BackupItem from './Backup';
 import ViewPrivateKey from './ViewPrivateKey';
 import SetupBackup from '../Settings/components/SetupBackup';
-import useApp from '../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import useCrypto from '../../hooks/useCrypto';
 import useModal from '../../hooks/useModal';
 
 export const Backups: FC = () => {
   const { db } = useLoadedDB();
   const dispatch = useDispatch();
-  const { history } = useApp();
+  const navigate = useNavigate();
   const classes = useStyles({});
   const [openModal, closeModal] = useModal();
   const { encrypt, decrypt } = useCrypto();
@@ -82,12 +82,12 @@ export const Backups: FC = () => {
         const decoded = decodeURIComponent(decrypted).slice('data:application/json;charset=utf-8,'.length);
         const parsed = JSON.parse(decoded);
         //Hack after upgrading rxdb
-        const dump: unknown = await db.dump();
+        const dump: unknown = await db.exportJSON(true);
         const mergeResults = merge(dump as Dump, parsed);
 
         dispatch(setMergeResults(mergeResults));
 
-        history.push(`/merge/${backupId}?v=${response.version}`);
+        navigate(`/merge/${backupId}?v=${response.version}`);
       }
     } catch(e) {
       setUpdating(prev => ({

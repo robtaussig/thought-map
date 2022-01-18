@@ -7,8 +7,8 @@ import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayTh
 import useModal from '../../hooks/useModal';
 import PlanSelectActions from '../Home/PlanSelect/components/actions';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import useApp from '../../hooks/useApp';
-import { getIdFromUrl } from '../../lib/util';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useIdFromUrl } from '../../lib/util';
 import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import PlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck';
@@ -49,11 +49,13 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const tutorial = useSelector(tutorialSelector);
   const [hideButton, setHideButton] = useState<boolean>(false);
-  const { history } = useApp();
+  const navigate = useNavigate();
+  const planId = useIdFromUrl('plan');
+  const location = useLocation();
 
   useEffect(() => {
-    setHideButton(/(stage|history|connections|timeline)$/.test(history.location.pathname));
-  }, [history.location.pathname])
+    setHideButton(/(stage|history|connections|timeline)$/.test(location.pathname));
+  }, [location.pathname])
 
   const [
     Icon,
@@ -64,12 +66,11 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
     LongPressIcon,
   ]: [any, string, () => void, () => void, boolean?, any?] = useMemo(() => {
     const handleClickEditPlan = () => {
-      const planId = getIdFromUrl(history, 'plan');
-      history.push(planId ? `/plan/${planId}/settings?type=plan` : `/settings`);
+      navigate(planId ? `/plan/${planId}/settings?type=plan` : `/settings`);
     };
 
     const handleLongPress = () => {
-      const planId = getIdFromUrl(history, 'plan');
+      const planId = useIdFromUrl('plan');
       openModal(
         <PlanSelectActions
           planId={planId}
@@ -79,22 +80,21 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
     };
 
     const handleGoBack = () => {
-      const planId = getIdFromUrl(history, 'plan');
-      history.push(planId ? `/plan/${planId}` : `/`);
+      navigate(planId ? `/plan/${planId}` : `/`);
     };
 
     const handleClickSettings = () => {
       dispatch(toggle());
     };
 
-    if (/settings|backups|merge|privacy/.test(history.location.pathname)) {
+    if (/settings|backups|merge|privacy/.test(location.pathname)) {
       return [Home, 'Return Home', handleGoBack, null];
-    } else if (/thought/.test(history.location.pathname)) {
+    } else if (/thought/.test(location.pathname)) {
       return [Settings, 'Settings', handleClickSettings, null, true];
     } else {
       return [Build, 'Edit Plan', handleClickEditPlan, handleLongPress, null, PlaylistAddCheck];
     }
-  }, [history.location.pathname]);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (displayThoughtSettings) {

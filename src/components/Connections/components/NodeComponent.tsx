@@ -1,7 +1,7 @@
 import React, { FC, CSSProperties } from 'react';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
-import useApp from '../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import useLongPress from '../../../hooks/useLongPress';
 import ConnectionsQuickOptions from './ConnectionsQuickOptions';
 import useModal from '../../../hooks/useModal';
@@ -26,7 +26,7 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   isOrigin,
   statusOptions,
 }) => {
-  const { history } = useApp();
+  const navigate = useNavigate();
   const [openModal, closeModal] = useModal();
   const onLongPress = () => {
     openModal(
@@ -66,7 +66,7 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   }
 
   const handleClick = () => {
-    history.push(`${homeUrl(history)}thought/${thought.id}`);
+    navigate(`${homeUrl()}thought/${thought.id}`);
   };
 
   return (

@@ -11,7 +11,7 @@ import {
 } from '../../actions';
 import { createWholeThought } from '../../actions/complex';
 import { useLoadedDB } from '../../hooks/useDB';
-import useApp from '../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import { homeUrl } from '../../lib/util';
 import { thoughtInformationStyles } from './styles';
 import { PriorityOption } from './'
@@ -95,7 +95,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
   const lastSectionVisibility = useRef<SectionVisibility>(null);
   lastSectionVisibility.current = sectionVisibility;
   const { db } = useLoadedDB();
-  const { history } = useApp();
+  const navigate = useNavigate();
   const [editingSection, setEditingSection] = useState<string>(null);
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
     if (statuses && statuses.length > 0) {
@@ -202,7 +202,7 @@ export const ThoughtInformation: FC<ThoughtInformationProps> = React.memo(({
       to: createdThought.thought.id,
     });
     
-    history.push(`${homeUrl(history)}thought/${createdThought.thought.id}`);
+    navigate(`${homeUrl()}thought/${createdThought.thought.id}`);
   };
 
   const remainingTagOptions = tagOptions.filter(value => !tags.find(({ text }) => text === value));

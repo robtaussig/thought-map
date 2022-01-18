@@ -1,4 +1,3 @@
-import { History } from 'history';
 import { RouteComponentProps } from 'react-router-dom';
 import {
   Thought as ThoughtType,
@@ -16,27 +15,21 @@ export interface Classes {
   [className: string]: string;
 }
 
-export interface AppProps extends RouteComponentProps {
-  history: History;
-}
-
 export interface Notification {
   message: string;
 }
 
 export enum Operation {
   INSERT = 'INSERT',
-  REMOVE = 'REMOVE',
+  DELETE = 'DELETE',
   UPDATE = 'UPDATE',
 }
 
-export interface RxChangeEventData {
-  v: any;
-  op: Operation;
-}
-
 export interface RxChangeEvent {
-  data: RxChangeEventData;
+  documentData: any;
+  previousDocumentData: any;
+  operation: Operation;
+  documentId: string;
 }
 
 export type ConnectionState = {

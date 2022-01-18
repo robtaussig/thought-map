@@ -14,10 +14,10 @@ export default ['tag', {
   "version": 0,
   "description": "A Tag",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "thoughtId": {
       "ref": "thought",
@@ -40,4 +40,4 @@ export default ['tag', {
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema<Tag>];

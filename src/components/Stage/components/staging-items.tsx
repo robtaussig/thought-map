@@ -22,7 +22,8 @@ export const StagingItems: FC<StagingItemsProps> = ({ classes, isStaging, items 
       });
   }, [thoughts, items]);
 
-  const transitions = useTransition(stagedThoughts, item => `${item.id}-staged-item`, {
+  const transitions = useTransition(stagedThoughts, {
+    keys: item => `${item.id}-staged-item`,
     unique: true,
     trail: 2,
     from: { opacity: 0, transform: 'scale(0)' },
@@ -32,11 +33,9 @@ export const StagingItems: FC<StagingItemsProps> = ({ classes, isStaging, items 
 
   return (
     <div className={classes.stagingItems}>
-      {transitions
-        .map(({ item, props, key }) => {
+      {transitions((props, item) => {
           return (
             <StagedItem
-              key={key}
               classes={classes}
               isStaging={isStaging}
               item={item}

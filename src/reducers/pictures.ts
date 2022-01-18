@@ -20,8 +20,8 @@ const pictures = createSlice({
     insert(state, action: PayloadAction<Picture>) {
       state[action.payload.id] = action.payload;
     },
-    remove(state, action: PayloadAction<Picture>) {
-      delete state[action.payload.id];
+    remove(state, action: PayloadAction<string>) {
+      delete state[action.payload];
     },
     update(state, action: PayloadAction<Picture>) {
       state[action.payload.id] = action.payload;

@@ -18,8 +18,8 @@ const plans = createSlice({
     insert(state, action: PayloadAction<Plan>) {
       return state.concat(action.payload);
     },
-    remove(state, action: PayloadAction<Plan>) {
-      return state.filter(plan => plan.id !== action.payload.id);
+    remove(state, action: PayloadAction<string>) {
+      return state.filter(plan => plan.id !== action.payload);
     },
     update(state, action: PayloadAction<Plan>) {
       return state.map(plan => plan.id == action.payload.id ? action.payload : plan);

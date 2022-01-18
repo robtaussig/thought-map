@@ -1,5 +1,5 @@
 import './App.scss';
-import { createMuiTheme, responsiveFontSizes, Theme, makeStyles } from '@material-ui/core/styles';
+import { createTheme, responsiveFontSizes, Theme, makeStyles } from '@material-ui/core/styles';
 
 const CAST_SHADOW_HEAVY = {
   boxShadow: '0px 0px 20px -3px black',
@@ -10,7 +10,7 @@ const CAST_SHADOW_LIGHT = {
 };
 
 export const theme = responsiveFontSizes(
-  createMuiTheme({
+  createTheme({
     status: {
       danger: 'orange',
     },

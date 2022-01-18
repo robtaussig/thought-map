@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect, createContext, useContext, Provider } from 'react';
 import { DB_SETTINGS, initializeCollections } from '../store/rxdb';
-import RxDB, { RxDatabase } from 'rxdb';
-RxDB.plugin(require('pouchdb-adapter-idb'));
+import { RxDatabase, createRxDatabase } from 'rxdb';
 
 export interface DBContext {
   db: RxDatabase;
@@ -15,7 +14,7 @@ export const useDB = (): [Provider<DBContext>, DBContext, boolean] => {
 
   useEffect(() => {
     dbContext.current.initialize = async () => {
-      const db = await RxDB.create(DB_SETTINGS);
+      const db = await createRxDatabase(DB_SETTINGS);
       await initializeCollections(db);
 
       dbContext.current.db = db;

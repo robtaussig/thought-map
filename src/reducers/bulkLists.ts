@@ -18,8 +18,8 @@ const bulkLists = createSlice({
     insert(state, action: PayloadAction<BulkList>) {
       return state.concat(action.payload);
     },
-    remove(state, action: PayloadAction<BulkList>) {
-      return state.filter(bulkList => bulkList.id !== action.payload.id);
+    remove(state, action: PayloadAction<string>) {
+      return state.filter(bulkList => bulkList.id !== action.payload);
     },
     update(state, action: PayloadAction<BulkList>) {
       return state.map(bulkList => bulkList.id == action.payload.id ? action.payload : bulkList);

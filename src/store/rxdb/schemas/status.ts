@@ -14,10 +14,10 @@ export default ['status', {
   "version": 1,
   "description": "A Status",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "thoughtId": {
       "ref": "thought",
@@ -43,7 +43,7 @@ export default ['status', {
   "attachments": {
 
   }
-} as RxJsonSchema, {
+} as RxJsonSchema<Status>, {
   "migrationStrategies": {
     1: (oldStatus: RxDocument<Status>) => {
       return oldStatus;

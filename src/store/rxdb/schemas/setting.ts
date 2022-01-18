@@ -13,10 +13,10 @@ export default ['setting', {
   "version": 0,
   "description": "A Setting",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "field": {
       "type": "string",
@@ -35,4 +35,4 @@ export default ['setting', {
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema<Setting>];

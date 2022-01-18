@@ -100,7 +100,7 @@ export const subscribeToChanges = (
     // @ts-ignore
     db.setting.$.subscribe(handleSettingChange(dispatch, setLastNotification)),
     // @ts-ignore
-    db.backup.$.subscribe(handleBackupChange(dispatch, setLastNotification)),
+    db.doc_backup.$.subscribe(handleBackupChange(dispatch, setLastNotification)),
     // @ts-ignore
     db.custom_object.$.subscribe(handleCustomObjectChange(dispatch, setLastNotification)),
     // @ts-ignore

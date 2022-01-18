@@ -6,19 +6,19 @@ import { Notification, RxChangeEvent } from '../../types';
 export const handleTemplateChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ data }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
-  const template: Template = data.v;
+  const template: Template = documentData;
   let notification;
 
-  switch (data.op) {
+  switch (operation) {
     case 'INSERT':
       dispatch(insert(template));
       notification = { message: 'Template created' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(template));
+    case 'DELETE':
+      dispatch(remove(documentId));
       notification = { message: 'Template removed' };
       break;
 

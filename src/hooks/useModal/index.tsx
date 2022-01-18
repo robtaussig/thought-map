@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useCallback, useMemo, Fragm
 import Modal from '@material-ui/core/Modal';
 import Close from '@material-ui/icons/Close';
 import classNames from 'classnames';
-import uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import {
   OpenModal,
   CloseModal,

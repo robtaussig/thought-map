@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useMemo } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import useApp from '../../hooks/useApp';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../hooks/useDB';
 import useModal from '../../hooks/useModal';
 import useCrypto from '../../hooks/useCrypto';
@@ -15,7 +15,7 @@ import Check from '@material-ui/icons/Check';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import Delete from '@material-ui/icons/Delete';
-import { getIdFromUrl, homeUrl, openConfirmation, getSearchParam } from '../../lib/util';
+import { useIdFromUrl, homeUrl, openConfirmation, getSearchParam } from '../../lib/util';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
 import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
@@ -73,7 +73,9 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const [hideButton, setHideButton] = useState<boolean>(false);
   const [updating, setUpdating] = useState<boolean>(false);
   const [updated, setUpdated] = useState<boolean>(false);
-  const { history } = useApp();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const thoughtId = useIdFromUrl('thought');
   const { db } = useLoadedDB();
   const { encrypt } = useCrypto();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
@@ -83,10 +85,12 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const { comparables } = useSelector(mergeResultsSelector);
 
   useEffect(() => {
-    setHideButton(/(stage|settings|backups|process-merge|privacy)/.test(history.location.pathname));
+    setHideButton(/(stage|settings|backups|process-merge|privacy)/.test(location.pathname));
 
-    return () => dispatch(toggle(false));
-  }, [history.location.pathname])
+    return () => {
+      dispatch(toggle(false));
+    };
+  }, [location.pathname])
 
   const [
     Icon,
@@ -115,25 +119,22 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     }
 
     const handleClickViewConnections = () => {
-      const thoughtId = getIdFromUrl(history, 'thought');
-      history.push(`${homeUrl(history)}thought/${thoughtId}/connections`);
+      navigate(`${homeUrl()}thought/${thoughtId}/connections`);
     };
 
     const handleClickViewHistory = () => {
-      const thoughtId = getIdFromUrl(history, 'thought');
-      history.push(`${homeUrl(history)}thought/${thoughtId}/history`);
+      navigate(`${homeUrl()}thought/${thoughtId}/history`);
     };
 
     const handleBack = () => {
-      history.goBack();
+      navigate(-1);
     };
 
     const handleDeleteThought = () => {
-      const thoughtId = getIdFromUrl(history, 'thought');
       if (typeof thoughtId === 'string') {
         const onConfirm = async () => {
           await thoughtActions.deleteThought(db, thoughtId);
-          history.push(homeUrl(history));
+          navigate(homeUrl());
         };
 
         openConfirmation('Are you sure you want to delete this?', onConfirm);
@@ -181,23 +182,23 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     };
 
     const handleClickMerge = () => {
-      const backupId = getBackupIdFromHistory(history);
-      const version = getSearchParam(history, 'v');
-      history.push(`/process-merge/${backupId}?v=${version}`);
+      const backupId = getBackupIdFromHistory();
+      const version = getSearchParam('v');
+      navigate(`/process-merge/${backupId}?v=${version}`);
     };
 
     if (updated) return [Check, 'Updated', null, 'updated', null];
     if (updating) return [Refresh, 'Updating', null, 'updating-button', null];
 
-    if (/(history|connections|timeline)$/.test(history.location.pathname)) {
+    if (/(history|connections|timeline)$/.test(location.pathname)) {
       return [ArrowBack, 'Back', handleBack, 'thought-button', null];
-    } else if (/thought/.test(history.location.pathname)) {
+    } else if (/thought/.test(location.pathname)) {
       if (displayThoughtSettings) {
         return [Delete, 'Delete Thought', handleDeleteThought, 'delete-button', null];
       } else {
         return [Link, 'History', handleClickViewConnections, 'has-secondary', handleClickViewHistory, History];
       }
-    } else if (/merge/.test(history.location.pathname)) {
+    } else if (/merge/.test(location.pathname)) {
       if (comparables.length === 0) {
         return [Check, 'Merge', handleClickMerge, 'merge', null, null];
       } else {
@@ -208,7 +209,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
         [Add, 'Create Thought', handleAddThought, 'thought-button', handleDemandBackup, CloudUpload] :
         [Add, 'Create Thought', handleAddThought, 'thought-button', null, null];
     }
-  }, [history.location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating, updated, comparables, backups]);
+  }, [location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating, updated, comparables, backups]);
 
   if (hideButton) return null;
 

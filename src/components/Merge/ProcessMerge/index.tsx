@@ -9,16 +9,14 @@ import { getBackupIdFromHistory } from '../util';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { backups as backupActions } from '../../../actions';
-import useApp from '../../../hooks/useApp';
 import { Item } from '../types';
 import { useStyles } from './styles';
 import { getSearchParam } from '../../../lib/util';
-import uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 
 export const ProcessMerge: FC = () => {
   const classes = useStyles({});
   const { db } = useLoadedDB();
-  const { history } = useApp();
   const rootRef = useRef<HTMLDivElement>(null);
   const [loading, stopLoading] = useLoadingOverlay(rootRef);
   const [filteredItemsToAdd, setFilteredItemsToAdd] = useState<Item[]>(null);
@@ -42,13 +40,13 @@ export const ProcessMerge: FC = () => {
         })
       ).concat(
         itemsToRemove.map(({ collectionName, item}) => {
-          const query = db[collectionName].find({ id: { $eq: item.id } });
+          const query = db[collectionName].find().where('id').eq(item.id);
           return query.remove();
         })
       ),
     );
-    const version = getSearchParam(history, 'v');
-    const backupId = getBackupIdFromHistory(history);
+    const version = getSearchParam('v');
+    const backupId = getBackupIdFromHistory();
     const backup = backups.find(prev => prev.backupId === backupId);
     if (backup) {
       await backupActions.editBackup(db, {

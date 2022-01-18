@@ -13,10 +13,10 @@ export default ['connection', {
   "version": 0,
   "description": "A Connection",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "from": {
       "ref": "thought",
@@ -37,4 +37,4 @@ export default ['connection', {
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema<Connection>];

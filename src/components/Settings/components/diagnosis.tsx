@@ -2,7 +2,7 @@ import React, { FC, useMemo, Fragment } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
 import Tooltip from '../../General/Tooltip';
 import { useLoadedDB } from '../../../hooks/useDB';
-import useApp from '../../../hooks/useApp';
+import { useNavigate } from 'react-router-dom';
 import {
   DiagnosisChunks,
   FormattedResultActionEnum,
@@ -18,13 +18,13 @@ import Template from '../../../models/templates';
 import Picture from '../../../models/pictures';
 import Setting from '../../../models/settings';
 import Status from '../../../models/statuses';
-import { RxDatabase, RxDocumentTypeWithRev } from 'rxdb';
+import { RxDatabase, RxDocument } from 'rxdb';
 
 const modelsByTable: {
   [tableName: string]: {
     delete: ((db: RxDatabase, id: string) => Promise<any>),
-    update: ((db: RxDatabase, object: RxDocumentTypeWithRev<any>) => Promise<any>),
-    add?: ((db: RxDatabase, object: RxDocumentTypeWithRev<any>) => Promise<any>),
+    update: ((db: RxDatabase, object: RxDocument<any>) => Promise<any>),
+    add?: ((db: RxDatabase, object: RxDocument<any>) => Promise<any>),
   },
 } = {
   thought: { delete: Thought.delete, update: Thought.update },
@@ -117,7 +117,7 @@ const canFix = (diagnosisChunks: DiagnosisChunks) => {
 
 export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix }) => {
   const { db } = useLoadedDB();
-  const { history } = useApp();
+  const navigate = useNavigate();
 
   const _diagnosis = useMemo(() => {
     if (Object.keys(diagnosisChunks).length === 0) {
@@ -130,7 +130,7 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
 
     const handleClickThought = (thought: any) => () => {
       if (!thought.thoughtId) {
-        history.push(`/thought/${thought.id}`);
+        navigate(`/thought/${thought.id}`);
       }
     };
 

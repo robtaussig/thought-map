@@ -31,7 +31,8 @@ export const styles = (theme: any): StyleRules => ({
     backgroundColor: theme.palette.background[100],
     borderRadius: '5px',
     willChange: 'transform, width, height, opacity',
-    '& button': {
+    '& button, & a': {
+      textDecoration: 'none',
       height: '100%',
       ...theme.defaults.centered,
     },

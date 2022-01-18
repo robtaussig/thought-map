@@ -13,22 +13,22 @@ const updateThoughtMap = async (thoughtId: string) => {
 export const handleThoughtChange = (
   dispatch: Dispatch<any>,
   setLastNotification: (notification: Notification) => void,
-) => ({ data }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
-  const thought: Thought = data.v;
+  const thought: Thought = documentData;
   let notification;
 
-  switch (data.op) {
+  switch (operation) {
     case 'INSERT':
       dispatch(insert(thought));
       searcherWorker.buildTree([thought], null, null);
       notification = { message: 'Thought created' };
       break;
     
-    case 'REMOVE':
-      dispatch(remove(thought));
-      updateThoughtMap(thought.id);
-      searcherWorker.invalidate(thought.id);
+    case 'DELETE':
+      dispatch(remove(documentId));
+      updateThoughtMap(documentId);
+      searcherWorker.invalidate(documentId);
       notification = { message: 'Thought removed' };
       break;
 

@@ -2,22 +2,20 @@ import React, { FC } from 'react';
 import { StatusItem as StatusItemType } from '../../types';
 import { STATUS_TO_COLOR } from '../../../Home/Content/ThoughtNode';
 import { format } from 'date-fns';
-import { History } from 'history';
+import { useNavigate } from 'react-router-dom';
 
 interface StatusItemProps {
   classes: any;
   statusItem: StatusItemType;
-  history: History;
 }
 
 export const StatusItem: FC<StatusItemProps> = ({
   classes,
   statusItem,
-  history,
 }) => {
-
+  const navigate = useNavigate();
   const handleClick = () => {
-    history.push(`/thought/${statusItem.thoughtId}`);
+    navigate(`/thought/${statusItem.thoughtId}`);
   };
 
   return (

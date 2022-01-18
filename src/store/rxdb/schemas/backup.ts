@@ -12,15 +12,15 @@ export interface Backup {
   updated?: number;
 }
 
-export default ['backup', {
+export default ['doc_backup', {
   "title": "Backup schema",
-  "version": 3,
+  "version": 0,
   "description": "A Backup",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "backupId": {
       "type": "string",
@@ -51,19 +51,4 @@ export default ['backup', {
   "attachments": {
 
   }
-} as RxJsonSchema, {
-  "migrationStrategies": {
-    1: (oldBackup: RxDocument<Backup>) => {
-      oldBackup.isActive = false;
-      return oldBackup;
-    },
-    2: (oldBackup: RxDocument<Backup>) => {
-      oldBackup.version = 1;
-      return oldBackup;
-    },
-    3: (oldBackup: RxDocument<Backup>) => {
-      oldBackup.merged = false;
-      return oldBackup;
-    },
-  },
-}];
+} as RxJsonSchema<Backup>];

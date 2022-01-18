@@ -13,17 +13,16 @@ export default ['deletion', {
   "version": 0,
   "description": "A Deletion",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "collectionName": {
       "type": "string",
     },
     "itemId": {
       "type": "string",
-      "index": true,
     },
     "created": {
       "type": "number",
@@ -32,8 +31,9 @@ export default ['deletion', {
       "type": "number",
     },
   },
+  "indexes": ["itemId"],
   "required": ["collectionName", "itemId"],
   "attachments": {
 
   }
-} as RxJsonSchema];
+} as RxJsonSchema<Deletion>];

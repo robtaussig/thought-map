@@ -1,6 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import useApp from '../../hooks/useApp';
-import { getIdFromUrl } from '../../lib/util';
+import { useIdFromUrl } from '../../lib/util';
 import ConnectionGraph from './components/ConnectionGraph';
 import { useSelector } from 'react-redux';
 import { thoughtSelector } from '../../reducers/thoughts';
@@ -11,11 +10,10 @@ interface ConnectionsProps {
 }
 
 export const Connections: FC<ConnectionsProps> = ({ statusOptions }) => {
-  const { history } = useApp();
   const thoughts = useSelector(thoughtSelector);
   const connections = useSelector(connectionSelector);
 
-  const thoughtId = getIdFromUrl(history, 'thought');
+  const thoughtId = useIdFromUrl('thought');
   const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
 
   return (

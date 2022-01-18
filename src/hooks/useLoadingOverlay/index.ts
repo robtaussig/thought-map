@@ -76,7 +76,9 @@ export const useLoadingOverlay = (containerRef: MutableRefObject<HTMLDivElement>
     loadingOverlayElement.appendChild(textNode.current);
   }, []);
 
-  useEffect(() => () => wakeLock.current?.release(), []);
+  useEffect(() => () => {
+    wakeLock.current?.release();
+  }, []);
 
   return [setLoading, stopLoading, updateText];
 };

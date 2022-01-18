@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { History } from 'history';
 import { StatusItem as StatusItemType } from '../types';
 import StatusItem from './StatusItem';
 
@@ -7,14 +6,12 @@ interface DailyChunkItemProps {
   classes: any;
   date: string;
   statusItems: StatusItemType[];
-  history: History<any>;
 }
 
 export const DailyChunkItem: FC<DailyChunkItemProps> = ({
   classes,
   date,
   statusItems,
-  history,
 }) => {
 
   return (
@@ -26,7 +23,6 @@ export const DailyChunkItem: FC<DailyChunkItemProps> = ({
             key={statusItem.id}
             classes={classes}
             statusItem={statusItem}
-            history={history}
           />
         );
       })}

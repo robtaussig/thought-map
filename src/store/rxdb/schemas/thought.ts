@@ -28,10 +28,10 @@ export default ['thought', {
   "version": 8,
   "description": "A Thought",
   "type": "object",
+  "primaryKey": "id",
   "properties": {
     "id": {
       "type": "string",
-      "primary": true,
     },
     "planId": {
       "type": "string",
@@ -93,7 +93,7 @@ export default ['thought', {
   "attachments": {
 
   }
-} as RxJsonSchema, {
+} as RxJsonSchema<Thought>, {
   "migrationStrategies": {
     1: (oldThought: RxDocument<Thought>) => {
       oldThought.priority = 5;

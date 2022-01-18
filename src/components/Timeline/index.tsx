@@ -1,6 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { getIdFromUrl } from '../../lib/util';
-import useApp from '../../hooks/useApp';
+import { useIdFromUrl } from '../../lib/util';
 import { useSelector } from 'react-redux';
 import { planSelector } from '../../reducers/plans';
 import { statusSelector } from '../../reducers/statuses';
@@ -20,11 +19,10 @@ interface TimelineProps {
 
 export const Timeline: FC<TimelineProps> = ({ allPlans }) => {
   const classes = useStyles({});
-  const { history } = useApp();
   const plans = useSelector(planSelector);
   const thoughts = useSelector(thoughtSelector);
   const statuses = useSelector(statusSelector);
-  const planId = getIdFromUrl(history, 'plan');
+  const planId = useIdFromUrl('plan');
   const header = allPlans ?
     'Timeline' :
     `${plans.find(({ id }) => id === planId)?.name ?? ''} Timeline`.trim();
@@ -83,7 +81,6 @@ export const Timeline: FC<TimelineProps> = ({ allPlans }) => {
               classes={classes}
               date={date}
               statusItems={statusItems}
-              history={history}
             />
           );
         })}

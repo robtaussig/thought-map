@@ -18,8 +18,8 @@ const backups = createSlice({
     insert(state, action: PayloadAction<Backup>) {
       state.push(action.payload);
     },
-    remove(state, action: PayloadAction<Backup>) {
-      return state.filter(({ id }) => id !== action.payload.id);
+    remove(state, action: PayloadAction<string>) {
+      return state.filter(({ id }) => id !== action.payload);
     },
     update(state, action: PayloadAction<Backup>) {
       return state.map(backup => backup.id === action.payload.id ? action.payload : backup);
