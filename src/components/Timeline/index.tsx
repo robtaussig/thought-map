@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { getIdFromUrl } from '../../lib/util';
+import { useIdFromUrl } from '../../lib/util';
 import { useSelector } from 'react-redux';
 import { planSelector } from '../../reducers/plans';
 import { statusSelector } from '../../reducers/statuses';
@@ -22,7 +22,7 @@ export const Timeline: FC<TimelineProps> = ({ allPlans }) => {
   const plans = useSelector(planSelector);
   const thoughts = useSelector(thoughtSelector);
   const statuses = useSelector(statusSelector);
-  const planId = getIdFromUrl('plan');
+  const planId = useIdFromUrl('plan');
   const header = allPlans ?
     'Timeline' :
     `${plans.find(({ id }) => id === planId)?.name ?? ''} Timeline`.trim();

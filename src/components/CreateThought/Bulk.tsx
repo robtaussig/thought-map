@@ -3,7 +3,7 @@ import TextArea from '../General/TextArea';
 import { DEFAULT_STATE } from './';
 import { useLoadedDB } from '../../hooks/useDB';
 import { createWholeThought } from '../../actions/complex';
-import { getIdFromUrl } from '../../lib/util';
+import { useIdFromUrl } from '../../lib/util';
 import { useSelector } from 'react-redux';
 import { planSelector } from '../../reducers/plans';
 import { bulkListSelector } from '../../reducers/bulkLists';
@@ -25,7 +25,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
   const plans = useSelector(planSelector);
   const bulkLists = useSelector(bulkListSelector);
   const { db } = useLoadedDB();
-  const planId = getIdFromUrl('plan');
+  const planId = useIdFromUrl('plan');
   const plan = plans.find(plan => plan.id === planId);
 
   const handleSubmit = async (e: any) => {

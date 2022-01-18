@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { styles } from './style';
 import Inputs from './Inputs';
 import { createWholeThought } from '../../actions/complex';
-import { homeUrl, getIdFromUrl } from '../../lib/util';
+import { homeUrl, useIdFromUrl } from '../../lib/util';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { thoughtSelector } from '../../reducers/thoughts';
@@ -47,7 +47,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
   const plans = useSelector(planSelector);
   const [ready, setReady] = useState<boolean>(false);
   const { db } = useLoadedDB();
-  const planId = getIdFromUrl('plan');
+  const planId = useIdFromUrl('plan');
   const plan = plans.find(plan => plan.id === planId);
   const [selectedPlan, setSelectedPlan] = useState('');
   const [createdThought, setCreatedThought] = useState<CreatedThought>({

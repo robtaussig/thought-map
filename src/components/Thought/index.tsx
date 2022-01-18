@@ -10,7 +10,7 @@ import MissingThought from './components/MissingThought';
 import ThoughtSettings from '../ThoughtSettings';
 import CircleButton from '../General/CircleButton';
 import { thoughts as thoughtActions, plans as planActions } from '../../actions';
-import { homeUrl, getIdFromUrl } from '../../lib/util';
+import { homeUrl, useIdFromUrl } from '../../lib/util';
 import { Picture } from '../../store/rxdb/schemas/picture';
 import { Thought as ThoughtType } from '~store/rxdb/schemas/types';
 import { SectionVisibility } from './types';
@@ -69,7 +69,7 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const [editAllSections, setEditAllSections] = useState<boolean>(false);
   const [threeSecondsElapsed, setThreeSecondsElapsed] = useState<boolean>(false);
-  const thoughtId = getIdFromUrl('thought');
+  const thoughtId = useIdFromUrl('thought');
   const thoughts = useSelector(thoughtSelector);
   const tags = useSelector(tagSelector);
   const notes = useSelector(noteSelector);

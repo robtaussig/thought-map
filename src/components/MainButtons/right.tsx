@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useMemo } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../hooks/useDB';
 import useModal from '../../hooks/useModal';
 import useCrypto from '../../hooks/useCrypto';
@@ -15,7 +15,7 @@ import Check from '@material-ui/icons/Check';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import Delete from '@material-ui/icons/Delete';
-import { getIdFromUrl, homeUrl, openConfirmation, getSearchParam } from '../../lib/util';
+import { useIdFromUrl, homeUrl, openConfirmation, getSearchParam } from '../../lib/util';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
 import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
@@ -74,6 +74,8 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const [updating, setUpdating] = useState<boolean>(false);
   const [updated, setUpdated] = useState<boolean>(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const thoughtId = useIdFromUrl('thought');
   const { db } = useLoadedDB();
   const { encrypt } = useCrypto();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
@@ -117,12 +119,10 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     }
 
     const handleClickViewConnections = () => {
-      const thoughtId = getIdFromUrl('thought');
       navigate(`${homeUrl()}thought/${thoughtId}/connections`);
     };
 
     const handleClickViewHistory = () => {
-      const thoughtId = getIdFromUrl('thought');
       navigate(`${homeUrl()}thought/${thoughtId}/history`);
     };
 
@@ -131,7 +131,6 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     };
 
     const handleDeleteThought = () => {
-      const thoughtId = getIdFromUrl('thought');
       if (typeof thoughtId === 'string') {
         const onConfirm = async () => {
           await thoughtActions.deleteThought(db, thoughtId);

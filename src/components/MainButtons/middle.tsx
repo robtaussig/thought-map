@@ -6,14 +6,14 @@ import { thoughtSelector } from '../../reducers/thoughts';
 import { toggle } from '../../reducers/displayPriorities';
 import { useDispatch } from 'react-redux';
 import { thoughts as thoughtActions } from '../../actions';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../hooks/useDB';
 import CircleButton from '../General/CircleButton';
 import Bookmark from '@material-ui/icons/Bookmark';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import PriorityHigh from '@material-ui/icons/PriorityHigh';
 import Queue from '@material-ui/icons/Queue';
-import { getIdFromUrl } from '../../lib/util';
+import { useIdFromUrl } from '../../lib/util';
 import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
 import { format } from 'date-fns';
 
@@ -66,6 +66,8 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   const [canStage, setCanStage] = useState<boolean>(false);
   const [hideButton, setHideButton] = useState<boolean>(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const thoughtId = useIdFromUrl('thought');
   const isStaging = location.pathname === STAGING_PATH_NAME;
   const currentPage = useMemo(() => {
     if (/history$/.test(location.pathname)) return CurrentPage.History;
@@ -90,9 +92,9 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
   useEffect(() => {
     setCanStage(
       currentPage === CurrentPage.Thought &&
-      stage.current.includes(String(getIdFromUrl('thought'))) === false
+      stage.current.includes(String(thoughtId)) === false
     );
-  }, [stage, currentPage]);
+  }, [stage, currentPage, thoughtId]);
 
   useEffect(() => {
     setHideButton([
@@ -111,7 +113,6 @@ export const MiddleButton: FC<MiddleButtonProps> = ({ classes }) => {
       dispatch(toggle());
     } else if (canStage) {
       let thoughtQuery = '';
-      const thoughtId = getIdFromUrl('thought');
       if (typeof thoughtId === 'string') {
         const thought = thoughts.find(({ id }) => id === thoughtId);
         if (thought && thought.status !== 'completed') {

@@ -1,4 +1,4 @@
-import { History } from 'history';
+import { useLocation } from 'react-router-dom';
 import { Setting } from '../store/rxdb/schemas/setting';
 import { Status } from '../store/rxdb/schemas/status';
 import { SettingState } from '../types';
@@ -58,7 +58,8 @@ export const homeUrl = () => {
   }
 };
 
-export const getIdFromUrl = (key: string) => {
+export const useIdFromUrl = (key: string) => {
+  const location = useLocation();
   const path = location.pathname;
 
   return path.split('/').reduce((id, part) => {

@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { getSearchParam, getIdFromUrl } from '../../../lib/util';
+import { getSearchParam, useIdFromUrl } from '../../../lib/util';
 import { backupSelector } from '../../../reducers/backups';
 import { useSelector } from 'react-redux';
 import { backups as backupActions } from '../../../actions';
@@ -12,7 +12,7 @@ interface UpToDateProps {
 export const UpToDate: FC<UpToDateProps> = ({ classes }) => {
   const { db } = useLoadedDB();
   const backups = useSelector(backupSelector);
-  const backupId = getIdFromUrl('merge');
+  const backupId = useIdFromUrl('merge');
   const localBackup = backups.find(prev => prev.backupId === backupId);
 
   useEffect(() => {

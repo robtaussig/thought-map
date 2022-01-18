@@ -1,6 +1,6 @@
 import React, { FC, useMemo, CSSProperties } from 'react';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import { getIdFromUrl } from '../../lib/util';
+import { useIdFromUrl } from '../../lib/util';
 import ThoughtGroup from './components/thought-group';
 import {
   StatusUpdate,
@@ -27,7 +27,7 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
   const thoughts = useSelector(thoughtSelector);
   const stateStatusesByThought = useSelector(statusesByThoughtSelector);
   const statuses = useSelector(statusSelector);
-  const thoughtId = getIdFromUrl('thought');
+  const thoughtId = useIdFromUrl('thought');
   const { descendants } = useThoughtMap(thoughtId as string);
   const statusUpdates = useMemo(() => {
     return descendants.reduce((next, relatedThoughtId) => {

@@ -2,7 +2,7 @@ import React, { useMemo, FC } from 'react';
 import Content from './Content/index';
 import PlanSelect from './PlanSelect';
 import { useStyles } from './styles';
-import { getIdFromUrl, getSearchParam } from '../../lib/util';
+import { useIdFromUrl, getSearchParam } from '../../lib/util';
 import { Notification } from '../../types';
 import { planSelector } from '../../reducers/plans';
 import { thoughtSelector } from '../../reducers/thoughts';
@@ -18,7 +18,7 @@ export const Home: FC<HomeProps> = ({ statusOptions, setLastNotification, typeOp
   const plans = useSelector(planSelector);
   const classes = useStyles();
   const thoughts = useSelector(thoughtSelector);
-  const planId = getIdFromUrl('plan');
+  const planId = useIdFromUrl('plan');
   const from = getSearchParam('from');
   const plan = plans.find(plan => plan.id === planId);
   const planThoughts = useMemo(() => {

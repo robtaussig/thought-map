@@ -7,8 +7,8 @@ import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayTh
 import useModal from '../../hooks/useModal';
 import PlanSelectActions from '../Home/PlanSelect/components/actions';
 import { withStyles, StyleRules } from '@material-ui/styles';
-import { useNavigate } from 'react-router-dom';
-import { getIdFromUrl } from '../../lib/util';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useIdFromUrl } from '../../lib/util';
 import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import PlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck';
@@ -50,6 +50,8 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
   const tutorial = useSelector(tutorialSelector);
   const [hideButton, setHideButton] = useState<boolean>(false);
   const navigate = useNavigate();
+  const planId = useIdFromUrl('plan');
+  const location = useLocation();
 
   useEffect(() => {
     setHideButton(/(stage|history|connections|timeline)$/.test(location.pathname));
@@ -64,12 +66,11 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
     LongPressIcon,
   ]: [any, string, () => void, () => void, boolean?, any?] = useMemo(() => {
     const handleClickEditPlan = () => {
-      const planId = getIdFromUrl('plan');
       navigate(planId ? `/plan/${planId}/settings?type=plan` : `/settings`);
     };
 
     const handleLongPress = () => {
-      const planId = getIdFromUrl('plan');
+      const planId = useIdFromUrl('plan');
       openModal(
         <PlanSelectActions
           planId={planId}
@@ -79,7 +80,6 @@ export const LeftButton: FC<LeftButtonProps> = ({ classes }) => {
     };
 
     const handleGoBack = () => {
-      const planId = getIdFromUrl('plan');
       navigate(planId ? `/plan/${planId}` : `/`);
     };
 
