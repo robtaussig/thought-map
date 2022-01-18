@@ -2,7 +2,7 @@ import React, { useCallback, FC, useRef, useEffect, useState, useMemo, MutableRe
 import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
-import { statuses as statusActions, thoughts as thoughtActions } from '../../../actions';
+import { statuses as statusActions, thoughts as thoughtActions, connections as connectionsActions, } from '../../../actions';
 import { useHomeUrl } from '../../../lib/util';
 import { Thought } from 'store/rxdb/schemas/thought';
 import useLongPress from '../../../hooks/useLongPress';
@@ -12,6 +12,10 @@ import ConnectionStatus from './ConnectionStatus';
 import classNames from 'classnames';
 import { ThoughtConnections } from './types';
 import { Graph } from './lib/graph';
+import Add from '@material-ui/icons/Add';
+import { Cancel } from '@material-ui/icons';
+import CreatingNextThought, { CreatableThought } from './CreatingNextThought';
+import { createWholeThought } from '../../../actions/complex';
 
 interface ThoughtNodeProps {
   classes: any;
@@ -80,6 +84,7 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [openModal, closeModal] = useModal();
   const homeUrl = useHomeUrl();
+  const [isCreatingNextThought, setIsCreatingNextThought] = useState(false);
 
   const handleClick = () => {
     navigate(`${homeUrl}thought/${thought.id}`);
@@ -109,6 +114,31 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
       type: event.target.value,
     });
   }, []);
+
+  const handleCreateNextThought = useCallback(async ({ title, relationship }: CreatableThought) => {
+    setIsCreatingNextThought(false);
+    const createdThought = await createWholeThought(db, {
+      title,
+      type: 'Task',
+      date: '',
+      time: '',
+      description: '',
+      notes: [],
+      tags: [],
+    }, thought.planId);
+
+    if (relationship === 'from') {
+      connectionsActions.createConnection(db, {
+        from: createdThought.thought.id,
+        to: thought.id,
+      });
+    } else {
+      connectionsActions.createConnection(db, {
+        from: thought.id,
+        to: createdThought.thought.id,
+      });
+    }
+  }, [thought.planId]);
 
   useEffect(() => {
     if (arrivedFrom) {
@@ -150,6 +180,15 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
           onToggle={setShowConnections}
         />
       )}
+      {isCreatingNextThought ? (
+        <button className={classes.addConnectionButton} onClick={() => setIsCreatingNextThought(false)}>
+          <Cancel fontSize='small'/>
+        </button>
+      ) : (
+        <button className={classes.addConnectionButton} onClick={() => setIsCreatingNextThought(true)}>
+          <Add fontSize='small'/>
+        </button>
+      )}
       {displayField === 'type' ? (
         <Select
           id={'status-select'}
@@ -173,34 +212,37 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
     </div>
   );
 
-  if (showConnections) {
-    return (
-      <div className={classes.expandedThoughtNode}>
-        {_mainThoughtNode}
-        {nextThoughts.map((thoughtId, idx) => {
-          return (
-            <ThoughtNode
-              key={`${thought.id}-${thoughtId}-next-thought`}
-              classes={classes}
-              thought={thoughts.find(({ id }) => id === thoughtId)}
-              statusOptions={statusOptions}
-              typeOptions={typeOptions}
-              displayField={displayField}
-              connectionStatusByThought={connectionStatusByThought}
-              thoughtMap={thoughtMap}
-              thoughts={thoughts}
-              planName={planName}
-              arrivedFrom={false}
-              left={left + 1}
-              isLastChild={idx === nextThoughts.length - 1}
-            />
-          );
-        })}
-      </div>
-    );
-  }
-
-  return _mainThoughtNode;
+  return (
+    <div className={classes.expandedThoughtNode}>
+      {_mainThoughtNode}
+      {isCreatingNextThought && (
+        <CreatingNextThought styleOverwrite={{
+          marginLeft: (left + 1) * 15,
+          borderLeft: '1px solid gray',
+          borderBottom: '1px solid gray',
+        }} onSubmit={handleCreateNextThought}/>
+      )}
+      {showConnections && nextThoughts.map((thoughtId, idx) => {
+        return (
+          <ThoughtNode
+            key={`${thought.id}-${thoughtId}-next-thought`}
+            classes={classes}
+            thought={thoughts.find(({ id }) => id === thoughtId)}
+            statusOptions={statusOptions}
+            typeOptions={typeOptions}
+            displayField={displayField}
+            connectionStatusByThought={connectionStatusByThought}
+            thoughtMap={thoughtMap}
+            thoughts={thoughts}
+            planName={planName}
+            arrivedFrom={false}
+            left={left + 1}
+            isLastChild={idx === nextThoughts.length - 1}
+          />
+        );
+      })}
+    </div>
+  );
 });
 
 export default ThoughtNode;

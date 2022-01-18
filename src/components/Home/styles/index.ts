@@ -192,10 +192,14 @@ export const styles = (theme: any): StyleRules => ({
     },
   }),
   thoughtNodeType: {
-    marginLeft: 20,
+    marginLeft: 10,
     padding: '0 13px',
     color: '#8380ff',
     fontWeight: 600,
+  },
+  addConnectionButton: {
+    display: 'flex',
+    marginLeft: 10,
   },
   circleButton: () => ({
     ...theme.defaults.circleButton,
