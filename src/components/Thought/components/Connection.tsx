@@ -15,7 +15,7 @@ interface ConnectionProps {
   to: boolean;
 }
 
-export const Connection: FC<ConnectionProps> = ({ classes, targetThought, sourceThought, connected, from, to }) => {
+export const Connection: FC<ConnectionProps> = ({ classes, targetThought, sourceThought, connected, from }) => {
   const { db } = useLoadedDB();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();

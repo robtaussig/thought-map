@@ -3,7 +3,8 @@ import { Setting } from '../store/rxdb/schemas/setting';
 import { Selector } from 'react-redux';
 import { RootState } from './';
 
-export const settingSelector: Selector<RootState, Settings> = state => state.settings;
+export const settingSelector: Selector<RootState, Settings> = (state) =>
+  state.settings;
 export interface Settings {
   [field: string]: any;
 }
@@ -14,7 +15,7 @@ const settings = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    setSettings(state, action: PayloadAction<Settings>) {
+    setSettings(_state, action: PayloadAction<Settings>) {
       return action.payload;
     },
     insert(state, action: PayloadAction<Setting>) {
@@ -26,14 +27,9 @@ const settings = createSlice({
     update(state, action: PayloadAction<Setting>) {
       state[action.payload.field] = action.payload.value;
     },
-  }
+  },
 });
 
-export const {
-  setSettings,
-  insert,
-  remove,
-  update,
-} = settings.actions;
+export const { setSettings, insert, remove, update } = settings.actions;
 
 export default settings.reducer;

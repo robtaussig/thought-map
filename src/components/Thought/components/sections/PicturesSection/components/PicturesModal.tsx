@@ -21,7 +21,7 @@ interface PictureProps {
 const IMGUR_CLIENT_ID = 'f1b9f4565330211';
 const BASE64_REGEX = /^data.*base64/;
 
-export const Pictures: FC<PictureProps> = ({ classes, onClose, thought }) => {
+export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const loaded = useRef<boolean>(false);
   const uploadPictureRef = useRef<HTMLInputElement>(null);

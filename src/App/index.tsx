@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Notification as NotificationType } from '../types';
 import { backupSelector } from '../reducers/backups';
 import { ModalContextValue } from '../hooks/useModal/types';
@@ -45,7 +45,6 @@ const App = () => {
   const typeOptions = useSelector(typeOptionsSelector);
   const tagOptions = useSelector(tagOptionsSelector);
 
-  const appContext = useMemo(() => ({ history }), []);
   const getModalContext = useCallback(modalContext => modalRef.current = modalContext,[]);    
 
   useEffect(() => {

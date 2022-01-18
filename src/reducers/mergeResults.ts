@@ -3,21 +3,23 @@ import { Selector } from 'react-redux';
 import { Item, MergeResults } from '../components/Merge/types';
 import { RootState } from './';
 
-export const mergeResultsSelector: Selector<RootState, MergeResults> = state => state.mergeResults;
+export const mergeResultsSelector: Selector<RootState, MergeResults> = (
+  state
+) => state.mergeResults;
 
 const initialState: MergeResults = {
   itemsToAdd: [],
   deletionsToAdd: [],
   itemsToRemove: [],
   comparables: [],
-  removables:[],
+  removables: [],
 };
 
 const mergeResults = createSlice({
   name: 'mergeResults',
   initialState,
   reducers: {
-    setMergeResults(state, action: PayloadAction<MergeResults>) {
+    setMergeResults(_state, action: PayloadAction<MergeResults>) {
       return action.payload;
     },
     removeItem(state, action: PayloadAction<number>) {
@@ -31,7 +33,10 @@ const mergeResults = createSlice({
     addItem(state, action: PayloadAction<Item>) {
       state.itemsToAdd.push(action.payload);
     },
-    resolveComparable(state, action: PayloadAction<{ comparableIndex: number, item: Item }>) {
+    resolveComparable(
+      state,
+      action: PayloadAction<{ comparableIndex: number; item: Item }>
+    ) {
       state.itemsToAdd.push(action.payload.item);
       state.comparables.splice(action.payload.comparableIndex, 1);
     },
@@ -49,7 +54,7 @@ const mergeResults = createSlice({
       state.deletionsToAdd.push(removable[0]);
       state.removables.splice(action.payload, 1);
     },
-  }
+  },
 });
 
 export const {

@@ -12,23 +12,23 @@ export const handleTemplateChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(template));
-    notification = { message: 'Template created' };
-    break;
+    case 'INSERT':
+      dispatch(insert(template));
+      notification = { message: 'Template created' };
+      break;
     
-  case 'DELETE':
-    dispatch(remove(documentId));
-    notification = { message: 'Template removed' };
-    break;
+    case 'DELETE':
+      dispatch(remove(documentId));
+      notification = { message: 'Template removed' };
+      break;
 
-  case 'UPDATE':
-    dispatch(update(template));
-    notification = { message: 'Template updated' };
-    break;
+    case 'UPDATE':
+      dispatch(update(template));
+      notification = { message: 'Template updated' };
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

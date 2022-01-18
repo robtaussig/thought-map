@@ -1,6 +1,5 @@
 import { Connection } from '../../../store/rxdb/schemas/connection';
 import { Thought } from '../../../store/rxdb/schemas/thought';
-import { Status } from '../../../store/rxdb/schemas/status';
 import { Item } from '../types';
 
 interface ConnectionsByThought {
@@ -9,10 +8,6 @@ interface ConnectionsByThought {
 
 interface Thoughts {
   [thoughtId: string]: Thought;
-}
-
-interface Statuses {
-  [thoughtId: string]: Status[]
 }
 
 export const processItemsToAdd = (
@@ -110,7 +105,7 @@ const filterRedundantConnections = (
 const filterThoughtlessItems = (
   thoughtsById: Thoughts,
   thoughtsToAddById: Thoughts,
-) => ({ collectionName, item }: Item): boolean => {
+) => ({ item }: Item): boolean => {
   if (!item.thoughtId) return true;
 
   return Boolean(thoughtsById[item.thoughtId] || thoughtsToAddById[item.thoughtId]);

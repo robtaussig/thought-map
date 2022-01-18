@@ -60,7 +60,7 @@ const tags: Tags = [
 describe('Searchable', () => {
   test('It works', () => {
     expect(() => {
-      const searcher = new Searchable();
+      new Searchable();
     }).not.toThrow();
   });
   test('#buildTree - just thoughts', () => {

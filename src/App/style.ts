@@ -1,5 +1,5 @@
 import './App.scss';
-import { Theme, createTheme, makeStyles, responsiveFontSizes } from '@material-ui/core/styles';
+import { createTheme, makeStyles, responsiveFontSizes } from '@material-ui/core/styles';
 
 const CAST_SHADOW_HEAVY = {
   boxShadow: '0px 0px 20px -3px black',
@@ -92,7 +92,7 @@ export const theme = responsiveFontSizes(
   } as any)
 );
 
-const styles = (theme: Theme) => ({
+const styles = () => ({
   root: {
     width: '100%',
     overflow: 'hidden',

@@ -23,7 +23,7 @@ const longPressIconStyles: CSSProperties = {
   color: '#9c9c9c',
 };
 
-export const LongPressCircleButton: FC<LongPressCircleButtonProps> = React.memo(({
+export const LongPressCircleButton: FC<LongPressCircleButtonProps> = ({
   classes,
   id = 'add-button',
   onClick,
@@ -85,6 +85,6 @@ export const LongPressCircleButton: FC<LongPressCircleButtonProps> = React.memo(
       {LongPressIcon && <LongPressIcon style={longPressIconStyles} />}
     </button>
   );
-});
+};
 
 export default LongPressCircleButton;

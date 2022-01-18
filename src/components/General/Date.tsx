@@ -13,7 +13,7 @@ interface DateProps {
   [rest: string]: any;
 }
 
-export const Date: FC<DateProps> = React.memo(({ id, classes, value, onChange, label, time, autoFocus, tooltip, ...rest }) => {
+export const Date: FC<DateProps> = ({ id, classes, value, onChange, label, time, autoFocus, tooltip, ...rest }) => {
 
   return (
     <label id={id} className={classes.dateLabel} {...rest}>
@@ -24,6 +24,6 @@ export const Date: FC<DateProps> = React.memo(({ id, classes, value, onChange, l
       )}
     </label>
   );
-});
+};
 
 export default Date;

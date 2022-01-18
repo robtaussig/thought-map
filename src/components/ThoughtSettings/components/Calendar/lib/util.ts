@@ -69,7 +69,7 @@ export const generateDescriptionFromThought = (thought: Thought): string => {
   `;
 };
 
-export const generateRemindersFromThought = (thought: Thought): any => {
+export const generateRemindersFromThought = (): any => {
   return {
     overrides: [
       {

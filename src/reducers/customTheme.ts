@@ -141,7 +141,7 @@ const customTheme = createSlice({
       const [colorType, value] = action.payload;
       state.palette[colorType] = value;
     },
-    resetDefault: (state) => defaultState,
+    resetDefault: () => defaultState,
     toggleDarkMode: (state, action: PayloadAction<boolean>) => {
       state.useDarkMode =
         action.payload === undefined ? !state.useDarkMode : action.payload;
@@ -156,7 +156,7 @@ const customTheme = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(setSettings, (state, action: any) => {
+    builder.addCase(setSettings, (_state, action: any) => {
       if (action.payload.customTheme) {
         return action.payload.customTheme;
       }

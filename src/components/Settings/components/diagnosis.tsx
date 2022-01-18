@@ -175,33 +175,33 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
     await Promise.all(Object.values(diagnosisChunks[FormattedResultActionEnum.CAN_FIX]).reduce((queries, { items }) => {
       items.forEach(({ item, table, solution }) => {
         switch (solution) {
-        case SolutionTypes.DELETE:
-          queries.push(modelsByTable[table].delete(db, item.id));
-          break;
+          case SolutionTypes.DELETE:
+            queries.push(modelsByTable[table].delete(db, item.id));
+            break;
 
-        case SolutionTypes.NULL_OUT_PLAN_ID:
-          queries.push(modelsByTable[table].update(db, {
-            ...item,
-            planId: '',
-          }));
-          break;
-
-        case SolutionTypes.CREATE_STATUS:
-          queries.push(modelsByTable.status.add(db, {
-            text: 'new',
-            thoughtId: item.id,
-            created: item.created,
-            updated: item.created,
-          }));
-          if (item.status !== 'new') {
-            queries.push(modelsByTable.status.add(db, {
-              text: item.status,
-              thoughtId: item.id,
-              created: item.updated,
-              updated: item.updated,
+          case SolutionTypes.NULL_OUT_PLAN_ID:
+            queries.push(modelsByTable[table].update(db, {
+              ...item,
+              planId: '',
             }));
-          }
-          break;
+            break;
+
+          case SolutionTypes.CREATE_STATUS:
+            queries.push(modelsByTable.status.add(db, {
+              text: 'new',
+              thoughtId: item.id,
+              created: item.created,
+              updated: item.created,
+            }));
+            if (item.status !== 'new') {
+              queries.push(modelsByTable.status.add(db, {
+                text: item.status,
+                thoughtId: item.id,
+                created: item.updated,
+                updated: item.updated,
+              }));
+            }
+            break;
         }
       });
       return queries;

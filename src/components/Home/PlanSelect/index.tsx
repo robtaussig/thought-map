@@ -45,41 +45,42 @@ export const PlanSelect: FC<PlanSelectProps> = ({ classes, plans, thoughts, plan
 
   const handleChange = useCallback(e => {
     const value = e.target.value;
+    let plan: Plan;
     lastPlan.current = currentPlan;
   
     setCurrentPlan(value);
     switch (value) {
-    case 'Create Plan':
-      openModal(<CreatePlan
-        onClose={closeModal}
-      />);
-      setCurrentPlan(lastPlan.current);
-      break;
+      case 'Create Plan':
+        openModal(<CreatePlan
+          onClose={closeModal}
+        />);
+        setCurrentPlan(lastPlan.current);
+        break;
 
-    case HIDE_ARCHIVED:
-      setLastNotification({ message: 'Hiding archived plans' });
-      setShowArchived(false);
-      setCurrentPlan(lastPlan.current);
-      break;
+      case HIDE_ARCHIVED:
+        setLastNotification({ message: 'Hiding archived plans' });
+        setShowArchived(false);
+        setCurrentPlan(lastPlan.current);
+        break;
 
-    case SHOW_ARCHIVED:
-      setLastNotification({ message: 'Showing archived plans' });
-      setShowArchived(true);
-      setCurrentPlan(lastPlan.current);
-      break;
+      case SHOW_ARCHIVED:
+        setLastNotification({ message: 'Showing archived plans' });
+        setShowArchived(true);
+        setCurrentPlan(lastPlan.current);
+        break;
 
-    case HOME_NAME:
-      navigate('/');
-      break;
+      case HOME_NAME:
+        navigate('/');
+        break;
     
-    default:
-      const plan = plans.find(({ name }) => name === value);
-      if (plan) {
-        navigate(`/plan/${plan.id}/`);
-      } else {
-        console.error('plan not found');
-      }
-      break;
+      default:
+        plan = plans.find(({ name }) => name === value);
+        if (plan) {
+          navigate(`/plan/${plan.id}/`);
+        } else {
+          console.error('plan not found');
+        }
+        break;
     }
   }, [plans, thoughts, currentPlan]);
 

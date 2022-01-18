@@ -13,7 +13,7 @@ interface LocationModalProps {
   onClose: () => void;
 }
 
-const styles = (theme: any): StyleRules => ({
+const styles = (): StyleRules => ({
   root: {
     height: '100%',
   },
@@ -27,7 +27,7 @@ const styles = (theme: any): StyleRules => ({
   },
 });
 
-export const LocationModal: FC<LocationModalProps> = ({ classes, thought, onClose }) => {
+export const LocationModal: FC<LocationModalProps> = ({ classes, thought }) => {
   const statusesByThought = useSelector(statusesByThoughtSelector);
   const stateStatuses = useSelector(statusSelector);
   const statusIds = statusesByThought[thought.id];

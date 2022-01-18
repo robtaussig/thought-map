@@ -18,24 +18,24 @@ export const handleConnectionChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(connection));
-    notification = { message: 'Connection created' };
-    break;
+    case 'INSERT':
+      dispatch(insert(connection));
+      notification = { message: 'Connection created' };
+      break;
     
-  case 'DELETE':
-    updateThoughtMap(connection.from, connection.to);
-    dispatch(remove(documentId));
-    notification = { message: 'Connection removed' };
-    break;
+    case 'DELETE':
+      updateThoughtMap(connection.from, connection.to);
+      dispatch(remove(documentId));
+      notification = { message: 'Connection removed' };
+      break;
 
-  case 'UPDATE':
-    dispatch(update(connection));
-    notification = { message: 'Connection updated' };
-    break;
+    case 'UPDATE':
+      dispatch(update(connection));
+      notification = { message: 'Connection updated' };
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

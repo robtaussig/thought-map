@@ -14,7 +14,7 @@ interface TextAreaProps {
   [rest: string]: any;
 }
 
-export const TextArea: FC<TextAreaProps> = React.memo(({ id, classes, value, onChange, onFocus, label, tooltip, autoFocus, inputProps = {}, ...rest }) => {
+const TextArea: FC<TextAreaProps> = ({ id, classes, value, onChange, onFocus, label, tooltip, autoFocus, inputProps = {}, ...rest }) => {
 
   const handleFocus: ChangeEventHandler<HTMLTextAreaElement> = e => {
     const target = e.target;
@@ -34,6 +34,6 @@ export const TextArea: FC<TextAreaProps> = React.memo(({ id, classes, value, onC
       <textarea className={classes.textAreaInput} value={value} onChange={onChange} onFocus={handleFocus} autoFocus={autoFocus} {...inputProps}/>
     </label>
   );
-});
+};
 
 export default TextArea;

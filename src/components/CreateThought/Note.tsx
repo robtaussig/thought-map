@@ -12,7 +12,7 @@ interface NoteProps {
   autoSuggest?: string[];
 }
 
-export const Note: FC<NoteProps> = React.memo(({ classes, value, onChange, onRemove, isFocus, autoFocus, autoSuggest }) => {
+export const Note: FC<NoteProps> = ({ classes, value, onChange, onRemove, isFocus, autoSuggest }) => {
   const DeleteButton = isFocus ? (<button className={classes.deleteNoteButton} onClick={onRemove} aria-label={'Delete'}><Delete/></button>) : null;
 
   return (
@@ -30,6 +30,6 @@ export const Note: FC<NoteProps> = React.memo(({ classes, value, onChange, onRem
       />
     </Fragment>
   );
-});
+};
 
 export default Note;

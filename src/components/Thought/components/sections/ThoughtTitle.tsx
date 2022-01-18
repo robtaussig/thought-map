@@ -15,7 +15,7 @@ export const ThoughtTitle: FC<ThoughtTitleProps> = ({ classes, thought, onUpdate
   const lastTitleClick = useRef<number>(0);
   const [inputtedTitle, setInputtedTitle] = useState<string>(thought.title);
 
-  const handleClickTitle: MouseEventHandler<Element> = e => {
+  const handleClickTitle: MouseEventHandler<Element> = () => {
     const currentTitleClick = +new Date();
     if (currentTitleClick - lastTitleClick.current < 500) {
       setEdittingTitle(true);

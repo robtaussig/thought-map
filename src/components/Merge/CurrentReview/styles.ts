@@ -22,21 +22,21 @@ export const useStyles = makeStyles((theme: any) => ({
       gridTemplateColumns: '1fr 10px 1fr',
     },
   },
-  header: (params: any) => ({
+  header: () => ({
     gridArea: 'header',
     fontWeight: 600,
     textTransform: 'uppercase',
     marginBottom: 10,
     color: theme.palette.secondary[500],
   }),
-  subHeader: (params: any) => ({
+  subHeader: () => ({
     gridArea: 'sub-header',
     fontWeight: 600,
     padding: 10,
     backgroundColor: theme.palette.secondary[500],
     color: 'white',
   }),
-  mainField: (params: any) => ({
+  mainField: () => ({
     gridArea: 'main-field',
     padding: 10,
     paddingTop: 0,
@@ -44,7 +44,7 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.palette.secondary[500],
     color: 'white',
   }),
-  fields: (params: any) => ({
+  fields: () => ({
     gridArea: 'fields',
     display: 'grid',
     gridTemplateColumns: '[field-name] max-content [field-value] 1fr',
@@ -54,15 +54,15 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.palette.secondary[400],
     color: 'white',
   }),
-  fieldName: (params: any) => ({
+  fieldName: () => ({
     gridColumn: 'field-name',
     fontWeight: 600,
   }),
-  fieldValue: (params: any) => ({
+  fieldValue: () => ({
     gridColumn: 'field-value',
     marginLeft: 10,
   }),
-  connectionThought: (params: any) => ({    
+  connectionThought: () => ({    
     overflow: 'auto',
     padding: 10,
     border: `1px solid ${theme.palette.secondary[700]}`,
@@ -82,11 +82,11 @@ export const useStyles = makeStyles((theme: any) => ({
       borderLeft: 'none',
     },
   }),
-  connection: (params: any) => ({
+  connection: () => ({
     gridArea: 'connection',
     backgroundColor: theme.palette.secondary[700],
   }),
-  connectionText: (params: any) => ({
+  connectionText: () => ({
     ...theme.defaults.centered,
     fontWeight: 600,
     textTransform: 'uppercase',

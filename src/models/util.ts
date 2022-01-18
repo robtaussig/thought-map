@@ -4,7 +4,7 @@ interface WithTime {
   [key: string]: any;
 }
 
-export const withTime = (object: Object): WithTime => {
+export const withTime = (object: any): WithTime => {
   const timestamp = +new Date();
   return {
     ...object,

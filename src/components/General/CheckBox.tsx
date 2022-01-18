@@ -13,7 +13,7 @@ interface CheckBoxProps {
   [rest: string]: any;
 }
 
-export const CheckBox: FC<CheckBoxProps> = React.memo(({ id, classes, isChecked, value, onChange, label, title, tooltip, ...rest }) => {
+export const CheckBox: FC<CheckBoxProps> = ({ id, classes, isChecked, value, onChange, label, title, tooltip, ...rest }) => {
 
   return (
     <label id={id} title={title} className={classes.checkboxLabel} {...rest}>
@@ -24,6 +24,6 @@ export const CheckBox: FC<CheckBoxProps> = React.memo(({ id, classes, isChecked,
       )}
     </label>
   );
-});
+};
 
 export default CheckBox;

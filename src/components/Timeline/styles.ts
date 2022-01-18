@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
-  root: (params: any) => ({
+  root: () => ({
     height: '100%',
     display: 'grid',
     gridTemplateAreas: `"header"
@@ -22,7 +22,7 @@ export const useStyles = makeStyles((theme: any) => ({
     gridArea: 'daily-chunks',
     overflow: 'auto',
   },
-  dailyChunk: (params: any) => ({
+  dailyChunk: () => ({
     display: 'grid',
     gridTemplateColumns: '[status] max-content [thought] 1fr',
     gridAutoFlow: 'row',
@@ -56,7 +56,5 @@ export const useStyles = makeStyles((theme: any) => ({
   time: {
     fontWeight: 600,
   },
-  title: {
-
-  },
+  title: {},
 }));

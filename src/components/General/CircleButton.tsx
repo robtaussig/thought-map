@@ -18,7 +18,7 @@ interface CircleButtonProps {
   [rest: string]: any;
 }
 
-export const CircleButton: FC<CircleButtonProps> = React.memo(({
+export const CircleButton: FC<CircleButtonProps> = ({
   classes,
   id = 'add-button',
   onClick,
@@ -65,6 +65,6 @@ export const CircleButton: FC<CircleButtonProps> = React.memo(({
       />
     );
   }
-});
+};
 
 export default CircleButton;

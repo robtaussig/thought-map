@@ -4,7 +4,8 @@ import { Selector } from 'react-redux';
 import { RootState } from './';
 
 export type Backups = Backup[];
-export const backupSelector: Selector<RootState, Backups> = state => state.backups;
+export const backupSelector: Selector<RootState, Backups> = (state) =>
+  state.backups;
 
 const initialState: Backups = [];
 
@@ -12,7 +13,7 @@ const backups = createSlice({
   name: 'backups',
   initialState,
   reducers: {
-    setBackups(state, action: PayloadAction<Backups>) {
+    setBackups(_state, action: PayloadAction<Backups>) {
       return action.payload;
     },
     insert(state, action: PayloadAction<Backup>) {
@@ -22,16 +23,13 @@ const backups = createSlice({
       return state.filter(({ id }) => id !== action.payload);
     },
     update(state, action: PayloadAction<Backup>) {
-      return state.map(backup => backup.id === action.payload.id ? action.payload : backup);
+      return state.map((backup) =>
+        backup.id === action.payload.id ? action.payload : backup
+      );
     },
-  }
+  },
 });
 
-export const {
-  setBackups,
-  insert,
-  remove,
-  update,
-} = backups.actions;
+export const { setBackups, insert, remove, update } = backups.actions;
 
 export default backups.reducer;

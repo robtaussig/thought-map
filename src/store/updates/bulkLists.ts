@@ -12,23 +12,23 @@ export const handleBulkListChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(bulkList));
-    notification = { message: 'BulkList created' };
-    break;
+    case 'INSERT':
+      dispatch(insert(bulkList));
+      notification = { message: 'BulkList created' };
+      break;
     
-  case 'DELETE':
-    dispatch(remove(documentId));
-    notification = { message: 'BulkList removed' };
-    break;
+    case 'DELETE':
+      dispatch(remove(documentId));
+      notification = { message: 'BulkList removed' };
+      break;
 
-  case 'UPDATE':
-    dispatch(update(bulkList));
-    notification = { message: 'BulkList updated' };
-    break;
+    case 'UPDATE':
+      dispatch(update(bulkList));
+      notification = { message: 'BulkList updated' };
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

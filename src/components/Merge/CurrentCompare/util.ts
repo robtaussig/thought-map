@@ -8,8 +8,8 @@ export const generateFieldsToPick = (left: Doc, right: Doc): string[] => {
     }
   });
 
-  Object.entries(right).forEach(([field, value]) => {
-    if (left.hasOwnProperty(field) === false) {
+  Object.keys(right).forEach((field) => {
+    if (field in left === false) {
       diffs.push(field);
     }
   });

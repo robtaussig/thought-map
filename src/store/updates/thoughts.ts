@@ -10,39 +10,41 @@ const updateThoughtMap = async (thoughtId: string) => {
   await thoughtMap.removeThought(thoughtId);
 };
 
-export const handleThoughtChange = (
-  dispatch: AppDispatch,
-  setLastNotification: (notification: Notification) => void,
-) => ({ documentData, operation, documentId }: RxChangeEvent) => {
-  if ((window as any).blockDBSubscriptions === true) return;
-  const thought: Thought = documentData;
-  let notification;
+export const handleThoughtChange =
+  (
+    dispatch: AppDispatch,
+    setLastNotification: (notification: Notification) => void
+  ) =>
+    ({ documentData, operation, documentId }: RxChangeEvent) => {
+      if ((window as any).blockDBSubscriptions === true) return;
+      const thought: Thought = documentData;
+      let notification;
 
-  switch (operation) {
-  case 'INSERT':
-    dispatch(insert(thought));
-    searcherWorker.buildTree([thought], null, null);
-    notification = { message: 'Thought created' };
-    break;
-    
-  case 'DELETE':
-    dispatch(remove(documentId));
-    updateThoughtMap(documentId);
-    searcherWorker.invalidate(documentId);
-    notification = { message: 'Thought removed' };
-    break;
+      switch (operation) {
+        case 'INSERT':
+          dispatch(insert(thought));
+          searcherWorker.buildTree([thought], null, null);
+          notification = { message: 'Thought created' };
+          break;
 
-  case 'UPDATE':
-    dispatch(update(thought));
-    searcherWorker.invalidate(thought.id).then(() => {
-      searcherWorker.buildTree([thought], null, null);
-    });
-    break;
-  
-  default:
-    break;
-  }
+        case 'DELETE':
+          dispatch(remove(documentId));
+          updateThoughtMap(documentId);
+          searcherWorker.invalidate(documentId);
+          notification = { message: 'Thought removed' };
+          break;
 
-  if ((window as any).blockNotifications) return;
-  setLastNotification(notification);  
-};
+        case 'UPDATE':
+          dispatch(update(thought));
+          searcherWorker.invalidate(thought.id).then(() => {
+            searcherWorker.buildTree([thought], null, null);
+          });
+          break;
+
+        default:
+          break;
+      }
+
+      if ((window as any).blockNotifications) return;
+      setLastNotification(notification);
+    };

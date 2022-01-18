@@ -32,8 +32,6 @@ interface AddOrRemovableThoughts {
   label: string;
 }
 
-const SETTINGS_PATH_REGEX = /settings.*/;
-
 export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, typeOptions, connections }) => {
   const navigate = useNavigate();
   const { db } = useLoadedDB();

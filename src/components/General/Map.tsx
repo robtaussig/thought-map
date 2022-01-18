@@ -20,7 +20,7 @@ interface MapComponentProps {
   height?: number;
 }
 
-const styles = (theme: any): StyleRules => ({
+const styles = (): StyleRules => ({
   root: {
 
   },

@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export const useCustomObjectStyles = makeStyles((theme: any) => ({
-  container: (params: any) => ({
+  container: () => ({
     position: 'fixed',
     height: '100%',
     left: 0,
@@ -19,7 +19,7 @@ export const useCustomObjectStyles = makeStyles((theme: any) => ({
       }
     }
   }),
-  header: (params: any) => ({
+  header: () => ({
     flex: '0 0 80px',
     backgroundColor: theme.palette.primary[500],
     boxShadow: '0px 0px 5px 0px black',
@@ -29,7 +29,7 @@ export const useCustomObjectStyles = makeStyles((theme: any) => ({
     justifyContent: 'center',
     fontSize: 24,
   }),
-  button: (params: any) => ({
+  button: () => ({
     border: `2px solid ${theme.palette.secondary[0]}`,
     padding: '3px 0',
     marginTop: 40,
@@ -49,7 +49,7 @@ export const useCustomObjectStyles = makeStyles((theme: any) => ({
       boxShadow: '0px 0px 5px 2px black',
     },
   }),
-  circleButton: (params: any) => ({
+  circleButton: () => ({
     ...theme.defaults.circleButton,
     backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     '&#submit': {
@@ -71,13 +71,13 @@ export const useBaseCustomObjectStyles = makeStyles((theme: any) => ({
     overflow: 'hidden',
     maxHeight: '50vh',
   },
-  header: (params: any) => ({
+  header: () => ({
     fontWeight: 600,
     color: theme.palette.secondary[700],
     gridArea: 'header',
     textTransform: 'capitalize',
   }),
-  form: (params: any) => ({
+  form: () => ({
     gridArea: 'form',
     display: 'flex',
     '& button': {
@@ -93,10 +93,10 @@ export const useBaseCustomObjectStyles = makeStyles((theme: any) => ({
       width: '100%',
     },
   },
-  createButton: (params: any) => ({
+  createButton: () => ({
 
   }),
-  customObjects: (params: any) => ({
+  customObjects: () => ({
     gridArea: 'items',
     display: 'flex',
     flexDirection: 'column',
@@ -107,7 +107,7 @@ export const useBaseCustomObjectStyles = makeStyles((theme: any) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  deleteCustomObject: (params: any) => ({
+  deleteCustomObject: () => ({
     color: theme.palette.negative[500],
   }),
 }));

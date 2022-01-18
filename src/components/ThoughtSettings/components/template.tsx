@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable unused-imports/no-unused-vars */
 import React, { FC, FormEvent, useState } from 'react';
 import Header from '../../General/Header';
 import Input, { InputChangeHandler } from '../../General/Input';
@@ -15,9 +17,18 @@ interface TemplateProps {
   tags: Tag[];
 }
 
-type TemplateThought = Omit<Thought, 'id'|'thoughtId'|'planId'|'created'|'updated'|'deleted'|'_rev'>
-type TemplateNote = Omit<Note, 'id'|'thoughtId'|'planId'|'created'|'updated'|'deleted'|'_rev'>
-type TemplateTag = Omit<Tag, 'id'|'thoughtId'|'planId'|'created'|'updated'|'deleted'|'_rev'>
+type TemplateThought = Omit<
+  Thought,
+  'id' | 'thoughtId' | 'planId' | 'created' | 'updated' | 'deleted' | '_rev'
+>;
+type TemplateNote = Omit<
+  Note,
+  'id' | 'thoughtId' | 'planId' | 'created' | 'updated' | 'deleted' | '_rev'
+>;
+type TemplateTag = Omit<
+  Tag,
+  'id' | 'thoughtId' | 'planId' | 'created' | 'updated' | 'deleted' | '_rev'
+>;
 
 interface TemplateType {
   thought: TemplateThought;
@@ -25,7 +36,13 @@ interface TemplateType {
   tags: TemplateTag[];
 }
 
-export const Template: FC<TemplateProps> = ({ classes, onClose, thought, notes, tags }) => {
+export const Template: FC<TemplateProps> = ({
+  classes,
+  onClose,
+  thought,
+  notes,
+  tags,
+}) => {
   const [inputValue, setInputValue] = useState<string>('');
   const { db } = useLoadedDB();
 
@@ -45,12 +62,12 @@ export const Template: FC<TemplateProps> = ({ classes, onClose, thought, notes, 
     onClose();
   };
 
-  const handleInput: InputChangeHandler = e => setInputValue(e.target.value);
+  const handleInput: InputChangeHandler = (e) => setInputValue(e.target.value);
 
   return (
     <div className={classes.templateSettings}>
       <form className={classes.form} onSubmit={handleSubmit}>
-        <Header classes={classes} value={'Create Template'}/>
+        <Header classes={classes} value={'Create Template'} />
         <Input
           classes={classes}
           value={inputValue}
@@ -65,7 +82,16 @@ export const Template: FC<TemplateProps> = ({ classes, onClose, thought, notes, 
   );
 };
 
-const stripNonGeneralFields = ({ id, thoughtId, planId, created, updated, deleted, _rev, ...rest}: any) => ({
+const stripNonGeneralFields = ({
+  id,
+  thoughtId,
+  planId,
+  created,
+  updated,
+  deleted,
+  _rev,
+  ...rest
+}: any) => ({
   ...rest,
 });
 

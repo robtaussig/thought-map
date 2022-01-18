@@ -58,8 +58,6 @@ export const Images: FC<ImagesProps> = ({ classes, relatedPictures, loaded, dele
         {relatedPictures.map((picture, idx) => {
           return (
             <ImageWrapper key={`${picture.id}`} className={classes.pictureItem} loaded={loaded}>
-              {/* 
-              // @ts-ignore */}
               <img src={picture.localUrl || picture.imgurUrl} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>
               {(<div className={classes.uploadOptions}>
                 {picture.pinned ? (

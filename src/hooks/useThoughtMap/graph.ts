@@ -28,34 +28,44 @@ export class Vertex {
 export class Graph {
   vertices: Vertex[] = [];
 
-  static dfs = (vertex: Vertex, visited: Visited = {}, processVertex = (vertex: Vertex) => {}, findOnlyNext = false) => {
+  static dfs = (
+    vertex: Vertex,
+    visited: Visited = {},
+    processVertex?: (_vertex: Vertex) => void,
+    findOnlyNext = false
+  ) => {
     visited[vertex.id] = true;
-    vertex.next.forEach(child => {
+    vertex.next.forEach((child) => {
       if (!visited[child.id]) {
         Graph.dfs(child, visited, processVertex, findOnlyNext);
       }
     });
     if (findOnlyNext !== true) {
-      vertex.prev.forEach(child => {
+      vertex.prev.forEach((child) => {
         if (!visited[child.id]) {
           Graph.dfs(child, visited, processVertex, findOnlyNext);
         }
       });
     }
-    processVertex(vertex);
+    processVertex?.(vertex);
   };
 
   static topologicalSort = (vertices: Vertex[]): Vertex[] => {
     const stack: Vertex[] = [];
     const visited: Visited = {};
-    vertices.forEach(vertex => {
+    vertices.forEach((vertex) => {
       if (!visited[vertex.id]) {
-        Graph.dfs(vertex, visited, vertex => {
-          stack.push(vertex);
-        }, true);
+        Graph.dfs(
+          vertex,
+          visited,
+          (vertex) => {
+            stack.push(vertex);
+          },
+          true
+        );
       }
     });
- 
+
     return stack;
   };
 
@@ -63,7 +73,7 @@ export class Graph {
     let visited: Visited = {};
     let last: Vertex;
 
-    vertices.forEach(vertex => {
+    vertices.forEach((vertex) => {
       if (!visited[vertex.id]) {
         Graph.dfs(vertex, visited);
         last = vertex;
@@ -76,7 +86,7 @@ export class Graph {
     if (Object.keys(visited).length === vertices.length) return last;
     return null;
   };
-  
+
   addVertex = (id: string): Vertex => {
     const vertex = new Vertex(id);
     this.vertices.push(vertex);
@@ -85,10 +95,10 @@ export class Graph {
   };
 
   removeVertex = (id: string): void => {
-    const vertex = this.vertices.find(el => el.id === id);
+    const vertex = this.vertices.find((el) => el.id === id);
     if (vertex) {
-      vertex.prev.forEach(el => el.next.delete(vertex));
-      vertex.next.forEach(el => el.prev.delete(vertex));
+      vertex.prev.forEach((el) => el.next.delete(vertex));
+      vertex.next.forEach((el) => el.prev.delete(vertex));
       this.vertices.splice(this.vertices.indexOf(vertex), 1);
     }
   };
@@ -96,7 +106,7 @@ export class Graph {
   addEdge = (from: string, to: string): void => {
     const fromVertex = this.vertices.find(({ id }) => id === from);
     const toVertex = this.vertices.find(({ id }) => id === to);
-    
+
     fromVertex.addPrev(toVertex);
     toVertex.addNext(fromVertex);
   };

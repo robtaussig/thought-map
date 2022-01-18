@@ -13,28 +13,28 @@ export const handleTagChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(tag));
-    searcherWorker.buildTree(null, null, { [tag.id]: tag });
-    notification = { message: 'Tag created' };
-    break;
-    
-  case 'DELETE':
-    dispatch(remove(documentId));
-    searcherWorker.invalidate(tag.id);
-    notification = { message: 'Tag removed' };
-    break;
-
-  case 'UPDATE':
-    dispatch(update(tag));
-    searcherWorker.invalidate(tag.id).then(() => {
+    case 'INSERT':
+      dispatch(insert(tag));
       searcherWorker.buildTree(null, null, { [tag.id]: tag });
-    });
-    notification = { message: 'Tag updated' };
-    break;
+      notification = { message: 'Tag created' };
+      break;
+    
+    case 'DELETE':
+      dispatch(remove(documentId));
+      searcherWorker.invalidate(tag.id);
+      notification = { message: 'Tag removed' };
+      break;
+
+    case 'UPDATE':
+      dispatch(update(tag));
+      searcherWorker.invalidate(tag.id).then(() => {
+        searcherWorker.buildTree(null, null, { [tag.id]: tag });
+      });
+      notification = { message: 'Tag updated' };
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

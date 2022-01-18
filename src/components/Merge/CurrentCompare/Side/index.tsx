@@ -18,13 +18,13 @@ interface SideProps {
 
 const parseValue = (field: string, value: any, plans: Plan[]): string => {
   switch (value) {
-  case true:
-    return 'true';
-  case false:
-    return 'false';
-  default:
-    if (field === 'planId') return plans.find(({ id }) => id === value)?.name ?? 'Unknown plan';
-    return value;
+    case true:
+      return 'true';
+    case false:
+      return 'false';
+    default:
+      if (field === 'planId') return plans.find(({ id }) => id === value)?.name ?? 'Unknown plan';
+      return value;
   }
 };
 

@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
 
-export const useStyles = makeStyles((theme: any) => ({
+export const useStyles = makeStyles(() => ({
   root: {
     padding: 20,
   },

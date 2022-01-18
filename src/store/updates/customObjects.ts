@@ -14,23 +14,23 @@ export const handleCustomObjectChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(customObject));
-    notification = { message: `${capitalize(customObject.type)} created` };
-    break;
+    case 'INSERT':
+      dispatch(insert(customObject));
+      notification = { message: `${capitalize(customObject.type)} created` };
+      break;
     
-  case 'DELETE':
-    dispatch(remove(previousDocumentData));
-    notification = { message: `${capitalize(customObject.type)} removed` };
-    break;
+    case 'DELETE':
+      dispatch(remove(previousDocumentData));
+      notification = { message: `${capitalize(customObject.type)} removed` };
+      break;
 
-  case 'UPDATE':
-    dispatch(update(customObject));
-    notification = { message: `${capitalize(customObject.type)} updated` };
-    break;
+    case 'UPDATE':
+      dispatch(update(customObject));
+      notification = { message: `${capitalize(customObject.type)} updated` };
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

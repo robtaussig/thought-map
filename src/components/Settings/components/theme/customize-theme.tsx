@@ -36,7 +36,7 @@ export const CustomizeTheme: FC<CustomizeThemeProps> = ({ onChange }) => {
       onChange();
     };
 
-  const handleSelectDarkMode = (event: any) => {
+  const handleSelectDarkMode = () => {
     dispatch(toggleDarkMode());
     onChange();
   };

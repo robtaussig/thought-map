@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
-  root: (params: any) => ({
+  root: () => ({
     height: '100%',
     width: '100%',
     display: 'grid',
@@ -26,7 +26,7 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.palette.background[200],
     boxShadow: 'inset 0px 0px 4px 0px black',
   }),
-  fieldHeaders: (params: any) => ({
+  fieldHeaders: () => ({
     gridArea: 'field-headers',
     display: 'grid',
     gridTemplateAreas: '"type left right custom"',
@@ -52,25 +52,25 @@ export const useStyles = makeStyles((theme: any) => ({
       alignItems: 'center',
     },
   }),
-  fields: (params: any) => ({
+  fields: () => ({
     gridArea: 'fields',
     display: 'grid',
     gridAutoFlow: 'row',
     gridTemplateColumns: 'max-content',
   }),
-  itemType: (params: any) => ({
+  itemType: () => ({
     gridRow: 'item-type',
     gridColumn: 'fields',
   }),
-  mutualField: (params: any) => ({
+  mutualField: () => ({
     gridColumn: 'fields',
     fontWeight: 600,
   }),
-  pickableField: (params: any) => ({
+  pickableField: () => ({
     gridColumn: 'fields',
     fontWeight: 600,
   }),
-  editCustomField: (params: any) => ({
+  editCustomField: () => ({
     gridColumn: 'custom',
     ...theme.defaults.centered,
     '& svg': {
@@ -78,7 +78,7 @@ export const useStyles = makeStyles((theme: any) => ({
       width: '0.7em',
     },
   }),
-  customInputForm: (params: any) => ({
+  customInputForm: () => ({
     display: 'grid',
     gridGap: '10px',
     gridTemplateAreas: `"label submit"
@@ -98,7 +98,7 @@ export const useStyles = makeStyles((theme: any) => ({
       padding: '0 20px',
     },
   }),
-  parentThought: (params: any) => ({
+  parentThought: () => ({
     gridArea: 'thought',
     display: 'grid',
     margin: '0 10px',
@@ -142,7 +142,7 @@ export const useStyles = makeStyles((theme: any) => ({
       marginLeft: 10,
     },
   }),
-  pickableValue: (params: any) => ({
+  pickableValue: () => ({
     overflow: 'auto',
     color: 'white',
     backgroundColor: theme.palette.negative[500],
@@ -163,7 +163,7 @@ export const useStyles = makeStyles((theme: any) => ({
       },
     },
   }),
-  mutualValue: (params: any) => ({
+  mutualValue: () => ({
     overflow: 'auto',
     padding: '0 5px',
     '&.left': {
@@ -176,7 +176,7 @@ export const useStyles = makeStyles((theme: any) => ({
       color: theme.palette.secondary[500],
     },
   }),
-  stageButton: (params: any) => ({
+  stageButton: () => ({
     gridRow: 'buttons',
     margin: 10,
     marginLeft: 'auto',

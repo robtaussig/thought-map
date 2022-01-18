@@ -13,22 +13,22 @@ export const handleSettingChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(SettingModel.parseSetting(setting)));
-    notification = { message: 'Setting updated' };
-    break;
+    case 'INSERT':
+      dispatch(insert(SettingModel.parseSetting(setting)));
+      notification = { message: 'Setting updated' };
+      break;
     
-  case 'DELETE':
-    dispatch(remove(previousDocumentData.field));
-    break;
+    case 'DELETE':
+      dispatch(remove(previousDocumentData.field));
+      break;
 
-  case 'UPDATE':
-    dispatch(update(SettingModel.parseSetting(setting)));
-    notification = { message: 'Setting updated' };
-    break;
+    case 'UPDATE':
+      dispatch(update(SettingModel.parseSetting(setting)));
+      notification = { message: 'Setting updated' };
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

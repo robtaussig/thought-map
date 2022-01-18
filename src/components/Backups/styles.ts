@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
-  root: (params: any) => ({
+  root: () => ({
     display: 'grid',
     gridTemplateAreas: `"header header header"
                         "backups-list backups-list backups-list"
@@ -13,18 +13,18 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '100%',
     backgroundColor: theme.palette.background[700],
   }),
-  header: (params: any) => ({
+  header: () => ({
     gridArea: 'header',
     fontWeight: 900,
     fontSize: 20,
     color: theme.palette.secondary[200],
     padding: 20,
   }),
-  backupsList: (params: any) => ({
+  backupsList: () => ({
     gridArea: 'backups-list',
     overflow: 'auto',
   }),
-  addButton: (params: any) => ({
+  addButton: () => ({
     gridArea: 'add-button',
     color: theme.palette.background[200],
     '& svg': {
@@ -32,7 +32,7 @@ export const useStyles = makeStyles((theme: any) => ({
       width: '1.5em',
     },
   }),
-  backup: (params: any) => ({
+  backup: () => ({
     backgroundColor: theme.palette.background[100],
     margin: 20,
     position: 'relative',
@@ -67,14 +67,14 @@ export const useStyles = makeStyles((theme: any) => ({
       },
     },
   }),
-  backupId: (params: any) => ({
+  backupId: () => ({
     gridArea: 'backup-id',
     color: theme.palette.primary[600],
     fontWeight: 600,
     ...theme.defaults.centered,
     marginRight: 'auto',
   }),
-  editButton: (params: any) => ({
+  editButton: () => ({
     gridArea: 'edit',
     color: theme.palette.negative[500],
     ...theme.defaults.centered,
@@ -83,7 +83,7 @@ export const useStyles = makeStyles((theme: any) => ({
       width: '0.75em',
     },
   }),
-  updateStatus: (params: any) => ({
+  updateStatus: () => ({
     gridArea: 'update-status',        
     fontStyle: 'italic',
     display: 'flex',
@@ -94,13 +94,13 @@ export const useStyles = makeStyles((theme: any) => ({
       fontWeight: 600,
     },
   }),
-  version: (params: any) => ({
+  version: () => ({
     ...theme.defaults.centered,
     '&.merged': {
       fontWeight: 600,
     },
   }),
-  button: (params: any) => ({
+  button: () => ({
     border: `1px solid ${theme.palette.secondary[700]}`,
     borderRadius: '3px',
     color: theme.palette.secondary[700],

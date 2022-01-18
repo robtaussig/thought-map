@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
-  container: (params: any) => ({
+  container: () => ({
     position: 'fixed',
     height: '100%',
     left: 0,
@@ -19,7 +19,7 @@ export const useStyles = makeStyles((theme: any) => ({
       }
     }
   }),
-  header: (params: any) => ({
+  header: () => ({
     flex: '0 0 80px',
     backgroundColor: theme.palette.primary[500],
     boxShadow: '0px 0px 5px 0px black',
@@ -29,7 +29,7 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: 'center',
     fontSize: 24,
   }),
-  button: (params: any) => ({
+  button: () => ({
     border: `2px solid ${theme.palette.secondary[0]}`,
     padding: '3px 0',
     marginTop: 40,
@@ -49,7 +49,7 @@ export const useStyles = makeStyles((theme: any) => ({
       boxShadow: '0px 0px 5px 2px black',
     }
   }),
-  circleButton: (params: any) => ({
+  circleButton: () => ({
     ...theme.defaults.circleButton,
     backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     '&#submit': {
@@ -57,7 +57,7 @@ export const useStyles = makeStyles((theme: any) => ({
       bottom: 10,
     },
   }),
-  checkboxLabel: (params: any) => ({
+  checkboxLabel: () => ({
     marginTop: 40,
     width: '70%',
     padding: '3px 0',

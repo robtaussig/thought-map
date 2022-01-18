@@ -12,23 +12,23 @@ export const handlePlanChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(plan));
-    notification = { message: 'Plan created' };
-    break;
+    case 'INSERT':
+      dispatch(insert(plan));
+      notification = { message: 'Plan created' };
+      break;
     
-  case 'DELETE':
-    dispatch(remove(documentId));
-    notification = { message: 'Plan removed' };
-    break;
+    case 'DELETE':
+      dispatch(remove(documentId));
+      notification = { message: 'Plan removed' };
+      break;
 
-  case 'UPDATE':
-    dispatch(update(plan));
-    notification = { message: 'Plan updated' };
-    break;
+    case 'UPDATE':
+      dispatch(update(plan));
+      notification = { message: 'Plan updated' };
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

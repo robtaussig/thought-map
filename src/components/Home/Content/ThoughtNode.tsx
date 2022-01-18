@@ -64,7 +64,7 @@ const generateDateTimeString = (thought: Thought): string => {
   }
 };
 
-export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
+const UnmemoizedThoughtNode: FC<ThoughtNodeProps> = ({
   classes,
   thought,
   statusOptions,
@@ -243,6 +243,8 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
       })}
     </div>
   );
-});
+};
+
+export const ThoughtNode = React.memo(UnmemoizedThoughtNode);
 
 export default ThoughtNode;

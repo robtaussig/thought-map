@@ -10,7 +10,7 @@ interface PriorityListModalProps {
   onClose?: () => void;
 }
 
-export const PriorityListModal: FC<PriorityListModalProps> = ({ classes, thoughts, onMinimize = () => {} }) => {
+export const PriorityListModal: FC<PriorityListModalProps> = ({ classes, thoughts, onMinimize }) => {
   const priorityThoughts = useMemo(() => {
     const thoughtsWithPriority = thoughts.map(assignThoughtPriority);
 
@@ -74,29 +74,29 @@ const getLastUpdatedModifier = ({ updated }: { updated?: number }) => {
 
 const getStatusModifier = ({ status }: { status?: string }): number => {
   switch (status) {
-  case 'new':
-    return 1;
-  case 'in progress':
-    return 2;
-  case 'won\'t fix':
-    return -1000;
-  case 'completed':
-    return -1000;
-  default:
-    return 0;
+    case 'new':
+      return 1;
+    case 'in progress':
+      return 2;
+    case 'won\'t fix':
+      return -1000;
+    case 'completed':
+      return -1000;
+    default:
+      return 0;
   }
 };
 
 const getTypeModifier = ({ type = '' }: { type?: string }) => {
   switch (type.toLowerCase()) {
-  case 'reminder':
-    return 3;
-  case 'todo':
-    return 2;
-  case 'task':
-    return 1;
-  default:
-    return 0;
+    case 'reminder':
+      return 3;
+    case 'todo':
+      return 2;
+    case 'task':
+      return 1;
+    default:
+      return 0;
   }
 };
 

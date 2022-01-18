@@ -15,7 +15,7 @@ interface StaticCircleButtonProps {
   [rest: string]: any;
 }
 
-export const StaticCircleButton: FC<StaticCircleButtonProps> = React.memo(({
+export const StaticCircleButton: FC<StaticCircleButtonProps> = ({
   classes,
   id = 'add-button',
   onClick,
@@ -75,6 +75,6 @@ export const StaticCircleButton: FC<StaticCircleButtonProps> = React.memo(({
       />
     </button>
   );
-});
+};
 
 export default StaticCircleButton;

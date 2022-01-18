@@ -3,7 +3,8 @@ import { Connection } from '../store/rxdb/schemas/connection';
 import { Selector } from 'react-redux';
 import { RootState } from './';
 
-export const connectionSelector: Selector<RootState, Connections> = state => state.connections;
+export const connectionSelector: Selector<RootState, Connections> = (state) =>
+  state.connections;
 export interface Connections {
   [connectionId: string]: Connection;
 }
@@ -14,7 +15,7 @@ const connections = createSlice({
   name: 'connections',
   initialState,
   reducers: {
-    setConnections(state, action: PayloadAction<Connections>) {
+    setConnections(_state, action: PayloadAction<Connections>) {
       return action.payload;
     },
     insert(state, action: PayloadAction<Connection>) {
@@ -26,14 +27,9 @@ const connections = createSlice({
     update(state, action: PayloadAction<Connection>) {
       state[action.payload.id] = action.payload;
     },
-  }
+  },
 });
 
-export const {
-  setConnections,
-  insert,
-  remove,
-  update,
-} = connections.actions;
+export const { setConnections, insert, remove, update } = connections.actions;
 
 export default connections.reducer;

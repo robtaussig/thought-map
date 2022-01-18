@@ -144,7 +144,7 @@ const getDBItems = (db: RxDatabase): Promise<[
 };
 
 export const runDiagnosis = async (db: RxDatabase) => {
-  const [thoughts, connections, plans, notes, tags, pictures, settings, statuses] = await getDBItems(db);
+  const [thoughts, connections, plans, notes, tags, pictures, _settings, statuses] = await getDBItems(db);
   const thoughtIds = new Set<string>(thoughts.map<string>(({ id }) => id));
   const orphanedChildObjectSources: OrphanedChildSource[] = [
     { table: 'note', items: notes },

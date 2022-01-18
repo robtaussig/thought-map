@@ -61,41 +61,41 @@ export const generateInitialState = ([left, right]: Comparable): CompareState =>
 
 export const compareReducer = (state: CompareState, action: Action): CompareState => {
   switch (action.type) {
-  case ActionTypes.SetState:
-    return action.payload;
+    case ActionTypes.SetState:
+      return action.payload;
 
-  case ActionTypes.Pick:
-    return {
-      ...state,
-      fieldsToPick: state.fieldsToPick.filter(field => field !== action.payload.field),
-      fieldsPicked: state.fieldsPicked.concat(action.payload.field),
-      merged: {
-        ...state.merged,
-        item: {
-          ...state.merged.item,
+    case ActionTypes.Pick:
+      return {
+        ...state,
+        fieldsToPick: state.fieldsToPick.filter(field => field !== action.payload.field),
+        fieldsPicked: state.fieldsPicked.concat(action.payload.field),
+        merged: {
+          ...state.merged,
+          item: {
+            ...state.merged.item,
+            [action.payload.field]: action.payload.value,
+          },
+        }
+      };
+
+    case ActionTypes.InputCustom:
+      return {
+        ...state,
+        customInput: {
+          ...state.customInput,
           [action.payload.field]: action.payload.value,
         },
-      }
-    };
-
-  case ActionTypes.InputCustom:
-    return {
-      ...state,
-      customInput: {
-        ...state.customInput,
-        [action.payload.field]: action.payload.value,
-      },
-      merged: {
-        ...state.merged,
-        item: {
-          ...state.merged.item,
-          [action.payload.field]: action.payload.value,
-          updated: +new Date(),
-        },
-      }
-    };
+        merged: {
+          ...state.merged,
+          item: {
+            ...state.merged.item,
+            [action.payload.field]: action.payload.value,
+            updated: +new Date(),
+          },
+        }
+      };
   
-  default:
-    throw new Error(`Unrecognized action: ${action}`);
+    default:
+      throw new Error(`Unrecognized action: ${action}`);
   }
 };

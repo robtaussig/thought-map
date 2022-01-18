@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
-  root: (params: any) => ({
+  root: () => ({
     position: 'absolute',
     display: 'flex',
     flexDirection: 'column',
@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme: any) => ({
       outline: 'none',
     },
   }),
-  closeButton: (params: any) => ({
+  closeButton: () => ({
     position: 'absolute',
     top: 0,
     right: 0,

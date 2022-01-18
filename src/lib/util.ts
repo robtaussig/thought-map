@@ -12,12 +12,15 @@ export interface MappedCollection {
 }
 
 export const intoMap = <t extends Mappable>(items: t[]) => {
-  return items.reduce((all, each) => {
-    all[each.id] = each;
-    return all;
-  }, {} as {
-    [id: string]: t
-  });
+  return items.reduce(
+    (all, each) => {
+      all[each.id] = each;
+      return all;
+    },
+    {} as {
+      [id: string]: t;
+    }
+  );
 };
 
 export const convertSettings = (settings: Setting[]): SettingState => {
@@ -27,11 +30,15 @@ export const convertSettings = (settings: Setting[]): SettingState => {
   }, {});
 };
 
-export const openConfirmation = (confirmationText: string, onConfirm: () => void, onReject: () => void = () => {}) => {
+export const openConfirmation = (
+  confirmationText: string,
+  onConfirm: () => void,
+  onReject?: () => void
+) => {
   if (window.confirm(confirmationText)) {
     onConfirm();
   } else {
-    onReject();
+    onReject?.();
   }
 };
 

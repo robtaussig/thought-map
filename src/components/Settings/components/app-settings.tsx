@@ -86,7 +86,7 @@ const clearCaches = async (): Promise<boolean[]> => {
 
 export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
+  const [setLoading] = useLoadingOverlay(rootRef);
   const pictures = useSelector(pictureSelector);
   const settings = useSelector(settingSelector);
   const customTheme = useSelector(customThemeSelector);

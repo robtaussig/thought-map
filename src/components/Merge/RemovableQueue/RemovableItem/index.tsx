@@ -9,7 +9,7 @@ interface RemovableItemProps {
   selected: boolean;
 }
 
-export const RemovableItem: FC<RemovableItemProps> = ({ classes, item, onClick, selected }) => {
+export const RemovableItem: FC<RemovableItemProps> = ({ classes, onClick, selected }) => {
   const rootRef = useRef<HTMLDivElement>(null);
 
   return (

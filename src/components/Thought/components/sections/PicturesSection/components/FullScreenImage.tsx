@@ -20,7 +20,7 @@ export const FullScreenImage: FC<FullScreenImageProps> = ({ onClose, image }) =>
     imageElement.src = image;
     imageElement.classList.add('image');
     imageElement.id = 'full-screen-image';
-    imageElement.onclick = e => {
+    imageElement.onclick = () => {
       imageElement.classList.toggle('zoom');
       if (imageElement.classList.contains('zoom')) {
         closeButton.style.display = 'none';

@@ -43,7 +43,7 @@ const styles = (theme: any): StyleRules => ({
   }),
 });
 
-export const VisibilityModal: FC<VisibilityModalProps> = ({ classes, thought, onClose }) => {
+export const VisibilityModal: FC<VisibilityModalProps> = ({ classes, thought }) => {
   const { db } = useLoadedDB();
   const [priority, setPriority] = useState<number>(thought.priority);
   const [goalPoints, setGoalPoints] = useState<number>(thought.goalPoints);

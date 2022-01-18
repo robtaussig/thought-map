@@ -44,13 +44,6 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
     });
   }, []);
 
-  const handleChangeReportBugs = useCallback(e => {
-    settingsActions.editSetting(db, {
-      field: 'reportBugs',
-      value: e.target.checked,
-    });
-  }, []);
-
   const handleChangeUseAutoSuggest = useCallback(e => {
     settingsActions.editSetting(db, {
       field: 'useAutoSuggest',
@@ -102,13 +95,6 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
     }
   }, []);
 
-  const handleChangePropagateUpdates = useCallback(e => {
-    settingsActions.editSetting(db, {
-      field: 'propagateUpdates',
-      value: e.target.checked,
-    });
-  }, []);
-
   const handleChangeDisplayArchived = useCallback(async (e) => {
     await settingsActions.editSetting(db, {
       field: 'displayArchived',
@@ -132,14 +118,12 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
   }, []);
 
   const disableTips = Boolean(settings && settings.disableTips);
-  const reportBugs = Boolean(settings && settings.reportBugs);
   const displayArchived = Boolean(settings && settings.displayArchived);
   const useAutoSuggest = Boolean(settings && settings.useAutoSuggest);
   const useLocation = Boolean(settings && settings.useLocation);
   const usePushNotifications = Boolean(settings && settings.usePushNotifications);
   const autoCreateCalendarEvent = Boolean(settings && settings.autoCreateCalendarEvent);
   const enableBackupOnDemand = Boolean(settings && settings.enableBackupOnDemand);
-  const propagateUpdates = Boolean(settings && settings.propagateUpdates);
 
   return (
     <Fragment>

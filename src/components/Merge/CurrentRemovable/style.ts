@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme: any) => ({
     gridArea: 'removable',
     overflow: 'auto',
   },
-  rightHeader: (params: any) => ({
+  rightHeader: () => ({
     gridArea: 'right-header',
     fontWeight: 600,
     textTransform: 'uppercase',
@@ -24,7 +24,7 @@ export const useStyles = makeStyles((theme: any) => ({
     paddingBottom: 0,
     textAlign: 'right',
   }),
-  deleteButton: (params: any) => ({
+  deleteButton: () => ({
     gridArea: 'delete-button',
     color: theme.palette.negative[500],
     '& svg': {
@@ -32,7 +32,7 @@ export const useStyles = makeStyles((theme: any) => ({
       width: '5em',
     },
   }),
-  keepButton: (params: any) => ({
+  keepButton: () => ({
     gridArea: 'keep-button',
     margin: 10,
     padding: '5px 15px',

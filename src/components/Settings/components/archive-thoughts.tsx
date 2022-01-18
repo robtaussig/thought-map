@@ -7,9 +7,9 @@ import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 import { Plan } from '~store/rxdb/schemas/plan';
 
 export interface ArchiveThoughtsProps {
-    classes: any;
-    thoughts: Thought[];
-    plan: Plan;
+  classes: any;
+  thoughts: Thought[];
+  plan: Plan;
 }
 
 export const ArchiveThoughts: FC<ArchiveThoughtsProps> = ({

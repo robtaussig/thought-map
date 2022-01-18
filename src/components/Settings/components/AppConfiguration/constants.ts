@@ -2,7 +2,7 @@ export const AUTOSUGGEST_TOOLTIP_TEXT =
   `If enabled, certain inputs will produce suggestions that draw from 
   previous entries. Suggestions will be a combination of word completions 
   and word sequences, and will be displayed as an overlay. This is different 
-  from any browser/device-based auto-suggestions which don\'t necessarily 
+  from any browser/device-based auto-suggestions which don't necessarily 
   consider context.`;
 
 export const DISABLE_TIP_TOOLTIP_TEXT =
@@ -15,7 +15,7 @@ export const DISABLE_REPORT_BUGS_TOOLTIP_TEXT =
 
 export const AUTO_CREATE_CALENDAR_TOOLTIP_TEXT =
   `If enabled, calendar events will be created automatically whenever a 
-  thought\'s date/time is modified`;
+  thought's date/time is modified`;
 
 export const PUSH_NOTIFICATIONS_TOOLTIP_TEXT =
   `In order to use reminders and other related features, push notifications 

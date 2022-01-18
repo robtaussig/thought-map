@@ -21,7 +21,7 @@ export const MissingThought: FC<MissingThoughtProps> = () => {
 
   return (
     <div className={classes.root}>
-      Uh oh, this thought doesn't exist (yet)!
+      Uh oh, this thought does not exist (yet)!
     </div>
   );
 };

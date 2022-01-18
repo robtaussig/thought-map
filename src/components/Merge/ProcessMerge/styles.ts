@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
-  root: (params: any) => ({
+  root: () => ({
     height: '100%',
     width: '100%',
     ...theme.defaults.centered,

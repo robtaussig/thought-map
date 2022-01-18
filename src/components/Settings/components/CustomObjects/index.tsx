@@ -17,7 +17,7 @@ enum Side {
 export const CustomObjects: FC = () => {
   const classes = useCustomObjectStyles({});
   const [side, setSide] = useState<Side>(Side.TOP);
-  const [openModal, closeModal] = useModal();
+  const [openModal] = useModal();
   const rootRef = useRef(null);
   const handleClickClose = useCallback(() => {
     setSide(Side.TOP);

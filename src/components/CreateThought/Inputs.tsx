@@ -17,7 +17,7 @@ interface InputsProps {
   setSelectedPlan: (plan: string) => void;
 }
 
-export const Inputs: FC<InputsProps> = React.memo(({
+const Inputs: FC<InputsProps> = ({
   classes,
   createdThought,
   setCreatedThought,
@@ -59,7 +59,7 @@ export const Inputs: FC<InputsProps> = React.memo(({
       )}
     </Fragment>
   );
-});
+};
 
 export default Inputs;
 

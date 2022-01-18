@@ -53,7 +53,7 @@ const styles = (theme: any): StyleRules => ({
   reviewStatValue: {
 
   },
-  timelineButton: (params: any) => ({
+  timelineButton: () => ({
     backgroundColor: theme.palette.secondary[700],
     color: 'white',
     marginTop: 10,
@@ -79,10 +79,6 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
     } else {
       navigate(`/plan/${planId}/timeline`);
     }
-  };
-
-  const handleClickArchive = () => {
-
   };
 
   return (

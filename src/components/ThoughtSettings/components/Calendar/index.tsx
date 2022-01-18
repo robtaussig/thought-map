@@ -64,7 +64,7 @@ interface AddToCalendarProps {
 
 const DASH_REGEX = /-/g;
 
-export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, thoughtId, notes, tags }) => {
+export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, thoughtId, notes, tags }) => {
   const { db } = useLoadedDB();
   const thoughts = useSelector(thoughtSelector);
   const thought = thoughts.find(el => el.id === thoughtId);
@@ -77,7 +77,7 @@ export const AddToCalendar: FC<AddToCalendarProps> = ({ classes, onClose, though
     description: generateDescriptionFromThought(thought),
     start: generateStartFromThought(thought),
     end: generateEndFromThought(thought),
-    reminders: generateRemindersFromThought(thought),
+    reminders: generateRemindersFromThought(),
   }), [thought, notes, tags]);
 
   const handleClickCreate = async () => {

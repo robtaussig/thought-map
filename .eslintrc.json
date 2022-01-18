@@ -24,7 +24,8 @@
     "rules": {
         "indent": [
             "error",
-            2
+            2,
+            { "SwitchCase": 1 }
         ],
         "linebreak-style": [
             "error",
@@ -41,15 +42,18 @@
         ],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-empty-interface": "off",
         "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
             "error",
             {
                 "vars": "all",
                 "varsIgnorePattern": "^_",
-                "args": "all",
-                "argsIgnorePattern": "^_"
+                "args": "after-used",
+                "argsIgnorePattern": "^_",
+                "ignoreRestSiblings": true
             }
         ],
         "sort-imports": [

@@ -12,23 +12,23 @@ export const handleBackupChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(backup));
-    notification = { message: 'Backup created' };
-    break;
+    case 'INSERT':
+      dispatch(insert(backup));
+      notification = { message: 'Backup created' };
+      break;
     
-  case 'DELETE':
-    dispatch(remove(documentId));
-    notification = { message: 'Backup removed' };
-    break;
+    case 'DELETE':
+      dispatch(remove(documentId));
+      notification = { message: 'Backup removed' };
+      break;
 
-  case 'UPDATE':
-    dispatch(update(backup));
-    notification = { message: 'Backup updated' };
-    break;
+    case 'UPDATE':
+      dispatch(update(backup));
+      notification = { message: 'Backup updated' };
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

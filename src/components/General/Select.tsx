@@ -15,7 +15,7 @@ interface SelectProps {
   [rest: string]: any;
 }
 
-export const Select: FC<SelectProps> = React.memo(({
+export const Select: FC<SelectProps> = ({
   id,
   classes,
   value,
@@ -43,6 +43,6 @@ export const Select: FC<SelectProps> = React.memo(({
       )}
     </label>
   );
-});
+};
 
 export default Select;

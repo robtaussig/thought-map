@@ -9,7 +9,7 @@ interface HeaderProps {
   [rest: string]: any;
 }
 
-export const Header: FC<HeaderProps> = React.memo(({ classes, value, onClick, tooltip, ...rest }) => {
+export const Header: FC<HeaderProps> = ({ classes, value, onClick, tooltip, ...rest }) => {
 
   return (
     <h2 className={classes.header} onClick={onClick} {...rest}>
@@ -19,6 +19,6 @@ export const Header: FC<HeaderProps> = React.memo(({ classes, value, onClick, to
       )}
     </h2>
   );
-});
+};
 
 export default Header;

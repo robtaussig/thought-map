@@ -35,7 +35,7 @@ interface InputProps {
   [rest: string]: any;
 }
 
-export const Input: FC<InputProps> = React.memo(({
+export const Input: FC<InputProps> = ({
   classes,
   value,
   onChange,
@@ -122,6 +122,6 @@ export const Input: FC<InputProps> = React.memo(({
       )}
     </Fragment>
   );
-});
+};
 
 export default Input;

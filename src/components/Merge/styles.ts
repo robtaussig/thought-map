@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
-  root: (params: any) => ({
+  root: () => ({
     height: '100%',
     width: '100%',
     backgroundColor: theme.palette.background[600],
@@ -20,7 +20,7 @@ export const useStyles = makeStyles((theme: any) => ({
       backgroundColor: theme.palette.background[100],
     }
   }),
-  upToDate: (params: any) => ({
+  upToDate: () => ({
     height: '100%',
     width: '100%',
     ...theme.defaults.centered,
@@ -28,22 +28,22 @@ export const useStyles = makeStyles((theme: any) => ({
     fontSize: 40,
     color: theme.palette.secondary[700],
   }),
-  currentCompare: (params: any) => ({
+  currentCompare: () => ({
     gridArea: 'compare',
   }),
-  currentReview: (params: any) => ({
+  currentReview: () => ({
     gridArea: 'compare',
   }),
-  compareQueue: (params: any) => ({
+  compareQueue: () => ({
     gridArea: 'queue',
   }),
-  removableQueue: (params: any) => ({
+  removableQueue: () => ({
     gridArea: 'remove',
   }),
-  mergeStage: (params: any) => ({
+  mergeStage: () => ({
     gridArea: 'stage',
   }),
-  currentRemovable: (params: any) => ({
+  currentRemovable: () => ({
     gridArea: 'compare',
   }),
 }));
@@ -70,7 +70,7 @@ export const useCompareQueueStyles = makeStyles((theme: any) => ({
     gridAutoFlow: 'column',
     gridColumnGap: '20px',
   },
-  compareItem: (params: any) => ({
+  compareItem: () => ({
     backgroundColor: theme.palette.background[300],
     color: theme.palette.secondary[700],
     display: 'grid',
@@ -88,17 +88,17 @@ export const useCompareQueueStyles = makeStyles((theme: any) => ({
       backgroundColor: theme.palette.secondary[700],
     },
   }),
-  compareItemCollectionName: (params: any) => ({
+  compareItemCollectionName: () => ({
     gridArea: 'collection-name',
     fontWeight: 600,    
   }),
-  compareItemDiffFields: (params: any) => ({
+  compareItemDiffFields: () => ({
     gridArea: 'diff-fields',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
   }),
-  readyToMergeButton: (params: any) => ({
+  readyToMergeButton: () => ({
     fontWeight: 600,
     ...theme.defaults.centered,
     fontSize: 20,
@@ -128,7 +128,7 @@ export const useMergeStageStyles = makeStyles((theme: any) => ({
     gridAutoFlow: 'column',
     gridColumnGap: '20px',
   },
-  mergeItem: (params: any) => ({
+  mergeItem: () => ({
     backgroundColor: theme.palette.background[300],
     color: theme.palette.secondary[700],
     display: 'grid',
@@ -145,12 +145,12 @@ export const useMergeStageStyles = makeStyles((theme: any) => ({
       backgroundColor: theme.palette.secondary[700],
     },
   }),
-  mergeItemCollectionName: (params: any) => ({
+  mergeItemCollectionName: () => ({
     gridArea: 'collection-name',
     fontWeight: 600,    
     ...theme.defaults.centered,
   }),
-  removeButton: (params: any) => ({
+  removeButton: () => ({
     '& svg': {
       color: 'white',
     },

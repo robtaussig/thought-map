@@ -15,7 +15,7 @@ interface RangeProps {
   [rest: string]: any;
 }
 
-export const Range: FC<RangeProps> = React.memo(({ id, classes, value, name, min, max, onChange, label, autoFocus, tooltip, ...rest }) => {
+export const Range: FC<RangeProps> = ({ id, classes, value, name, min, max, onChange, label, autoFocus, tooltip, ...rest }) => {
 
   return (
     <label id={id} className={classes.rangeLabel} {...rest}>
@@ -26,6 +26,6 @@ export const Range: FC<RangeProps> = React.memo(({ id, classes, value, name, min
       )}
     </label>
   );
-});
+};
 
 export default Range;

@@ -4,10 +4,10 @@ import { format } from 'date-fns';
 
 const parseValue = (field: string, value: any): string => {
   switch (field) {
-  case 'created':
-    return format(value, 'yyyy-MM-dd HH:mm');
-  default:
-    return String(value);
+    case 'created':
+      return format(value, 'yyyy-MM-dd HH:mm');
+    default:
+      return String(value);
   }
 };
 
@@ -40,7 +40,7 @@ export const Base: FC<BaseProps> = ({
         className={classes.fields}
       >
         {Object.entries(fields)
-          .filter(([field, value]) => !['', undefined, null].includes(value))
+          .filter(([_field, value]) => !['', undefined, null].includes(value))
           .map(([field, value], idx) => {
             return (
               <Fragment

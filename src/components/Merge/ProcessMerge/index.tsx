@@ -13,7 +13,7 @@ import { Item } from '../types';
 import { useStyles } from './styles';
 import { getSearchParam } from '../../../lib/util';
 import { v4 as uuidv4 } from 'uuid';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const ProcessMerge: FC = () => {
   const classes = useStyles({});
@@ -26,7 +26,6 @@ export const ProcessMerge: FC = () => {
   const connections = useSelector(connectionSelector);
   const backups = useSelector(backupSelector);
   const backupId = useBackupIdFromHistory();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const handleClickMerge = async () => {

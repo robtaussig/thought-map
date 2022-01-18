@@ -13,28 +13,28 @@ export const handleNoteChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(note));
-    searcherWorker.buildTree(null,{ [note.id]: note }, null);
-    notification = { message: 'Note created' };
-    break;
-    
-  case 'DELETE':
-    dispatch(remove(documentId));
-    searcherWorker.invalidate(note.id);
-    notification = { message: 'Note removed' };
-    break;
-
-  case 'UPDATE':
-    dispatch(update(note));
-    searcherWorker.invalidate(note.id).then(() => {
+    case 'INSERT':
+      dispatch(insert(note));
       searcherWorker.buildTree(null,{ [note.id]: note }, null);
-    });
-    notification = { message: 'Note updated' };
-    break;
+      notification = { message: 'Note created' };
+      break;
+    
+    case 'DELETE':
+      dispatch(remove(documentId));
+      searcherWorker.invalidate(note.id);
+      notification = { message: 'Note removed' };
+      break;
+
+    case 'UPDATE':
+      dispatch(update(note));
+      searcherWorker.invalidate(note.id).then(() => {
+        searcherWorker.buildTree(null,{ [note.id]: note }, null);
+      });
+      notification = { message: 'Note updated' };
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

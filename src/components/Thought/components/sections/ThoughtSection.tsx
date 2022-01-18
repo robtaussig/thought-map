@@ -1,4 +1,13 @@
-import React, { ChangeEvent, FC, FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import Edit from '@material-ui/icons/Edit';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -14,11 +23,7 @@ import Input from '../../../General/Input';
 import useModal from '../../../../hooks/useModal';
 import useLongPress from '../../../../hooks/useLongPress';
 import FullScreenImage from './PicturesSection/components/FullScreenImage';
-import {
-  EditProps,
-  EditTypes,
-  SectionState
-} from '../../types';
+import { EditProps, EditTypes, SectionState } from '../../types';
 import QuickAddModal from '../QuickAddModal';
 
 interface ThoughtSectionProps {
@@ -40,7 +45,8 @@ interface ThoughtSectionProps {
 const HTTP_REGEX = /(^(http|www)).*(\.([A-z]{2,})(\/.*)?$)/;
 const HTTPS_REGEX = /^http(s?):\/\//;
 const TEL_REGEX = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/;
-const EMAIL_REGEX = /^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/;
+const EMAIL_REGEX =
+  /^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/;
 
 export const ThoughtSection: FC<ThoughtSectionProps> = ({
   classes,
@@ -52,21 +58,23 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   visible,
   quickActionButton,
   linkifyValues,
-  onLongPress = (cb: () => void) => { },
+  onLongPress,
   sectionState,
   onDrop,
   onToggleVisibility,
 }) => {
   const [editting, setEditting] = useState<boolean>(false);
   const [fullScreenImage, setFullScreenImage] = useState<string>(null);
-  const [edittedItems, setEdittedItems] = useState<(string | [string, string])[]>([]);
+  const [edittedItems, setEdittedItems] = useState<
+  (string | [string, string])[]
+    >([]);
   const [moved, setMoved] = useState<boolean>(false);
   const movedTimeout = useRef<NodeJS.Timer>(null);
   const [openModal, closeModal] = useModal();
   const rootRef = useRef<HTMLDivElement>(null);
   const [inputtedValue, setInputtedValue] = useState<string>(String(value));
   const handleLongPress = useLongPress(() => {
-    onLongPress(() => {
+    onLongPress?.(() => {
       setMoved(true);
       movedTimeout.current = setTimeout(() => {
         setMoved(false);
@@ -91,7 +99,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     if ([null, EditTypes.Photo].includes(edit.type)) {
       if (edit.onEdit) edit.onEdit();
     } else {
-      setEditting(prev => !prev);
+      setEditting((prev) => !prev);
     }
   };
 
@@ -99,97 +107,122 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     if (typeof value === 'string') {
       let _component;
       switch (edit.type) {
-      case EditTypes.Select:
-        const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-          edit.onEdit(e.target.value);
-          setInputtedValue(e.target.value);
-          setEditting(false);
-        };
+        case EditTypes.Select:
+          _component = (
+            <Select
+              classes={classes}
+              id={'section-editor'}
+              value={value}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                edit.onEdit(e.target.value);
+                setInputtedValue(e.target.value);
+                setEditting(false);
+              }}
+              options={edit.options}
+            />
+          );
+          break;
+        case EditTypes.TextArea:
+          _component = (
+            <TextArea
+              classes={classes}
+              id={'section-editor'}
+              value={inputtedValue}
+              onChange={(e) => setInputtedValue(e.target.value)}
+              autoFocus
+            />
+          );
+          break;
+        case EditTypes.DateTime:
+          _component = (
+            <div>
+              <DateInput
+                classes={classes}
+                value={inputtedValue.split(',')[0]}
+                onChange={(e: any) => {
+                  const date = e.target.value;
+                  setInputtedValue((prev) =>
+                    prev
+                      .split(',')
+                      .map((val, idx) => (idx === 0 ? date : val))
+                      .join(',')
+                  );
+                }}
+                autoFocus
+              />
+              <DateInput
+                classes={classes}
+                value={inputtedValue.split(',')[1]}
+                time
+                onChange={(e: any) => {
+                  const time = e.target.value;
+                  setInputtedValue((prev) =>
+                    prev
+                      .split(',')
+                      .map((val, idx) => (idx === 1 ? time : val))
+                      .join(',')
+                  );
+                }}
+                autoFocus
+              />
+            </div>
+          );
+          break;
 
-        _component = (
-          <Select
-            classes={classes}
-            id={'section-editor'}
-            value={value}
-            onChange={handleSelect}
-            options={edit.options}
-          />
-        );
-        break;
-      case EditTypes.TextArea:
-        _component = (
-          <TextArea
-            classes={classes}
-            id={'section-editor'}
-            value={inputtedValue}
-            onChange={e => setInputtedValue(e.target.value)}
-            autoFocus
-          />
-        );
-        break;
-      case EditTypes.DateTime:
-        const [inputtedDate, inputtedTime] = inputtedValue.split(',');
-        const handleSetDate = (e: any) => {
-          const date = e.target.value;
-          setInputtedValue(prev => prev.split(',').map((val, idx) => idx === 0 ? date : val).join(','));
-        };
-        const handleSetTime = (e: any) => {
-          const time = e.target.value;
-          setInputtedValue(prev => prev.split(',').map((val, idx) => idx === 1 ? time : val).join(','));
-        };
-        _component = (
-          <div>
-            <DateInput classes={classes} value={inputtedDate} onChange={handleSetDate} autoFocus />
-            <DateInput classes={classes} value={inputtedTime} time onChange={handleSetTime} autoFocus />
-          </div>
-        );
-        break;
+        case EditTypes.Number:
+          _component = (
+            <Input
+              classes={classes}
+              id={'section-editor'}
+              value={inputtedValue}
+              onChange={(e) => setInputtedValue(e.target.value)}
+              type={'number'}
+              autoFocus
+            />
+          );
+          break;
 
-      case EditTypes.Number:
-        _component = (
-          <Input
-            classes={classes}
-            id={'section-editor'}
-            value={inputtedValue}
-            onChange={e => setInputtedValue(e.target.value)}
-            type={'number'}
-            autoFocus
-          />
-        );
-        break;
-
-      default:
-        _component = (
-          <Input
-            classes={classes}
-            id={'section-editor'}
-            value={inputtedValue}
-            onChange={e => setInputtedValue(e.target.value)}
-            autoFocus
-          />
-        );
+        default:
+          _component = (
+            <Input
+              classes={classes}
+              id={'section-editor'}
+              value={inputtedValue}
+              onChange={(e) => setInputtedValue(e.target.value)}
+              autoFocus
+            />
+          );
       }
 
-      const handleSubmit: FormEventHandler = e => {
+      const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
         edit.onEdit(inputtedValue);
         setEditting(false);
       };
 
-      return (<form className={classes.sectionEditForm} onSubmit={handleSubmit}>{_component}</form>);
+      return (
+        <form className={classes.sectionEditForm} onSubmit={handleSubmit}>
+          {_component}
+        </form>
+      );
     } else {
       return (
         <div className={classes.sectionEditForm}>
-          {edit.options ?
-            (value.map((item, idx) => {
+          {edit.options
+            ? value.map((item, idx) => {
               return (
                 <div key={`${item}-${idx}`} className={classes.editableItem}>
                   <span className={classes.quickItem}>{item}</span>
-                  <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete /></button>
+                  <button
+                    className={classes.deleteItemButton}
+                    onClick={() => edit.onDelete(idx)}
+                  >
+                    <Delete />
+                  </button>
                 </div>
               );
-            })) :
-            (value.map((item, idx) => {
+            })
+            : value.map((item, idx) => {
               return (
                 <div key={`${item}-${idx}`} className={classes.editableItem}>
                   <Input
@@ -197,20 +230,26 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
                     id={'quick-item-edit'}
                     value={edittedItems[idx] as string}
                     autoSuggest={edit.autoSuggest}
-                    onChange={e => {
+                    onChange={(e) => {
                       const value = e.target.value;
-                      setEdittedItems(prev => prev.map((prevItem, prevIdx) => {
-                        if (prevIdx === idx) return value;
-                        return prevItem;
-                      }));
+                      setEdittedItems((prev) =>
+                        prev.map((prevItem, prevIdx) => {
+                          if (prevIdx === idx) return value;
+                          return prevItem;
+                        })
+                      );
                     }}
                     aria-label={`Edit ${item}`}
                   />
-                  <button className={classes.deleteItemButton} onClick={() => edit.onDelete(idx)}><Delete /></button>
+                  <button
+                    className={classes.deleteItemButton}
+                    onClick={() => edit.onDelete(idx)}
+                  >
+                    <Delete />
+                  </button>
                 </div>
               );
-            }))
-          }
+            })}
         </div>
       );
     }
@@ -253,11 +292,28 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     const linkify = (element: any): any => {
       if (linkifyValues) {
         if (HTTP_REGEX.test(element)) {
-          return <a href={`http://${element.replace(HTTPS_REGEX, '')}`} target={'_blank'} style={{ color: 'black' }} rel="noreferrer">{element}</a>;
+          return (
+            <a
+              href={`http://${element.replace(HTTPS_REGEX, '')}`}
+              target={'_blank'}
+              style={{ color: 'black' }}
+              rel='noreferrer'
+            >
+              {element}
+            </a>
+          );
         } else if (TEL_REGEX.test(element)) {
-          return <a href={`tel:${element}`} style={{ color: 'black' }}>{element}</a>;
+          return (
+            <a href={`tel:${element}`} style={{ color: 'black' }}>
+              {element}
+            </a>
+          );
         } else if (EMAIL_REGEX.test(element)) {
-          return <a href={`mailto:${element}`} style={{ color: 'black' }}>{element}</a>;
+          return (
+            <a href={`mailto:${element}`} style={{ color: 'black' }}>
+              {element}
+            </a>
+          );
         } else {
           return element;
         }
@@ -266,22 +322,36 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     };
 
     if (typeof value === 'string') {
-      const displayValue = edit.type === EditTypes.DateTime ? value.split(',').join(' ') : value;
-      return (<h3 className={classes.sectionValue}>{linkify(displayValue)}</h3>);
+      const displayValue =
+        edit.type === EditTypes.DateTime ? value.split(',').join(' ') : value;
+      return <h3 className={classes.sectionValue}>{linkify(displayValue)}</h3>;
     } else {
       return (
         <ul className={classes.itemList}>
           {value.map((item, idx) => {
-            return edit.type === EditTypes.Photo ?
-              (<div key={`${idx}-image`} className={classes.imageWrapper}>
-                {/* 
-              // @ts-ignore */}
-                <img src={item[0]} className={classes.image} loading="lazy" onClick={handleClickImage(idx)} />
+            return edit.type === EditTypes.Photo ? (
+              <div key={`${idx}-image`} className={classes.imageWrapper}>
+                <img
+                  src={item[0]}
+                  className={classes.image}
+                  loading='lazy'
+                  onClick={handleClickImage(idx)}
+                />
                 <span className={classes.imageDescription}>{item[1]}</span>
-              </div>) :
-              (
-                <li key={`${item}-${idx}`} className={classes.noteItem} onClick={edit.onClickItem ? () => edit.onClickItem(item, idx) : undefined}>{linkify(item)}</li>
-              );
+              </div>
+            ) : (
+              <li
+                key={`${item}-${idx}`}
+                className={classes.noteItem}
+                onClick={
+                  edit.onClickItem
+                    ? () => edit.onClickItem(item, idx)
+                    : undefined
+                }
+              >
+                {linkify(item)}
+              </li>
+            );
           })}
         </ul>
       );
@@ -290,7 +360,6 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
 
   const _quickActionButton = useMemo(() => {
     if (edit.disableQuickAction !== true && typeof value !== 'string') {
-
       const handleAfterClose = () => {
         console.log('after close');
       };
@@ -308,8 +377,10 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
             onSubmit={handleSubmit}
             options={edit.options}
             autoSuggest={edit.autoSuggest}
-          />
-          , 'Add', { className: classes.addModal, afterClose: handleAfterClose });
+          />,
+          'Add',
+          { className: classes.addModal, afterClose: handleAfterClose }
+        );
       };
 
       return (
@@ -343,22 +414,43 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   const _editIcons = useMemo(() => {
     if (sectionState === SectionState.NotEditingAnySection) {
       return (
-        <button className={classNames(classes.editToggle, {
-          editting,
-        })} onClick={handleToggleEdit}>{editting ? (<Check />) : (<Edit />)}</button>
+        <button
+          className={classNames(classes.editToggle, {
+            editting,
+          })}
+          onClick={handleToggleEdit}
+        >
+          {editting ? <Check /> : <Edit />}
+        </button>
       );
     }
 
     return (
-      <button className={classNames(classes.editToggle, {
-        visible,
-      })} onClick={onToggleVisibility}>
-        {visible ? (<Visibility />) : (<VisibilityOff />)}
+      <button
+        className={classNames(classes.editToggle, {
+          visible,
+        })}
+        onClick={onToggleVisibility}
+      >
+        {visible ? <Visibility /> : <VisibilityOff />}
       </button>
     );
-  }, [editting, edittedItems, sectionState, quickActionButton, _quickActionButton, visible, inputtedValue]);
+  }, [
+    editting,
+    edittedItems,
+    sectionState,
+    quickActionButton,
+    _quickActionButton,
+    visible,
+    inputtedValue,
+  ]);
 
-  if ([SectionState.EditingEverySection, SectionState.EditingOtherSection].includes(sectionState)) {
+  if (
+    [
+      SectionState.EditingEverySection,
+      SectionState.EditingOtherSection,
+    ].includes(sectionState)
+  ) {
     return (
       <section
         ref={rootRef}
@@ -368,15 +460,26 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         <div className={classes.sectionIcon}>
           <Icon />
         </div>
-        <span className={classNames(classes.sectionField, 'drop-target')} title={'Double-click to edit'}>{field}</span>
-        {sectionState === SectionState.EditingOtherSection && (<button className={classNames(classes.sectionValue, 'drop-target')} onClick={onDrop}>
-          Place Above
-        </button>)}
+        <span
+          className={classNames(classes.sectionField, 'drop-target')}
+          title={'Double-click to edit'}
+        >
+          {field}
+        </span>
+        {sectionState === SectionState.EditingOtherSection && (
+          <button
+            className={classNames(classes.sectionValue, 'drop-target')}
+            onClick={onDrop}
+          >
+            Place Above
+          </button>
+        )}
       </section>
     );
   }
 
-  if (visible === false && sectionState !== SectionState.EditingSection) return null;
+  if (visible === false && sectionState !== SectionState.EditingSection)
+    return null;
 
   return (
     <section
@@ -389,13 +492,18 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
       <div className={classes.sectionIcon} onClick={handleToggleEdit}>
         <Icon />
       </div>
-      <span className={classes.sectionField} title={'Double-click to edit'}>{field}</span>
+      <span className={classes.sectionField} title={'Double-click to edit'}>
+        {field}
+      </span>
       {editting ? _editComponent : _displayComponent}
       <div className={classes.sectionQuickActionButton}>
         {!editting && (quickActionButton || _quickActionButton)}
       </div>
       {fullScreenImage && (
-        <FullScreenImage onClose={handleCloseFullScreenImage} image={fullScreenImage} />
+        <FullScreenImage
+          onClose={handleCloseFullScreenImage}
+          image={fullScreenImage}
+        />
       )}
     </section>
   );

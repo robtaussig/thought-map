@@ -27,7 +27,7 @@ const capitalize = (string: string): string => {
   return string[0].toUpperCase() + string.slice(1).toLowerCase();
 };
 
-const generatePartText = (part: StatusUpdate, isStart: boolean, isEnd: boolean): string => {
+const generatePartText = (part: StatusUpdate, isStart: boolean): string => {
   if (isStart) return `[${parseDate(part.created)}] ${part.thoughtTitle}`;
   return `[${parseDate(part.created)}] - ${capitalize(part.status)}`;
 };
@@ -68,7 +68,7 @@ export const Part: FC<PartProps> = ({ classes, part, col, row, colCount, groupIn
   const isStart = groupIndex && groupIndex[0] === 0;
   const isEnd = groupIndex && groupIndex[0] === groupIndex[1];
 
-  const partText = part ? generatePartText(part, isStart, isEnd) : null;
+  const partText = part ? generatePartText(part, isStart) : null;
   const partStyle = part ? generatePartStyle(part, row, col, colCount, isStart) : {};
 
   const handleClickTitle = () => {

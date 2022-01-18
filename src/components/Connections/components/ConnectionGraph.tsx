@@ -69,7 +69,7 @@ const styles = (theme: any): StyleRules => ({
   }),
 });
 
-export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, thoughts, connections, statusOptions }) => {
+export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, thoughts, statusOptions }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { tree } = useThoughtMap(thought?.id);
 

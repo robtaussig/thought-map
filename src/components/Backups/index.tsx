@@ -129,7 +129,7 @@ export const Backups: FC = () => {
       [backup.backupId]: true,
     }));
     try {
-      const { password, privateKey, backupId, version, merged } = backup;
+      const { password, privateKey, backupId, version } = backup;
       const nextVersion = (currentVersions[backupId] ?? version) + 1;
       await backupActions.editBackup(db, {
         ...backup,
@@ -192,7 +192,7 @@ export const Backups: FC = () => {
       hasEnforcedSingleBackup.current = true;
       const ensureSingleActiveBackup = async () => {
         if (backups.filter(({ isActive }) => isActive).length > 1) {
-          const [remainActive, unActive] = backups.reduce((next, backup) => {
+          const [_remainActive, unActive] = backups.reduce((next, backup) => {
             if (backup.isActive) {
               if (!next[0]) {
                 return [backup, next[1]];
@@ -221,7 +221,7 @@ export const Backups: FC = () => {
     <div className={classes.root}>
       <h1 className={classes.header}>Pools</h1>
       <ul className={classes.backupsList}>
-        {backups.map((backup, idx) => {
+        {backups.map((backup) => {
           const remoteVersion = currentVersions[backup.backupId] ?? '...';
           const isUpdating = Boolean(updating[backup.backupId]);
           const isUpToDate = remoteVersion === backup.version;

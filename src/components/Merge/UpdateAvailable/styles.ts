@@ -22,7 +22,7 @@ export const useStyles = makeStyles((theme: any) => ({
     fontWeight: 600,
     marginBottom: 20,
   },
-  buttonWrapper: (params: any) => ({
+  buttonWrapper: () => ({
     gridArea: 'merge-button',
     marginTop: 25,
     color: 'white',
@@ -34,7 +34,7 @@ export const useStyles = makeStyles((theme: any) => ({
       },
     },
   }),
-  mergeButton: (params: any) => ({
+  mergeButton: () => ({
     ...theme.defaults.centered,
     backgroundColor: theme.palette.secondary[600],
     color: 'white',

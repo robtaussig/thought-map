@@ -27,8 +27,6 @@ export const TempImages: FC<TempImagesProps> = ({ classes, tempImages, uploadIma
         {tempImages.map((objectUrl, idx) => {
           return (
             <ImageWrapper key={`${idx}-temp-image`} className={classes.imageItem} loaded={loaded}>
-              {/* 
-              // @ts-ignore */}
               <img src={objectUrl} className={classes.image} loading="lazy" onClick={handleClickImage(idx)}/>
               <div className={classes.uploadOptions}>
                 <button onClick={uploadImageLocally(idx)}>Local</button>

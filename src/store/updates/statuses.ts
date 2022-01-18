@@ -14,25 +14,25 @@ export const handleStatusChange = (
   let notification;
 
   switch (operation) {
-  case 'INSERT':
-    dispatch(insert(status));
-    matchStatusLocationIfEnabled(status);
-    if (status.text === 'completed') {
-      handleRecurringThought(status.thoughtId);
-    }
-    notification = { message: 'Thought updated' };
-    break;
+    case 'INSERT':
+      dispatch(insert(status));
+      matchStatusLocationIfEnabled(status);
+      if (status.text === 'completed') {
+        handleRecurringThought(status.thoughtId);
+      }
+      notification = { message: 'Thought updated' };
+      break;
     
-  case 'DELETE':
-    dispatch(remove(documentId));
-    break;
+    case 'DELETE':
+      dispatch(remove(documentId));
+      break;
 
-  case 'UPDATE':
-    dispatch(update(status));
-    break;
+    case 'UPDATE':
+      dispatch(update(status));
+      break;
   
-  default:
-    break;
+    default:
+      break;
   }
 
   if ((window as any).blockNotifications) return;

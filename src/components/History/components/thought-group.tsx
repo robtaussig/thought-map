@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { StyleRules, withStyles } from '@material-ui/styles';
-import { Group, StatusUpdate } from '../types';
+import { Group } from '../types';
 import Part from './part';
 import ConnectionsQuickOptions from '../../Connections/components/ConnectionsQuickOptions';
 import useModal from '../../../hooks/useModal';
@@ -81,13 +81,13 @@ const styles = (theme: any): StyleRules => ({
   }),
 });
 
-export const ThoughtGroup: FC<ThoughtGroupProps> = React.memo(({ classes, group, statusOptions }) => {
+export const ThoughtGroup: FC<ThoughtGroupProps> = ({ classes, group, statusOptions }) => {
   const parts = group[0].statusUpdateIndex[1] + 1;
   const thoughtIndex = group[0].thoughtIndex[0];
   const thoughtCount = group[0].thoughtIndex[1] + 1;
   const isSelected = Boolean(group[0].isSelectedThought);
   const [openModal, closeModal] = useModal();
-  const handleLongPress = (part: StatusUpdate) => {
+  const handleLongPress = () => {
     openModal(
       <ConnectionsQuickOptions
         onClose={closeModal}
@@ -135,6 +135,6 @@ export const ThoughtGroup: FC<ThoughtGroupProps> = React.memo(({ classes, group,
       })}
     </>
   );
-});
+};
 
 export default withStyles(styles)(ThoughtGroup);

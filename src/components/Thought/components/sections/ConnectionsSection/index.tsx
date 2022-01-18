@@ -59,10 +59,10 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
       field={`Connections (${toConnections.filter(connection => connection.otherThought.status === 'completed').length}/${toConnections.length})`}
       value={
         connections
-          .sort((left, right) => left.isParent ? 1 : -1)
-          .map(({ isParent, otherThought }) => {
+          .sort((left) => left.isParent ? 1 : -1)
+          .map(({ isParent, otherThought }, idx) => {
             const isCompleted = otherThought.status === 'completed';
-            return (<span className={isCompleted ? 'completed' : 'incomplete'}>{isParent ? 'to' : 'from'}: {otherThought.title}</span>);
+            return (<span key={`${idx}-connection`} className={isCompleted ? 'completed' : 'incomplete'}>{isParent ? 'to' : 'from'}: {otherThought.title}</span>);
           })
       }
       className={'connections'}

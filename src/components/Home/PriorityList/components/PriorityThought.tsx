@@ -16,7 +16,7 @@ export const PriorityThought: FC<PriorityThoughtProps> = ({ classes, thought, on
 
   const handleClick = () => {
     navigate(`${homeUrl}thought/${thought.id}`);
-    onMinimize();
+    onMinimize?.();
   };
 
   return (
