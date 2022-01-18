@@ -21,34 +21,34 @@ interface StatusSectionProps {
 
 export const StatusSection: FC<StatusSectionProps> = ({ classes, thought, statusOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
-  return (
-    <ThoughtSection
-      classes={classes}
-      Icon={thought.status === 'completed' ? CheckBoxIcon : CheckBoxOutlineBlank}
-      field={'Status'}
-      value={thought.status}
-      className={'status'}
-      visible={visible}
-      sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
-      onToggleVisibility={onToggleVisibility}
-      quickActionButton={thought.status !== 'completed' && (
-        <button className={classNames(classes.completeThoughtButton, {
-          firstAction: thought.status === statusOptions[0],
-        })} onClick={() => onEdit(
-          thought.status === statusOptions[0] ?
-            statusOptions[1] :
-            statusOptions[statusOptions.length - 1]
-        )}><Check/></button>
-      )}
-      edit={{
-        type: EditTypes.Select,
-        options: statusOptions,
-        onEdit,
-      }}
-    />
-  );
+    return (
+        <ThoughtSection
+            classes={classes}
+            Icon={thought.status === 'completed' ? CheckBoxIcon : CheckBoxOutlineBlank}
+            field={'Status'}
+            value={thought.status}
+            className={'status'}
+            visible={visible}
+            sectionState={sectionState}
+            onLongPress={onLongPress}
+            onDrop={onDrop}
+            onToggleVisibility={onToggleVisibility}
+            quickActionButton={thought.status !== 'completed' && (
+                <button className={classNames(classes.completeThoughtButton, {
+                    firstAction: thought.status === statusOptions[0],
+                })} onClick={() => onEdit(
+                    thought.status === statusOptions[0] ?
+                        statusOptions[1] :
+                        statusOptions[statusOptions.length - 1]
+                )}><Check/></button>
+            )}
+            edit={{
+                type: EditTypes.Select,
+                options: statusOptions,
+                onEdit,
+            }}
+        />
+    );
 };
 
 export default StatusSection;

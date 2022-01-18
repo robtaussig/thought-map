@@ -64,4 +64,4 @@ export const ArchiveThoughts: FC<ArchiveThoughtsProps> = ({
     );
 };
 
-export default ArchiveThoughts
+export default ArchiveThoughts;

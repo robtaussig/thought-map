@@ -12,23 +12,23 @@ export interface StatusesByThought {
 const initialState: StatusesByThought = {};
 
 const statusesByThought = createSlice({
-  name: 'statusesByThought',
-  initialState,
-  reducers: {
-    setStatusesByThought(state, action: PayloadAction<StatusesByThought>) {
-      return action.payload
+    name: 'statusesByThought',
+    initialState,
+    reducers: {
+        setStatusesByThought(state, action: PayloadAction<StatusesByThought>) {
+            return action.payload;
+        },
     },
-  },
-  extraReducers: builder => {
-    builder.addCase(insertStatus, (state, action) => {
-      state[action.payload.thoughtId] = state[action.payload.thoughtId] || [];
-      state[action.payload.thoughtId].push(action.payload.id);
-    });
-  },
+    extraReducers: builder => {
+        builder.addCase(insertStatus, (state, action) => {
+            state[action.payload.thoughtId] = state[action.payload.thoughtId] || [];
+            state[action.payload.thoughtId].push(action.payload.id);
+        });
+    },
 });
 
 export const {
-  setStatusesByThought,
+    setStatusesByThought,
 } = statusesByThought.actions;
 
 export default statusesByThought.reducer;

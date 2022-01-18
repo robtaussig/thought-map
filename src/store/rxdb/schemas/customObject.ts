@@ -15,30 +15,30 @@ export interface CustomObject {
 }
 
 export default ['custom_object', {
-  "title": "CustomObject schema",
-  "version": 0,
-  "description": "A CustomObject",
-  "type": "object",
-  "primaryKey": "id",
-  "properties": {
-    "id": {
-      "type": "string",
+    'title': 'CustomObject schema',
+    'version': 0,
+    'description': 'A CustomObject',
+    'type': 'object',
+    'primaryKey': 'id',
+    'properties': {
+        'id': {
+            'type': 'string',
+        },
+        'type': {
+            'type': 'string',
+        },
+        'value': {
+            'type': 'string',
+        },
+        'created': {
+            'type': 'number',
+        },
+        'updated': {
+            'type': 'number',
+        },
     },
-    "type": {
-      "type": "string",
-    },
-    "value": {
-      "type": "string",
-    },
-    "created": {
-      "type": "number",
-    },
-    "updated": {
-      "type": "number",
-    },
-  },
-  "required": ["type", "value"],
-  "attachments": {
+    'required': ['type', 'value'],
+    'attachments': {
 
-  }
+    }
 } as RxJsonSchema<CustomObject>];

@@ -11,14 +11,14 @@ interface HeaderProps {
 
 export const Header: FC<HeaderProps> = React.memo(({ classes, value, onClick, tooltip, ...rest }) => {
 
-  return (
-    <h2 className={classes.header} onClick={onClick} {...rest}>
-      {value}
-      {tooltip && (
-        <Tooltip text={tooltip}/>
-      )}
-    </h2>
-  );
+    return (
+        <h2 className={classes.header} onClick={onClick} {...rest}>
+            {value}
+            {tooltip && (
+                <Tooltip text={tooltip}/>
+            )}
+        </h2>
+    );
 });
 
 export default Header;

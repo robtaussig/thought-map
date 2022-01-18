@@ -16,39 +16,39 @@ interface ConnectionProps {
 }
 
 export const Connection: FC<ConnectionProps> = ({ classes, targetThought, sourceThought, connected, from, to }) => {
-  const { db } = useLoadedDB();
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+    const { db } = useLoadedDB();
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-  const handleToggleConnection = async () => {
-    setLoading(true);
-    if (connected) {
-      await connectionActions.deleteConnection(db, connected);
-    } else {
-      await connectionActions.createConnection(db, {
-        from: from ? targetThought.id : sourceThought.id,
-        to: from ? sourceThought.id : targetThought.id,
-      });
-    }
-    setLoading(false);
-  };
+    const handleToggleConnection = async () => {
+        setLoading(true);
+        if (connected) {
+            await connectionActions.deleteConnection(db, connected);
+        } else {
+            await connectionActions.createConnection(db, {
+                from: from ? targetThought.id : sourceThought.id,
+                to: from ? sourceThought.id : targetThought.id,
+            });
+        }
+        setLoading(false);
+    };
 
-  const handleGoToThought = () => {
-    navigate(`/thought/${targetThought.id}`);
-  };
+    const handleGoToThought = () => {
+        navigate(`/thought/${targetThought.id}`);
+    };
 
-  const isConnected = Boolean(connected);
+    const isConnected = Boolean(connected);
 
-  return (
-    <li className={isConnected ? classes.connectedListItem : classes.listItem}>
-      <button className={classes.connectionButton} onClick={handleGoToThought}>
-        {targetThought.title}
-      </button>
-      <button className={classes.addConnectionIcon} onClick={handleToggleConnection} disabled={loading}>
-        {connected ? <Remove/> : <Add/>}
-      </button>
-    </li>
-  );
+    return (
+        <li className={isConnected ? classes.connectedListItem : classes.listItem}>
+            <button className={classes.connectionButton} onClick={handleGoToThought}>
+                {targetThought.title}
+            </button>
+            <button className={classes.addConnectionIcon} onClick={handleToggleConnection} disabled={loading}>
+                {connected ? <Remove/> : <Add/>}
+            </button>
+        </li>
+    );
 };
 
 export default Connection;

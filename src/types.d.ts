@@ -1,14 +1,14 @@
 import { RouteComponentProps } from 'react-router-dom';
 import {
-  Thought as ThoughtType,
-  Plan as PlanType,
-  Note as NoteType,
-  Tag as TagType,
-  Connection as ConnectionType,
-  Template as TemplateType,
-  Picture as PictureType,
-  Setting as SettingType,
-  Status as StatusType
+    Thought as ThoughtType,
+    Plan as PlanType,
+    Note as NoteType,
+    Tag as TagType,
+    Connection as ConnectionType,
+    Template as TemplateType,
+    Picture as PictureType,
+    Setting as SettingType,
+    Status as StatusType
 } from './store/rxdb/schemas/types';
 
 export interface Classes {

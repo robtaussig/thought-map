@@ -18,25 +18,25 @@ interface TypeSectionProps {
 
 export const TypeSection: FC<TypeSectionProps> = ({ classes, thought, typeOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
-  return (
-    <ThoughtSection
-      classes={classes}
-      Icon={Category}
-      field={'Type'}
-      value={thought.type || ''}
-      className={'type'}
-      visible={visible}
-      sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
-      onToggleVisibility={onToggleVisibility}
-      edit={{
-        type: EditTypes.Select,
-        options: typeOptions,
-        onEdit,
-      }}
-    />
-  );
+    return (
+        <ThoughtSection
+            classes={classes}
+            Icon={Category}
+            field={'Type'}
+            value={thought.type || ''}
+            className={'type'}
+            visible={visible}
+            sectionState={sectionState}
+            onLongPress={onLongPress}
+            onDrop={onDrop}
+            onToggleVisibility={onToggleVisibility}
+            edit={{
+                type: EditTypes.Select,
+                options: typeOptions,
+                onEdit,
+            }}
+        />
+    );
 };
 
 export default TypeSection;

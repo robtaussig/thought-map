@@ -26,54 +26,54 @@ interface NavBarItem {
 }
 
 export const Settings: FC<SettingsProps> = ({ classes, typeOptions, setLastNotification }) => {
-  const navigate = useNavigate();
-  const planId = useIdFromUrl('plan');
-  const type = getSearchParam('type');
+    const navigate = useNavigate();
+    const planId = useIdFromUrl('plan');
+    const type = getSearchParam('type');
 
-  const plans = useSelector(planSelector);
-  const thoughts = useSelector(thoughtSelector);
-  const connections = useSelector(connectionSelector);
+    const plans = useSelector(planSelector);
+    const thoughts = useSelector(thoughtSelector);
+    const connections = useSelector(connectionSelector);
 
-  const plan = useMemo(() => plans.find(({ id }) => id === planId), [plans, planId]);
-  const handleClick = useCallback(type => () => {
-    navigate(`?type=${type}`);
-  }, []);
+    const plan = useMemo(() => plans.find(({ id }) => id === planId), [plans, planId]);
+    const handleClick = useCallback(type => () => {
+        navigate(`?type=${type}`);
+    }, []);
 
-  const items = useMemo(() => {
-    const returnValue: NavBarItem[] = [{
-      value: 'App',
-      current: type !== 'plan',
-      onClick: handleClick('app'),
-      disabled: !planId,
-    }];
-    if (planId) returnValue.unshift({
-      value: 'Plan',
-      current: type === 'plan',
-      onClick: handleClick('plan'),
-    });
+    const items = useMemo(() => {
+        const returnValue: NavBarItem[] = [{
+            value: 'App',
+            current: type !== 'plan',
+            onClick: handleClick('app'),
+            disabled: !planId,
+        }];
+        if (planId) returnValue.unshift({
+            value: 'Plan',
+            current: type === 'plan',
+            onClick: handleClick('plan'),
+        });
   
-    return returnValue;
-  }, [planId, type]);
+        return returnValue;
+    }, [planId, type]);
 
-  return (
-    <div className={classes.root}>
-      <NavBar
-        items={items}
-      />
-      {type === 'plan' ? (
-        plan ? 
-          <PlanSettings
-            plan={plan}
-            thoughts={thoughts}
-            typeOptions={typeOptions}
-            connections={connections}
-          /> :
-          <Loading id={'thought-loader'}/>
-      ) : (
-        <AppSettings setLastNotification={setLastNotification}/>
-      )}
-    </div>
-  );
+    return (
+        <div className={classes.root}>
+            <NavBar
+                items={items}
+            />
+            {type === 'plan' ? (
+                plan ? 
+                    <PlanSettings
+                        plan={plan}
+                        thoughts={thoughts}
+                        typeOptions={typeOptions}
+                        connections={connections}
+                    /> :
+                    <Loading id={'thought-loader'}/>
+            ) : (
+                <AppSettings setLastNotification={setLastNotification}/>
+            )}
+        </div>
+    );
 };
 
 export default withStyles(rootStyles)(Settings);

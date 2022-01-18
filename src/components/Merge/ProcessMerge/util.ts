@@ -16,102 +16,102 @@ interface Statuses {
 }
 
 export const processItemsToAdd = (
-  itemsToAdd: Item[],
-  thoughts: Thought[],
-  connections: { [connectionId: string]: Connection },
+    itemsToAdd: Item[],
+    thoughts: Thought[],
+    connections: { [connectionId: string]: Connection },
 ): Item[] => {
-  const connectionsByThoughtId = Object.values(connections)
-    .reduce((next, { from, to }) => {
-      next[from] = next[from] || [];
-      next[from].push(to);
+    const connectionsByThoughtId = Object.values(connections)
+        .reduce((next, { from, to }) => {
+            next[from] = next[from] || [];
+            next[from].push(to);
 
-      return next;
-    }, {} as ConnectionsByThought);
+            return next;
+        }, {} as ConnectionsByThought);
 
-  const thoughtsById = thoughts.reduce((next, thought) => {
-    next[thought.id] = thought;
+    const thoughtsById = thoughts.reduce((next, thought) => {
+        next[thought.id] = thought;
 
-    return next;
-  }, {} as Thoughts);
+        return next;
+    }, {} as Thoughts);
 
-  const thoughtsToAddById: Thoughts = {};
+    const thoughtsToAddById: Thoughts = {};
 
-  itemsToAdd.forEach(({ collectionName, item }) => {
-    if (collectionName === 'thought') {
-      thoughtsToAddById[item.id] = item as Thought;
-    }
-  });
+    itemsToAdd.forEach(({ collectionName, item }) => {
+        if (collectionName === 'thought') {
+            thoughtsToAddById[item.id] = item as Thought;
+        }
+    });
 
-  return itemsToAdd
-    .filter(filterThoughtlessItems(
-      thoughtsById,
-      thoughtsToAddById,
-    ))
-    .filter(filterRedundantStatuses(
-      thoughtsById,
-      thoughtsToAddById,
-    ))
-    .filter(filterRedundantConnections(
-      connectionsByThoughtId,
-      thoughtsById,
-      thoughtsToAddById,
-    ))
+    return itemsToAdd
+        .filter(filterThoughtlessItems(
+            thoughtsById,
+            thoughtsToAddById,
+        ))
+        .filter(filterRedundantStatuses(
+            thoughtsById,
+            thoughtsToAddById,
+        ))
+        .filter(filterRedundantConnections(
+            connectionsByThoughtId,
+            thoughtsById,
+            thoughtsToAddById,
+        ));
 };
 
 const filterRedundantStatuses = (
-  thoughtsById: Thoughts,
-  thoughtsToAddById: Thoughts,
+    thoughtsById: Thoughts,
+    thoughtsToAddById: Thoughts,
 ) => ({ collectionName, item }: Item): boolean => {
-  //Ignore non-statuses
-  if (collectionName !== 'status') return true;
+    //Ignore non-statuses
+    if (collectionName !== 'status') return true;
 
-  const { thoughtId, text } = item;
-  const thought = thoughtsToAddById[thoughtId] ?? thoughtsById[thoughtId];
-  const existingThought = thoughtsById[thoughtId];
+    const { thoughtId, text } = item;
+    const thought = thoughtsToAddById[thoughtId] ?? thoughtsById[thoughtId];
+    const existingThought = thoughtsById[thoughtId];
 
-  //Adding thought that does not already exist
-  if (thought && !existingThought) return true;
+    //Adding thought that does not already exist
+    if (thought && !existingThought) return true;
 
-  //Status was updated and this matches status text
-  if (thought.status !== existingThought.status && thought.status === text) return true;
+    //Status was updated and this matches status text
+    if (thought.status !== existingThought.status && thought.status === text) return true;
 
-  return false;
+    return false;
 };
 
 const filterRedundantConnections = (
-  connectionsByThoughtId: ConnectionsByThought,
-  thoughtsById: Thoughts,
-  thoughtsToAddById: Thoughts,
+    connectionsByThoughtId: ConnectionsByThought,
+    thoughtsById: Thoughts,
+    thoughtsToAddById: Thoughts,
 ) => ({ collectionName, item }: Item): boolean => {
-  //Ignore non-connections
-  if (collectionName !== 'connection') return true;
+    //Ignore non-connections
+    if (collectionName !== 'connection') return true;
 
-  const { from, to } = item;
+    const { from, to } = item;
 
-  //Either to or from connection will not exist
-  if (
-    (!thoughtsById[from] && !thoughtsToAddById[from]) ||
+    //Either to or from connection will not exist
+    if (
+        (!thoughtsById[from] && !thoughtsToAddById[from]) ||
     (!thoughtsById[to] && !thoughtsToAddById[to])
-  ) {
-    return false;
-  }
+    ) {
+        return false;
+    }
 
-  //Functionally identical connection already exists or this will create immediate cycle
-  if (
-    connectionsByThoughtId[from]?.includes(to) ||
+    //Functionally identical connection already exists or this will create immediate cycle
+    if (
+        connectionsByThoughtId[from]?.includes(to) ||
     connectionsByThoughtId[to]?.includes(from)
-  ) {
-    return false;
-  }
+    ) {
+        return false;
+    }
   
-  return true;
+    return true;
 };
 
 const filterThoughtlessItems = (
-  thoughtsById: Thoughts,
-  thoughtsToAddById: Thoughts,
+    thoughtsById: Thoughts,
+    thoughtsToAddById: Thoughts,
 ) => ({ collectionName, item }: Item): boolean => {
-  if (!item.thoughtId) return true;
+    if (!item.thoughtId) return true;
 
-  return Boolean(thoughtsById[item.thoughtId] || thoughtsToAddById[item.thoughtId]);
+    return Boolean(thoughtsById[item.thoughtId] || thoughtsToAddById[item.thoughtId]);
 };

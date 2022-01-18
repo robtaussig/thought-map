@@ -16,40 +16,40 @@ interface CurrentRemovableProps {
 }
 
 export const CurrentRemovable: FC<CurrentRemovableProps> = ({
-  rootClassName,
-  removable,
-  onPick,
-  thoughts,
-  plans,
+    rootClassName,
+    removable,
+    onPick,
+    thoughts,
+    plans,
 }) => {
-  const classes = useStyles({});
+    const classes = useStyles({});
 
-  const [{ collectionName }, { thoughtId, ...item }] = removable;
+    const [{ collectionName }, { thoughtId, ...item }] = removable;
 
-  return (
-    <div className={classNames(classes.root, rootClassName)}>
-      <CurrentReview
-        item={{ collectionName, item }}
-        rootClassName={classes.removable}
-        thoughts={thoughts}
-        plans={plans}
-        items={[]}
-      />
-      <button
-        onClick={() => onPick(false)}
-        className={classes.keepButton}
-      >
+    return (
+        <div className={classNames(classes.root, rootClassName)}>
+            <CurrentReview
+                item={{ collectionName, item }}
+                rootClassName={classes.removable}
+                thoughts={thoughts}
+                plans={plans}
+                items={[]}
+            />
+            <button
+                onClick={() => onPick(false)}
+                className={classes.keepButton}
+            >
         Keep
-      </button>
-      <h2 className={classes.rightHeader}>Remove</h2>
-      <button
-        onClick={() => onPick(true)}
-        className={classes.deleteButton}  
-      >
-        <Delete/>  
-      </button>
-    </div>
-  );
+            </button>
+            <h2 className={classes.rightHeader}>Remove</h2>
+            <button
+                onClick={() => onPick(true)}
+                className={classes.deleteButton}  
+            >
+                <Delete/>  
+            </button>
+        </div>
+    );
 };
 
 export default CurrentRemovable;

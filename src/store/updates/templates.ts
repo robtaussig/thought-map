@@ -4,33 +4,33 @@ import { insert, remove, update } from '../../reducers/templates';
 import { Notification, RxChangeEvent } from '../../types';
 
 export const handleTemplateChange = (
-  dispatch: Dispatch<any>,
-  setLastNotification: (notification: Notification) => void,
+    dispatch: Dispatch<any>,
+    setLastNotification: (notification: Notification) => void,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
-  if ((window as any).blockDBSubscriptions === true) return;
-  const template: Template = documentData;
-  let notification;
+    if ((window as any).blockDBSubscriptions === true) return;
+    const template: Template = documentData;
+    let notification;
 
-  switch (operation) {
+    switch (operation) {
     case 'INSERT':
-      dispatch(insert(template));
-      notification = { message: 'Template created' };
-      break;
+        dispatch(insert(template));
+        notification = { message: 'Template created' };
+        break;
     
     case 'DELETE':
-      dispatch(remove(documentId));
-      notification = { message: 'Template removed' };
-      break;
+        dispatch(remove(documentId));
+        notification = { message: 'Template removed' };
+        break;
 
     case 'UPDATE':
-      dispatch(update(template));
-      notification = { message: 'Template updated' };
-      break;
+        dispatch(update(template));
+        notification = { message: 'Template updated' };
+        break;
   
     default:
-      break;
-  }
+        break;
+    }
 
-  if ((window as any).blockNotifications) return;
-  setLastNotification(notification);  
+    if ((window as any).blockNotifications) return;
+    setLastNotification(notification);  
 };

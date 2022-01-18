@@ -11,29 +11,29 @@ export interface Settings {
 const initialState: Settings = {};
 
 const settings = createSlice({
-  name: 'settings',
-  initialState,
-  reducers: {
-    setSettings(state, action: PayloadAction<Settings>) {
-      return action.payload;
-    },
-    insert(state, action: PayloadAction<Setting>) {
-      state[action.payload.field] = action.payload.value;
-    },
-    remove(state, action: PayloadAction<string>) {
-      delete state[action.payload];
-    },
-    update(state, action: PayloadAction<Setting>) {
-      state[action.payload.field] = action.payload.value;
-    },
-  }
+    name: 'settings',
+    initialState,
+    reducers: {
+        setSettings(state, action: PayloadAction<Settings>) {
+            return action.payload;
+        },
+        insert(state, action: PayloadAction<Setting>) {
+            state[action.payload.field] = action.payload.value;
+        },
+        remove(state, action: PayloadAction<string>) {
+            delete state[action.payload];
+        },
+        update(state, action: PayloadAction<Setting>) {
+            state[action.payload.field] = action.payload.value;
+        },
+    }
 });
 
 export const {
-  setSettings,
-  insert,
-  remove,
-  update,
+    setSettings,
+    insert,
+    remove,
+    update,
 } = settings.actions;
 
 export default settings.reducer;

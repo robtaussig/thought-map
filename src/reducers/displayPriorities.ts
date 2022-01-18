@@ -7,20 +7,20 @@ export const displayPrioritiesSelector: Selector<RootState, boolean> = state => 
 const initialState = false;
 
 const displayPriorities = createSlice({
-  name: 'displayPriorities',
-  initialState,
-  reducers: {
-    toggle(state, action: PayloadAction<boolean>) {
-      if (action.payload !== undefined) {
-        return action.payload;
-      }
-      return !state;
-    },
-  }
+    name: 'displayPriorities',
+    initialState,
+    reducers: {
+        toggle(state, action: PayloadAction<boolean>) {
+            if (action.payload !== undefined) {
+                return action.payload;
+            }
+            return !state;
+        },
+    }
 });
 
 export const {
-  toggle
+    toggle
 } = displayPriorities.actions;
 
 export default displayPriorities.reducer;

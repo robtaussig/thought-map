@@ -14,43 +14,43 @@ interface CompareQueueProps {
 }
 
 export const CompareQueue: FC<CompareQueueProps> = ({
-  rootClassName,
-  comparables,
-  onClick,
-  currentItemIndex,
-  mergable,
-  onMerge,
+    rootClassName,
+    comparables,
+    onClick,
+    currentItemIndex,
+    mergable,
+    onMerge,
 }) => {
-  const classes = useCompareQueueStyles({});
+    const classes = useCompareQueueStyles({});
 
-  const handleClickItem = (event: any, item: Comparable) => {
-    event.target.scrollIntoView({ behavior: 'smooth', inline :'center' });
-    onClick(comparables.indexOf(item));
-  };
+    const handleClickItem = (event: any, item: Comparable) => {
+        event.target.scrollIntoView({ behavior: 'smooth', inline :'center' });
+        onClick(comparables.indexOf(item));
+    };
 
-  return (
-    <div className={classNames(classes.root, rootClassName)}>
-      <h2 className={classes.title}>Comparables ({comparables.length})</h2>
-      <ul className={classes.items}>
-        {mergable && (
-          <button className={classes.readyToMergeButton} onClick={onMerge}>
+    return (
+        <div className={classNames(classes.root, rootClassName)}>
+            <h2 className={classes.title}>Comparables ({comparables.length})</h2>
+            <ul className={classes.items}>
+                {mergable && (
+                    <button className={classes.readyToMergeButton} onClick={onMerge}>
             Ready to merge!
-          </button>
-        )}
-        {comparables.map((comparable, idx) => {
-          return (
-            <CompareItem
-              key={`comparable-${idx}`}
-              classes={classes}
-              item={comparable}
-              onClick={handleClickItem}
-              selected={idx === currentItemIndex}
-            />
-          );
-        })}
-      </ul>
-    </div>
-  );
+                    </button>
+                )}
+                {comparables.map((comparable, idx) => {
+                    return (
+                        <CompareItem
+                            key={`comparable-${idx}`}
+                            classes={classes}
+                            item={comparable}
+                            onClick={handleClickItem}
+                            selected={idx === currentItemIndex}
+                        />
+                    );
+                })}
+            </ul>
+        </div>
+    );
 };
 
 export default CompareQueue;

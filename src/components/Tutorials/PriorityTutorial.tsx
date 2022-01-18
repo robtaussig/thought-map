@@ -6,16 +6,16 @@ interface PriorityTutorialProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  root: {
+    root: {
 
-  },
-  header: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  text: {
+    },
+    header: {
+        fontSize: 24,
+        marginBottom: 20,
+    },
+    text: {
 
-  },
+    },
 });
 
 const TUTORIAL_TEXT = `
@@ -26,12 +26,12 @@ const TUTORIAL_TEXT = `
 
 export const PriorityTutorial: FC<PriorityTutorialProps> = ({ classes }) => {
 
-  return (
-    <div className={classes.root}>
-      <h1 className={classes.header}>Priorities</h1>
-      <span className={classes.text}>{TUTORIAL_TEXT}</span>
-    </div>
-  );
+    return (
+        <div className={classes.root}>
+            <h1 className={classes.header}>Priorities</h1>
+            <span className={classes.text}>{TUTORIAL_TEXT}</span>
+        </div>
+    );
 };
 
 export default withStyles(styles)(PriorityTutorial);

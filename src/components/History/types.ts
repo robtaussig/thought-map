@@ -11,4 +11,4 @@ export interface StatusUpdate {
   location: string;
   created: number;
   isSelectedThought: boolean;
-};
+}

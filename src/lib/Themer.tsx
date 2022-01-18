@@ -11,14 +11,14 @@ interface ThemerProps {
 }
 
 export const Themer: FC<ThemerProps> = ({ children }) => {
-  const customTheme = useSelector<RootState, CustomTheme>(state => state.customTheme);
-  const merged = useMemo(() => merge(theme, customTheme), [customTheme]);
+    const customTheme = useSelector<RootState, CustomTheme>(state => state.customTheme);
+    const merged = useMemo(() => merge(theme, customTheme), [customTheme]);
 
-  return (
-    <ThemeProvider theme={merged}>
-      {children}
-    </ThemeProvider>
-  )
+    return (
+        <ThemeProvider theme={merged}>
+            {children}
+        </ThemeProvider>
+    );
 };
 
 export default Themer;

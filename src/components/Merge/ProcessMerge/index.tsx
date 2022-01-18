@@ -16,76 +16,76 @@ import { v4 as uuidv4 } from 'uuid';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export const ProcessMerge: FC = () => {
-  const classes = useStyles({});
-  const { db } = useLoadedDB();
-  const rootRef = useRef<HTMLDivElement>(null);
-  const [loading, stopLoading] = useLoadingOverlay(rootRef);
-  const [filteredItemsToAdd, setFilteredItemsToAdd] = useState<Item[]>(null);
-  const { itemsToAdd, deletionsToAdd, itemsToRemove } = useSelector(mergeResultsSelector);
-  const thoughts = useSelector(thoughtSelector);
-  const connections = useSelector(connectionSelector);
-  const backups = useSelector(backupSelector);
-  const backupId = useBackupIdFromHistory();
-  const location = useLocation();
-  const navigate = useNavigate();
+    const classes = useStyles({});
+    const { db } = useLoadedDB();
+    const rootRef = useRef<HTMLDivElement>(null);
+    const [loading, stopLoading] = useLoadingOverlay(rootRef);
+    const [filteredItemsToAdd, setFilteredItemsToAdd] = useState<Item[]>(null);
+    const { itemsToAdd, deletionsToAdd, itemsToRemove } = useSelector(mergeResultsSelector);
+    const thoughts = useSelector(thoughtSelector);
+    const connections = useSelector(connectionSelector);
+    const backups = useSelector(backupSelector);
+    const backupId = useBackupIdFromHistory();
+    const location = useLocation();
+    const navigate = useNavigate();
 
-  const handleClickMerge = async () => {
-    loading('Merging data...');
-    (window as any).blockDBSubscriptions = true;
-    await Promise.all(
-      filteredItemsToAdd.map(({ collectionName, item }) => {
-        return db[collectionName].atomicUpsert(item);
-      }).concat(
-        deletionsToAdd.map(deletion => {
-          return db['deletion'].atomicUpsert({
-            id: uuidv4(),
-            ...deletion,
-          });
-        })
-      ).concat(
-        itemsToRemove.map(({ collectionName, item}) => {
-          const query = db[collectionName].find().where('id').eq(item.id);
-          return query.remove();
-        })
-      ),
-    );
-    const version = getSearchParam('v');
-    const backup = backups.find(prev => prev.backupId === backupId);
-    if (backup) {
-      await backupActions.editBackup(db, {
-        ...backup,
-        version: Number(version),
-        merged: true,
-      });
-    }
+    const handleClickMerge = async () => {
+        loading('Merging data...');
+        (window as any).blockDBSubscriptions = true;
+        await Promise.all(
+            filteredItemsToAdd.map(({ collectionName, item }) => {
+                return db[collectionName].atomicUpsert(item);
+            }).concat(
+                deletionsToAdd.map(deletion => {
+                    return db['deletion'].atomicUpsert({
+                        id: uuidv4(),
+                        ...deletion,
+                    });
+                })
+            ).concat(
+                itemsToRemove.map(({ collectionName, item}) => {
+                    const query = db[collectionName].find().where('id').eq(item.id);
+                    return query.remove();
+                })
+            ),
+        );
+        const version = getSearchParam('v');
+        const backup = backups.find(prev => prev.backupId === backupId);
+        if (backup) {
+            await backupActions.editBackup(db, {
+                ...backup,
+                version: Number(version),
+                merged: true,
+            });
+        }
   
-    (window as any).blockDBSubscriptions = false;
-    navigate('/');
-  };
+        (window as any).blockDBSubscriptions = false;
+        navigate('/');
+    };
 
-  useEffect(() => {
-    if (itemsToAdd.length > 0) {
-      loading('Processing results...');
-      const filtered = processItemsToAdd(itemsToAdd, thoughts, connections);
-      setFilteredItemsToAdd(filtered);
-      stopLoading();
-    } else if (deletionsToAdd.length > 0 || itemsToRemove.length > 0) {
-      setFilteredItemsToAdd([]);
-    }
-  }, [itemsToAdd, thoughts, connections, deletionsToAdd, itemsToRemove]);
+    useEffect(() => {
+        if (itemsToAdd.length > 0) {
+            loading('Processing results...');
+            const filtered = processItemsToAdd(itemsToAdd, thoughts, connections);
+            setFilteredItemsToAdd(filtered);
+            stopLoading();
+        } else if (deletionsToAdd.length > 0 || itemsToRemove.length > 0) {
+            setFilteredItemsToAdd([]);
+        }
+    }, [itemsToAdd, thoughts, connections, deletionsToAdd, itemsToRemove]);
 
-  return (
-    <div ref={rootRef} className={classes.root}>
-      {filteredItemsToAdd && (
-        <button
-          className={classes.mergeButton}
-          onClick={handleClickMerge}
-        >
+    return (
+        <div ref={rootRef} className={classes.root}>
+            {filteredItemsToAdd && (
+                <button
+                    className={classes.mergeButton}
+                    onClick={handleClickMerge}
+                >
           Confirm Merge
-        </button>
-      )}
-    </div>
-  );
+                </button>
+            )}
+        </div>
+    );
 };
 
 export default ProcessMerge;

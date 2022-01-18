@@ -9,25 +9,25 @@ interface DailyChunkItemProps {
 }
 
 export const DailyChunkItem: FC<DailyChunkItemProps> = ({
-  classes,
-  date,
-  statusItems,
+    classes,
+    date,
+    statusItems,
 }) => {
 
-  return (
-    <div className={classes.dailyChunk}>
-      <div className={classes.date}>{date}</div>
-      {statusItems.map(statusItem => {
-        return (
-          <StatusItem
-            key={statusItem.id}
-            classes={classes}
-            statusItem={statusItem}
-          />
-        );
-      })}
-    </div>
-  );
+    return (
+        <div className={classes.dailyChunk}>
+            <div className={classes.date}>{date}</div>
+            {statusItems.map(statusItem => {
+                return (
+                    <StatusItem
+                        key={statusItem.id}
+                        classes={classes}
+                        statusItem={statusItem}
+                    />
+                );
+            })}
+        </div>
+    );
 };
 
 export default DailyChunkItem;

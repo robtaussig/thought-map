@@ -17,50 +17,50 @@ interface SideProps {
 }
 
 const parseValue = (field: string, value: any, plans: Plan[]): string => {
-  switch (value) {
+    switch (value) {
     case true:
-      return 'true';
+        return 'true';
     case false:
-      return 'false';
+        return 'false';
     default:
-      if (field === 'planId') return plans.find(({ id }) => id === value)?.name ?? 'Unknown plan';
-      return value;
-  }
-}
+        if (field === 'planId') return plans.find(({ id }) => id === value)?.name ?? 'Unknown plan';
+        return value;
+    }
+};
 
 export const Side: FC<SideProps> = ({
-  classes,
-  rootClassName,
-  toPick,
-  item,
-  merged,
-  onSelect,
-  customInput,
-  plans,
+    classes,
+    rootClassName,
+    toPick,
+    item,
+    merged,
+    onSelect,
+    customInput,
+    plans,
 }) => {
 
-  const handleSelect = (field: string) => () => {
-    onSelect(field, item[field]);
-  };
+    const handleSelect = (field: string) => () => {
+        onSelect(field, item[field]);
+    };
 
-  return (
-    <>
-      {toPick.map((field, idx) => {
-        return [undefined, ''].includes(customInput[field]) && (
-          <span
-            key={`to-pick-${field}`}
-            style={{ gridRow: `${idx + 1} / span 1`}}
-            onClick={handleSelect(field)}
-            className={classNames(rootClassName, classes.pickableValue, {
-              selected: merged.item[field] === item[field],
+    return (
+        <>
+            {toPick.map((field, idx) => {
+                return [undefined, ''].includes(customInput[field]) && (
+                    <span
+                        key={`to-pick-${field}`}
+                        style={{ gridRow: `${idx + 1} / span 1`}}
+                        onClick={handleSelect(field)}
+                        className={classNames(rootClassName, classes.pickableValue, {
+                            selected: merged.item[field] === item[field],
+                        })}
+                    >
+                        {parseValue(field, item[field], plans)}
+                    </span>
+                );
             })}
-          >
-            {parseValue(field, item[field], plans)}
-          </span>
-        );
-      })}
-    </>
-  );
+        </>
+    );
 };
 
 export default Side;

@@ -11,12 +11,12 @@ interface PriorityListProps {
 
 export const PriorityList: FC<PriorityListProps> = ({ classes, thoughts, onMinimize }) => {
 
-  return (
-    <div className={classes.priorityList}>
-      <PriorityFields classes={classes}/>
-      {thoughts.map(thought => <PriorityThought classes={classes} key={thought.id} thought={thought} onMinimize={onMinimize}/>)}
-    </div>
-  );
+    return (
+        <div className={classes.priorityList}>
+            <PriorityFields classes={classes}/>
+            {thoughts.map(thought => <PriorityThought classes={classes} key={thought.id} thought={thought} onMinimize={onMinimize}/>)}
+        </div>
+    );
 };
 
 export default PriorityList;

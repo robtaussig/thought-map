@@ -14,42 +14,42 @@ interface ThoughtAssociationProps {
 }
 
 const MOCK_THOUGHT = {
-  title: 'Unkown Thought'
+    title: 'Unkown Thought'
 };
 
 const MOCK_PLAN = {
-  name: 'Unkown Plan',
+    name: 'Unkown Plan',
 };
 
 export const ThoughtAssociation: FC<ThoughtAssociationProps> = ({
-  classes,
-  rootClassName,
-  thoughts,
-  item,
-  plans,
-  items,
+    classes,
+    rootClassName,
+    thoughts,
+    item,
+    plans,
+    items,
 }) => {
 
-  const thought = thoughts.find(({ id }) => item.item.thoughtId === id) ||
+    const thought = thoughts.find(({ id }) => item.item.thoughtId === id) ||
     items.find(foundItem => foundItem.item.id === item.item.thoughtId)?.item ||
     MOCK_THOUGHT;
 
-  const plan = plans.find(({ id }) => (thought as Thought).planId === id) ||
+    const plan = plans.find(({ id }) => (thought as Thought).planId === id) ||
     items.find(foundItem => foundItem.item.id === (thought as Thought).planId)?.item ||
     MOCK_PLAN;
     
-  const { id, updated, thoughtId, ...restOfItem } = item.item;
+    const { id, updated, thoughtId, ...restOfItem } = item.item;
   
-  return (
-    <Base
-      classes={classes}
-      rootClassName={rootClassName}
-      header={item.collectionName}
-      subHeader={thought.title}
-      mainField={plan.name}
-      fields={restOfItem}
-    />
-  );
+    return (
+        <Base
+            classes={classes}
+            rootClassName={rootClassName}
+            header={item.collectionName}
+            subHeader={thought.title}
+            mainField={plan.name}
+            fields={restOfItem}
+        />
+    );
 };
 
 export default ThoughtAssociation;

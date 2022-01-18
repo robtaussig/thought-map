@@ -16,54 +16,54 @@ interface ConnectionsQuickOptionsProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  root: {
-    overflow: 'hidden',
-    height: 500,
-    display: 'grid',
-    gridTemplateAreas: `"header"
+    root: {
+        overflow: 'hidden',
+        height: 500,
+        display: 'grid',
+        gridTemplateAreas: `"header"
                         "nav-items"
                         "content"`,
-    gridTemplateRows: 'max-content max-content 1fr',
-    gridTemplateColumns: '1fr',
-    gridRowGap: '10px',
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: 600,
-    gridArea: 'header',
-  },
-  modalContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'auto',
-    justifyContent: 'center',
-    flex: 1,
-    gridArea: 'content',
-  },
-  navItems: () => ({
-    display: 'flex',
-    overflow: 'auto',
-    borderBottom: `1px solid ${theme.palette.secondary[500]}`,
-    gridArea: 'nav-items',
-  }),
-  navItem: () => ({
-    color: theme.palette.background[400],
-    fontWeight: 600,
-    display: 'flex',
-    '&:not(:first-child)': {
-      paddingLeft: 15,
-      borderLeft: `1px solid ${theme.palette.background[900]}`,
+        gridTemplateRows: 'max-content max-content 1fr',
+        gridTemplateColumns: '1fr',
+        gridRowGap: '10px',
     },
-    '&:not(:last-child)': {
-      paddingRight: 15,
+    header: {
+        fontSize: 20,
+        fontWeight: 600,
+        gridArea: 'header',
     },
-    '&.active': {
-      color: theme.palette.secondary[500],
+    modalContent: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'auto',
+        justifyContent: 'center',
+        flex: 1,
+        gridArea: 'content',
     },
-  }),
-  navButton: {
-    color: 'inherit',
-  },
+    navItems: () => ({
+        display: 'flex',
+        overflow: 'auto',
+        borderBottom: `1px solid ${theme.palette.secondary[500]}`,
+        gridArea: 'nav-items',
+    }),
+    navItem: () => ({
+        color: theme.palette.background[400],
+        fontWeight: 600,
+        display: 'flex',
+        '&:not(:first-child)': {
+            paddingLeft: 15,
+            borderLeft: `1px solid ${theme.palette.background[900]}`,
+        },
+        '&:not(:last-child)': {
+            paddingRight: 15,
+        },
+        '&.active': {
+            color: theme.palette.secondary[500],
+        },
+    }),
+    navButton: {
+        color: 'inherit',
+    },
 });
 
 enum ViewOptions {
@@ -74,51 +74,51 @@ enum ViewOptions {
 }
 
 export const ConnectionsQuickOptions: FC<ConnectionsQuickOptionsProps> = ({ classes, onClose, thoughtId, statusOptions }) => {
-  const [currentView, setCurrentView] = useState<ViewOptions>(ViewOptions.Connections);
-  const thoughts = useSelector(thoughtSelector);
-  const thought = thoughts.find(({ id }) => id === thoughtId);
+    const [currentView, setCurrentView] = useState<ViewOptions>(ViewOptions.Connections);
+    const thoughts = useSelector(thoughtSelector);
+    const thought = thoughts.find(({ id }) => id === thoughtId);
 
-  return (
-    <div className={classes.root}>
-      <h1 className={classes.header}>{thought.title}</h1>
-      <ul className={classes.navItems}>
-        {[ViewOptions.Connections, ViewOptions.Statuses, ViewOptions.Visibility, ViewOptions.Location].map(option => {
-          return (
-            <li key={option} className={classNames(classes.navItem, {
-              active: currentView === option,
-            })}>
-              <button
-                className={classes.navButton}
-                onClick={() => setCurrentView(option)}
-              >
-                {option}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <section className={classes.modalContent}>
-        {currentView === ViewOptions.Connections && <ConnectionsModal
-          onClose={onClose}
-          thoughtId={thoughtId}
-          autoFocus={false}
-        />}
-        {currentView === ViewOptions.Statuses && <StatusesModal
-          onClose={onClose}
-          thought={thought}
-          statusOptions={statusOptions}
-        />}
-        {currentView === ViewOptions.Visibility && <VisibilityModal
-          onClose={onClose}
-          thought={thought}
-        />}
-        {currentView === ViewOptions.Location && <LocationModal
-          onClose={onClose}
-          thought={thought}
-        />}
-      </section>
-    </div>
-  );
+    return (
+        <div className={classes.root}>
+            <h1 className={classes.header}>{thought.title}</h1>
+            <ul className={classes.navItems}>
+                {[ViewOptions.Connections, ViewOptions.Statuses, ViewOptions.Visibility, ViewOptions.Location].map(option => {
+                    return (
+                        <li key={option} className={classNames(classes.navItem, {
+                            active: currentView === option,
+                        })}>
+                            <button
+                                className={classes.navButton}
+                                onClick={() => setCurrentView(option)}
+                            >
+                                {option}
+                            </button>
+                        </li>
+                    );
+                })}
+            </ul>
+            <section className={classes.modalContent}>
+                {currentView === ViewOptions.Connections && <ConnectionsModal
+                    onClose={onClose}
+                    thoughtId={thoughtId}
+                    autoFocus={false}
+                />}
+                {currentView === ViewOptions.Statuses && <StatusesModal
+                    onClose={onClose}
+                    thought={thought}
+                    statusOptions={statusOptions}
+                />}
+                {currentView === ViewOptions.Visibility && <VisibilityModal
+                    onClose={onClose}
+                    thought={thought}
+                />}
+                {currentView === ViewOptions.Location && <LocationModal
+                    onClose={onClose}
+                    thought={thought}
+                />}
+            </section>
+        </div>
+    );
 };
 
 export default withStyles(styles)(ConnectionsQuickOptions);

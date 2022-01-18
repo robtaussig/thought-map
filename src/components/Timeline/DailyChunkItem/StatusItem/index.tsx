@@ -10,32 +10,32 @@ interface StatusItemProps {
 }
 
 export const StatusItem: FC<StatusItemProps> = ({
-  classes,
-  statusItem,
+    classes,
+    statusItem,
 }) => {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(`/thought/${statusItem.thoughtId}`);
-  };
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate(`/thought/${statusItem.thoughtId}`);
+    };
 
-  return (
-    <>
-      <button
-        className={classes.statusText}
-        onClick={handleClick}
-        style={{
-          color: 'white',
-          backgroundColor: STATUS_TO_COLOR[statusItem.status]
-        }}
-      >
-        {statusItem.status}
-      </button>
-      <div className={classes.thought}>
-        <span className={classes.time}>{format(new Date(statusItem.updated), 'p')}</span>
-        <span className={classes.title}>{statusItem.title}</span>
-      </div>
-    </>
-  );
+    return (
+        <>
+            <button
+                className={classes.statusText}
+                onClick={handleClick}
+                style={{
+                    color: 'white',
+                    backgroundColor: STATUS_TO_COLOR[statusItem.status]
+                }}
+            >
+                {statusItem.status}
+            </button>
+            <div className={classes.thought}>
+                <span className={classes.time}>{format(new Date(statusItem.updated), 'p')}</span>
+                <span className={classes.title}>{statusItem.title}</span>
+            </div>
+        </>
+    );
 };
 
 export default StatusItem;

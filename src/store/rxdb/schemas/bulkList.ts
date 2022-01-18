@@ -9,37 +9,37 @@ export interface BulkList {
 }
 
 export default ['bulk_list', {
-  "title": "BulkList schema",
-  "version": 1,
-  "description": "A BulkList",
-  "type": "object",
-  "primaryKey": "id",
-  "properties": {
-    "id": {
-      "type": "string",
+    'title': 'BulkList schema',
+    'version': 1,
+    'description': 'A BulkList',
+    'type': 'object',
+    'primaryKey': 'id',
+    'properties': {
+        'id': {
+            'type': 'string',
+        },
+        'name': {
+            'type': 'string',
+        },
+        'list': {
+            'type': 'string',
+        },
+        'created': {
+            'type': 'number',
+        },
+        'updated': {
+            'type': 'number',
+        },
     },
-    "name": {
-      "type": "string",
-    },
-    "list": {
-      "type": "string",
-    },
-    "created": {
-      "type": "number",
-    },
-    "updated": {
-      "type": "number",
-    },
-  },
-  "required": ["list", "name"],
-  "attachments": {
+    'required': ['list', 'name'],
+    'attachments': {
 
-  },
+    },
 } as RxJsonSchema<BulkList>, {
-    "migrationStrategies": {
-      1: (oldBulkList: RxDocument<BulkList>) => {
-          oldBulkList.name = 'Unknown';
-          return oldBulkList;
-      },
+    'migrationStrategies': {
+        1: (oldBulkList: RxDocument<BulkList>) => {
+            oldBulkList.name = 'Unknown';
+            return oldBulkList;
+        },
     },
 }];

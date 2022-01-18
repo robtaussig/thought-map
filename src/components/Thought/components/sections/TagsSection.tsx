@@ -19,26 +19,26 @@ interface TagsSectionProps {
 
 export const TagsSection: FC<TagsSectionProps> = ({ classes, tags, tagOptions, onDelete, onCreate, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
 
-  return (
-    <ThoughtSection
-      classes={classes}
-      Icon={Style}
-      field={'Tags'}
-      value={tags.map(({ text }) => text)}
-      className={'tags'}
-      visible={visible}
-      sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
-      onToggleVisibility={onToggleVisibility}
-      edit={{
-        type: EditTypes.Select,
-        options: tagOptions,
-        onCreate,
-        onDelete,
-      }}
-    />
-  );
+    return (
+        <ThoughtSection
+            classes={classes}
+            Icon={Style}
+            field={'Tags'}
+            value={tags.map(({ text }) => text)}
+            className={'tags'}
+            visible={visible}
+            sectionState={sectionState}
+            onLongPress={onLongPress}
+            onDrop={onDrop}
+            onToggleVisibility={onToggleVisibility}
+            edit={{
+                type: EditTypes.Select,
+                options: tagOptions,
+                onCreate,
+                onDelete,
+            }}
+        />
+    );
 };
 
 export default TagsSection;

@@ -19,52 +19,52 @@ interface CircleButtonProps {
 }
 
 export const CircleButton: FC<CircleButtonProps> = React.memo(({
-  classes,
-  id = 'add-button',
-  onClick,
-  label,
-  disabled,
-  Icon = Add,
-  LongPressIcon,
-  title,
-  svgRef,
-  onLongPress,
-  emphasize,
-  ...rest }) => {
+    classes,
+    id = 'add-button',
+    onClick,
+    label,
+    disabled,
+    Icon = Add,
+    LongPressIcon,
+    title,
+    svgRef,
+    onLongPress,
+    emphasize,
+    ...rest }) => {
 
-  if (onLongPress) {
-    return (
-      <LongPressCircleButton
-        classes={classes}
-        id={id}
-        onClick={onClick}
-        label={label}
-        disabled={disabled}
-        Icon={Icon}
-        LongPressIcon={LongPressIcon}
-        title={title}
-        svgRef={svgRef}
-        onLongPress={onLongPress}
-        emphasize={emphasize}
-        {...rest}
-      />
-    )
-  } else {
-    return (
-      <StaticCircleButton
-        classes={classes}
-        id={id}
-        onClick={onClick}
-        label={label}
-        disabled={disabled}
-        Icon={Icon}
-        title={title}
-        svgRef={svgRef}
-        emphasize={emphasize}
-        {...rest}
-      />
-    )
-  }
+    if (onLongPress) {
+        return (
+            <LongPressCircleButton
+                classes={classes}
+                id={id}
+                onClick={onClick}
+                label={label}
+                disabled={disabled}
+                Icon={Icon}
+                LongPressIcon={LongPressIcon}
+                title={title}
+                svgRef={svgRef}
+                onLongPress={onLongPress}
+                emphasize={emphasize}
+                {...rest}
+            />
+        );
+    } else {
+        return (
+            <StaticCircleButton
+                classes={classes}
+                id={id}
+                onClick={onClick}
+                label={label}
+                disabled={disabled}
+                Icon={Icon}
+                title={title}
+                svgRef={svgRef}
+                emphasize={emphasize}
+                {...rest}
+            />
+        );
+    }
 });
 
 export default CircleButton;

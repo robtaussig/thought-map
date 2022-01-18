@@ -8,12 +8,12 @@ interface ReviewStatProps {
 
 export const ReviewStat: FC<ReviewStatProps> = ({ classes, field, value }) => {
 
-  return (
-    <div className={classes.reviewStat}>
-      <span className={classes.reviewStatField}>{field}:</span>
-      <span className={classes.reviewStatValue}>{value}</span>
-    </div>
-  );
+    return (
+        <div className={classes.reviewStat}>
+            <span className={classes.reviewStatField}>{field}:</span>
+            <span className={classes.reviewStatValue}>{value}</span>
+        </div>
+    );
 };
 
 export default ReviewStat;

@@ -1,4 +1,4 @@
-declare module "react-div-100vh" {
+declare module 'react-div-100vh' {
   import { Component } from 'react';
 
   interface Div100vhProps {

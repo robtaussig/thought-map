@@ -4,41 +4,41 @@ import { addPouchPlugin } from 'rxdb/plugins/pouchdb';
 addPouchPlugin(require('pouchdb-adapter-idb'));
 
 export const DB_SETTINGS = {
-  name: 'thoughtmap',           // <- name
-  storage: getRxStoragePouch('idb'),
-  multiInstance: true,         // <- multiInstance (optional, default: true)
-  queryChangeDetection: true // <- queryChangeDetection (optional, default: false)
+    name: 'thoughtmap',           // <- name
+    storage: getRxStoragePouch('idb'),
+    multiInstance: true,         // <- multiInstance (optional, default: true)
+    queryChangeDetection: true // <- queryChangeDetection (optional, default: false)
 };
 
 const initializeCollection = (db: RxDatabase, tableName: string, schema: RxJsonSchema<any>, rest: RxCollectionCreator) => {
-  return db.addCollections({
-    [tableName]: {
-      schema,
-      statics: {}, // (optional) // ORM-functions for this collection
-      methods: {}, // (optional) ORM-functions for documents
-      attachments: {}, // (optional) ORM-functions for attachments
-      options: {}, // (optional) Custom paramters that might be used in plugins
-      migrationStrategies: {}, // (optional)
-      autoMigrate: true, // (optional)
-      ...rest,
-    },
-  });
+    return db.addCollections({
+        [tableName]: {
+            schema,
+            statics: {}, // (optional) // ORM-functions for this collection
+            methods: {}, // (optional) ORM-functions for documents
+            attachments: {}, // (optional) ORM-functions for attachments
+            options: {}, // (optional) Custom paramters that might be used in plugins
+            migrationStrategies: {}, // (optional)
+            autoMigrate: true, // (optional)
+            ...rest,
+        },
+    });
 };
 
 export const initializeCollections = async (db: RxDatabase) => {
-  return db.addCollections(schemas.reduce((acc, [tableName, schema, rest]) => {
-    acc[tableName] = {
-      schema,
-      statics: {}, // (optional) // ORM-functions for this collection
-      methods: {}, // (optional) ORM-functions for documents
-      attachments: {}, // (optional) ORM-functions for attachments
-      options: {}, // (optional) Custom paramters that might be used in plugins
-      migrationStrategies: {}, // (optional)
-      autoMigrate: true, // (optional)
-      ...rest,
-    };
-    return acc;
-  }, {} as {
+    return db.addCollections(schemas.reduce((acc, [tableName, schema, rest]) => {
+        acc[tableName] = {
+            schema,
+            statics: {}, // (optional) // ORM-functions for this collection
+            methods: {}, // (optional) ORM-functions for documents
+            attachments: {}, // (optional) ORM-functions for attachments
+            options: {}, // (optional) Custom paramters that might be used in plugins
+            migrationStrategies: {}, // (optional)
+            autoMigrate: true, // (optional)
+            ...rest,
+        };
+        return acc;
+    }, {} as {
     [key: string]: RxCollectionCreator;
   }));
 };

@@ -11,29 +11,29 @@ export interface Connections {
 const initialState: Connections = {};
 
 const connections = createSlice({
-  name: 'connections',
-  initialState,
-  reducers: {
-    setConnections(state, action: PayloadAction<Connections>) {
-      return action.payload;
-    },
-    insert(state, action: PayloadAction<Connection>) {
-      state[action.payload.id] = action.payload;
-    },
-    remove(state, action: PayloadAction<string>) {
-      delete state[action.payload];
-    },
-    update(state, action: PayloadAction<Connection>) {
-      state[action.payload.id] = action.payload;
-    },
-  }
+    name: 'connections',
+    initialState,
+    reducers: {
+        setConnections(state, action: PayloadAction<Connections>) {
+            return action.payload;
+        },
+        insert(state, action: PayloadAction<Connection>) {
+            state[action.payload.id] = action.payload;
+        },
+        remove(state, action: PayloadAction<string>) {
+            delete state[action.payload];
+        },
+        update(state, action: PayloadAction<Connection>) {
+            state[action.payload.id] = action.payload;
+        },
+    }
 });
 
 export const {
-  setConnections,
-  insert,
-  remove,
-  update,
+    setConnections,
+    insert,
+    remove,
+    update,
 } = connections.actions;
 
 export default connections.reducer;

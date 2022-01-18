@@ -13,38 +13,38 @@ interface MergeStageProps {
 }
 
 export const MergeStage: FC<MergeStageProps> = ({
-  rootClassName,
-  itemsToAdd,
-  onClick,
-  onRemove,
-  currentItemIndex,
+    rootClassName,
+    itemsToAdd,
+    onClick,
+    onRemove,
+    currentItemIndex,
 }) => {
-  const classes = useMergeStageStyles({});
+    const classes = useMergeStageStyles({});
 
-  const handleClickItem = useCallback((event, item) => {
-    event.target.scrollIntoView({ behavior: 'smooth', inline :'center' });
-    onClick(itemsToAdd.indexOf(item));
-  }, [itemsToAdd]);
+    const handleClickItem = useCallback((event, item) => {
+        event.target.scrollIntoView({ behavior: 'smooth', inline :'center' });
+        onClick(itemsToAdd.indexOf(item));
+    }, [itemsToAdd]);
 
-  return (
-    <div className={classNames(classes.root, rootClassName)}>
-      <h2 className={classes.title}>To be added ({itemsToAdd.length})</h2>
-      <ul className={classes.items}>
-        {itemsToAdd.map((item, idx) => {
-          return (
-            <MergeItem
-              key={`item-${idx}`}
-              classes={classes}
-              item={item}
-              onClick={handleClickItem}
-              onRemove={onRemove}
-              selected={idx === currentItemIndex}
-            />
-          );
-        })}
-      </ul>
-    </div>
-  );
+    return (
+        <div className={classNames(classes.root, rootClassName)}>
+            <h2 className={classes.title}>To be added ({itemsToAdd.length})</h2>
+            <ul className={classes.items}>
+                {itemsToAdd.map((item, idx) => {
+                    return (
+                        <MergeItem
+                            key={`item-${idx}`}
+                            classes={classes}
+                            item={item}
+                            onClick={handleClickItem}
+                            onRemove={onRemove}
+                            selected={idx === currentItemIndex}
+                        />
+                    );
+                })}
+            </ul>
+        </div>
+    );
 };
 
 export default MergeStage;

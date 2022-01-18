@@ -35,211 +35,211 @@ interface RightButtonProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  circleButton: () => ({
-    ...theme.defaults.circleButton,
-    border: `2px solid ${theme.palette.primary[500]}`,
-    backgroundColor: 'black',
-    bottom: 0,
-    right: 0,
-    zIndex: 999,
-    '&#has-secondary': {
-      border: `2px solid ${theme.palette.secondary[500]}`,
-    },
-    '&#delete-button': {
-      border: `2px solid ${theme.palette.negative[300]}`,
-      backgroundColor: theme.palette.negative[300],
-    },
-    '&#updating-button': {
-      animation: 'rotate 1s infinite',
-      border: `2px solid gray`,
-      backgroundColor: 'gray',
-    },
-    '&#updated': {
-      border: `2px solid limegreen`,
-      backgroundColor: 'limegreen',
-    },
-    '&#merge': {
-      '&:disabled': {
-        border: `2px solid #ccc`,
-        backgroundColor: '#ccc',
-      },
-    },
-  }),
+    circleButton: () => ({
+        ...theme.defaults.circleButton,
+        border: `2px solid ${theme.palette.primary[500]}`,
+        backgroundColor: 'black',
+        bottom: 0,
+        right: 0,
+        zIndex: 999,
+        '&#has-secondary': {
+            border: `2px solid ${theme.palette.secondary[500]}`,
+        },
+        '&#delete-button': {
+            border: `2px solid ${theme.palette.negative[300]}`,
+            backgroundColor: theme.palette.negative[300],
+        },
+        '&#updating-button': {
+            animation: 'rotate 1s infinite',
+            border: '2px solid gray',
+            backgroundColor: 'gray',
+        },
+        '&#updated': {
+            border: '2px solid limegreen',
+            backgroundColor: 'limegreen',
+        },
+        '&#merge': {
+            '&:disabled': {
+                border: '2px solid #ccc',
+                backgroundColor: '#ccc',
+            },
+        },
+    }),
 });
 
 export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
-  const [openModal, closeModal] = useModal();
-  const dispatch = useDispatch();
-  const [hideButton, setHideButton] = useState<boolean>(false);
-  const [updating, setUpdating] = useState<boolean>(false);
-  const [updated, setUpdated] = useState<boolean>(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const thoughtId = useIdFromUrl('thought');
-  const { db } = useLoadedDB();
-  const { encrypt } = useCrypto();
-  const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
-  const tutorial = useSelector(tutorialSelector);
-  const settings = useSelector(settingSelector);
-  const backups = useSelector(backupSelector);
-  const { comparables } = useSelector(mergeResultsSelector);
-  const backupId = useBackupIdFromHistory();
-  const homeUrl = useHomeUrl();
+    const [openModal, closeModal] = useModal();
+    const dispatch = useDispatch();
+    const [hideButton, setHideButton] = useState<boolean>(false);
+    const [updating, setUpdating] = useState<boolean>(false);
+    const [updated, setUpdated] = useState<boolean>(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const thoughtId = useIdFromUrl('thought');
+    const { db } = useLoadedDB();
+    const { encrypt } = useCrypto();
+    const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
+    const tutorial = useSelector(tutorialSelector);
+    const settings = useSelector(settingSelector);
+    const backups = useSelector(backupSelector);
+    const { comparables } = useSelector(mergeResultsSelector);
+    const backupId = useBackupIdFromHistory();
+    const homeUrl = useHomeUrl();
 
-  useEffect(() => {
-    setHideButton(/(stage|settings|backups|process-merge|privacy)/.test(location.pathname));
+    useEffect(() => {
+        setHideButton(/(stage|settings|backups|process-merge|privacy)/.test(location.pathname));
 
-    return () => {
-      dispatch(toggle(false));
-    };
-  }, [location.pathname])
+        return () => {
+            dispatch(toggle(false));
+        };
+    }, [location.pathname]);
 
-  const [
-    Icon,
-    label,
-    handleClick,
-    id,
-    handleLongPress,
-    LongPressIcon,
-  ]: [any, string, () => void, string, () => void, any?] = useMemo(() => {
+    const [
+        Icon,
+        label,
+        handleClick,
+        id,
+        handleLongPress,
+        LongPressIcon,
+    ]: [any, string, () => void, string, () => void, any?] = useMemo(() => {
 
-    const handleAddThought = () => {
-      openModal(
-        <CreateThought
-          onClose={closeModal}
-          onCreateBulk={() => {
-            closeModal();
+        const handleAddThought = () => {
             openModal(
-              <CreateBulkThought
-                onClose={closeModal}
-              />, 'Create Bulk Thoughts'
+                <CreateThought
+                    onClose={closeModal}
+                    onCreateBulk={() => {
+                        closeModal();
+                        openModal(
+                            <CreateBulkThought
+                                onClose={closeModal}
+                            />, 'Create Bulk Thoughts'
+                        );
+                    }}
+                    typeOptions={typeOptions}
+                />, 'Create Thought'
             );
-          }}
-          typeOptions={typeOptions}
-        />, 'Create Thought'
-      );
-    }
-
-    const handleClickViewConnections = () => {
-      navigate(`${homeUrl}thought/${thoughtId}/connections`);
-    };
-
-    const handleClickViewHistory = () => {
-      navigate(`${homeUrl}thought/${thoughtId}/history`);
-    };
-
-    const handleBack = () => {
-      navigate(-1);
-    };
-
-    const handleDeleteThought = () => {
-      if (typeof thoughtId === 'string') {
-        const onConfirm = async () => {
-          await thoughtActions.deleteThought(db, thoughtId);
-          navigate(homeUrl);
         };
 
-        openConfirmation('Are you sure you want to delete this?', onConfirm);
-      }
-    };
+        const handleClickViewConnections = () => {
+            navigate(`${homeUrl}thought/${thoughtId}/connections`);
+        };
 
-    const handleDemandBackup = async () => {
-      setUpdating(true);
-      let activeBackup;
-      try {
-        activeBackup = backups.find(backup => backup.isActive);
+        const handleClickViewHistory = () => {
+            navigate(`${homeUrl}thought/${thoughtId}/history`);
+        };
 
-        if (activeBackup) {
-          const { password, privateKey, backupId, version } = activeBackup;
-          const currentVersion = await getVersion(backupId);
-          const nextVersion = Number(currentVersion?.version ?? version) + 1;
-          const data = await jsonDump(db);
-          const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
-          const chunks = chunkData(data, NUM_CHUNKS);
-          await backupActions.editBackup(db, {
-            ...activeBackup,
-            version: nextVersion,
-            merged: false,
-          });
-          const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
-          await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion, encryptedChunks.length)));
+        const handleBack = () => {
+            navigate(-1);
+        };
+
+        const handleDeleteThought = () => {
+            if (typeof thoughtId === 'string') {
+                const onConfirm = async () => {
+                    await thoughtActions.deleteThought(db, thoughtId);
+                    navigate(homeUrl);
+                };
+
+                openConfirmation('Are you sure you want to delete this?', onConfirm);
+            }
+        };
+
+        const handleDemandBackup = async () => {
+            setUpdating(true);
+            let activeBackup;
+            try {
+                activeBackup = backups.find(backup => backup.isActive);
+
+                if (activeBackup) {
+                    const { password, privateKey, backupId, version } = activeBackup;
+                    const currentVersion = await getVersion(backupId);
+                    const nextVersion = Number(currentVersion?.version ?? version) + 1;
+                    const data = await jsonDump(db);
+                    const NUM_CHUNKS = Math.ceil(data.length / CHUNK_LENGTH);
+                    const chunks = chunkData(data, NUM_CHUNKS);
+                    await backupActions.editBackup(db, {
+                        ...activeBackup,
+                        version: nextVersion,
+                        merged: false,
+                    });
+                    const encryptedChunks = await Promise.all(chunks.map(chunk => encrypt(chunk, privateKey)));
+                    await Promise.all(encryptedChunks.map((chunk, idx) => updateChunk(chunk, idx, backupId, password, nextVersion, encryptedChunks.length)));
           
-          setUpdated(true);
-          setTimeout(() => {
-            setUpdated(false);
-          }, 2000);
+                    setUpdated(true);
+                    setTimeout(() => {
+                        setUpdated(false);
+                    }, 2000);
+                } else {
+                    throw new Error('No active backup');
+                }
+            } catch (e) {
+                backupActions.editBackup(db, {
+                    ...activeBackup,
+                    version: activeBackup.version,
+                    merged: false,
+                });
+                alert(e);
+            } finally {
+                setUpdating(false);
+            }
+        };
+
+        const handleClickMerge = () => {
+            const version = getSearchParam('v');
+            navigate(`/process-merge/${backupId}?v=${version}`);
+        };
+
+        if (updated) return [Check, 'Updated', null, 'updated', null];
+        if (updating) return [Refresh, 'Updating', null, 'updating-button', null];
+
+        if (/(history|connections|timeline)$/.test(location.pathname)) {
+            return [ArrowBack, 'Back', handleBack, 'thought-button', null];
+        } else if (/thought/.test(location.pathname)) {
+            if (displayThoughtSettings) {
+                return [Delete, 'Delete Thought', handleDeleteThought, 'delete-button', null];
+            } else {
+                return [Link, 'History', handleClickViewConnections, 'has-secondary', handleClickViewHistory, History];
+            }
+        } else if (/merge/.test(location.pathname)) {
+            if (comparables.length === 0) {
+                return [Check, 'Merge', handleClickMerge, 'merge', null, null];
+            } else {
+                return [Check, 'Merge', null, 'merge', null, null];
+            }
         } else {
-          throw new Error('No active backup');
+            return settings.enableBackupOnDemand ?
+                [Add, 'Create Thought', handleAddThought, 'thought-button', handleDemandBackup, CloudUpload] :
+                [Add, 'Create Thought', handleAddThought, 'thought-button', null, null];
         }
-      } catch (e) {
-        backupActions.editBackup(db, {
-          ...activeBackup,
-          version: activeBackup.version,
-          merged: false,
-        });
-        alert(e);
-      } finally {
-        setUpdating(false);
-      }
-    };
+    }, [location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating, updated, comparables, backups]);
 
-    const handleClickMerge = () => {
-      const version = getSearchParam('v');
-      navigate(`/process-merge/${backupId}?v=${version}`);
-    };
+    if (hideButton) return null;
 
-    if (updated) return [Check, 'Updated', null, 'updated', null];
-    if (updating) return [Refresh, 'Updating', null, 'updating-button', null];
+    const isEmphasized = tutorial.emphasizeButton === ButtonPositions.Right;
+    const isAltEmphasized = tutorial.emphasizeButton === ButtonPositions.RightAlt;
 
-    if (/(history|connections|timeline)$/.test(location.pathname)) {
-      return [ArrowBack, 'Back', handleBack, 'thought-button', null];
-    } else if (/thought/.test(location.pathname)) {
-      if (displayThoughtSettings) {
-        return [Delete, 'Delete Thought', handleDeleteThought, 'delete-button', null];
-      } else {
-        return [Link, 'History', handleClickViewConnections, 'has-secondary', handleClickViewHistory, History];
-      }
-    } else if (/merge/.test(location.pathname)) {
-      if (comparables.length === 0) {
-        return [Check, 'Merge', handleClickMerge, 'merge', null, null];
-      } else {
-        return [Check, 'Merge', null, 'merge', null, null];
-      }
-    } else {
-      return settings.enableBackupOnDemand ?
-        [Add, 'Create Thought', handleAddThought, 'thought-button', handleDemandBackup, CloudUpload] :
-        [Add, 'Create Thought', handleAddThought, 'thought-button', null, null];
-    }
-  }, [location.pathname, displayThoughtSettings, settings.enableBackupOnDemand, updating, updated, comparables, backups]);
-
-  if (hideButton) return null;
-
-  const isEmphasized = tutorial.emphasizeButton === ButtonPositions.Right;
-  const isAltEmphasized = tutorial.emphasizeButton === ButtonPositions.RightAlt;
-
-  return (
-    <CircleButton
-      onClick={handleClick ? () => {
-        if (!isAltEmphasized) {
-          isEmphasized && dispatch(emphasizeButton(null));
-          handleClick();
-        }
-      } : undefined}
-      id={id}
-      disabled={handleClick === null}
-      classes={classes}
-      label={label}
-      Icon={Icon}
-      onLongPress={handleLongPress ? () => {
-        if (!isEmphasized) {
-          isAltEmphasized && dispatch(emphasizeButton(null));
-          handleLongPress();
-        }
-      } : undefined}
-      LongPressIcon={LongPressIcon}
-      emphasize={isEmphasized || isAltEmphasized}
-    />
-  );
+    return (
+        <CircleButton
+            onClick={handleClick ? () => {
+                if (!isAltEmphasized) {
+                    isEmphasized && dispatch(emphasizeButton(null));
+                    handleClick();
+                }
+            } : undefined}
+            id={id}
+            disabled={handleClick === null}
+            classes={classes}
+            label={label}
+            Icon={Icon}
+            onLongPress={handleLongPress ? () => {
+                if (!isEmphasized) {
+                    isAltEmphasized && dispatch(emphasizeButton(null));
+                    handleLongPress();
+                }
+            } : undefined}
+            LongPressIcon={LongPressIcon}
+            emphasize={isEmphasized || isAltEmphasized}
+        />
+    );
 };
 
 export default withStyles(styles)(RightButton);

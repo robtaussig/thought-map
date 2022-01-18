@@ -19,4 +19,4 @@ export const PrivacyPolicy: FC<PrivacyPolicyProps> = ({
     );
 };
 
-export default PrivacyPolicy
+export default PrivacyPolicy;

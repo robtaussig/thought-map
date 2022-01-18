@@ -17,101 +17,101 @@ interface PlanSelectActionsProps {
 }
 
 const styles = (theme: any): StyleRules => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  header: {
-    fontWeight: 600,
-    fontSize: 20,
-  },
-  subHeader: {
-    margin: '15px 0',
-    fontSize: 18,
-    display: 'flex',
-  },
-  selectLabel: () => ({
-    margin: '0 5px',
-    display: 'flex',
-    '& select': {
-      padding: '0 13px',
-      textAlignLast: 'center',
-      backgroundColor: theme.palette.primary[500],
-      fontWeight: 600,
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
     },
-  }),
-  reviewWrapper: {
+    header: {
+        fontWeight: 600,
+        fontSize: 20,
+    },
+    subHeader: {
+        margin: '15px 0',
+        fontSize: 18,
+        display: 'flex',
+    },
+    selectLabel: () => ({
+        margin: '0 5px',
+        display: 'flex',
+        '& select': {
+            padding: '0 13px',
+            textAlignLast: 'center',
+            backgroundColor: theme.palette.primary[500],
+            fontWeight: 600,
+        },
+    }),
+    reviewWrapper: {
 
-  },
-  reviewStat: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  reviewStatField: {
-    fontWeight: 600,
-  },
-  reviewStatValue: {
+    },
+    reviewStat: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
+    reviewStatField: {
+        fontWeight: 600,
+    },
+    reviewStatValue: {
 
-  },
-  timelineButton: (params: any) => ({
-    backgroundColor: theme.palette.secondary[700],
-    color: 'white',
-    marginTop: 10,
-    padding: '10px 15px',
-    borderRadius: 5,
-  }),
+    },
+    timelineButton: (params: any) => ({
+        backgroundColor: theme.palette.secondary[700],
+        color: 'white',
+        marginTop: 10,
+        padding: '10px 15px',
+        borderRadius: 5,
+    }),
 });
 
 export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId, onClose }) => {
-  const navigate = useNavigate();
-  const [currentReviewPeriod, setCurrentReviewPeriopd] = useState<ReviewPeriods>(ReviewPeriods.Week);
-  const plans = useSelector(planSelector);
-  const stateThoughts = useSelector(thoughtSelector);
-  const statusesByThought = useSelector(statusesByThoughtSelector);
-  const statuses = useSelector(statusSelector);
-  const plan = plans.find(({ id }) => id === planId);
-  const thoughts = stateThoughts.filter(thought => typeof planId === 'boolean' || thought.planId === planId);
+    const navigate = useNavigate();
+    const [currentReviewPeriod, setCurrentReviewPeriopd] = useState<ReviewPeriods>(ReviewPeriods.Week);
+    const plans = useSelector(planSelector);
+    const stateThoughts = useSelector(thoughtSelector);
+    const statusesByThought = useSelector(statusesByThoughtSelector);
+    const statuses = useSelector(statusSelector);
+    const plan = plans.find(({ id }) => id === planId);
+    const thoughts = stateThoughts.filter(thought => typeof planId === 'boolean' || thought.planId === planId);
 
-  const handleClickTimeline = () => {
-    onClose();
-    if (typeof planId === 'boolean') {
-      navigate('/timeline');
-    } else {
-      navigate(`/plan/${planId}/timeline`);
-    }
-  };
+    const handleClickTimeline = () => {
+        onClose();
+        if (typeof planId === 'boolean') {
+            navigate('/timeline');
+        } else {
+            navigate(`/plan/${planId}/timeline`);
+        }
+    };
 
-  const handleClickArchive = () => {
+    const handleClickArchive = () => {
 
-  };
+    };
 
-  return (
-    <div className={classes.root}>
-      <h1 className={classes.header}>{typeof planId === 'boolean' ? 'ThoughtMap' : plan.name} ({thoughts.length} thoughts)</h1>
-      <h2 className={classes.subHeader}>
+    return (
+        <div className={classes.root}>
+            <h1 className={classes.header}>{typeof planId === 'boolean' ? 'ThoughtMap' : plan.name} ({thoughts.length} thoughts)</h1>
+            <h2 className={classes.subHeader}>
         A
-        {<Select
-          classes={classes}
-          value={currentReviewPeriod}
-          options={[...new Set(Object.keys(ReviewPeriods))]}
-          onChange={e => setCurrentReviewPeriopd(e.target.value as ReviewPeriods)} />}
+                {<Select
+                    classes={classes}
+                    value={currentReviewPeriod}
+                    options={[...new Set(Object.keys(ReviewPeriods))]}
+                    onChange={e => setCurrentReviewPeriopd(e.target.value as ReviewPeriods)} />}
         In Review
-      </h2>
-      <Review
-        classes={classes}
-        thoughts={thoughts}
-        reviewPeriod={currentReviewPeriod}
-        statusesByThought={statusesByThought}
-        statuses={statuses}
-      />
-      <button
-        className={classes.timelineButton}
-        onClick={handleClickTimeline}
-      >
+            </h2>
+            <Review
+                classes={classes}
+                thoughts={thoughts}
+                reviewPeriod={currentReviewPeriod}
+                statusesByThought={statusesByThought}
+                statuses={statuses}
+            />
+            <button
+                className={classes.timelineButton}
+                onClick={handleClickTimeline}
+            >
         View Timeline
-      </button>
-    </div>
-  );
+            </button>
+        </div>
+    );
 };
 
 export default withStyles(styles)(PlanSelectActions);

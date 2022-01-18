@@ -17,26 +17,26 @@ export interface SortFilterSettings {
 const initialState: SortFilterSettings = {};
 
 const sortFilterSettings = createSlice({
-  name: 'sortFilterSettings',
-  initialState,
-  reducers: {
-    setSortFilterSettings(state, action: PayloadAction<SortFilterSettings>) {
-      return action.payload
-    },
-    sortBy(state, action: PayloadAction<SortFilterField>) {
-      return {
-        field: state.field === action.payload && state.desc === false ? null : action.payload,
-        desc: state.field === action.payload ?
-          state.desc === false ? null : !state.desc :
-          true
-      };
-    },
-  }
+    name: 'sortFilterSettings',
+    initialState,
+    reducers: {
+        setSortFilterSettings(state, action: PayloadAction<SortFilterSettings>) {
+            return action.payload;
+        },
+        sortBy(state, action: PayloadAction<SortFilterField>) {
+            return {
+                field: state.field === action.payload && state.desc === false ? null : action.payload,
+                desc: state.field === action.payload ?
+                    state.desc === false ? null : !state.desc :
+                    true
+            };
+        },
+    }
 });
 
 export const {
-  setSortFilterSettings,
-  sortBy,
+    setSortFilterSettings,
+    sortBy,
 } = sortFilterSettings.actions;
 
 export default sortFilterSettings.reducer;

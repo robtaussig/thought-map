@@ -4,37 +4,37 @@ import { insert, remove, update } from '../../reducers/statuses';
 import { Notification, RxChangeEvent } from '../../types';
 
 export const handleStatusChange = (
-  dispatch: Dispatch<any>,
-  setLastNotification: (notification: Notification) => void,
-  matchStatusLocationIfEnabled: (status: Status) => Promise<void>,
-  handleRecurringThought: (thoughtId: string) => Promise<void>,
+    dispatch: Dispatch<any>,
+    setLastNotification: (notification: Notification) => void,
+    matchStatusLocationIfEnabled: (status: Status) => Promise<void>,
+    handleRecurringThought: (thoughtId: string) => Promise<void>,
 ) => ({ documentData, operation, documentId }: RxChangeEvent) => {
-  if ((window as any).blockDBSubscriptions === true) return;
-  const status: Status = documentData;
-  let notification;
+    if ((window as any).blockDBSubscriptions === true) return;
+    const status: Status = documentData;
+    let notification;
 
-  switch (operation) {
+    switch (operation) {
     case 'INSERT':
-      dispatch(insert(status));
-      matchStatusLocationIfEnabled(status);
-      if (status.text === 'completed') {
-        handleRecurringThought(status.thoughtId);
-      }
-      notification = { message: 'Thought updated' };
-      break;
+        dispatch(insert(status));
+        matchStatusLocationIfEnabled(status);
+        if (status.text === 'completed') {
+            handleRecurringThought(status.thoughtId);
+        }
+        notification = { message: 'Thought updated' };
+        break;
     
     case 'DELETE':
-      dispatch(remove(documentId));
-      break;
+        dispatch(remove(documentId));
+        break;
 
     case 'UPDATE':
-      dispatch(update(status));
-      break;
+        dispatch(update(status));
+        break;
   
     default:
-      break;
-  }
+        break;
+    }
 
-  if ((window as any).blockNotifications) return;
-  setLastNotification(notification);  
+    if ((window as any).blockNotifications) return;
+    setLastNotification(notification);  
 };

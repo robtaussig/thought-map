@@ -5,10 +5,10 @@ interface WithTime {
 }
 
 export const withTime = (object: Object): WithTime => {
-  const timestamp = +new Date();
-  return {
-    ...object,
-    createdAt: timestamp,
-    updatedAt: timestamp,
-  };
+    const timestamp = +new Date();
+    return {
+        ...object,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+    };
 };

@@ -17,21 +17,21 @@ export enum ButtonPositions {
 }
 
 const initialState: Tutorial = {
-  emphasizeButton: null,
+    emphasizeButton: null,
 };
 
 const tutorial = createSlice({
-  name: 'tutorial',
-  initialState,
-  reducers: {
-    emphasizeButton(state, action: PayloadAction<ButtonPositions>) {
-      state.emphasizeButton = action.payload;
-    },
-  }
+    name: 'tutorial',
+    initialState,
+    reducers: {
+        emphasizeButton(state, action: PayloadAction<ButtonPositions>) {
+            state.emphasizeButton = action.payload;
+        },
+    }
 });
 
 export const {
-  emphasizeButton,
+    emphasizeButton,
 } = tutorial.actions;
 
 export default tutorial.reducer;

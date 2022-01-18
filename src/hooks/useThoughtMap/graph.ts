@@ -1,110 +1,110 @@
 import { Visited } from './types';
 
 export class Vertex {
-  next: Set<Vertex> = new Set();
-  prev: Set<Vertex> = new Set();
-  public id: string;
+    next: Set<Vertex> = new Set();
+    prev: Set<Vertex> = new Set();
+    public id: string;
 
-  constructor(id: string) {
-    this.id = id;
-  }
+    constructor(id: string) {
+        this.id = id;
+    }
 
-  addNext(vertex: Vertex) {
-    this.next.add(vertex);
-  }
+    addNext(vertex: Vertex) {
+        this.next.add(vertex);
+    }
 
-  addPrev(vertex: Vertex) {
-    this.prev.add(vertex);
-  }
-  removeNext(vertex: Vertex) {
-    this.next.delete(vertex);
-  }
+    addPrev(vertex: Vertex) {
+        this.prev.add(vertex);
+    }
+    removeNext(vertex: Vertex) {
+        this.next.delete(vertex);
+    }
 
-  removePrev(vertex: Vertex) {
-    this.prev.delete(vertex);
-  }
+    removePrev(vertex: Vertex) {
+        this.prev.delete(vertex);
+    }
 }
 
 export class Graph {
-  vertices: Vertex[] = []
+    vertices: Vertex[] = [];
 
-  static dfs = (vertex: Vertex, visited: Visited = {}, processVertex = (vertex: Vertex) => {}, findOnlyNext: boolean = false) => {
-    visited[vertex.id] = true;
-    vertex.next.forEach(child => {
-      if (!visited[child.id]) {
-        Graph.dfs(child, visited, processVertex, findOnlyNext);
-      }
-    });
-    if (findOnlyNext !== true) {
-      vertex.prev.forEach(child => {
-        if (!visited[child.id]) {
-          Graph.dfs(child, visited, processVertex, findOnlyNext);
+    static dfs = (vertex: Vertex, visited: Visited = {}, processVertex = (vertex: Vertex) => {}, findOnlyNext = false) => {
+        visited[vertex.id] = true;
+        vertex.next.forEach(child => {
+            if (!visited[child.id]) {
+                Graph.dfs(child, visited, processVertex, findOnlyNext);
+            }
+        });
+        if (findOnlyNext !== true) {
+            vertex.prev.forEach(child => {
+                if (!visited[child.id]) {
+                    Graph.dfs(child, visited, processVertex, findOnlyNext);
+                }
+            });
         }
-      });
-    }
-    processVertex(vertex);
-  }
+        processVertex(vertex);
+    };
 
-  static topologicalSort = (vertices: Vertex[]): Vertex[] => {
-    const stack: Vertex[] = [];
-    const visited: Visited = {};
-    vertices.forEach(vertex => {
-      if (!visited[vertex.id]) {
-        Graph.dfs(vertex, visited, vertex => {
-          stack.push(vertex);
-        }, true);
-      }
-    });
+    static topologicalSort = (vertices: Vertex[]): Vertex[] => {
+        const stack: Vertex[] = [];
+        const visited: Visited = {};
+        vertices.forEach(vertex => {
+            if (!visited[vertex.id]) {
+                Graph.dfs(vertex, visited, vertex => {
+                    stack.push(vertex);
+                }, true);
+            }
+        });
  
-    return stack;
-  }
+        return stack;
+    };
 
-  static findMother = (vertices: Vertex[]): Vertex => {
-    let visited: Visited = {};
-    let last: Vertex;
+    static findMother = (vertices: Vertex[]): Vertex => {
+        let visited: Visited = {};
+        let last: Vertex;
 
-    vertices.forEach(vertex => {
-      if (!visited[vertex.id]) {
-        Graph.dfs(vertex, visited);
-        last = vertex;
-      }
-    });
+        vertices.forEach(vertex => {
+            if (!visited[vertex.id]) {
+                Graph.dfs(vertex, visited);
+                last = vertex;
+            }
+        });
 
-    visited = {};
-    Graph.dfs(last, visited);
+        visited = {};
+        Graph.dfs(last, visited);
 
-    if (Object.keys(visited).length === vertices.length) return last;
-    return null;
-  }
+        if (Object.keys(visited).length === vertices.length) return last;
+        return null;
+    };
   
-  addVertex = (id: string): Vertex => {
-    const vertex = new Vertex(id);
-    this.vertices.push(vertex);
+    addVertex = (id: string): Vertex => {
+        const vertex = new Vertex(id);
+        this.vertices.push(vertex);
 
-    return vertex;
-  }
+        return vertex;
+    };
 
-  removeVertex = (id: string): void => {
-    const vertex = this.vertices.find(el => el.id === id);
-    if (vertex) {
-      vertex.prev.forEach(el => el.next.delete(vertex));
-      vertex.next.forEach(el => el.prev.delete(vertex));
-      this.vertices.splice(this.vertices.indexOf(vertex), 1);
-    }
-  }
+    removeVertex = (id: string): void => {
+        const vertex = this.vertices.find(el => el.id === id);
+        if (vertex) {
+            vertex.prev.forEach(el => el.next.delete(vertex));
+            vertex.next.forEach(el => el.prev.delete(vertex));
+            this.vertices.splice(this.vertices.indexOf(vertex), 1);
+        }
+    };
 
-  addEdge = (from: string, to: string): void => {
-    const fromVertex = this.vertices.find(({ id }) => id === from);
-    const toVertex = this.vertices.find(({ id }) => id === to);
+    addEdge = (from: string, to: string): void => {
+        const fromVertex = this.vertices.find(({ id }) => id === from);
+        const toVertex = this.vertices.find(({ id }) => id === to);
     
-    fromVertex.addPrev(toVertex);
-    toVertex.addNext(fromVertex);
-  }
+        fromVertex.addPrev(toVertex);
+        toVertex.addNext(fromVertex);
+    };
 
-  removeEdge = (from: string, to: string): void => {
-    const fromVertex = this.vertices.find(({ id }) => id === from);
-    const toVertex = this.vertices.find(({ id }) => id === to);
-    fromVertex.removeNext(toVertex);
-    toVertex.removePrev(fromVertex);
-  }
+    removeEdge = (from: string, to: string): void => {
+        const fromVertex = this.vertices.find(({ id }) => id === from);
+        const toVertex = this.vertices.find(({ id }) => id === to);
+        fromVertex.removeNext(toVertex);
+        toVertex.removePrev(fromVertex);
+    };
 }

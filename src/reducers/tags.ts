@@ -11,29 +11,29 @@ export interface Tags {
 const initialState: Tags = {};
 
 const tags = createSlice({
-  name: 'tags',
-  initialState,
-  reducers: {
-    setTags(state, action: PayloadAction<Tags>) {
-      return action.payload
-    },
-    insert(state, action: PayloadAction<Tag>) {
-      state[action.payload.id] = action.payload;
-    },
-    remove(state, action: PayloadAction<string>) {
-      delete state[action.payload];
-    },
-    update(state, action: PayloadAction<Tag>) {
-      state[action.payload.id] = action.payload;
-    },
-  }
+    name: 'tags',
+    initialState,
+    reducers: {
+        setTags(state, action: PayloadAction<Tags>) {
+            return action.payload;
+        },
+        insert(state, action: PayloadAction<Tag>) {
+            state[action.payload.id] = action.payload;
+        },
+        remove(state, action: PayloadAction<string>) {
+            delete state[action.payload];
+        },
+        update(state, action: PayloadAction<Tag>) {
+            state[action.payload.id] = action.payload;
+        },
+    }
 });
 
 export const {
-  setTags,
-  insert,
-  remove,
-  update,
+    setTags,
+    insert,
+    remove,
+    update,
 } = tags.actions;
 
 export default tags.reducer;

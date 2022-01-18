@@ -16,24 +16,24 @@ interface TextAreaProps {
 
 export const TextArea: FC<TextAreaProps> = React.memo(({ id, classes, value, onChange, onFocus, label, tooltip, autoFocus, inputProps = {}, ...rest }) => {
 
-  const handleFocus: ChangeEventHandler<HTMLTextAreaElement> = e => {
-    const target = e.target;
-    setTimeout(() => {
-      target.scrollIntoView({
-        behavior: 'smooth',
-      });
-    }, 100);
-    onFocus && onFocus(e);
-  };
-  return (
-    <label id={id} className={classes.textAreaLabel} {...rest}>
-      {label}
-      {tooltip && (
-        <Tooltip text={tooltip} />
-      )}
-      <textarea className={classes.textAreaInput} value={value} onChange={onChange} onFocus={handleFocus} autoFocus={autoFocus} {...inputProps}/>
-    </label>
-  );
+    const handleFocus: ChangeEventHandler<HTMLTextAreaElement> = e => {
+        const target = e.target;
+        setTimeout(() => {
+            target.scrollIntoView({
+                behavior: 'smooth',
+            });
+        }, 100);
+        onFocus && onFocus(e);
+    };
+    return (
+        <label id={id} className={classes.textAreaLabel} {...rest}>
+            {label}
+            {tooltip && (
+                <Tooltip text={tooltip} />
+            )}
+            <textarea className={classes.textAreaInput} value={value} onChange={onChange} onFocus={handleFocus} autoFocus={autoFocus} {...inputProps}/>
+        </label>
+    );
 });
 
 export default TextArea;
