@@ -17,8 +17,8 @@ const customObjects = createSlice({
     insert(state, action: PayloadAction<CustomObject>) {
       return state.concat(action.payload);
     },
-    remove(state, action: PayloadAction<string>) {
-      return state.filter(({ id }) => id !== action.payload);
+    remove(state, action: PayloadAction<CustomObject>) {
+      return state.filter(({ id }) => id !== action.payload.id);
     },
     update(state, action: PayloadAction<CustomObject>) {
       return state.map(prev => prev.id === action.payload.id ? action.payload : prev);

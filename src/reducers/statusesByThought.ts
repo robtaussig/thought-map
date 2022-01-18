@@ -19,11 +19,11 @@ const statusesByThought = createSlice({
       return action.payload
     },
   },
-  extraReducers: {
-    [insertStatus as any]: (state, action: PayloadAction<Status>) => {
+  extraReducers: builder => {
+    builder.addCase(insertStatus, (state, action) => {
       state[action.payload.thoughtId] = state[action.payload.thoughtId] || [];
       state[action.payload.thoughtId].push(action.payload.id);
-    }
+    });
   },
 });
 

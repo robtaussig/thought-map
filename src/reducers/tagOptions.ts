@@ -6,7 +6,7 @@ import {
   insert,
   remove,
 } from './customObjects';
-import { CustomObject, CustomObjectType } from '../store/rxdb/schemas/customObject';
+import { CustomObjectType } from '../store/rxdb/schemas/customObject';
 
 export const tagOptionsSelector: Selector<RootState, string[]> = state => state.tagOptions;
 
@@ -18,8 +18,8 @@ const tagOptions = createSlice({
   reducers: {
 
   },
-  extraReducers: {
-    [setCustomObjects as any]: (state, action: PayloadAction<CustomObject[]>) => {
+  extraReducers: builder => {
+    builder.addCase(setCustomObjects, (state, action) => {
       return state.concat(
         action.payload
           .filter(({ type }) => {
@@ -27,17 +27,17 @@ const tagOptions = createSlice({
           })
           .map(({ value }) => value)
       );
-    },
-    [insert as any]: (state, action: PayloadAction<CustomObject>) => {
+    });
+    builder.addCase(insert, (state, action) => {
       if (action.payload.type === CustomObjectType.Tag) {
         return state.concat(action.payload.value);
       }
-    },
-    [remove as any]: (state, action: PayloadAction<CustomObject>) => {
+    });
+    builder.addCase(remove, (state, action) => {
       if (action.payload.type === CustomObjectType.Tag) {
         return state.filter(prev => prev !== action.payload.value);
       }
-    },
+    });
   },
 });
 

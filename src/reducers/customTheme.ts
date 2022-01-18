@@ -137,13 +137,13 @@ const customTheme = createSlice({
       });
     }
   },
-  extraReducers: {
-    [setSettings as any]: (state, action: PayloadAction<any>) => {
+  extraReducers: builder => {
+    builder.addCase(setSettings, (state, action: any) => {
       if (action.payload.customTheme) {
         return action.payload.customTheme;
       }
-    }
-  }
+    })
+  },
 });
 
 export const {
