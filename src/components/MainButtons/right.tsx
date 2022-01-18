@@ -15,7 +15,7 @@ import Check from '@material-ui/icons/Check';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import Delete from '@material-ui/icons/Delete';
-import { useIdFromUrl, homeUrl, openConfirmation, getSearchParam } from '../../lib/util';
+import { useIdFromUrl, useHomeUrl, openConfirmation, getSearchParam } from '../../lib/util';
 import { useSelector, useDispatch } from 'react-redux';
 import { displayThoughtSettingsSelector, toggle } from '../../reducers/displayThoughtSettings';
 import { emphasizeButton, tutorialSelector, ButtonPositions } from '../../reducers/tutorial';
@@ -27,7 +27,7 @@ import { jsonDump } from '../Settings/components/Data';
 import { CHUNK_LENGTH } from '../Settings/components/SetupBackup/constants';
 import { chunkData } from '../Settings/components/SetupBackup/util';
 import { updateChunk, getVersion } from '../Settings/components/SetupBackup/api';
-import { getBackupIdFromHistory } from '../Merge/util';
+import { useBackupIdFromHistory } from '../Merge/util';
 
 interface RightButtonProps {
   classes: any;
@@ -83,6 +83,8 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
   const settings = useSelector(settingSelector);
   const backups = useSelector(backupSelector);
   const { comparables } = useSelector(mergeResultsSelector);
+  const backupId = useBackupIdFromHistory();
+  const homeUrl = useHomeUrl();
 
   useEffect(() => {
     setHideButton(/(stage|settings|backups|process-merge|privacy)/.test(location.pathname));
@@ -119,11 +121,11 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     }
 
     const handleClickViewConnections = () => {
-      navigate(`${homeUrl()}thought/${thoughtId}/connections`);
+      navigate(`${homeUrl}thought/${thoughtId}/connections`);
     };
 
     const handleClickViewHistory = () => {
-      navigate(`${homeUrl()}thought/${thoughtId}/history`);
+      navigate(`${homeUrl}thought/${thoughtId}/history`);
     };
 
     const handleBack = () => {
@@ -134,7 +136,7 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
       if (typeof thoughtId === 'string') {
         const onConfirm = async () => {
           await thoughtActions.deleteThought(db, thoughtId);
-          navigate(homeUrl());
+          navigate(homeUrl);
         };
 
         openConfirmation('Are you sure you want to delete this?', onConfirm);
@@ -182,7 +184,6 @@ export const RightButton: FC<RightButtonProps> = ({ classes, typeOptions }) => {
     };
 
     const handleClickMerge = () => {
-      const backupId = getBackupIdFromHistory();
       const version = getSearchParam('v');
       navigate(`/process-merge/${backupId}?v=${version}`);
     };

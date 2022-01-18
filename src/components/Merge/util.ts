@@ -11,6 +11,7 @@ import {
 } from './types';
 import { Deletion } from '../../store/rxdb/schemas/deletion';
 import { COLLECTIONS_TO_IGNORE } from './CurrentCompare/constants';
+import { useLocation } from 'react-router-dom';
 
 export const merge = (left: Dump, right: Dump): MergeResults => {
   const leftMap: DiffMap = {};
@@ -119,7 +120,8 @@ const filterDeletionsAndConvertToRemovable = (
     .map(deletion => [deletion, otherSideDocs[deletion.itemId]]);
 };
 
-export const getBackupIdFromHistory = (): string => {
+export const useBackupIdFromHistory = (): string => {
+  const location = useLocation();
   const backupIdRegex = /\/(merge|process-merge)\/(.*)/.exec(location.pathname);
   if (backupIdRegex && backupIdRegex[2]) return backupIdRegex[2];
 

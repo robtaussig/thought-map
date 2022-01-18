@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useLongPress from '../../../hooks/useLongPress';
 import ConnectionsQuickOptions from './ConnectionsQuickOptions';
 import useModal from '../../../hooks/useModal';
-import { homeUrl } from '../../../lib/util';
+import { useHomeUrl } from '../../../lib/util';
 
 interface NodeComponentProps {
   classes: any;
@@ -27,6 +27,7 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   statusOptions,
 }) => {
   const navigate = useNavigate();
+  const homeUrl = useHomeUrl();
   const [openModal, closeModal] = useModal();
   const onLongPress = () => {
     openModal(
@@ -66,7 +67,7 @@ export const NodeComponent: FC<NodeComponentProps> = ({
   }
 
   const handleClick = () => {
-    navigate(`${homeUrl()}thought/${thought.id}`);
+    navigate(`${homeUrl}thought/${thought.id}`);
   };
 
   return (

@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { styles } from './style';
 import Inputs from './Inputs';
 import { createWholeThought } from '../../actions/complex';
-import { homeUrl, useIdFromUrl } from '../../lib/util';
+import { useHomeUrl, useIdFromUrl } from '../../lib/util';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { thoughtSelector } from '../../reducers/thoughts';
@@ -55,6 +55,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
     type: (plan && plan.defaultType) || DEFAULT_STATE.type
   });
   const thoughtTitles = thoughts.map(({ title }) => title);
+  const homeUrl = useHomeUrl();
 
   const handleSubmit: FormEventHandler = async (e) => {
     e.preventDefault();
@@ -67,7 +68,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
           planId,
       );
       onClose();
-      navigate(`${homeUrl()}thought/${response.thought.id}`);
+      navigate(`${homeUrl}thought/${response.thought.id}`);
     }
   };
 

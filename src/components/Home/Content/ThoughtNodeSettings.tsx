@@ -6,7 +6,7 @@ import { useLoadedDB } from '../../../hooks/useDB';
 import { useNavigate } from 'react-router-dom';
 import Tooltip from '../../General/Tooltip';
 import { thoughts as thoughtActions } from '../../../actions';
-import { openConfirmation, homeUrl } from '../../../lib/util';
+import { openConfirmation, useHomeUrl } from '../../../lib/util';
 import { useSelector } from 'react-redux';
 import { connectionSelector } from '../../../reducers/connections';
 import { format } from 'date-fns';
@@ -72,6 +72,7 @@ const STAGE_TOOLTIP_TEXT = 'Staging a thought flags it as being relevant on the 
 export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, thought, onClose }) => {
   const { db } = useLoadedDB();
   const navigate = useNavigate();
+  const homeUrl = useHomeUrl();
   const connections = useSelector(connectionSelector);
 
   const handleClickBump = () => {
@@ -98,12 +99,12 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
 
   const handleClickViewConnections = () => {
     onClose();
-    navigate(`${homeUrl()}thought/${thought.id}/connections`);
+    navigate(`${homeUrl}thought/${thought.id}/connections`);
   };
 
   const handleClickViewHistory = () => {
     onClose();
-    navigate(`${homeUrl()}thought/${thought.id}/history`);
+    navigate(`${homeUrl}thought/${thought.id}/history`);
   };
 
   const handleClickStage = () => {

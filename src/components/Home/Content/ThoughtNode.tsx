@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../../hooks/useDB';
 import Select from '../../General/Select';
 import { statuses as statusActions, thoughts as thoughtActions } from '../../../actions';
-import { homeUrl } from '../../../lib/util';
+import { useHomeUrl } from '../../../lib/util';
 import { Thought } from 'store/rxdb/schemas/thought';
 import useLongPress from '../../../hooks/useLongPress';
 import useModal from '../../../hooks/useModal';
@@ -79,9 +79,10 @@ export const ThoughtNode: FC<ThoughtNodeProps> = React.memo(({
   const [showConnections, setShowConnections] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [openModal, closeModal] = useModal();
+  const homeUrl = useHomeUrl();
 
   const handleClick = () => {
-    navigate(`${homeUrl()}thought/${thought.id}`);
+    navigate(`${homeUrl}thought/${thought.id}`);
   };
 
   const handleLongPress = useLongPress(() => {

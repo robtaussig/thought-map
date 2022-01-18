@@ -4,7 +4,6 @@ import CircleButton from '../../General/CircleButton';
 import Input from '../../General/Input';
 import CheckBox from '../../General/CheckBox';
 import Select from '../../General/Select';
-import Home from '@material-ui/icons/Home';
 import Check from '@material-ui/icons/Check';
 import Create from '@material-ui/icons/Create';
 import DeletePlan from './delete-plan';
@@ -53,11 +52,6 @@ export const PlanSettings: FC<PlanSettingsProps> = ({ classes, plan, thoughts, t
                               })
                               .map((thought, idx) => ({id: thought.id, label: `${idx + 1} - ${thought.title}`})));
   }, [thoughts, plan]);
-
-  const handleClickReturnHome = () => {
-    const nextUrl = location.pathname.replace(SETTINGS_PATH_REGEX, '');
-    navigate(nextUrl);
-  }
 
   const handleReturnHomeAfterDelete = () => navigate('/');
 

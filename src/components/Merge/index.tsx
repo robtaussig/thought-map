@@ -19,7 +19,7 @@ import MergeStage from './MergeStage';
 import UpToDate from './UpToDate';
 import CurrentRemovable from './CurrentRemovable';
 import { CurrentItem, Item } from './types';
-import { getBackupIdFromHistory } from './util';
+import { useBackupIdFromHistory } from './util';
 
 export const Merge: FC = () => {
   const classes = useStyles({});
@@ -84,7 +84,7 @@ export const Merge: FC = () => {
   };
 
   const handleMerge = () => {
-    const backupId = getBackupIdFromHistory();
+    const backupId = useBackupIdFromHistory();
     if (backupId) {
       navigate(`/process-merge/${backupId}${location.search}`);
     }

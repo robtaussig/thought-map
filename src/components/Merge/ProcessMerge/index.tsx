@@ -5,7 +5,7 @@ import { thoughtSelector } from '../../../reducers/thoughts';
 import { connectionSelector } from '../../../reducers/connections';
 import { backupSelector } from '../../../reducers/backups';
 import { processItemsToAdd } from './util';
-import { getBackupIdFromHistory } from '../util';
+import { useBackupIdFromHistory } from '../util';
 import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { backups as backupActions } from '../../../actions';
@@ -13,6 +13,7 @@ import { Item } from '../types';
 import { useStyles } from './styles';
 import { getSearchParam } from '../../../lib/util';
 import { v4 as uuidv4 } from 'uuid';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const ProcessMerge: FC = () => {
   const classes = useStyles({});
@@ -24,6 +25,9 @@ export const ProcessMerge: FC = () => {
   const thoughts = useSelector(thoughtSelector);
   const connections = useSelector(connectionSelector);
   const backups = useSelector(backupSelector);
+  const backupId = useBackupIdFromHistory();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleClickMerge = async () => {
     loading('Merging data...');
@@ -46,7 +50,6 @@ export const ProcessMerge: FC = () => {
       ),
     );
     const version = getSearchParam('v');
-    const backupId = getBackupIdFromHistory();
     const backup = backups.find(prev => prev.backupId === backupId);
     if (backup) {
       await backupActions.editBackup(db, {
@@ -57,7 +60,7 @@ export const ProcessMerge: FC = () => {
     }
   
     (window as any).blockDBSubscriptions = false;
-    location.href = '/';
+    navigate('/');
   };
 
   useEffect(() => {

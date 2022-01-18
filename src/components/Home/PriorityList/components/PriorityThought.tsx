@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { homeUrl } from '../../../../lib/util';
+import { useHomeUrl } from '../../../../lib/util';
 import classNames from 'classnames';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { useNavigate } from 'react-router-dom';
@@ -12,9 +12,10 @@ interface PriorityThoughtProps {
 
 export const PriorityThought: FC<PriorityThoughtProps> = ({ classes, thought, onMinimize }) => {
   const navigate = useNavigate();
+  const homeUrl = useHomeUrl();
 
   const handleClick = () => {
-    navigate(`${homeUrl()}thought/${thought.id}`);
+    navigate(`${homeUrl}thought/${thought.id}`);
     onMinimize();
   };
 

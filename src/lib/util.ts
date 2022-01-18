@@ -47,7 +47,8 @@ export const thoughtStatuses = (statuses: Status[]): StatusesByThought => {
   return statusesByThought;
 };
 
-export const homeUrl = () => {
+export const useHomeUrl = () => {
+  const location = useLocation();
   const pathName = location.pathname;
   const split = pathName.split('/');
 
