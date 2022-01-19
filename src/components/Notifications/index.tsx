@@ -17,7 +17,7 @@ export const Notifications: FC<NotificationsProps> = ({ lastNotification }) => {
         message: lastNotification.message,
         type: 'success',
         insert: 'top',
-        container: 'bottom-right',
+        container: 'top-center',
         animationIn: ['animated', 'fadeIn'],
         animationOut: ['animated', 'fadeOut'],
         dismiss: { duration: 1500 },
