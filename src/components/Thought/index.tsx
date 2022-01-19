@@ -60,7 +60,7 @@ export const PRIORITY_OPTIONS: PriorityOption[] = [
 
 const SECTION_DELIMITER_REGEX = /^_/;
 
-export const DEFAULT_SECTIONS = 'type-status-priority-description-datetime-notes-recurring-tags-connections-pictures';
+export const DEFAULT_SECTIONS = 'type-status-connections-priority-description-datetime-notes-recurring-tag-pictures';
 
 export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions, tagOptions }) => {
   const { db } = useLoadedDB();
