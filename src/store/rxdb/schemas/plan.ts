@@ -4,6 +4,9 @@ export interface Plan {
   id?: string;
   name: string;
   showCompleted?: boolean;
+  /**
+   * @deprecated
+   */
   groupThoughts?: boolean;
   archived?: boolean;
   defaultType?: string;

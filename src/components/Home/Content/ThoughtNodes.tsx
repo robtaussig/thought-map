@@ -47,7 +47,6 @@ export const ThoughtNodes: FC<ThoughtNodesProps> = ({
       (thought.status !== 'completed' && thought.status !== 'won\'t fix');
 
     const filterChildrenThoughts = (thought: Thought) =>
-      plan?.groupThoughts !== true ||
       thoughtMap.current.isRoot(thought.id);
 
     const filterHiddenThoughts = (thought: Thought) =>
