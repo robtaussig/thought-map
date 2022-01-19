@@ -454,6 +454,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     return (
       <section
         ref={rootRef}
+        {...handleLongPress}
         className={classNames(classes.thoughtSection, className, 'drop-target')}
       >
         {_editIcons}
@@ -485,7 +486,6 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     <section
       ref={rootRef}
       className={classNames(classes.thoughtSection, className, { moved })}
-      {...(editting ? {} : handleLongPress)}
       style={{ userSelect: 'none' }}
     >
       {_editIcons}

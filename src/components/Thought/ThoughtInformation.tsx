@@ -227,12 +227,12 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
   );
 
   const deriveSectionState = (sectionType: string): SectionState => {
-    if (editAllSections === true) {
-      return SectionState.EditingEverySection;
-    } else if (editingSection === sectionType) {
+    if (editingSection === sectionType) {
       return SectionState.EditingSection;
     } else if (editingSection) {
       return SectionState.EditingOtherSection;
+    } else if (editAllSections === true) {
+      return SectionState.EditingEverySection;
     }
 
     return SectionState.NotEditingAnySection;
