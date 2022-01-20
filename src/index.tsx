@@ -27,6 +27,10 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+if ((module as any)?.hot) {
+  (module as any).hot.accept();
+}
+
 if ('serviceWorker' in navigator) {
   if (navigator.serviceWorker.controller) {
     console.log('[PWA Builder] active service worker found, no need to register');

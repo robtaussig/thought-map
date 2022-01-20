@@ -8,6 +8,7 @@ export const DB_SETTINGS = {
   storage: getRxStoragePouch('idb'),
   multiInstance: true, // <- multiInstance (optional, default: true)
   queryChangeDetection: true, // <- queryChangeDetection (optional, default: false)
+  ignoreDuplicate: Boolean((module as any)?.hot),
 };
 
 export const initializeCollections = async (db: RxDatabase) => {
