@@ -6,21 +6,17 @@ export const styles = (theme: any): StyleRules => ({
   root: () => ({
     height: '100%',
     width: '100%',
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     padding: 20,
     backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[600],
-    gap: '20px',
-    gridTemplateAreas: `"sort-buttons sort-buttons"
-                        "content content"
-                        "plans-list plans-list"
-                        "search search"`,
-    gridTemplateRows: '40px 7fr minmax(50px, 1fr) minmax(50px, 1fr)',
-    gridTemplateColumns: 'repeat(2, 1fr)',
+    overflow: 'hidden',
   }),
   selectLabel: () => ({
     '&#plans': {
-      gridArea: 'plans-list',
       display: 'flex',
+      flex: '0 0 50px',
+      marginTop: 20,
       backgroundColor: theme.palette.primary[500],
       borderRadius: '10px',
       position: 'relative',
@@ -40,6 +36,7 @@ export const styles = (theme: any): StyleRules => ({
   }),
   content: () => ({
     gridArea: 'content',
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
@@ -63,9 +60,10 @@ export const styles = (theme: any): StyleRules => ({
   }),
   flippableWrapper: {
     display: 'flex',
-    gridArea: 'sort-buttons',
     position: 'relative',
     boxShadow: '0px 0px 5px -1px black',
+    marginBottom: 20,
+    flex: '0 0 40px',
   },
   sortByButtons: () => ({
     display: 'flex',

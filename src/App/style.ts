@@ -71,12 +71,8 @@ export const theme = responsiveFontSizes(
         color: 'white',
         ...CAST_SHADOW_HEAVY,
         '&:not([disabled])': {
-          '&:hover': {
-            transform: 'scale(1.1)',
-            ...CAST_SHADOW_HEAVY,
-          },
           '&:active': {
-            transform: 'scale(1)',
+            transform: 'scale(0.9)',
             boxShadow: 'none',
           },
           '&.touched': {
@@ -92,11 +88,14 @@ export const theme = responsiveFontSizes(
   } as any)
 );
 
-const styles = () => ({
+export const useAppStyles = makeStyles(() => ({
   root: {
     width: '100%',
     overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
   },
-});
-
-export const useAppStyles = makeStyles(styles);
+  nav: {
+    flex: '0 0 70px'
+  }
+}));

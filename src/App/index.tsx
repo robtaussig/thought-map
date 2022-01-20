@@ -18,18 +18,16 @@ import History from '../components/History';
 import Home from '../components/Home';
 import { GoogleCalendarProvider } from '../hooks/useGoogleCalendar';
 import initializeApplication from '../store/init';
-import LeftButton from '../components/MainButtons/left';
 import Merge from '../components/Merge';
-import MiddleButton from '../components/MainButtons/middle';
 import Notifications from '../components/Notifications';
 import ProcessMerge from '../components/Merge/ProcessMerge';
 import PrivacyPolicy from '../components/PrivacyPolicy';
-import RightButton from '../components/MainButtons/right';
 import Settings from '../components/Settings';
 import Stage from '../components/Stage';
 import Timeline from '../components/Timeline';
 import Thought from '../components/Thought';
 import { checkVersionAndOpenModalIfUpdate } from './util';
+import AppNav from './AppNav';
 
 const App = () => {
   const [DBProvider, dbContext, dbReadyState] = useDB();
@@ -81,9 +79,6 @@ const App = () => {
         <ModalProvider getContext={getModalContext}>
           <Div100vh id={'app'} ref={rootRef} className={classes.root}>
             <Notifications lastNotification={lastNotification} />
-            <LeftButton/>
-            <MiddleButton/>
-            <RightButton typeOptions={typeOptions}/>
             <Routes>
               <Route path={'/privacy'} element={<PrivacyPolicy/>}/>
               <Route path={'/'} element={<Home statusOptions={statusOptions} setLastNotification={setLastNotification} typeOptions={typeOptions}/>}/>
@@ -102,7 +97,8 @@ const App = () => {
               <Route path={'/merge/:backupId'} element={<Merge/>} />
               <Route path={'/process-merge/:backupId'} element={<ProcessMerge/>} />
               <Route path={'/timeline'} element={<Timeline allPlans={true}/>} />
-            </Routes> 
+            </Routes>
+            <AppNav className={classes.nav}/>
           </Div100vh>
         </ModalProvider>
       </GoogleCalendarProvider>

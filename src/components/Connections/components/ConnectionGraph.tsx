@@ -19,6 +19,7 @@ interface ConnectionGraphProps {
 const styles = (theme: any): StyleRules => ({
   root: {
     height: '100%',
+    position: 'relative',
   },
   canvas: {
     position: 'absolute',
@@ -120,7 +121,7 @@ export const ConnectionGraph: FC<ConnectionGraphProps> = ({ classes, thought, th
       <canvas
         className={classes.canvas}
         ref={canvasRef}
-        height={window.innerHeight}
+        height={window.innerHeight - 70}
         width={window.innerWidth}
       />
       {_nodes}

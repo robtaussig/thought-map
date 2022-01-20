@@ -2,7 +2,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
-import { getSearchParam, useIdFromUrl } from '../../lib/util';
+import { useSearchParam, useIdFromUrl } from '../../lib/util';
 import NavBar from './components/nav-bar';
 import PlanSettings from './components/plan-settings';
 import AppSettings from './components/app-settings';
@@ -28,7 +28,7 @@ interface NavBarItem {
 export const Settings: FC<SettingsProps> = ({ classes, typeOptions, setLastNotification }) => {
   const navigate = useNavigate();
   const planId = useIdFromUrl('plan');
-  const type = getSearchParam('type');
+  const type = useSearchParam('type');
 
   const plans = useSelector(planSelector);
   const thoughts = useSelector(thoughtSelector);

@@ -11,7 +11,7 @@ import { statusesByThoughtSelector } from '../../../../reducers/statusesByThough
 import { statusSelector } from '../../../../reducers/statuses';
 
 interface PlanSelectActionsProps {
-  classes: any;
+  classes?: any;
   planId: string | boolean;
   onClose: () => void;
 }

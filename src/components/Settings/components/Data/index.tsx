@@ -111,10 +111,10 @@ export const Data: FC<DataProps> = ({ setLoading }) => {
       fr.readAsText((event.target as any).files[0]);
     };
 
-    importJSONRef.current.addEventListener('change', handleChange);
+    importJSONRef.current?.addEventListener('change', handleChange);
 
     return () => {
-      importJSONRef.current.removeEventListener('change', handleChange);
+      importJSONRef.current?.removeEventListener('change', handleChange);
     };
   }, [settings.disableBackupOnImport]);
 

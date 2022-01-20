@@ -11,7 +11,7 @@ import { useLoadedDB } from '../../../hooks/useDB';
 import { backups as backupActions } from '../../../actions';
 import { Item } from '../types';
 import { useStyles } from './styles';
-import { getSearchParam } from '../../../lib/util';
+import { useSearchParam } from '../../../lib/util';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ export const ProcessMerge: FC = () => {
   const backups = useSelector(backupSelector);
   const backupId = useBackupIdFromHistory();
   const navigate = useNavigate();
-
+  const version = useSearchParam('v');
   const handleClickMerge = async () => {
     loading('Merging data...');
     (window as any).blockDBSubscriptions = true;
@@ -48,7 +48,7 @@ export const ProcessMerge: FC = () => {
         })
       ),
     );
-    const version = getSearchParam('v');
+    
     const backup = backups.find(prev => prev.backupId === backupId);
     if (backup) {
       await backupActions.editBackup(db, {

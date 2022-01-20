@@ -78,7 +78,8 @@ export const useIdFromUrl = (key: string) => {
   }, false);
 };
 
-export const getSearchParam = (key: string) => {
+export const useSearchParam = (key: string) => {
+  const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   return searchParams.get(key);
 };
