@@ -317,6 +317,33 @@ export const AppNav: FC<AppNavProps> = ({
     />
   );
 
+  const createThoughtAndStageButton = (
+    <CircleButton
+      key={'create-thought'}
+      onClick={() => {
+        openModal(
+          <CreateThought
+            onClose={closeModal}
+            andStage
+            onCreateBulk={() => {
+              closeModal();
+              openModal(
+                <CreateBulkThought
+                  onClose={closeModal}
+                />, 'Create Bulk Thoughts'
+              );
+            }}
+            typeOptions={typeOptions}
+          />, 'Create Thought'
+        );
+      }}
+      classes={classes}
+      label={'Create Thought'}
+      Icon={Add}
+      emphasize={tutorial.emphasizeButton === ButtonPositions.Right}
+    />
+  );
+
   const backToThoughtButton = (
     <CircleButton
       key={'back-to-thought'}
@@ -340,16 +367,19 @@ export const AppNav: FC<AppNavProps> = ({
     case Page.History:
       buttons.push(returnHomeButton);
       buttons.push(backToThoughtButton);
+      buttons.push(createThoughtButton);
       break;
     case Page.Connections:
       buttons.push(returnHomeButton);
       buttons.push(backToThoughtButton);
+      buttons.push(createThoughtButton);
       break;
     case Page.Settings:
       buttons.push(returnHomeButton);
       if (settings.enableBackupOnDemand) {
         buttons.push(uploadDataButton);
       }
+      buttons.push(createThoughtButton);
       break;
     case Page.Thought:
       buttons.push(returnHomeButton);
@@ -366,6 +396,7 @@ export const AppNav: FC<AppNavProps> = ({
       break;
     case Page.Backups:
       buttons.push(returnHomeButton);
+      buttons.push(createThoughtButton);
       break;
     case Page.Merge:
       buttons.push(returnHomeButton);
@@ -373,12 +404,14 @@ export const AppNav: FC<AppNavProps> = ({
       break;
     case Page.Timeline:
       buttons.push(returnHomeButton);
+      buttons.push(createThoughtButton);
       break;
     case Page.Privacy:
       buttons.push(returnHomeButton);
       break;
     case Page.Stage:
       buttons.push(returnHomeButton);
+      buttons.push(createThoughtAndStageButton);
       break;
   }
 

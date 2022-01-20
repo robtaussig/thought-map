@@ -21,6 +21,7 @@ export interface CreatedThought {
   notes: string[];
   tags: string[];
   tagOptions: string[];
+  staged: boolean;
 }
 
 export const DEFAULT_STATE: CreatedThought = {
@@ -32,6 +33,7 @@ export const DEFAULT_STATE: CreatedThought = {
   notes: [],
   tags: [],
   tagOptions: [],
+  staged: false,
 };
 
 interface CreateThoughtProps {
@@ -39,9 +41,10 @@ interface CreateThoughtProps {
   typeOptions: string[];
   onClose: CloseModal;
   onCreateBulk: () => void;
+  andStage?: boolean;
 }
 
-export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, onClose, onCreateBulk }) => {
+export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, onClose, onCreateBulk, andStage }) => {
   const navigate = useNavigate();
   const thoughts = useSelector(thoughtSelector);
   const plans = useSelector(planSelector);
@@ -52,7 +55,8 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
   const [selectedPlan, setSelectedPlan] = useState('');
   const [createdThought, setCreatedThought] = useState<CreatedThought>({
     ...DEFAULT_STATE,
-    type: (plan && plan.defaultType) || DEFAULT_STATE.type
+    type: (plan && plan.defaultType) || DEFAULT_STATE.type,
+    staged: andStage,
   });
   const thoughtTitles = thoughts.map(({ title }) => title);
   const homeUrl = useHomeUrl();
@@ -67,8 +71,12 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
           plans.find(({ name }) => name === selectedPlan).id :
           planId,
       );
+
+      if (!andStage) {
+        navigate(`${homeUrl}thought/${response.thought.id}`);
+      }
+
       onClose();
-      navigate(`${homeUrl}thought/${response.thought.id}`);
     }
   };
 

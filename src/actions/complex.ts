@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { RxDatabase } from 'rxdb';
 import { Thought } from '../store/rxdb/schemas/thought';
 import { 
@@ -15,6 +16,7 @@ interface WholeThought {
   description: string;
   notes: any[];
   tags: any[];
+  staged?: boolean;
 }
 
 export const createWholeThought = async (db: RxDatabase, {
@@ -25,10 +27,15 @@ export const createWholeThought = async (db: RxDatabase, {
   description,
   notes,
   tags,
+  staged,
 }: WholeThought, planId: string | boolean) => {
   const thought: Thought = {
     title, type, date, time, description, priority: 5, sections: '',
   };
+  if (staged) {
+    const today = format(new Date(), 'yyyy-MM-dd');
+    thought.stagedOn = today;
+  }
   if (typeof planId === 'string') thought.planId = planId;
 
   const createdThought = await thoughtActions.createThought(db, thought);
