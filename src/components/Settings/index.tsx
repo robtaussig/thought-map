@@ -2,7 +2,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
-import { useSearchParam, useIdFromUrl } from '../../lib/util';
+import { useIdFromUrl, useSearchParam } from '../../lib/util';
 import NavBar from './components/nav-bar';
 import PlanSettings from './components/plan-settings';
 import AppSettings from './components/app-settings';

@@ -1,16 +1,13 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLoadedDB } from '../../hooks/useDB';
 import { withStyles } from '@material-ui/core/styles';
-import Home from '@material-ui/icons/Home';
 import { thoughtHomeStyles } from './styles';
 import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
 import MissingThought from './components/MissingThought';
 import ThoughtSettings from '../ThoughtSettings';
-import CircleButton from '../General/CircleButton';
 import { plans as planActions, thoughts as thoughtActions } from '../../actions';
-import { useHomeUrl, useIdFromUrl } from '../../lib/util';
+import { useIdFromUrl } from '../../lib/util';
 import { Picture } from '../../store/rxdb/schemas/picture';
 import { Thought as ThoughtType } from '~store/rxdb/schemas/types';
 import { SectionVisibility } from './types';
@@ -65,7 +62,6 @@ export const DEFAULT_SECTIONS = 'type-status-connections-priority-description-da
 export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions, tagOptions }) => {
   const { db } = useLoadedDB();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const [editAllSections, setEditAllSections] = useState<boolean>(false);
   const [threeSecondsElapsed, setThreeSecondsElapsed] = useState<boolean>(false);
@@ -81,7 +77,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   const settings = useSelector(settingSelector);
   const autoCreateCalendarEvent = Boolean(settings && settings.autoCreateCalendarEvent);
   const setDisplaySettings = (display: boolean) => dispatch(toggle(display));
-  const homeUrl = useHomeUrl();
 
   const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
   const relatedTags = useMemo(() => Object.values(tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, tags]);
@@ -125,10 +120,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
       return picture.pinned && picture.thoughtId === thoughtId;
     });
   }, [thoughtId, pictures]);
-
-  const handleClickHome = (): void => {
-    navigate(`${homeUrl}?from=${thoughtId}`);
-  };
 
   const handleUpdate = useCallback(async updatedThought => {
     await thoughtActions.editThought(db, updatedThought);
@@ -229,7 +220,6 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
         onApplySectionState={handleApplySectionState}
         onChangeHideFromHomeScreen={handleChangeHideFromHomeScreen}
       />
-      {!displayThoughtSettings && <CircleButton classes={classes} id={'return-home'} onClick={handleClickHome} label={'Return Home'} Icon={Home} />}
     </div>
   );
 };
