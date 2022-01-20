@@ -25,6 +25,7 @@ import { settingSelector } from '../../reducers/settings';
 import CreateThought from '../../components/CreateThought';
 import CreateBulkThought from '../../components/CreateThought/Bulk';
 import { typeOptionsSelector } from '../../reducers/typeOptions';
+import CreatePlan from '../../components/Home/PlanSelect/components/create';
 
 const useStyles = makeStyles((theme: any): StyleRules => ({
   root: {
@@ -90,6 +91,7 @@ const isMergeRegex = /merge/;
 const isTimelineRegex = /timeline/;
 const isPrivacyRegex = /privacy/;
 const isStageRegex = /stage/;
+const isPlansRegex = /plans/;
 
 
 
@@ -104,6 +106,7 @@ enum Page {
   Timeline,
   Privacy,
   Stage,
+  Plans,
 }
 
 export const AppNav: FC<AppNavProps> = ({
@@ -141,6 +144,7 @@ export const AppNav: FC<AppNavProps> = ({
     if (isTimelineRegex.test(location.pathname)) return Page.Timeline;
     if (isPrivacyRegex.test(location.pathname)) return Page.Privacy;
     if (isStageRegex.test(location.pathname)) return Page.Stage;
+    if (isPlansRegex.test(location.pathname)) return Page.Plans;
     return Page.Home;
   }, [location.pathname]);
 
@@ -356,6 +360,32 @@ export const AppNav: FC<AppNavProps> = ({
     />
   );
 
+  const backButton = (
+    <CircleButton
+      key={'back-button'}
+      onClick={() => {
+        navigate(-1);
+      }}
+      classes={classes}
+      label={'Back'}
+      Icon={ArrowBack}
+    />
+  );
+
+  const createPlanButton = (
+    <CircleButton
+      key={'create-plan-button'}
+      onClick={() => {
+        openModal(<CreatePlan
+          onClose={closeModal}
+        />);
+      }}
+      classes={classes}
+      label={'Create Plan'}
+      Icon={Add}
+    />
+  );
+
   switch (currentPage) {
     case Page.Home:
       buttons.push(editPlanButton);
@@ -395,23 +425,27 @@ export const AppNav: FC<AppNavProps> = ({
       }
       break;
     case Page.Backups:
-      buttons.push(returnHomeButton);
+      buttons.push(backButton);
       buttons.push(createThoughtButton);
       break;
     case Page.Merge:
-      buttons.push(returnHomeButton);
+      buttons.push(backButton);
       buttons.push(mergeButton);
       break;
     case Page.Timeline:
-      buttons.push(returnHomeButton);
+      buttons.push(backButton);
       buttons.push(createThoughtButton);
       break;
     case Page.Privacy:
       buttons.push(returnHomeButton);
       break;
     case Page.Stage:
-      buttons.push(returnHomeButton);
+      buttons.push(backButton);
       buttons.push(createThoughtAndStageButton);
+      break;
+    case Page.Plans:
+      buttons.push(backButton);
+      buttons.push(createPlanButton);
       break;
   }
 
