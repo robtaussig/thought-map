@@ -3,23 +3,18 @@ import { makeStyles } from '@material-ui/styles';
 export const useStyles = makeStyles((theme: any) => ({
   root: () => ({
     height: '100%',
-    display: 'grid',
-    gridTemplateAreas: `"header"
-                        "daily-chunks"`,
-    gridTemplateRows: 'max-content 1fr',
-    gridTemplateColumns: '1fr',
-    gridGap: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'hidden',
     padding: 20,
     backgroundColor: theme.palette.background[700],
     color: theme.palette.background[0],
   }),
-  header: {
-    gridArea: 'header',
+  header: {    
     fontWeight: 600,
     fontSize: 20,
   },
-  dailyChunks: {
-    gridArea: 'daily-chunks',
+  dailyChunks: {    
     overflow: 'auto',
   },
   dailyChunk: () => ({
