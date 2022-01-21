@@ -23,7 +23,6 @@ export const styles = (theme: any): StyleRules => ({
     overflow: 'auto',
     gridRowGap: '10px',
     margin: 10,
-    marginBottom: 125,
   },
   stagedItem: () => ({
     display: 'flex',

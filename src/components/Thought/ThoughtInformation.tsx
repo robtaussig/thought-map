@@ -445,11 +445,13 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
         />
       )}
       <ThoughtTitle classes={classes} thought={thought} onUpdate={onUpdate} />
-      <button onClick={handleToggleStaged} className={classNames(classes.stageButton, {
-        staged: Boolean(thought.stagedOn),
-      })}>
+      {thought.status !== 'completed' && (<button
+        onClick={handleToggleStaged}
+        className={classNames(classes.stageButton, {
+          staged: Boolean(thought.stagedOn),
+        })}>
         <Bookmark/>
-      </button>
+      </button>)}
       <span className={classes.createdAt}>Created {createdText}</span>
       <span className={classes.updatedAt}>Updated {lastUpdatedText}</span>
       {plan && <span className={classes.planName}>{plan.name}</span>}

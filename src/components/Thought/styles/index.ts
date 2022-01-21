@@ -42,7 +42,6 @@ export const useThoughtInformationStyles = makeStyles((theme: any) => ({
     gridGap: '10px',
     backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     color: theme.palette.background[0],
-    marginBottom: 110,
     position: 'relative',
   }),
   stageButton: () => ({
