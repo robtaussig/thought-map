@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import cn from 'classnames';
 import { useTypedSelector } from '../../reducers';
@@ -13,11 +13,18 @@ const useStyles = makeStyles((theme: any) => ({
     background: theme.palette.background[600],
   },
   header: {
+    display: 'flex',
+    alignItems: 'center',
     flex: 0,
     margin: 20,
     color: theme.palette.primary[300],
+  },
+  headerText: {
     fontSize: 20,
     fontWeight: 600,
+  },
+  showArchived: {
+    marginLeft: 'auto',
   },
   planList: {
     flex: 1,
@@ -40,12 +47,19 @@ export const Plans: FC<PlansProps> = ({
 }) => {
   const classes = useStyles();
   const plans = useTypedSelector(state => state.plans);
+  const [showArchived, setShowArchived] = useState(false);
 
   return (
     <div className={cn(classes.root, className)}>
-      <h1 className={classes.header}>Plans</h1>
+      <header className={classes.header}>
+        <h1 className={classes.headerText}>Plans</h1>
+        <label className={classes.showArchived}>
+          <input type={'checkbox'} checked={showArchived} onChange={e => setShowArchived(e.target.checked)}/>
+          Show Archived
+        </label>
+      </header>
       <ul className={classes.planList}>
-        {plans.filter(({ archived }) => !archived).map(plan => (
+        {plans.filter(({ archived }) => showArchived || !archived).map(plan => (
           <Plan key={`${plan.id}-plan`} plan={plan}/>
         ))}
       </ul>
