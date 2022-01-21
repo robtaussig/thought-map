@@ -1,6 +1,6 @@
-import { StyleRules } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-export const thoughtHomeStyles = (theme: any): StyleRules => ({
+export const useThoughtHomeStyles = makeStyles((theme: any) => ({
   root: () => ({
     height: '100%',
     position: 'relative',
@@ -26,9 +26,9 @@ export const thoughtHomeStyles = (theme: any): StyleRules => ({
       right: 10,
     },
   }),
-});
+}));
 
-export const thoughtInformationStyles = (theme: any): StyleRules => ({
+export const useThoughtInformationStyles = makeStyles((theme: any) => ({
   root: () => ({
     display: 'grid',
     height: '100%',
@@ -43,6 +43,20 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
     backgroundColor: theme.useDarkMode ? 'black' : theme.palette.background[600],
     color: theme.palette.background[0],
     marginBottom: 110,
+    position: 'relative',
+  }),
+  stageButton: () => ({
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    margin: 20,
+    '& svg': {
+      stroke: theme.palette.background[200],
+      fill: 'transparent',
+    },
+    '&.staged svg': {
+      fill: theme.palette.background[200],
+    },
   }),
   circleButton: () => ({
     ...theme.defaults.circleButton,
@@ -318,4 +332,4 @@ export const thoughtInformationStyles = (theme: any): StyleRules => ({
   quickItem: {
 
   },
-});
+}));

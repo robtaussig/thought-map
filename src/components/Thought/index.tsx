@@ -1,7 +1,6 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLoadedDB } from '../../hooks/useDB';
-import { withStyles } from '@material-ui/core/styles';
-import { thoughtHomeStyles } from './styles';
+import { useThoughtHomeStyles } from './styles';
 import Loading from '../Loading';
 import ThoughtInformation from './ThoughtInformation';
 import MissingThought from './components/MissingThought';
@@ -35,7 +34,6 @@ export interface ConnectionSummary {
 }
 
 interface ThoughtProps {
-  classes: any;
   statusOptions: string[];
   typeOptions: string[];
   tagOptions: string[];
@@ -59,8 +57,9 @@ const SECTION_DELIMITER_REGEX = /^_/;
 
 export const DEFAULT_SECTIONS = 'type-status-connections-priority-description-datetime-notes-recurring-tag-pictures';
 
-export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions, tagOptions }) => {
+export const Thought: FC<ThoughtProps> = ({ statusOptions, typeOptions, tagOptions }) => {
   const { db } = useLoadedDB();
+  const classes = useThoughtHomeStyles();
   const dispatch = useDispatch();
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const [editAllSections, setEditAllSections] = useState<boolean>(false);
@@ -224,4 +223,4 @@ export const Thought: FC<ThoughtProps> = ({ classes, statusOptions, typeOptions,
   );
 };
 
-export default withStyles(thoughtHomeStyles)(Thought);
+export default memo(Thought);

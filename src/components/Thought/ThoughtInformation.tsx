@@ -1,5 +1,4 @@
-import React, { FC, useMemo, useRef, useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React, { FC, memo, useMemo, useRef, useState } from 'react';
 import Close from '@material-ui/icons/Close';
 import { getTime } from './util';
 import {
@@ -13,7 +12,7 @@ import { createWholeThought } from '../../actions/complex';
 import { useLoadedDB } from '../../hooks/useDB';
 import { useNavigate } from 'react-router-dom';
 import { useHomeUrl } from '../../lib/util';
-import { thoughtInformationStyles } from './styles';
+import { useThoughtInformationStyles } from './styles';
 import { PriorityOption } from './';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Picture } from 'store/rxdb/schemas/picture';
@@ -49,11 +48,13 @@ import {
   generateRemindersFromThought,
   generateStartFromThought,
 } from '../ThoughtSettings/components/Calendar/lib/util';
+import { Bookmark } from '@material-ui/icons';
+import classNames from 'classnames';
+import { format } from 'date-fns';
 
 const DASH_REGEX = /-/g;
 
 export interface ThoughtInformationProps {
-  classes: any;
   thought: Thought;
   tags: Tag[];
   notes: NoteType[];
@@ -74,7 +75,6 @@ export interface ThoughtInformationProps {
 }
 
 const ThoughtInformation: FC<ThoughtInformationProps> = ({
-  classes,
   thought,
   tags = [],
   notes = [],
@@ -93,6 +93,7 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
   editAllSections,
   autoCreateCalendarEvent,
 }) => {
+  const classes = useThoughtInformationStyles();
   const lastSectionOrder = useRef<string[]>(null);
   const handleMoveCB = useRef<() => void>(null);
   const sectionsWrapper = useRef<HTMLDivElement>(null);
@@ -284,6 +285,13 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
     }
   };
 
+  const handleToggleStaged = () => {
+    thoughtActions.editThought(db, {
+      ...thought,
+      stagedOn: thought.stagedOn ? '' : format(new Date(), 'yyyy-MM-dd')
+    });
+  };
+
   const components: ComponentMap = {
     type: (
       <TypeSection
@@ -437,6 +445,11 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
         />
       )}
       <ThoughtTitle classes={classes} thought={thought} onUpdate={onUpdate} />
+      <button onClick={handleToggleStaged} className={classNames(classes.stageButton, {
+        staged: Boolean(thought.stagedOn),
+      })}>
+        <Bookmark/>
+      </button>
       <span className={classes.createdAt}>Created {createdText}</span>
       <span className={classes.updatedAt}>Updated {lastUpdatedText}</span>
       {plan && <span className={classes.planName}>{plan.name}</span>}
@@ -449,4 +462,4 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
   );
 };
 
-export default withStyles(thoughtInformationStyles)(ThoughtInformation);
+export default memo(ThoughtInformation);
