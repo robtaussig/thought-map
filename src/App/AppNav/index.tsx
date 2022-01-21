@@ -391,8 +391,8 @@ export const AppNav: FC<AppNavProps> = ({
   switch (currentPage) {
     case Page.Home:
       buttons.push(editPlanButton);
-      buttons.push(reviewPlanButton);
       buttons.push(stageButton);
+      buttons.push(reviewPlanButton);
       buttons.push(prioritiesButton);
       buttons.push(createThoughtButton);
       break;
