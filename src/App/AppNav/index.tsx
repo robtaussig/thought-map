@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import useModal from '../../hooks/useModal';
 import PlanSelectActions from '../../components/Home/PlanSelect/components/actions';
 import { ButtonPositions, tutorialSelector } from '../../reducers/tutorial';
-import { toggle as togglePriorities } from '../../reducers/displayPriorities';
+import { displayPrioritiesSelector, toggle as togglePriorities } from '../../reducers/displayPriorities';
 import { thoughts as thoughtActions } from '../../actions';
 import { useLoadedDB } from '../../hooks/useDB';
 import History from '@material-ui/icons/History';
@@ -26,6 +26,7 @@ import CreateThought from '../../components/CreateThought';
 import CreateBulkThought from '../../components/CreateThought/Bulk';
 import { typeOptionsSelector } from '../../reducers/typeOptions';
 import CreatePlan from '../../components/Home/PlanSelect/components/create';
+import PriorityList from '../../components/Home/PriorityList';
 
 const useStyles = makeStyles((theme: any): StyleRules => ({
   root: {
@@ -129,6 +130,7 @@ export const AppNav: FC<AppNavProps> = ({
   const { comparables } = useSelector(mergeResultsSelector);
   const settings = useSelector(settingSelector);
   const typeOptions = useSelector(typeOptionsSelector);
+  const displayPriorities = useSelector(displayPrioritiesSelector);
 
   useEffect(() => {
     dispatch(toggleThoughtSettings(false));
@@ -452,6 +454,7 @@ export const AppNav: FC<AppNavProps> = ({
   return (
     <nav className={cn(classes.root, className)}>
       {buttons}
+      {displayPriorities && <PriorityList />}
     </nav>
   );
 };

@@ -1,36 +1,41 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './styles';
 import useModal from '../../../hooks/useModal';
 import PriorityListModal from './components/PriorityListModal';
-import { Thought } from 'store/rxdb/schemas/thought';
 import { thoughtSelector } from '../../../reducers/thoughts';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggle } from '../../../reducers/displayPriorities';
+import { useIdFromUrl } from '../../../lib/util';
 
 interface PriorityListProps {
   classes: any;
-  thoughts?: Thought[];
-  onClose?: () => void;
 }
-export const PriorityList: FC<PriorityListProps> = ({ classes, onClose, thoughts }) => {
+export const PriorityList: FC<PriorityListProps> = ({ classes }) => {
   const [openModal, closeModal] = useModal();
+  const dispatch = useDispatch();
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const hasInitialized = useRef<boolean>(false);
-  const stateThoughts = useSelector(thoughtSelector);
-  const thoughtsToUse = thoughts || stateThoughts;
+  const thoughts = useSelector(thoughtSelector);
+  const planId = useIdFromUrl('plan');
+  const thoughtsToUse = useMemo(() => planId ? thoughts.filter(t => t.planId === planId) : thoughts, [thoughts, planId]);
 
   const handleMinimize = () => {
     setIsMinimized(true);
     closeModal();
   };
 
+  const handleClose = () => {
+    dispatch(toggle(false));
+  };
+
   const openPriorityList = () => {
     setIsMinimized(false);
     openModal(
-      <PriorityListModal classes={classes} onMinimize={handleMinimize} thoughts={thoughtsToUse} onClose={onClose}/>,
+      <PriorityListModal classes={classes} onMinimize={handleMinimize} thoughts={thoughtsToUse} onClose={handleClose}/>,
       'Priorities',
       {
-        afterClose: onClose,
+        afterClose: handleClose,
       }
     );
   };
@@ -40,7 +45,7 @@ export const PriorityList: FC<PriorityListProps> = ({ classes, onClose, thoughts
       openPriorityList();
       hasInitialized.current = true;
     }
-  }, [thoughtsToUse]);
+  }, [thoughtsToUse, planId]);
 
   return isMinimized ? (
     <button className={classes.prioritiesButton} onClick={openPriorityList}>

@@ -3,18 +3,16 @@ import Content from './Content/index';
 import PlanSelect from './PlanSelect';
 import { useStyles } from './styles';
 import { useIdFromUrl, useSearchParam } from '../../lib/util';
-import { Notification } from '../../types';
 import { planSelector } from '../../reducers/plans';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { useSelector } from 'react-redux';
 
 interface HomeProps {
   statusOptions: string[];
-  setLastNotification: (notification: Notification) => void;
   typeOptions: string[];
 }
 
-export const Home: FC<HomeProps> = ({ statusOptions, setLastNotification, typeOptions }) => {
+export const Home: FC<HomeProps> = ({ statusOptions, typeOptions }) => {
   const plans = useSelector(planSelector);
   const classes = useStyles();
   const thoughts = useSelector(thoughtSelector);
@@ -33,6 +31,7 @@ export const Home: FC<HomeProps> = ({ statusOptions, setLastNotification, typeOp
 
   return (
     <div className={classes.root}>
+      <PlanSelect plan={plan} />
       <Content
         classes={classes}
         thoughts={planThoughts}
@@ -41,7 +40,6 @@ export const Home: FC<HomeProps> = ({ statusOptions, setLastNotification, typeOp
         typeOptions={typeOptions}
         from={from}
       />
-      <PlanSelect classes={classes} plans={plans} thoughts={planThoughts} planId={planId} setLastNotification={setLastNotification}/>
     </div>
   );
 };

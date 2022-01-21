@@ -12,28 +12,6 @@ export const styles = (theme: any): StyleRules => ({
     backgroundColor: theme.useDarkMode ? '#2f2f2f' : theme.palette.background[600],
     overflow: 'hidden',
   }),
-  selectLabel: () => ({
-    '&#plans': {
-      display: 'flex',
-      flex: '0 0 50px',
-      marginTop: 20,
-      backgroundColor: theme.palette.primary[500],
-      borderRadius: '10px',
-      position: 'relative',
-      boxShadow: '0px 0px 5px -1px black',
-      '& > select': {
-        flex: 1,
-        color: theme.palette.background[900],
-        display: 'flex',
-        textAlignLast: 'center',
-        paddingLeft: 13,
-        backgroundColor: 'transparent',
-        border: 'none',
-        fontSize: 24,
-        fontWeight: 600,
-      }
-    },
-  }),
   content: () => ({
     gridArea: 'content',
     flex: 1,

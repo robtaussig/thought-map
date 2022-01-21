@@ -42,7 +42,7 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
   const plans = useSelector(planSelector);
   const settings = useSelector(settingSelector);
   const sortFilterSettings = useSelector(sortFilterSettingsSelector);
-
+  
   const connectionStatusByThought = useMemo(() => {
     thoughtMap.current
       .updateThoughts(stateThoughts)

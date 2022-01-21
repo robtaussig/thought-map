@@ -22,6 +22,7 @@ import customObjects from './customObjects';
 import typeOptions from './typeOptions';
 import tagOptions from './tagOptions';
 import statusOptions from './statusOptions';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({
   connections,
@@ -55,5 +56,7 @@ const appReducer: typeof rootReducer = (state, action) => {
   if (action.type === 'RESET') return rootReducer(undefined, action);
   return rootReducer(state, action);
 };
+
+export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default appReducer;
