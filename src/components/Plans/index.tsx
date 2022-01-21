@@ -45,7 +45,7 @@ export const Plans: FC<PlansProps> = ({
     <div className={cn(classes.root, className)}>
       <h1 className={classes.header}>Plans</h1>
       <ul className={classes.planList}>
-        {plans.map(plan => (
+        {plans.filter(({ archived }) => !archived).map(plan => (
           <Plan key={`${plan.id}-plan`} plan={plan}/>
         ))}
       </ul>

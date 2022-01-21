@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme: any) => ({
   plansLink: {
     marginLeft: 'auto',
     borderBottom: `2px solid ${theme.palette.primary[500]}`,
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    color: 'inherit',
   },
 }));
 
