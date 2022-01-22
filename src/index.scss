@@ -174,9 +174,7 @@ button:focus {
 
 a {
   text-decoration: none;
-  &:visited {
-    color: inherit;
-  }
+  color: inherit;
 }
 
 @keyframes shadow-pulse {

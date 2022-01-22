@@ -7,39 +7,80 @@ import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
-    display: 'flex',
-    alignItems: 'center',
+    display: 'grid',
+    gridTemplateAreas: `"title title arrow"
+                        "not-started started completed"`,
+    gridTemplateColumns: '1fr 1fr 1fr max-content',
+    gridTemplateRows: '1fr 1fr',
     background: theme.palette.background[200],
     padding: 20,
-    borderRadius: '10px'
+    rowGap: 20,
+    borderRadius: '10px',
+    '&.archived': {
+      opacity: 0.5,
+    },
   },
   header: {
+    gridArea: 'title',
     fontSize: 16,
     fontWeight: 600,
   },
-  link: {
+  rightArrow: {
+    gridArea: 'arrow',
+    alignSelf: 'center',
     marginLeft: 'auto',
   },
+  started: {
+    gridArea: 'started',
+    justifySelf: 'center'
+  },
+  notStarted: {
+    gridArea: 'not-started',
+  },
+  completed: {
+    gridArea: 'completed',
+    justifySelf: 'end'
+  },
+  key: {
+    marginRight: 5,
+  },
+  value: {
+    fontWeight: 600,
+  },
 }));
+
+export type StatusCount = { unstarted: number; started: number; completed: number };
 
 export interface PlanProps {
   className?: string;
   plan: PlanType
+  statusCount: StatusCount;
 }
 
 export const Plan: FC<PlanProps> = ({
   className,
   plan,
+  statusCount,
 }) => {
   const classes = useStyles();
 
   return (
-    <div className={cn(classes.root, className)}>
+    <Link className={cn(classes.root, className, { archived: plan.archived })} to={`/plan/${plan.id}/`}>
       <h2 className={classes.header}>{plan.name}</h2>
-      <Link className={classes.link} to={`/plan/${plan.id}/`}>
-        <ArrowRight/>
-      </Link>
-    </div>
+      <div className={classes.notStarted}>
+        <span className={classes.key}>Not Started:</span>
+        <span className={classes.value}>{statusCount.unstarted}</span>
+      </div>
+      <div className={classes.started}>
+        <span className={classes.key}>Started:</span>
+        <span className={classes.value}>{statusCount.started}</span>
+      </div>
+      <div className={classes.completed}>
+        <span className={classes.key}>Completed:</span>
+        <span className={classes.value}>{statusCount.completed}</span>
+      </div>
+      <ArrowRight className={classes.rightArrow}/>
+    </Link>
   );
 };
 

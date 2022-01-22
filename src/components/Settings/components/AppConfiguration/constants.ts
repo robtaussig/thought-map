@@ -31,4 +31,4 @@ export const LOCATION_TOOLTIP_TEXT =
   for a more comprehensive context behind thought transitions.`;
   
 export const DISPLAY_ARCHIVED_THOUHGTS_TOOLTIP_TEXT =
-  'If enabled, archived thoughts will be displayed, allowing you to delete/unarchive them.';
+  'If enabled, archived thoughts and plans will be displayed, allowing you to delete/unarchive them.';

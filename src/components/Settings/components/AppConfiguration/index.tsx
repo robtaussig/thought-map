@@ -147,8 +147,8 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
         />
         <CheckBox
           classes={classes}
-          value={'Display Archived Thoughts'}
-          label={'Display Archived Thoughts'}
+          value={'Display Archived Records'}
+          label={'Display Archived Records'}
           isChecked={displayArchived}
           onChange={handleChangeDisplayArchived}
           tooltip={DISPLAY_ARCHIVED_THOUHGTS_TOOLTIP_TEXT}

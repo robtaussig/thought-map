@@ -21,6 +21,12 @@ const useStyles = makeStyles((theme: any) => ({
     textTransform: 'uppercase',
     color: 'inherit',
   },
+  homeLink: {
+    marginLeft: 20,
+    borderBottom: `2px solid ${theme.palette.primary[500]}`,
+    textTransform: 'uppercase',
+    color: 'inherit',
+  },
 }));
 
 export interface PlanSelectProps {
@@ -38,6 +44,7 @@ export const PlanSelect: FC<PlanSelectProps> = ({
     <header className={cn(classes.root, className)}>
       <h1 className={classes.header}>{plan?.name ?? 'Thought Map'}</h1>
       <Link className={classes.plansLink} to={'/plans'}>Plans</Link>
+      <Link className={classes.homeLink} to={'/'}>Home</Link>
     </header>
   );
 };

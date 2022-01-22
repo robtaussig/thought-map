@@ -74,7 +74,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: AppDispatc
   const plans = allPlans.filter(({ archived }) => settingsMap.displayArchived || !archived);
   const unarchivedPlanIds = new Set(plans.map(({ id }) => id));
 
-  const thoughts = allThoughts.filter(({ archived, planId }) => (settingsMap.displayArchived || !archived) && (!planId || unarchivedPlanIds.has(planId)));
+  const thoughts = allThoughts.filter(({ archived, planId }) => settingsMap.displayArchived || (!archived && (!planId || unarchivedPlanIds.has(planId))));
   const unarchivedThoughtIds = new Set(thoughts.map(({ id }) => id));
 
   const [
