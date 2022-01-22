@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Connection } from '../store/rxdb/schemas/connection';
 import { Selector } from 'react-redux';
 import { RootState } from './';
+import { bulkCreateThoughtsAndConnections } from './actions';
 
 export const connectionSelector: Selector<RootState, Connections> = (state) =>
   state.connections;
@@ -19,14 +20,23 @@ const connections = createSlice({
       return action.payload;
     },
     insert(state, action: PayloadAction<Connection>) {
+      if ((window as any).batchingBulkThoughts) return state;
       state[action.payload.id] = action.payload;
     },
     remove(state, action: PayloadAction<string>) {
       delete state[action.payload];
     },
     update(state, action: PayloadAction<Connection>) {
+      if ((window as any).batchingBulkThoughts) return state;
       state[action.payload.id] = action.payload;
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(bulkCreateThoughtsAndConnections, (state, action) => {
+      action.payload.connections.forEach(connection => {
+        state[connection.id] = connection;
+      });
+    });
   },
 });
 

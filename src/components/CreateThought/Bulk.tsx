@@ -4,11 +4,12 @@ import { DEFAULT_STATE } from './';
 import { useLoadedDB } from '../../hooks/useDB';
 import { createWholeThought } from '../../actions/complex';
 import { useIdFromUrl } from '../../lib/util';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { planSelector } from '../../reducers/plans';
 import { bulkListSelector } from '../../reducers/bulkLists';
 import { useBulkStyles } from './style';
 import { bulkLists as bulkListsActions, connections as connectionsActions } from '../../actions';
+import { bulkCreateThoughtsAndConnections } from '../../reducers/actions';
 
 interface CreateBulkThoughtProps {
   onClose: () => void;
@@ -25,6 +26,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
   const plans = useSelector(planSelector);
   const bulkLists = useSelector(bulkListSelector);
   const { db } = useLoadedDB();
+  const dispatch = useDispatch();
   const planId = useIdFromUrl('plan');
   const plan = plans.find(plan => plan.id === planId);
 
@@ -50,6 +52,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
       }
     });
     (window as any).blockNotifications = true;
+    (window as any).batchingBulkThoughts = true;
 
     const thoughts = await Promise.all(thoughtTitles.map(title => createWholeThought(db, {
       ...DEFAULT_STATE,
@@ -57,7 +60,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
       type: (plan && plan.defaultType) || DEFAULT_STATE.type,
     }, planId)));
 
-    await Promise.all(thoughts.map(({ thought }, thoughtIdx) => {
+    const connections = await Promise.all(thoughts.map(({ thought }, thoughtIdx) => {
       if (thoughtIdx in indexMap) {
         const prevThought = thoughts[indexMap[thoughtIdx]].thought;
         return connectionsActions.createConnection(db, {
@@ -67,6 +70,13 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
       }
     }));
 
+    dispatch(bulkCreateThoughtsAndConnections({
+      thoughts: thoughts.map(({ thought }) => thought),
+      connections: connections.filter(Boolean),
+    }));
+    setTimeout(() => {
+      (window as any).batchingBulkThoughts = false;
+    }, 500);
     (window as any).blockNotifications = false;
   };
 
