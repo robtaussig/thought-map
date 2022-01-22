@@ -137,6 +137,7 @@ const UnmemoizedThoughtNode: FC<ThoughtNodeProps> = ({
         from: thought.id,
         to: createdThought.thought.id,
       });
+      setShowConnections(true);
     }
   }, [thought.planId]);
 
