@@ -1,6 +1,6 @@
-import { StyleRules, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-export const styles = (theme: any): StyleRules => ({
+export const useStyles = makeStyles((theme: any) => ({
   form: {
     height: '100%',
     display: 'grid',
@@ -76,7 +76,7 @@ export const styles = (theme: any): StyleRules => ({
       border: '1px solid gray',
     },
   }),
-});
+}));
 
 export const useBulkStyles = makeStyles((theme: any) => ({
   root: {
@@ -87,11 +87,12 @@ export const useBulkStyles = makeStyles((theme: any) => ({
     gridTemplateAreas: `"header header"
                         "input input"
                         "bulk-list-options bulk-list-options"
-                        "save-button submit-button"`,
+                        "save-button buttons"`,
     gridTemplateColumns: '1fr max-content',
     gridTemplateRows: 'max-content 1fr max-content max-content',
   },
   header: {
+    gridArea: 'header',
     fontWeight: 600,
     color: theme.palette.secondary[600],
   },
@@ -103,6 +104,20 @@ export const useBulkStyles = makeStyles((theme: any) => ({
       height: '100%',
       width: '100%',
     },
+  },
+  buttons: {
+    gridArea: 'buttons',
+    '& button': {
+      cursor: 'pointer',
+      fontWeight: 600,
+      color: theme.palette.secondary[700],
+      border: `1px solid ${theme.palette.secondary[700]}`,
+      padding: '5px 12px',
+      borderRadius: '5px',
+    },
+  },
+  singleAddThought: {
+    marginRight: 15,
   },
   savedListInput: {
     gridArea: 'bulk-list-options',
@@ -124,13 +139,7 @@ export const useBulkStyles = makeStyles((theme: any) => ({
     },
   },
   submitButton: {
-    gridArea: 'submit-button',
-    cursor: 'pointer',
-    fontWeight: 600,
-    color: theme.palette.secondary[700],
-    border: `1px solid ${theme.palette.secondary[700]}`,
-    padding: '5px 12px',
-    borderRadius: '5px',
+    
     '&:disabled': {
       color: 'gray',
       border: '1px solid gray',

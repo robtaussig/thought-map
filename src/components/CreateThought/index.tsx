@@ -1,9 +1,8 @@
-import React, { FC, FormEventHandler, Fragment, useState } from 'react';
+import React, { FC, FormEventHandler, Fragment, memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CloseModal } from '../../hooks/useModal/types';
 import { useLoadedDB } from '../../hooks/useDB';
-import { withStyles } from '@material-ui/core/styles';
-import { styles } from './style';
+import { useStyles } from './style';
 import Inputs from './Inputs';
 import { createWholeThought } from '../../actions/complex';
 import { useHomeUrl, useIdFromUrl } from '../../lib/util';
@@ -11,6 +10,8 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { planSelector } from '../../reducers/plans';
+import useModal from '../../hooks/useModal';
+import CreateBulkThought from './Bulk';
 
 export interface CreatedThought {
   title: string;
@@ -37,20 +38,20 @@ export const DEFAULT_STATE: CreatedThought = {
 };
 
 interface CreateThoughtProps {
-  classes: any;
   typeOptions: string[];
   onClose: CloseModal;
-  onCreateBulk: () => void;
   andStage?: boolean;
 }
 
-export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, onClose, onCreateBulk, andStage }) => {
+export const CreateThought: FC<CreateThoughtProps> = ({ typeOptions, onClose, andStage }) => {
+  const classes = useStyles();
   const navigate = useNavigate();
   const thoughts = useSelector(thoughtSelector);
   const plans = useSelector(planSelector);
   const [ready, setReady] = useState<boolean>(false);
   const { db } = useLoadedDB();
   const planId = useIdFromUrl('plan');
+  const [openModal, closeModal] = useModal();
   const plan = plans.find(plan => plan.id === planId);
   const [selectedPlan, setSelectedPlan] = useState('');
   const [createdThought, setCreatedThought] = useState<CreatedThought>({
@@ -82,7 +83,21 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
 
   const handleClickBulk = (e: any) => {
     e.preventDefault();
-    onCreateBulk();
+    onClose();
+    openModal(
+      <CreateBulkThought
+        onReopenSingle={() => {
+          openModal(
+            <CreateThought
+              onClose={closeModal}
+              andStage={andStage}
+              typeOptions={typeOptions}
+            />, 'Create Thought'
+          );
+        }}
+        onClose={closeModal}
+      />, 'Create Bulk Thoughts'
+    );
   };
 
   return (
@@ -111,4 +126,4 @@ export const CreateThought: FC<CreateThoughtProps> = ({ classes, typeOptions, on
   );
 };
 
-export default withStyles(styles)(CreateThought);
+export default memo(CreateThought);

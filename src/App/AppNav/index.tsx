@@ -23,7 +23,6 @@ import { mergeResultsSelector } from '../../reducers/mergeResults';
 import DemandBackupButton from './DemandBackupButton';
 import { settingSelector } from '../../reducers/settings';
 import CreateThought from '../../components/CreateThought';
-import CreateBulkThought from '../../components/CreateThought/Bulk';
 import { typeOptionsSelector } from '../../reducers/typeOptions';
 import CreatePlan from '../../components/Home/PlanSelect/components/create';
 import PriorityList from '../../components/Home/PriorityList';
@@ -304,14 +303,6 @@ export const AppNav: FC<AppNavProps> = ({
         openModal(
           <CreateThought
             onClose={closeModal}
-            onCreateBulk={() => {
-              closeModal();
-              openModal(
-                <CreateBulkThought
-                  onClose={closeModal}
-                />, 'Create Bulk Thoughts'
-              );
-            }}
             typeOptions={typeOptions}
           />, 'Create Thought'
         );
@@ -331,14 +322,6 @@ export const AppNav: FC<AppNavProps> = ({
           <CreateThought
             onClose={closeModal}
             andStage
-            onCreateBulk={() => {
-              closeModal();
-              openModal(
-                <CreateBulkThought
-                  onClose={closeModal}
-                />, 'Create Bulk Thoughts'
-              );
-            }}
             typeOptions={typeOptions}
           />, 'Create Thought'
         );

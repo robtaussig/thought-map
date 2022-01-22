@@ -46,11 +46,12 @@ const Inputs: FC<InputsProps> = ({
 
   return (
     <Fragment>
-      <Input classes={classes} id={'title'} value={createdThought.title} onChange={e => setTitle(e.target.value)} autoSuggest={thoughtTitles} autoFocus/>
-      <Select classes={classes} id={'type'} value={createdThought.type} options={typeOptions} onChange={e => setType(e.target.value)}/>
+      <Input label={'Title'} classes={classes} id={'title'} value={createdThought.title} onChange={e => setTitle(e.target.value)} autoSuggest={thoughtTitles} autoFocus/>
+      <Select label={'Type'} classes={classes} id={'type'} value={createdThought.type} options={typeOptions} onChange={e => setType(e.target.value)}/>
       {!planId &&(
         <Select
           classes={classes}
+          label={'Plan'}
           id={'plan'}
           value={selectedPlan}
           options={['Plan'].concat(plans.map(({ name }) => name))}

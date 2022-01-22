@@ -13,13 +13,14 @@ import { bulkCreateThoughtsAndConnections } from '../../reducers/actions';
 
 interface CreateBulkThoughtProps {
   onClose: () => void;
+  onReopenSingle: () => void;
 }
 
 const depthRegex = /^-+/;
 const getNumDashes = (title: string) => depthRegex.exec(title)?.[0].length ?? 0;
 const stripLeadingDashes = (title: string) => title.replace(depthRegex,'');
 
-export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
+export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose, onReopenSingle }) => {
   const classes = useBulkStyles({});
   const [inputValue, setInputValue] = useState<string>('');
   const [savedListName, setSavedListName] = useState<string>(null);
@@ -29,7 +30,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
   const dispatch = useDispatch();
   const planId = useIdFromUrl('plan');
   const plan = plans.find(plan => plan.id === planId);
-
+  
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const indexMap: { [idx: number]: number } = {};
@@ -105,6 +106,9 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
           autoFocus
+          inputProps={{
+            placeholder: 'Parent thought\n-Child Thought\n-Second Child Thought\n--Child of Second Child Thought',
+          }}
         />
       </form>
       {savedListName === null ? (
@@ -136,9 +140,17 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose }) => {
           </button>
         </>
       )}
-      <button className={classes.submitButton} disabled={inputValue === ''} onClick={handleSubmit}>
+      <div className={classes.buttons}>
+        <button
+          className={classes.singleAddThought}
+          onClick={onReopenSingle}
+        >
+        Single
+        </button>
+        <button className={classes.submitButton} disabled={inputValue === ''} onClick={handleSubmit}>
         Submit
-      </button>
+        </button>
+      </div>
     </div>
   );
 };
