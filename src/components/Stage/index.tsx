@@ -1,53 +1,40 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { withStyles } from '@material-ui/styles';
-import StagingItems from './components/staging-items';
-import NavBar from '../Settings/components/nav-bar';
-import { useDispatch, useSelector } from 'react-redux';
-import { refresh, stageSelector } from '../../reducers/stage';
-import { styles } from './style';
+import React, { FC, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { stageSelector } from '../../reducers/stage';
+import { thoughtSelector } from '../../reducers/thoughts';
+import { intoMap } from '../../lib/util';
+import Wrapper from './Wrapper';
 
 interface StageProps {
-  classes: any,
+
 }
 
-export const Stage: FC<StageProps> = ({ classes }) => {
+export const Stage: FC<StageProps> = () => {
   const stage = useSelector(stageSelector);
-  const dispatch = useDispatch();
-  const [isStaging, setIsStaging] = useState<boolean>(true);
-  const navItems = useMemo(() => {
-    return [
-      {
-        value: `Backlog (${stage.backlog.length})`,
-        current: !isStaging,
-        onClick: () => setIsStaging(false),
-        disabled: false,
-      },
-      {
-        value: `Stage (${stage.current.length})`,
-        current: isStaging,
-        onClick: () => setIsStaging(true),
-        disabled: false,
-      },      
-    ];
-  }, [stage, isStaging]);
+  const thoughts = useSelector(thoughtSelector);
 
-  useEffect(() => {
-    dispatch(refresh());
-  }, []);
+  const [activeThoughts, backlogThoughts] = useMemo(() => {
+    if (thoughts?.length > 0) {
+      const thoughtsById = intoMap(thoughts);
+      return [
+        stage.current.map(id => thoughtsById[id]),
+        stage.backlog.map(id => thoughtsById[id]),
+      ];
+    } else {
+      return [];
+    }
+  }, [stage, thoughts]);
+
+  if (!activeThoughts || !backlogThoughts) {
+    return null;
+  }
 
   return (
-    <div className={classes.root}>
-      <NavBar
-        items={navItems}
-        id={'staging-nav'}
-      />
-      <StagingItems
-        classes={classes}
-        isStaging={isStaging}
-        items={isStaging ? stage.current : stage.backlog}
-      />
-    </div>
+    <Wrapper
+      activeThoughts={activeThoughts}
+      backlogThoughts={backlogThoughts}
+    />
   );
 };
 
-export default withStyles(styles)(Stage);
+export default Stage;
