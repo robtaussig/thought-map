@@ -74,6 +74,7 @@ export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose, onReope
     dispatch(bulkCreateThoughtsAndConnections({
       thoughts: thoughts.map(({ thought }) => thought),
       connections: connections.filter(Boolean),
+      statuses: thoughts.map(({ status }) => status),
     }));
     setTimeout(() => {
       (window as any).batchingBulkThoughts = false;

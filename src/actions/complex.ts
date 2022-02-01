@@ -40,7 +40,7 @@ export const createWholeThought = async (db: RxDatabase, {
 
   const createdThought = await thoughtActions.createThought(db, thought);
   const thoughtId = createdThought.id;
-  await statusActions.createStatus(db, {
+  const createdStatus = await statusActions.createStatus(db, {
     thoughtId,
     text: 'new',
   });
@@ -58,6 +58,6 @@ export const createWholeThought = async (db: RxDatabase, {
   ]);
 
   return {
-    thought: createdThought, notes: createdNotes, tags: createdTags
+    thought: createdThought, notes: createdNotes, tags: createdTags, status: createdStatus,
   };
 };

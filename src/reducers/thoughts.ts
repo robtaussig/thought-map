@@ -42,7 +42,10 @@ const thoughts = createSlice({
   extraReducers: builder => {
     builder.addCase(bulkCreateThoughtsAndConnections, (state, action) => {
       return [
-        ...action.payload.thoughts,
+        ...action.payload.thoughts.map(thought => ({
+          ...thought,
+          status: action.payload.statuses.find(({ thoughtId }) => thoughtId === thought.id).text,
+        })),
         ...state,
       ];
     });
