@@ -1,7 +1,9 @@
 import { makeStyles } from '@material-ui/core';
-import { DragIndicator } from '@material-ui/icons';
+import { DragIndicator, MoreVert } from '@material-ui/icons';
 import classNames from 'classnames';
 import React, { memo } from 'react';
+import useModal from '../../hooks/useModal';
+import Options from './Options';
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -14,6 +16,18 @@ const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     alignItems: 'center',
     margin: '0 8px',
+  },
+  title: {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+  },
+  menu: {
+    color: theme.palette.background[200],
+    marginLeft: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0px 8px',
   },
 }));
 
@@ -46,10 +60,22 @@ const getStyle = ({ draggableStyle, virtualStyle, isDragging }: any) => {
 
 export const Item = ({ provided, item, style, isDragging }: any) => {
   const classes = useStyles();
+  const [openModal, closeModal] = useModal();
+
+  const handleOpenMenu = () => {
+    openModal(
+      <Options
+        thought={item}
+        onRequestClose={closeModal}
+      />,
+      'Stage Options',
+    );
+  };
 
   return (
     <div
       {...provided.draggableProps}
+      {...provided.dragHandleProps}
       ref={provided.innerRef}
       style={getStyle({
         draggableStyle: provided.draggableProps.style,
@@ -60,7 +86,9 @@ export const Item = ({ provided, item, style, isDragging }: any) => {
         isDragging,
       })}
     >
-      <div {...provided.dragHandleProps} className={classes.dragHandle}><DragIndicator /></div>{item.title}
+      <div className={classes.dragHandle}><DragIndicator /></div>
+      <span className={classes.title}>{item.title}</span>
+      <button className={classes.menu} onClick={handleOpenMenu}><MoreVert/></button>
     </div>
   );
 };
