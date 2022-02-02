@@ -131,6 +131,12 @@ export const Wrapper: FC<WrapperProps> = ({
         : format(startOfYesterday(), 'yyyy-MM-dd'),
     });
   };
+
+  const onDragStart = () => {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(100);
+    }
+  };
   
   useEffect(() => {
     if (latestThought?.stagedOn === format(new Date(), 'yyyy-MM-dd')) {
@@ -148,7 +154,7 @@ export const Wrapper: FC<WrapperProps> = ({
   }, [latestThought]);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       <StageContext.Provider value={onRemoveThought}>
         <Droppable
           droppableId="all-droppables"
