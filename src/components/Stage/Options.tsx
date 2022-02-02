@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import { useLoadedDB } from '../../hooks/useDB';
 import { statuses as statusActions, thoughts as thoughtActions } from '../../actions';
+import { useHomeUrl } from '../../lib/util';
 
 const useStyles = makeStyles((_theme: any) => ({
   root: {
@@ -45,6 +46,7 @@ export const Options: FC<OptionsProps> = ({
 }) => {
   const classes = useStyles();
   const { db } = useLoadedDB();
+  const homeUrl = useHomeUrl();
 
   const handleUnstage = async () => {
     await thoughtActions.editThought(db, {
@@ -68,7 +70,7 @@ export const Options: FC<OptionsProps> = ({
     <div className={cn(classes.root, className)}>
       <Link
         className={cn(classes.header, classes.link)}
-        to={'/'}
+        to={`${homeUrl}thought/${thought.id}`}
         onClick={onRequestClose}
       >
         {thought.title}<ArrowRight/>
