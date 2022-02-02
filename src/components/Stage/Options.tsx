@@ -59,7 +59,7 @@ export const Options: FC<OptionsProps> = ({
 
   const handleMarkComplete = async () => {
     await statusActions.createStatus(db, {
-      text: 'Complete',
+      text: 'completed',
       thoughtId: thought.id,
     });
     onRemove();
