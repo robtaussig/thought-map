@@ -6,6 +6,9 @@ import { Thought } from '../../store/rxdb/schemas/thought';
 import { useLoadedDB } from '../../hooks/useDB';
 import { format, startOfYesterday} from 'date-fns';
 import { makeStyles } from '@material-ui/core';
+import { getInitialData, reorderList } from './util';
+import { StageContext } from './context';
+import produce from 'immer';
 
 const useStyles = makeStyles((_theme: any) => ({
   root: {
@@ -26,32 +29,6 @@ const useStyles = makeStyles((_theme: any) => ({
   },
 }));
 
-const getInitialData = (active: Thought[], backlog: Thought[]) => {
-  return {
-    columns: {
-      active: {
-        id: 'active',
-        title: 'Active',
-        items: active,
-      },
-      backlog: {
-        id: 'backlog',
-        title: 'Backlog',
-        items: backlog,
-      },
-    } as any,
-    columnOrder: ['active', 'backlog'],
-  };
-};
-
-const reorderList = (list: string[], startIndex: number, endIndex: number) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
 export interface WrapperProps {
   className?: string;
   activeThoughts: Thought[];
@@ -65,15 +42,26 @@ export const Wrapper: FC<WrapperProps> = ({
   const classes = useStyles();
   const [state, setState] = useState(() => getInitialData(activeThoughts, backlogThoughts));
   const { db } = useLoadedDB();
-  function onDragEnd(result: any) {
+
+  const onRemoveThought = (thoughtId: string) => {
+    setState(prev => produce(prev, (draftState) => {
+      draftState.columns.active.items = draftState.columns.active.items.filter(({ id }) => {
+        return id !== thoughtId;
+      });
+      draftState.columns.backlog.items = draftState.columns.backlog.items.filter(({ id }) => {
+        return id !== thoughtId;
+      });
+
+      return draftState;
+    }));
+  };
+
+  const onDragEnd = (result: any) => {
     if (!result.destination) {
       return;
     }
 
     if (result.type === 'column') {
-      // if the list is scrolled it looks like there is some strangeness going on
-      // with react-window. It looks to be scrolling back to scroll: 0
-      // I should log an issue with the project
       const columnOrder = reorderList(
         state.columnOrder,
         result.source.index,
@@ -86,7 +74,6 @@ export const Wrapper: FC<WrapperProps> = ({
       return;
     }
 
-    // reordering in same list
     if (result.source.droppableId === result.destination.droppableId) {
       const column = state.columns[result.source.droppableId];
       const items = reorderList(
@@ -95,7 +82,6 @@ export const Wrapper: FC<WrapperProps> = ({
         result.destination.index
       );
 
-      // updating column entry
       const newState = {
         ...state,
         columns: {
@@ -110,24 +96,20 @@ export const Wrapper: FC<WrapperProps> = ({
       return;
     }
 
-    // moving between lists
     const sourceColumn = state.columns[result.source.droppableId];
     const destinationColumn = state.columns[result.destination.droppableId];
     const item = sourceColumn.items[result.source.index];
 
-    // 1. remove item from source column
     const newSourceColumn = {
       ...sourceColumn,
       items: [...sourceColumn.items]
     };
     newSourceColumn.items.splice(result.source.index, 1);
 
-    // 2. insert into destination column
     const newDestinationColumn = {
       ...destinationColumn,
       items: [...destinationColumn.items]
     };
-    // in line modification of items
     newDestinationColumn.items.splice(result.destination.index, 0, item);
 
     const newState = {
@@ -146,35 +128,37 @@ export const Wrapper: FC<WrapperProps> = ({
         ? format(new Date(), 'yyyy-MM-dd')
         : format(startOfYesterday(), 'yyyy-MM-dd'),
     });
-  }
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable
-        droppableId="all-droppables"
-        direction="horizontal"
-        type="column"
-      >
-        {provided => (
-          <div
-            className={classes.root}
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {state.columnOrder.map((columnId, index) => (
-              <div className={classes.itemList} style={{ flex: Math.max(state.columns[columnId].items.length, 1) }} key={columnId}>
-                <h2 className={classes.itemHeader}>{state.columns[columnId].title}</h2>
-                <ItemList
-                  key={columnId}
-                  column={state.columns[columnId]}
-                  index={index}
-                />
-              </div>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
+      <StageContext.Provider value={onRemoveThought}>
+        <Droppable
+          droppableId="all-droppables"
+          direction="horizontal"
+          type="column"
+        >
+          {provided => (
+            <div
+              className={classes.root}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {state.columnOrder.map((columnId, index) => (
+                <div className={classes.itemList} style={{ flex: Math.max(state.columns[columnId].items.length, 1) }} key={columnId}>
+                  <h2 className={classes.itemHeader}>{state.columns[columnId].title}</h2>
+                  <ItemList
+                    key={columnId}
+                    column={state.columns[columnId]}
+                    index={index}
+                  />
+                </div>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </StageContext.Provider>
     </DragDropContext>
   );
 };

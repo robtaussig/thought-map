@@ -1,8 +1,9 @@
 import { makeStyles } from '@material-ui/core';
 import { DragIndicator, MoreVert } from '@material-ui/icons';
 import classNames from 'classnames';
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import useModal from '../../hooks/useModal';
+import { StageContext } from './context';
 import Options from './Options';
 
 const useStyles = makeStyles((theme: any) => ({
@@ -48,10 +49,10 @@ const getStyle = ({ draggableStyle, virtualStyle, isDragging }: any) => {
   const result = {
     ...combined,
     height: isDragging ? combined.height : combined.height - grid,
-    left: isDragging ? combined.left : combined.left + grid,
+    left: combined.left,
     width: isDragging
       ? draggableStyle.width
-      : `calc(${combined.width} - ${grid * 2}px)`,
+      : combined.width,
     marginBottom: grid
   };
 
@@ -60,6 +61,7 @@ const getStyle = ({ draggableStyle, virtualStyle, isDragging }: any) => {
 
 export const Item = ({ provided, item, style, isDragging }: any) => {
   const classes = useStyles();
+  const removeThought = useContext(StageContext);
   const [openModal, closeModal] = useModal();
 
   const handleOpenMenu = () => {
@@ -67,6 +69,7 @@ export const Item = ({ provided, item, style, isDragging }: any) => {
       <Options
         thought={item}
         onRequestClose={closeModal}
+        onRemove={() => removeThought(item.id)}
       />,
       'Stage Options',
     );
