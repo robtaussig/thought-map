@@ -1,4 +1,4 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import ItemList from './ItemList';
 import { thoughts as thoughtActions } from '../../actions';
@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core';
 import { getInitialData, reorderList } from './util';
 import { StageContext } from './context';
 import produce from 'immer';
+import { useLatestThought } from '../../hooks/useLatestThought';
 
 const useStyles = makeStyles((_theme: any) => ({
   root: {
@@ -42,6 +43,7 @@ export const Wrapper: FC<WrapperProps> = ({
   const classes = useStyles();
   const [state, setState] = useState(() => getInitialData(activeThoughts, backlogThoughts));
   const { db } = useLoadedDB();
+  const latestThought = useLatestThought();
 
   const onRemoveThought = (thoughtId: string) => {
     setState(prev => produce(prev, (draftState) => {
@@ -129,6 +131,21 @@ export const Wrapper: FC<WrapperProps> = ({
         : format(startOfYesterday(), 'yyyy-MM-dd'),
     });
   };
+  
+  useEffect(() => {
+    if (latestThought?.stagedOn === format(new Date(), 'yyyy-MM-dd')) {
+      setState(prev => produce(prev, (draftState) => {
+        if (!draftState.columns.active.items.find(({ id }) => {
+          return id === latestThought.id;
+        })) {
+          draftState.columns.active.items.unshift(latestThought);
+          return draftState;
+        } else {
+          return draftState;
+        }
+      }));
+    }
+  }, [latestThought]);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
