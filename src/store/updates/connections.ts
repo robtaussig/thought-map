@@ -12,7 +12,7 @@ const updateThoughtMap = async (from: string, to: string) => {
 export const handleConnectionChange = (
   dispatch: AppDispatch,
   setLastNotification: (notification: Notification) => void,
-) => ({ documentData, operation, documentId }: RxChangeEvent) => {
+) => ({ documentData, operation, documentId, previousDocumentData }: RxChangeEvent) => {
   if ((window as any).blockDBSubscriptions === true) return;
   const connection: Connection = documentData;
   let notification;
@@ -24,7 +24,7 @@ export const handleConnectionChange = (
       break;
     
     case 'DELETE':
-      updateThoughtMap(connection.from, connection.to);
+      updateThoughtMap(previousDocumentData.from, previousDocumentData.to);
       dispatch(remove(documentId));
       notification = { message: 'Connection removed' };
       break;

@@ -115,7 +115,9 @@ export class Graph {
   removeEdge = (from: string, to: string): void => {
     const fromVertex = this.vertices.find(({ id }) => id === from);
     const toVertex = this.vertices.find(({ id }) => id === to);
-    fromVertex.removeNext(toVertex);
-    toVertex.removePrev(fromVertex);
+    if (fromVertex && toVertex) {
+      fromVertex.removeNext(toVertex);
+      toVertex.removePrev(fromVertex);
+    }
   };
 }

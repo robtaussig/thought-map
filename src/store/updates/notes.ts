@@ -21,7 +21,7 @@ export const handleNoteChange = (
     
     case 'DELETE':
       dispatch(remove(documentId));
-      searcherWorker.invalidate(note.id);
+      searcherWorker.invalidate(documentId);
       notification = { message: 'Note removed' };
       break;
 

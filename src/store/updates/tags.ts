@@ -21,7 +21,7 @@ export const handleTagChange = (
     
     case 'DELETE':
       dispatch(remove(documentId));
-      searcherWorker.invalidate(tag.id);
+      searcherWorker.invalidate(documentId);
       notification = { message: 'Tag removed' };
       break;
 
