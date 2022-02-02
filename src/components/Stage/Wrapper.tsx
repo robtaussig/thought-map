@@ -168,7 +168,7 @@ export const Wrapper: FC<WrapperProps> = ({
               ref={provided.innerRef}
             >
               {state.columnOrder.map((columnId, index) => (
-                <div className={classes.itemList} style={{ flex: Math.max(state.columns[columnId].items.length, 1) }} key={columnId}>
+                <div className={classes.itemList} key={columnId}>
                   <h2 className={classes.itemHeader}>{state.columns[columnId].title}</h2>
                   <ItemList
                     key={columnId}

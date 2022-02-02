@@ -54,7 +54,7 @@ export const ItemList: FC<ItemListProps> = ({ column, index }) => {
 
         return (
           <FixedSizeList
-            height={500}
+            height={Math.max(itemCount * 50, 50)}
             itemCount={itemCount}
             itemSize={50}
             width={'100%'}
