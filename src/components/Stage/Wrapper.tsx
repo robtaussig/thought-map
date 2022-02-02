@@ -139,7 +139,8 @@ export const Wrapper: FC<WrapperProps> = ({
   };
   
   useEffect(() => {
-    if (latestThought?.stagedOn === format(new Date(), 'yyyy-MM-dd')) {
+    if (
+      latestThought?.stagedOn === format(new Date(), 'yyyy-MM-dd') && latestThought.status !== 'completed') {
       setState(prev => produce(prev, (draftState) => {
         if (!draftState.columns.active.items.find(({ id }) => {
           return id === latestThought.id;
