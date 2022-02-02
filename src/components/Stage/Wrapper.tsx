@@ -4,7 +4,7 @@ import ItemList from './ItemList';
 import { thoughts as thoughtActions } from '../../actions';
 import { Thought } from '../../store/rxdb/schemas/thought';
 import { useLoadedDB } from '../../hooks/useDB';
-import { format} from 'date-fns';
+import { format, startOfYesterday} from 'date-fns';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((_theme: any) => ({
@@ -17,7 +17,6 @@ const useStyles = makeStyles((_theme: any) => ({
   itemList: {
     display: 'flex',
     flexDirection: 'column',
-    flex: 1,
     overflow: 'hidden',
   },
   itemHeader: {
@@ -143,7 +142,9 @@ export const Wrapper: FC<WrapperProps> = ({
     setState(newState);
     thoughtActions.editThought(db, {
       ...item,
-      stagedOn: destinationColumn.id === 'active' ? format(new Date(), 'yyyy-MM-dd') : ''
+      stagedOn: destinationColumn.id === 'active'
+        ? format(new Date(), 'yyyy-MM-dd')
+        : format(startOfYesterday(), 'yyyy-MM-dd'),
     });
   }
 
@@ -161,7 +162,7 @@ export const Wrapper: FC<WrapperProps> = ({
             ref={provided.innerRef}
           >
             {state.columnOrder.map((columnId, index) => (
-              <div className={classes.itemList} key={columnId}>
+              <div className={classes.itemList} style={{ flex: Math.max(state.columns[columnId].items.length, 1) }} key={columnId}>
                 <h2 className={classes.itemHeader}>{state.columns[columnId].title}</h2>
                 <ItemList
                   key={columnId}
