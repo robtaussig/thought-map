@@ -56,7 +56,7 @@ export const ItemList: FC<ItemListProps> = ({ column, index }) => {
           <FixedSizeList
             height={500}
             itemCount={itemCount}
-            itemSize={80}
+            itemSize={50}
             width={'100%'}
             outerRef={provided.innerRef}
             itemData={column.items}
