@@ -26,7 +26,7 @@ export const Stage: FC<StageProps> = () => {
   }, [stage, thoughts]);
 
   if (!activeThoughts || !backlogThoughts) {
-    return null;
+    return <div style={{ height: '100%' }}/>;
   }
 
   return (
