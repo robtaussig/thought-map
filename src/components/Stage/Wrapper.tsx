@@ -100,7 +100,13 @@ export const Wrapper: FC<WrapperProps> = ({
 
     const sourceColumn = state.columns[result.source.droppableId];
     const destinationColumn = state.columns[result.destination.droppableId];
-    const item = sourceColumn.items[result.source.index];
+    const item = {
+      ...sourceColumn.items[result.source.index],
+      stagedOn: destinationColumn.id === 'active'
+        ? format(new Date(), 'yyyy-MM-dd')
+        : format(startOfYesterday(), 'yyyy-MM-dd'),
+      stageIndex: result.destination.index,
+    };
 
     const newSourceColumn = {
       ...sourceColumn,
@@ -123,13 +129,11 @@ export const Wrapper: FC<WrapperProps> = ({
       }
     };
 
-    setState(newState);
     thoughtActions.editThought(db, {
       ...item,
-      stagedOn: destinationColumn.id === 'active'
-        ? format(new Date(), 'yyyy-MM-dd')
-        : format(startOfYesterday(), 'yyyy-MM-dd'),
+      
     });
+    setState(newState);
   };
 
   const onDragStart = () => {
@@ -153,6 +157,19 @@ export const Wrapper: FC<WrapperProps> = ({
       }));
     }
   }, [latestThought]);
+
+  useEffect(() => {
+    Object.values(state.columns).forEach(({ items }) => {
+      items.forEach((item, idx) => {
+        if (item.stageIndex - 1 !== idx) {
+          thoughtActions.editThought(db, {
+            ...item,
+            stageIndex: idx + 1,
+          });
+        }
+      });
+    });
+  }, [state]);
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>

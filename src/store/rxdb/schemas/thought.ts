@@ -14,6 +14,7 @@ export interface Thought {
   archived?: boolean;
   recurring?: number;
   stagedOn?: string;
+  stageIndex?: number;
   description?: string;
   goalPoints?: number;
   hideFromHomeScreen?: boolean;
@@ -25,7 +26,7 @@ export interface Thought {
 
 export default ['thought', {
   'title': 'Thought schema',
-  'version': 8,
+  'version': 9,
   'description': 'A Thought',
   'type': 'object',
   'primaryKey': 'id',
@@ -82,6 +83,10 @@ export default ['thought', {
     'index': {
       'type': 'number',
     },
+    'stageIndex': {
+      'type': 'number',
+      'default': 0,
+    },
     'created': {
       'type': 'number',
     },
@@ -125,6 +130,10 @@ export default ['thought', {
     },
     8: (oldThought: RxDocument<Thought>) => {
       oldThought.archived = false;
+      return oldThought;
+    },
+    9: (oldThought: RxDocument<Thought>) => {
+      oldThought.stageIndex = 0;
       return oldThought;
     },
   },
