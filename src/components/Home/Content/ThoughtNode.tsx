@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import { ThoughtConnections } from './types';
 import { Graph } from './lib/graph';
 import Add from '@material-ui/icons/Add';
-import { Cancel } from '@material-ui/icons';
+import { Bookmark, Cancel } from '@material-ui/icons';
 import CreatingNextThought, { CreatableThought } from './CreatingNextThought';
 import { createWholeThought } from '../../../actions/complex';
 
@@ -215,6 +215,9 @@ const UnmemoizedThoughtNode: FC<ThoughtNodeProps> = ({
 
   return (
     <div className={classes.expandedThoughtNode}>
+      {thought.stagedOn && (
+        <Bookmark className={classes.stagedIcon}/>
+      )}
       {_mainThoughtNode}
       {isCreatingNextThought && (
         <CreatingNextThought styleOverwrite={{

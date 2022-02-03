@@ -177,6 +177,10 @@ export const styles = (theme: any): StyleRules => ({
     display: 'flex',
     marginLeft: 10,
   },
+  stagedIcon: {
+    position: 'absolute',
+    color: theme.palette.primary[500],
+  },
   circleButton: () => ({
     ...theme.defaults.circleButton,
     border: `2px solid ${theme.palette.primary[500]}`,
