@@ -12,6 +12,11 @@ const useStyles = makeStyles((theme: any) => ({
     alignItems: 'center',
     color: theme.palette.background[200],
     background: theme.palette.background[700],
+    transition: 'all 0.3s linear',
+    '&.isDragging': {
+      fontWeight: 600,
+      opacity: 0.9,
+    },
   },
   dragHandle: {
     display: 'flex',
@@ -44,7 +49,6 @@ const getStyle = ({ draggableStyle, virtualStyle, isDragging }: any) => {
 
   // Being lazy: this is defined in our css file
   const grid = 8;
-
   // when dragging we want to use the draggable style for placement, otherwise use the virtual style
   const result = {
     ...combined,
@@ -53,7 +57,7 @@ const getStyle = ({ draggableStyle, virtualStyle, isDragging }: any) => {
     width: isDragging
       ? draggableStyle.width
       : combined.width,
-    marginBottom: grid
+    marginBottom: grid,
   };
 
   return result;
