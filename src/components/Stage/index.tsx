@@ -5,10 +5,23 @@ import { thoughtSelector } from '../../reducers/thoughts';
 import { intoMap } from '../../lib/util';
 import Wrapper from './Wrapper';
 import { Thought } from '../../store/rxdb/schemas/types';
+import { makeStyles } from '@material-ui/core';
 
 interface StageProps {
 
 }
+
+const useStyles = makeStyles((theme: any) => ({
+  header: {
+    fontSize: 24,
+    paddingLeft: 20,
+    flex: '0 0 70px',
+    display: 'flex',
+    alignItems: 'center',
+    background: theme.palette.background[600],
+    color: theme.palette.background[200],
+  },
+}));
 
 const sortThoughtsWithIndex = (thoughts: Thought[]): Thought[] => {
   const thoughtsWithIndexes = thoughts.filter(({ stageIndex }) => stageIndex > 0)
@@ -30,7 +43,7 @@ const sortThoughtsWithIndex = (thoughts: Thought[]): Thought[] => {
 export const Stage: FC<StageProps> = () => {
   const stage = useSelector(stageSelector);
   const thoughts = useSelector(thoughtSelector);
-
+  const classes = useStyles();
   const [activeThoughts, backlogThoughts] = useMemo(() => {
     if (thoughts?.length > 0) {
       const thoughtsById = intoMap(thoughts);
@@ -48,10 +61,13 @@ export const Stage: FC<StageProps> = () => {
   }
 
   return (
-    <Wrapper
-      activeThoughts={activeThoughts}
-      backlogThoughts={backlogThoughts}
-    />
+    <>
+      <h1 className={classes.header}>Stage</h1>
+      <Wrapper
+        activeThoughts={activeThoughts}
+        backlogThoughts={backlogThoughts}
+      />
+    </>
   );
 };
 

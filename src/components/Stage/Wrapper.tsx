@@ -15,8 +15,9 @@ const useStyles = makeStyles((_theme: any) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    height: 'calc(100% - 70px)',
+    height: 'calc(100% - 140px)',
     padding: 20,
+    paddingTop: 0,
   },
   itemList: {
     display: 'flex',
@@ -26,7 +27,8 @@ const useStyles = makeStyles((_theme: any) => ({
   itemHeader: {
     fontWeight: 600,
     fontSize: 20,
-    marginBottom: 10,
+    margin: '5px 0',
+    textAlign: 'center',
   },
 }));
 
