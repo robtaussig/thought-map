@@ -1,5 +1,5 @@
-import React, { FC, Fragment, useMemo } from 'react';
-import { StyleRules, withStyles } from '@material-ui/styles';
+import React, { FC, Fragment, memo, useMemo, useRef } from 'react';
+import { makeStyles } from '@material-ui/core';
 import Tooltip from '../../General/Tooltip';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,7 @@ import Picture from '../../../models/pictures';
 import Setting from '../../../models/settings';
 import Status from '../../../models/statuses';
 import { RxDatabase, RxDocument } from 'rxdb';
+import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 
 const modelsByTable: {
   [tableName: string]: {
@@ -41,12 +42,11 @@ const modelsByTable: {
 import { jsonDump } from './Data';
 
 interface DiagnosisProps {
-  classes: any;
   diagnosisChunks: DiagnosisChunks;
   onFix: () => void;
 }
 
-const styles = (theme: any): StyleRules => ({
+const useStyles = makeStyles((theme: any) => ({
   root: {
     overflow: 'auto',
   },
@@ -109,16 +109,18 @@ const styles = (theme: any): StyleRules => ({
       borderRadius: '5px',
     }
   }),
-});
+}));
 
 const canFix = (diagnosisChunks: DiagnosisChunks) => {
   return Object.keys(diagnosisChunks).filter(key => key === FormattedResultActionEnum.CAN_FIX).length > 0;
 };
 
-export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix }) => {
+export const Diagnosis: FC<DiagnosisProps> = ({ diagnosisChunks, onFix }) => {
   const { db } = useLoadedDB();
   const navigate = useNavigate();
-
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [setLoading, stopLoading, updateText] = useLoadingOverlay(containerRef);
+  const classes = useStyles();
   const _diagnosis = useMemo(() => {
     if (Object.keys(diagnosisChunks).length === 0) {
       return (
@@ -171,47 +173,67 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
       onFix();
       return;
     }
-
-    await Promise.all(Object.values(diagnosisChunks[FormattedResultActionEnum.CAN_FIX]).reduce((queries, { items }) => {
-      items.forEach(({ item, table, solution }) => {
-        switch (solution) {
-          case SolutionTypes.DELETE:
-            queries.push(modelsByTable[table].delete(db, item.id));
-            break;
-
-          case SolutionTypes.NULL_OUT_PLAN_ID:
-            queries.push(modelsByTable[table].update(db, {
-              ...item,
-              planId: '',
-            }));
-            break;
-
-          case SolutionTypes.CREATE_STATUS:
-            queries.push(modelsByTable.status.add(db, {
-              text: 'new',
-              thoughtId: item.id,
-              created: item.created,
-              updated: item.created,
-            }));
-            if (item.status !== 'new') {
-              queries.push(modelsByTable.status.add(db, {
-                text: item.status,
-                thoughtId: item.id,
-                created: item.updated,
-                updated: item.updated,
-              }));
-            }
-            break;
+    (window as any).blockNotifications = true;
+    (window as any).blockDBSubscriptions = true;
+    setLoading('Loading - 0%');
+    const allQueries = Object.entries(diagnosisChunks[FormattedResultActionEnum.CAN_FIX]);
+    
+    for (const [key, { items }] of allQueries) {
+      updateText(`${key} - 0%`);
+      let count = 0;
+      const chunks = items.reduce((chunksOfTen, item) => {
+        const lastChunk = chunksOfTen[chunksOfTen.length - 1];
+        lastChunk.push(item);
+        if (lastChunk.length === 10) {
+          chunksOfTen.push([]);
         }
-      });
-      return queries;
-    }, [] as Promise<any>[]));
+        return chunksOfTen;
+      }, [[]]);
 
+      for (const chunk of chunks) {
+        await Promise.all(chunk.map(({ item, table, solution }) => {
+          switch (solution) {
+            case SolutionTypes.DELETE:
+              return modelsByTable[table].delete(db, item.id);
+
+            case SolutionTypes.NULL_OUT_PLAN_ID:
+              return modelsByTable[table].update(db, {
+                ...item,
+                planId: '',
+              });
+
+            case SolutionTypes.CREATE_STATUS:
+              return modelsByTable.status.add(db, {
+                text: 'new',
+                thoughtId: item.id,
+                created: item.created,
+                updated: item.created,
+              }).then(() => {
+                if (item.status !== 'new') {
+                  return modelsByTable.status.add(db, {
+                    text: item.status,
+                    thoughtId: item.id,
+                    created: item.updated,
+                    updated: item.updated,
+                  });
+                }
+              });
+              
+          }
+        }));
+        count++;
+        updateText(`${key} - ${Math.floor((count * 100)/ chunks.length)}%`);
+      }
+    }
+      
+    (window as any).blockNotifications = false;
+    stopLoading();
+    location.reload();
     onFix();
   };
 
   return (
-    <div className={classes.root}>
+    <div ref={containerRef} className={classes.root}>
       {_diagnosis}
       {canFix(diagnosisChunks) && (<div className={classes.actionButtons}>
         <button onClick={() => jsonDump(db)}>Backup data</button>
@@ -221,4 +243,4 @@ export const Diagnosis: FC<DiagnosisProps> = ({ classes, diagnosisChunks, onFix 
   );
 };
 
-export default withStyles(styles)(Diagnosis);
+export default memo(Diagnosis);

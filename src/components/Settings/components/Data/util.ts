@@ -59,11 +59,12 @@ const formatResults = (
 
   uncategorizedThoughts.forEach(uncategorizedThought => {
     formattedResults.push({
-      action: FormattedResultActionEnum.NOT_BUG,
+      action: FormattedResultActionEnum.CAN_FIX,
       furtherDetails: 'Though not an issue, these thoughts are not categorized under a plan.',
       table: 'thought',
       affectedItems: [uncategorizedThought],
       title: 'Uncategorized Thought',
+      solution: SolutionTypes.DELETE,
     });
   });
 
