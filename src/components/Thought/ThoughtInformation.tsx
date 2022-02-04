@@ -100,7 +100,7 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
   const homeUrl = useHomeUrl();
   const [editingSection, setEditingSection] = useState<string>(null);
   const [createdText, lastUpdatedText]: [string, string] = useMemo(() => {
-    if (statuses && statuses.length > 0) {
+    if (statuses?.length > 0) {
       return [
         getTime(statuses[statuses.length - 1].updated),
         getTime(statuses[0].created),

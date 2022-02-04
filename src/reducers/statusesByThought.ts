@@ -26,7 +26,7 @@ const statusesByThought = createSlice({
     builder.addCase(insertStatus, (state, action) => {
       if ((window as any).batchingBulkThoughts) return state;
       state[action.payload.thoughtId] = state[action.payload.thoughtId] || [];
-      state[action.payload.thoughtId].push(action.payload.id);
+      state[action.payload.thoughtId].unshift(action.payload.id);
     });
     builder.addCase(bulkCreateThoughtsAndConnections, (state, action) => {
       action.payload.statuses.forEach(status => {
