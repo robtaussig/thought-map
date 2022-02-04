@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme: any) => ({
     alignItems: 'center',
     color: theme.palette.background[200],
     background: theme.palette.background[700],
-    transition: 'all 0.3s linear',
     '&.isDragging': {
       fontWeight: 600,
       opacity: 0.9,
@@ -39,27 +38,13 @@ const useStyles = makeStyles((theme: any) => ({
   },
 }));
 
-const getStyle = ({ draggableStyle, virtualStyle, isDragging }: any) => {
-  // If you don't want any spacing between your items
-  // then you could just return this.
-  // I do a little bit of magic to have some nice visual space
-  // between the row items
-  const combined = {
-    ...virtualStyle,
-    ...draggableStyle
-  };
-
-  // Being lazy: this is defined in our css file
+const getStyle = ({ draggableStyle }: any) => {
   const grid = 8;
-  // when dragging we want to use the draggable style for placement, otherwise use the virtual style
   const result = {
-    ...combined,
-    height: isDragging ? combined.height : combined.height - grid,
-    left: combined.left,
-    width: isDragging
-      ? draggableStyle.width
-      : combined.width,
-    marginBottom: grid,
+    userSelect: 'none',
+    padding: grid,
+    margin: `0 0 ${grid}px 0`,
+    ...draggableStyle
   };
 
   return result;

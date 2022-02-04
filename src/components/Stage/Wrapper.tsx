@@ -1,15 +1,14 @@
 import React, { FC, memo, useEffect, useState } from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import ItemList from './ItemList';
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import { thoughts as thoughtActions } from '../../actions';
 import { Thought } from '../../store/rxdb/schemas/thought';
 import { useLoadedDB } from '../../hooks/useDB';
 import { format, startOfYesterday} from 'date-fns';
 import { makeStyles } from '@material-ui/core';
-import { getInitialData, reorderList } from './util';
-import { StageContext } from './context';
 import produce from 'immer';
 import { useLatestThought } from '../../hooks/useLatestThought';
+import Item from './Item';
+import { StageContext } from './context';
 
 const useStyles = makeStyles((_theme: any) => ({
   root: {
@@ -22,7 +21,7 @@ const useStyles = makeStyles((_theme: any) => ({
   itemList: {
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden',
+    overflow: 'auto',
   },
   itemHeader: {
     fontWeight: 600,
@@ -31,6 +30,11 @@ const useStyles = makeStyles((_theme: any) => ({
     textAlign: 'center',
   },
 }));
+
+const getListStyle = (isDraggingOver: boolean) => ({
+  background: isDraggingOver ? 'lightblue' : undefined,
+  padding: 8,
+});
 
 export interface WrapperProps {
   className?: string;
@@ -43,16 +47,15 @@ export const Wrapper: FC<WrapperProps> = ({
   backlogThoughts,
 }) => {
   const classes = useStyles();
-  const [state, setState] = useState(() => getInitialData(activeThoughts, backlogThoughts));
+  const [state, setState] = useState(() => ({ activeThoughts, backlogThoughts }));
   const { db } = useLoadedDB();
   const latestThought = useLatestThought();
-
   const onRemoveThought = (thoughtId: string) => {
     setState(prev => produce(prev, (draftState) => {
-      draftState.columns.active.items = draftState.columns.active.items.filter(({ id }) => {
+      draftState.activeThoughts = draftState.activeThoughts.filter(({ id }) => {
         return id !== thoughtId;
       });
-      draftState.columns.backlog.items = draftState.columns.backlog.items.filter(({ id }) => {
+      draftState.backlogThoughts = draftState.backlogThoughts.filter(({ id }) => {
         return id !== thoughtId;
       });
 
@@ -60,82 +63,37 @@ export const Wrapper: FC<WrapperProps> = ({
     }));
   };
 
-  const onDragEnd = (result: any) => {
+  const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
     }
 
-    if (result.type === 'column') {
-      const columnOrder = reorderList(
-        state.columnOrder,
-        result.source.index,
-        result.destination.index
-      );
-      setState({
-        ...state,
-        columnOrder
-      });
-      return;
-    }
-
-    if (result.source.droppableId === result.destination.droppableId) {
-      const column = state.columns[result.source.droppableId];
-      const items = reorderList(
-        column.items,
-        result.source.index,
-        result.destination.index
-      );
-
-      const newState = {
-        ...state,
-        columns: {
-          ...state.columns,
-          [column.id]: {
-            ...column,
-            items
-          }
-        }
-      };
-      setState(newState);
-      return;
-    }
-
-    const sourceColumn = state.columns[result.source.droppableId];
-    const destinationColumn = state.columns[result.destination.droppableId];
-    const item = {
-      ...sourceColumn.items[result.source.index],
-      stagedOn: destinationColumn.id === 'active'
+    const column = result.source.droppableId === 'active' ? state.activeThoughts : state.backlogThoughts;
+    const item = column[result.source.index];
+    const newItem = {
+      ...item,
+      stagedOn: result.destination.droppableId === 'active'
         ? format(new Date(), 'yyyy-MM-dd')
         : format(startOfYesterday(), 'yyyy-MM-dd'),
-      stageIndex: result.destination.index,
+      stageIndex: result.destination.index + 1,
     };
+    const newActive = state.activeThoughts.filter(({ id }) => id !== item.id);
+    const newBacklog = state.backlogThoughts.filter(({ id }) => id !== item.id);
 
-    const newSourceColumn = {
-      ...sourceColumn,
-      items: [...sourceColumn.items]
-    };
-    newSourceColumn.items.splice(result.source.index, 1);
+    if (result.destination.droppableId === 'active') {
+      newActive.splice(result.destination.index, 0, newItem);
+    } else {
+      newBacklog.splice(result.destination.index, 0, newItem);
+    }
 
-    const newDestinationColumn = {
-      ...destinationColumn,
-      items: [...destinationColumn.items]
-    };
-    newDestinationColumn.items.splice(result.destination.index, 0, item);
-
-    const newState = {
-      ...state,
-      columns: {
-        ...state.columns,
-        [newSourceColumn.id]: newSourceColumn,
-        [newDestinationColumn.id]: newDestinationColumn
-      }
-    };
+    setState({
+      activeThoughts: newActive,
+      backlogThoughts: newBacklog,
+    });
 
     thoughtActions.editThought(db, {
-      ...item,
-      
+      ...newItem,
     });
-    setState(newState);
   };
 
   const onDragStart = () => {
@@ -146,61 +104,85 @@ export const Wrapper: FC<WrapperProps> = ({
   
   useEffect(() => {
     if (
-      latestThought?.stagedOn === format(new Date(), 'yyyy-MM-dd') && latestThought.status !== 'completed') {
+      latestThought?.stagedOn &&
+      latestThought.status !== 'completed') {
       setState(prev => produce(prev, (draftState) => {
-        if (!draftState.columns.active.items.find(({ id }) => {
+        if (draftState.activeThoughts.concat(draftState.backlogThoughts).find(({ id }) => {
           return id === latestThought.id;
         })) {
-          draftState.columns.active.items.unshift(latestThought);
-          return draftState;
-        } else {
           return draftState;
         }
+        draftState.activeThoughts.unshift(latestThought);
+        return draftState;
       }));
     }
   }, [latestThought]);
 
   useEffect(() => {
-    Object.values(state.columns).forEach(({ items }) => {
-      items.forEach((item, idx) => {
-        if (item.stageIndex - 1 !== idx) {
-          thoughtActions.editThought(db, {
-            ...item,
-            stageIndex: idx + 1,
-          });
-        }
-      });
+    state.activeThoughts.forEach((item, idx) => {
+      if (item.stageIndex - 1 !== idx) {
+        thoughtActions.editThought(db, {
+          ...item,
+          stageIndex: idx + 1,
+        });
+      }
+    });
+
+    state.backlogThoughts.forEach((item, idx) => {
+      if (item.stageIndex - 1 !== idx) {
+        thoughtActions.editThought(db, {
+          ...item,
+          stageIndex: idx + 1,
+        });
+      }
     });
   }, [state]);
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       <StageContext.Provider value={onRemoveThought}>
-        <Droppable
-          droppableId="all-droppables"
-          direction="horizontal"
-          type="column"
-        >
-          {provided => (
-            <div
-              className={classes.root}
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {state.columnOrder.map((columnId, index) => (
-                <div className={classes.itemList} key={columnId}>
-                  <h2 className={classes.itemHeader}>{state.columns[columnId].title}</h2>
-                  <ItemList
-                    key={columnId}
-                    column={state.columns[columnId]}
-                    index={index}
-                  />
-                </div>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
+        <div className={classes.root}>
+          <h2 className={classes.itemHeader}>Active</h2>
+          <Droppable droppableId="active">
+            {(provided, snapshot) => (
+              <div
+                className={classes.itemList}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}
+              >
+                {state.activeThoughts.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided, snapshot) => (
+                      <Item provided={provided} item={item} isDragging={snapshot.isDragging} style={provided.draggableProps.style} />
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          <h2 className={classes.itemHeader}>Backlog</h2>
+          <Droppable droppableId="backlog">
+            {(provided, snapshot) => (
+              <div
+                className={classes.itemList}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}
+              >
+                {state.backlogThoughts.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided, snapshot) => (
+                      <Item provided={provided} item={item} isDragging={snapshot.isDragging} style={provided.draggableProps.style} />
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </div>
       </StageContext.Provider>
     </DragDropContext>
   );
