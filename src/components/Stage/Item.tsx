@@ -5,6 +5,8 @@ import React, { memo, useContext } from 'react';
 import useModal from '../../hooks/useModal';
 import { StageContext } from './context';
 import Options from './Options';
+import { Link } from 'react-router-dom';
+import { useHomeUrl } from '../../lib/util';
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -67,7 +69,8 @@ export const Item = ({ provided, item, style, isDragging }: any) => {
   const classes = useStyles();
   const removeThought = useContext(StageContext);
   const [openModal, closeModal] = useModal();
-
+  const homeUrl = useHomeUrl();
+  
   const handleOpenMenu = () => {
     openModal(
       <Options
@@ -94,7 +97,12 @@ export const Item = ({ provided, item, style, isDragging }: any) => {
       })}
     >
       <div className={classes.dragHandle}><DragIndicator /></div>
-      <span className={classes.title}>{item.title}</span>
+      <Link
+        className={classNames(classes.title)}
+        to={`${homeUrl}thought/${item.id}`}
+      >
+        {item.title}
+      </Link>
       <button className={classes.menu} onClick={handleOpenMenu}><MoreVert/></button>
     </div>
   );
