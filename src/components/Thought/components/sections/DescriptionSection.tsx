@@ -9,25 +9,24 @@ interface DescriptionSectionProps {
   thought: Thought;
   onEdit: (value: number) => void;
   sectionState: SectionState;
-  onLongPress: (e: any) => void;
-  onDrop: () => void;
   onToggleVisibility: () => void;
+  sectionOrder: string[];
   visible: boolean;
 }
 
-export const DescriptionSection: FC<DescriptionSectionProps> = ({ classes, thought, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
+export const DescriptionSection: FC<DescriptionSectionProps> = ({ classes, sectionOrder, thought, onEdit, sectionState, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
       classes={classes}
+      sectionOrder={sectionOrder}
+      section={'description'}
       Icon={Description}
       field={'Description'}
       value={thought.description}
       className={'description'}
       visible={visible}
       sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
       onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.TextArea,

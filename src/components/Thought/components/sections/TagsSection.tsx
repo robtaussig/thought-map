@@ -11,25 +11,24 @@ interface TagsSectionProps {
   onDelete: (idx: number) => void;
   onCreate: (value: string) => void;
   sectionState: SectionState;
-  onLongPress: (e: any) => void;
-  onDrop: () => void;
   onToggleVisibility: () => void;
+  sectionOrder: string[];
   visible: boolean;
 }
 
-export const TagsSection: FC<TagsSectionProps> = ({ classes, tags, tagOptions, onDelete, onCreate, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
+export const TagsSection: FC<TagsSectionProps> = ({ classes, sectionOrder, tags, tagOptions, onDelete, onCreate, sectionState, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
       classes={classes}
+      sectionOrder={sectionOrder}
+      section={'tags'}
       Icon={Style}
       field={'Tags'}
       value={tags.map(({ text }) => text)}
       className={'tags'}
       visible={visible}
       sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
       onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.Select,

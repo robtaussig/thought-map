@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo, useRef, useState } from 'react';
+import React, { FC, memo, useMemo, useState } from 'react';
 import Close from '@material-ui/icons/Close';
 import { getTime } from './util';
 import {
@@ -35,7 +35,6 @@ import RecurringSection from './components/sections/RecurringSection';
 import CircleButton from '../General/CircleButton';
 import { ComponentMap, SectionState, SectionVisibility } from './types';
 import {
-  generateNextSectionsAfterMove,
   generateNextSectionsAfterToggleVisibility,
 } from './util';
 import useGoogleCalendar, {
@@ -51,6 +50,7 @@ import {
 import { Bookmark } from '@material-ui/icons';
 import classNames from 'classnames';
 import { format } from 'date-fns';
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 
 const DASH_REGEX = /-/g;
 
@@ -94,12 +94,7 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
   autoCreateCalendarEvent,
 }) => {
   const classes = useThoughtInformationStyles();
-  const lastSectionOrder = useRef<string[]>(null);
-  const handleMoveCB = useRef<() => void>(null);
-  const sectionsWrapper = useRef<HTMLDivElement>(null);
-  lastSectionOrder.current = sectionOrder;
-  const lastSectionVisibility = useRef<SectionVisibility>(null);
-  lastSectionVisibility.current = sectionVisibility;
+  const [localSectionOrder, setLocalSectionOrder] = useState(sectionOrder);
   const { db } = useLoadedDB();
   const navigate = useNavigate();
   const homeUrl = useHomeUrl();
@@ -239,33 +234,46 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
     return SectionState.NotEditingAnySection;
   };
 
-  const handleLongPress = (sectionType: string) => (onMoveCB: () => void) => {
-    setEditingSection(sectionType);
-    handleMoveCB.current = onMoveCB;
+  const onDragStart = () => {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(100);
+    }
   };
 
-  const handleDrop = (sectionType: string) => async () => {
-    const nextSections = generateNextSectionsAfterMove(
-      lastSectionOrder,
-      lastSectionVisibility,
-      editingSection,
-      sectionType
+  const visibleSectionOrder = localSectionOrder.filter(section => (
+    sectionVisibility[section]
+  ));
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination.droppableId) return;
+
+    const newVisibleSectionOrder = [...visibleSectionOrder];
+    const invisibleSectionOrder = localSectionOrder.filter(section => (
+      visibleSectionOrder.indexOf(section) === -1
+    ));
+
+    const from = result.source.index;
+    const to = result.destination.index;
+
+    const [removed] = newVisibleSectionOrder.splice(from, 1);
+    newVisibleSectionOrder.splice(to, 0, removed);
+
+    setLocalSectionOrder(
+      newVisibleSectionOrder.concat(invisibleSectionOrder)
     );
-    await thoughtActions.editThought(db, {
+
+    thoughtActions.editThought(db, {
       ...thought,
-      sections: nextSections,
+      sections: newVisibleSectionOrder
+        .concat(invisibleSectionOrder.map(section => `_${section}`))
+        .join('-'),
     });
-    setEditingSection(null);
-    if (handleMoveCB.current) {
-      handleMoveCB.current();
-      handleMoveCB.current = null;
-    }
   };
 
   const handleToggleVisibility = (sectionType: string) => async () => {
     const nextSections = generateNextSectionsAfterToggleVisibility(
-      lastSectionOrder,
-      lastSectionVisibility,
+      localSectionOrder,
+      sectionVisibility,
       sectionType
     );
     await thoughtActions.editThought(db, {
@@ -296,138 +304,128 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
     type: (
       <TypeSection
         key={'type'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         thought={thought}
         typeOptions={typeOptions}
         visible={sectionVisibility['type']}
         onEdit={handleEditThought('type')}
-        sectionState={deriveSectionState('type')}
-        onLongPress={handleLongPress('type')}
-        onDrop={handleDrop('type')}
+        sectionState={deriveSectionState('type')}        
         onToggleVisibility={handleToggleVisibility('type')}
       />
     ),
     status: (
       <StatusSection
         key={'status'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         thought={thought}
         statusOptions={statusOptions}
         onEdit={handleEditStatus}
         visible={sectionVisibility['status']}
-        sectionState={deriveSectionState('status')}
-        onLongPress={handleLongPress('status')}
-        onDrop={handleDrop('status')}
+        sectionState={deriveSectionState('status')}        
         onToggleVisibility={handleToggleVisibility('status')}
       />
     ),
     priority: (
       <PrioritySection
         key={'priority'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         thought={thought}
         visible={sectionVisibility['priority']}
         priorityOptions={priorityOptions}
         onEdit={handleEditThought('priority')}
-        sectionState={deriveSectionState('priority')}
-        onLongPress={handleLongPress('priority')}
-        onDrop={handleDrop('priority')}
+        sectionState={deriveSectionState('priority')}        
         onToggleVisibility={handleToggleVisibility('priority')}
       />
     ),
     description: (
       <DescriptionSection
         key={'description'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         thought={thought}
         visible={sectionVisibility['description']}
         onEdit={handleEditThought('description')}
-        sectionState={deriveSectionState('description')}
-        onLongPress={handleLongPress('description')}
-        onDrop={handleDrop('description')}
+        sectionState={deriveSectionState('description')}        
         onToggleVisibility={handleToggleVisibility('description')}
       />
     ),
     datetime: (
       <DateTimeSection
         key={'datetime'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         thought={thought}
         visible={sectionVisibility['datetime']}
         onEdit={handleEditDateTime}
-        sectionState={deriveSectionState('datetime')}
-        onLongPress={handleLongPress('datetime')}
-        onDrop={handleDrop('datetime')}
+        sectionState={deriveSectionState('datetime')}        
         onToggleVisibility={handleToggleVisibility('datetime')}
       />
     ),
     notes: (
       <NotesSection
         key={'notes'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         notes={notes}
         visible={sectionVisibility['notes']}
         onEdit={handleEditNote}
         onCreate={handleCreateNote}
         onDelete={handleDeleteNote}
-        sectionState={deriveSectionState('notes')}
-        onLongPress={handleLongPress('notes')}
-        onDrop={handleDrop('notes')}
+        sectionState={deriveSectionState('notes')}        
         onToggleVisibility={handleToggleVisibility('notes')}
       />
     ),
     recurring: (
       <RecurringSection
         key={'recurring'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         thought={thought}
         visible={sectionVisibility['recurring']}
         onEdit={handleEditThought('recurring')}
-        sectionState={deriveSectionState('recurring')}
-        onLongPress={handleLongPress('recurring')}
-        onDrop={handleDrop('recurring')}
+        sectionState={deriveSectionState('recurring')}        
         onToggleVisibility={handleToggleVisibility('recurring')}
       />
     ),
     tags: (
       <TagsSection
         key={'tags'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         tags={tags}
         visible={sectionVisibility['tags']}
         onDelete={handleDeleteTag}
         onCreate={handleCreateTag}
         tagOptions={remainingTagOptions}
-        sectionState={deriveSectionState('tags')}
-        onLongPress={handleLongPress('tags')}
-        onDrop={handleDrop('tags')}
+        sectionState={deriveSectionState('tags')}        
         onToggleVisibility={handleToggleVisibility('tags')}
       />
     ),
     connections: (
       <ConnectionsSection
         key={'connections'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         thoughtId={thought.id}
         visible={sectionVisibility['connections']}
         onCreate={handleCreateConnection}
         connections={connections}
-        sectionState={deriveSectionState('connections')}
-        onLongPress={handleLongPress('connections')}
-        onDrop={handleDrop('connections')}
+        sectionState={deriveSectionState('connections')}        
         onToggleVisibility={handleToggleVisibility('connections')}
       />
     ),
     pictures: (
       <PicturesSection
         key={'pictures'}
+        sectionOrder={visibleSectionOrder}
         classes={classes}
         thought={thought}
         visible={sectionVisibility['pictures']}
         pinnedPictures={pinnedPictures}
-        sectionState={deriveSectionState('pictures')}
-        onLongPress={handleLongPress('pictures')}
-        onDrop={handleDrop('pictures')}
+        sectionState={deriveSectionState('pictures')}        
         onToggleVisibility={handleToggleVisibility('pictures')}
       />
     ),
@@ -455,13 +453,30 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
       <span className={classes.createdAt}>Created {createdText}</span>
       <span className={classes.updatedAt}>Updated {lastUpdatedText}</span>
       {plan && <span className={classes.planName}>{plan.name}</span>}
-      <div ref={sectionsWrapper} className={classes.thoughtSections}>
-        {sectionOrder.map((section) => {
-          return components[section];
-        })}
-      </div>
+      <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+        <Droppable droppableId="active">
+          {(provided, snapshot) => (
+            <div 
+              className={classes.thoughtSections}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+            >
+              {localSectionOrder.map((section) => {
+                return components[section];
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };
+
+const getListStyle = (isDraggingOver: boolean) => ({
+  opacity: isDraggingOver ? 0.8 : undefined,
+  padding: 8,
+});
 
 export default memo(ThoughtInformation);

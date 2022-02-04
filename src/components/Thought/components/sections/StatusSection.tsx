@@ -13,25 +13,24 @@ interface StatusSectionProps {
   statusOptions: string[];
   onEdit: (value: string) => void;
   sectionState: SectionState;
-  onLongPress: (e: any) => void;
-  onDrop: () => void;
   onToggleVisibility: () => void;
+  sectionOrder: string[];
   visible: boolean;
 }
 
-export const StatusSection: FC<StatusSectionProps> = ({ classes, thought, statusOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
+export const StatusSection: FC<StatusSectionProps> = ({ classes, sectionOrder, thought, statusOptions, onEdit, sectionState, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
       classes={classes}
+      sectionOrder={sectionOrder}
+      section={'status'}
       Icon={thought.status === 'completed' ? CheckBoxIcon : CheckBoxOutlineBlank}
       field={'Status'}
       value={thought.status}
       className={'status'}
       visible={visible}
       sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
       onToggleVisibility={onToggleVisibility}
       quickActionButton={thought.status !== 'completed' && (
         <button className={classNames(classes.completeThoughtButton, {

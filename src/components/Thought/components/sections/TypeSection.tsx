@@ -10,25 +10,24 @@ interface TypeSectionProps {
   typeOptions: string[];
   onEdit: (value: string) => void;
   sectionState: SectionState;
-  onLongPress: (e: any) => void;
-  onDrop: () => void;
   onToggleVisibility: () => void;
   visible: boolean;
+  sectionOrder: string[];
 }
 
-export const TypeSection: FC<TypeSectionProps> = ({ classes, thought, typeOptions, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
+export const TypeSection: FC<TypeSectionProps> = ({ classes, sectionOrder, thought, typeOptions, onEdit, sectionState, onToggleVisibility, visible = true }) => {
 
   return (
     <ThoughtSection
       classes={classes}
+      sectionOrder={sectionOrder}
+      section={'type'}
       Icon={Category}
       field={'Type'}
       value={thought.type || ''}
       className={'type'}
       visible={visible}
       sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
       onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.Select,

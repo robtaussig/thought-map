@@ -9,13 +9,12 @@ interface RecurringSectionProps {
   thought: Thought;
   onEdit: (value: number) => void;
   sectionState: SectionState;
-  onLongPress: (e: any) => void;
-  onDrop: () => void;
   onToggleVisibility: () => void;
+  sectionOrder: string[];
   visible: boolean;
 }
 
-export const RecurringSection: FC<RecurringSectionProps> = ({ classes, thought, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
+export const RecurringSection: FC<RecurringSectionProps> = ({ classes, sectionOrder, thought, onEdit, sectionState, onToggleVisibility, visible = true }) => {
 
   const handleEdit = (value: string) => {
     onEdit(Number(value));
@@ -24,14 +23,14 @@ export const RecurringSection: FC<RecurringSectionProps> = ({ classes, thought, 
   return (
     <ThoughtSection
       classes={classes}
+      sectionOrder={sectionOrder}
+      section={'recurring'}
       Icon={Autorenew}
       field={'Recurring (hours)'}
       value={String(thought.recurring || 0)}
       className={'recurring'}
       visible={visible}
       sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
       onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.Number,

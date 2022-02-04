@@ -4,8 +4,7 @@ export const useThoughtHomeStyles = makeStyles((theme: any) => ({
   root: () => ({
     height: '100%',
     position: 'relative',
-    overflow: 'auto',
-    overflowX: 'hidden',
+    overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
     background: theme.useDarkMode ? 'black' : theme.palette.background[600],

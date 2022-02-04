@@ -12,13 +12,12 @@ interface PicturesSectionProps {
   thought: Thought;
   pinnedPictures: Picture[];
   sectionState: SectionState;
-  onLongPress: (e: any) => void;
-  onDrop: () => void;
   onToggleVisibility: () => void;
+  sectionOrder: string[];
   visible: boolean;
 }
 
-export const PicturesSection: FC<PicturesSectionProps> = ({ classes, thought, pinnedPictures, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
+export const PicturesSection: FC<PicturesSectionProps> = ({ classes, sectionOrder, thought, pinnedPictures, sectionState, onToggleVisibility, visible = true }) => {
   const [openModal, closeModal] = useModal();
   const handleEdit = () => {
     openModal(
@@ -40,14 +39,14 @@ export const PicturesSection: FC<PicturesSectionProps> = ({ classes, thought, pi
   return (
     <ThoughtSection
       classes={classes}
+      sectionOrder={sectionOrder}
+      section={'pictures'}
       Icon={CameraAlt}
       field={'Pictures'}
       value={pinnedPictures.map(({ imgurUrl, localUrl, description }) => [(imgurUrl || localUrl), description])}
       className={'pictures'}
       visible={visible}
       sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
       onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.Photo,

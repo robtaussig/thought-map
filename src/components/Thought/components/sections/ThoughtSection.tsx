@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import Edit from '@material-ui/icons/Edit';
@@ -21,10 +20,10 @@ import Select from '../../../General/Select';
 import DateInput from '../../../General/Date';
 import Input from '../../../General/Input';
 import useModal from '../../../../hooks/useModal';
-import useLongPress from '../../../../hooks/useLongPress';
 import FullScreenImage from './PicturesSection/components/FullScreenImage';
 import { EditProps, EditTypes, SectionState } from '../../types';
 import QuickAddModal from '../QuickAddModal';
+import { Draggable } from 'react-beautiful-dnd';
 
 interface ThoughtSectionProps {
   classes: any;
@@ -36,9 +35,9 @@ interface ThoughtSectionProps {
   visible: boolean;
   quickActionButton?: any;
   linkifyValues?: boolean;
-  onLongPress: (e: any) => void;
   sectionState: SectionState;
-  onDrop: () => void;
+  section: string;
+  sectionOrder: string[];
   onToggleVisibility: () => void;
 }
 
@@ -50,6 +49,8 @@ const EMAIL_REGEX =
 
 export const ThoughtSection: FC<ThoughtSectionProps> = ({
   classes,
+  sectionOrder,
+  section,
   Icon = ArrowRight,
   field,
   value,
@@ -58,9 +59,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   visible,
   quickActionButton,
   linkifyValues,
-  onLongPress,
   sectionState,
-  onDrop,
   onToggleVisibility,
 }) => {
   const [editting, setEditting] = useState<boolean>(false);
@@ -68,19 +67,8 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   const [edittedItems, setEdittedItems] = useState<
   (string | [string, string])[]
     >([]);
-  const [moved, setMoved] = useState<boolean>(false);
-  const movedTimeout = useRef<NodeJS.Timer>(null);
   const [openModal, closeModal] = useModal();
-  const rootRef = useRef<HTMLDivElement>(null);
   const [inputtedValue, setInputtedValue] = useState<string>(String(value));
-  const handleLongPress = useLongPress(() => {
-    onLongPress?.(() => {
-      setMoved(true);
-      movedTimeout.current = setTimeout(() => {
-        setMoved(false);
-      }, 400);
-    });
-  });
 
   const handleToggleEdit = () => {
     if (editting) {
@@ -255,30 +243,6 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     }
   }, [inputtedValue, edit, edittedItems, value]);
 
-  useEffect(() => {
-    if (editting) {
-      const handleBodyClick = (e: any) => {
-        if (!rootRef.current.contains(e.target)) {
-          setEditting(false);
-        }
-      };
-
-      const handleKeyDown = (e: any) => {
-        if (e.key === 'Escape') {
-          setEditting(false);
-        }
-      };
-
-      document.body.addEventListener('click', handleBodyClick);
-      document.body, addEventListener('keydown', handleKeyDown);
-
-      return () => {
-        document.body.removeEventListener('click', handleBodyClick);
-        document.body.removeEventListener('keydown', handleKeyDown);
-      };
-    }
-  }, [editting]);
-
   const handleClickImage = (idx: number) => () => {
     const picture = value[idx];
     setFullScreenImage(picture[0]);
@@ -399,18 +363,6 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     }
   }, [value]);
 
-  useEffect(() => {
-    return () => {
-      if (movedTimeout.current) clearTimeout(movedTimeout.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (sectionState === SectionState.EditingSection) {
-      rootRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }, [sectionState]);
-
   const _editIcons = useMemo(() => {
     if (sectionState === SectionState.NotEditingAnySection) {
       return (
@@ -453,8 +405,6 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   ) {
     return (
       <section
-        ref={rootRef}
-        {...handleLongPress}
         className={classNames(classes.thoughtSection, className, 'drop-target')}
       >
         {_editIcons}
@@ -467,14 +417,6 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
         >
           {field}
         </span>
-        {sectionState === SectionState.EditingOtherSection && (
-          <button
-            className={classNames(classes.sectionValue, 'drop-target')}
-            onClick={onDrop}
-          >
-            Place Above
-          </button>
-        )}
       </section>
     );
   }
@@ -483,30 +425,52 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     return null;
 
   return (
-    <section
-      ref={rootRef}
-      className={classNames(classes.thoughtSection, className, { moved })}
-      style={{ userSelect: 'none' }}
-    >
-      {_editIcons}
-      <div className={classes.sectionIcon} onClick={handleToggleEdit}>
-        <Icon />
-      </div>
-      <span className={classes.sectionField} title={'Double-click to edit'}>
-        {field}
-      </span>
-      {editting ? _editComponent : _displayComponent}
-      <div className={classes.sectionQuickActionButton}>
-        {!editting && (quickActionButton || _quickActionButton)}
-      </div>
-      {fullScreenImage && (
-        <FullScreenImage
-          onClose={handleCloseFullScreenImage}
-          image={fullScreenImage}
-        />
+    <Draggable key={field} draggableId={field} index={sectionOrder.indexOf(section)}>
+      {(provided, snapshot) => (
+        <section
+          className={classNames(classes.thoughtSection, className)}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+          style={getStyle({
+            draggableStyle: provided.draggableProps.style,
+            isDragging: snapshot.isDragging,
+          })}
+        >
+          {_editIcons}
+          <div className={classes.sectionIcon} onClick={handleToggleEdit}>
+            <Icon />
+          </div>
+          <span className={classes.sectionField} title={'Double-click to edit'}>
+            {field}
+          </span>
+          {editting ? _editComponent : _displayComponent}
+          <div className={classes.sectionQuickActionButton}>
+            {!editting && (quickActionButton || _quickActionButton)}
+          </div>
+          {fullScreenImage && (
+            <FullScreenImage
+              onClose={handleCloseFullScreenImage}
+              image={fullScreenImage}
+            />
+          )}
+        </section>
       )}
-    </section>
+    </Draggable>
+   
   );
+};
+
+const getStyle = ({ draggableStyle }: any) => {
+  const grid = 8;
+  const result = {
+    userSelect: 'none',
+    padding: grid,
+    margin: `0 0 ${grid}px 0`,
+    ...draggableStyle
+  };
+
+  return result;
 };
 
 export default ThoughtSection;

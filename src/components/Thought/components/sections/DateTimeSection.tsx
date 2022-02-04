@@ -9,26 +9,25 @@ interface DateTimeSectionProps {
   thought: Thought;
   onEdit: (value: number) => void;
   sectionState: SectionState;
-  onLongPress: (e: any) => void;
-  onDrop: () => void;
   onToggleVisibility: () => void;
+  sectionOrder: string[];
   visible: boolean;
 }
 
-export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, thought, onEdit, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
+export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, sectionOrder, thought, onEdit, sectionState, onToggleVisibility, visible = true }) => {
   const dateTimeText = `${thought.date},${thought.time}`;
 
   return (
     <ThoughtSection
       classes={classes}
+      sectionOrder={sectionOrder}
+      section={'datetime'}
       Icon={CalendarToday}
       field={'Date/Time'}
       value={dateTimeText}
       className={'datetime'}
       visible={visible}
       sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
       onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.DateTime,

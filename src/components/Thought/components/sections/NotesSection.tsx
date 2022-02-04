@@ -14,13 +14,12 @@ interface NotesSectionProps {
   onCreate: (value: string) => void;
   onDelete: (idx: number) => void;
   sectionState: SectionState;
-  onLongPress: (e: any) => void;
-  onDrop: () => void;
   onToggleVisibility: () => void;
+  sectionOrder: string[];
   visible: boolean;
 }
 
-export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, onCreate, onDelete, sectionState, onLongPress, onDrop, onToggleVisibility, visible = true }) => {
+export const NotesSection: FC<NotesSectionProps> = ({ classes, sectionOrder, notes, onEdit, onCreate, onDelete, sectionState, onToggleVisibility, visible = true }) => {
   const settings = useSelector(settingSelector);
   const stateNotes = useSelector(noteSelector);
   const notesToUse = settings.useAutoSuggest ? Object.values(stateNotes) : null;
@@ -28,6 +27,8 @@ export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, on
   return (
     <ThoughtSection
       classes={classes}
+      sectionOrder={sectionOrder}
+      section={'notes'}
       Icon={NotesIcon}
       field={'Notes'}
       value={notes.map(note => note.text)}
@@ -35,8 +36,6 @@ export const NotesSection: FC<NotesSectionProps> = ({ classes, notes, onEdit, on
       linkifyValues={true}
       visible={visible}
       sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
       onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.Text,

@@ -15,20 +15,18 @@ interface ConnectionsSectionProps {
   connections: ConnectionSummary[];
   thoughtId: string;
   sectionState: SectionState;
-  onLongPress: (e: any) => void;
-  onDrop: () => void;
   onToggleVisibility: () => void;
+  sectionOrder: string[];
   visible: boolean;
 }
 
 export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
   classes,
+  sectionOrder,
   onCreate,
   thoughtId,
   connections,
   sectionState,
-  onLongPress,
-  onDrop,
   onToggleVisibility,
   visible = true,
 }) => {
@@ -55,6 +53,8 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
   return (
     <ThoughtSection
       classes={classes}
+      sectionOrder={sectionOrder}
+      section={'connections'}
       Icon={Link}
       field={`Connections (${toConnections.filter(connection => connection.otherThought.status === 'completed').length}/${toConnections.length})`}
       value={
@@ -68,8 +68,6 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
       className={'connections'}
       visible={visible}
       sectionState={sectionState}
-      onLongPress={onLongPress}
-      onDrop={onDrop}
       onToggleVisibility={onToggleVisibility}
       edit={{
         type: null,

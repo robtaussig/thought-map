@@ -1,4 +1,3 @@
-import { MutableRefObject } from 'react';
 import { notes as noteActions, tags as tagActions, thoughts as thoughtActions } from '../../actions';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Tag } from 'store/rxdb/schemas/tag';
@@ -79,41 +78,15 @@ export const getTime = (ms: number): string => {
   return `${datetime.getMonth() + 1}/${datetime.getDate()}/${datetime.getFullYear()}`;
 };
 
-export const generateNextSectionsAfterMove = (
-  sectionOrder: MutableRefObject<string[]>,
-  sectionVisibility: MutableRefObject<SectionVisibility>,
-  sectionToMove: string,
-  sectionToMoveAbove: string,
-): string => {
-
-  return sectionOrder.current.reduce((next, section) => {
-    if (section !== sectionToMove) {
-      if (sectionToMoveAbove === section) {
-        next.push(sectionToMove);        
-      }
-      next.push(section);
-    }
-
-    return next;
-  }, [])
-    .map((section => {
-      if (sectionVisibility.current[section] === false) {
-        return `_${section}`;
-      }
-      return section;
-    }))
-    .join('-');
-};
-
 export const generateNextSectionsAfterToggleVisibility = (
-  sectionOrder: MutableRefObject<string[]>,
-  sectionVisibility: MutableRefObject<SectionVisibility>,
+  sectionOrder: string[],
+  sectionVisibility: SectionVisibility,
   sectionType: string,
 ): string => {
-  const canToggle = Object.values(sectionVisibility).filter(val => val === false).length + 2 <= sectionOrder.current.length;
+  const canToggle = Object.values(sectionVisibility).filter(val => val === false).length + 2 <= sectionOrder.length;
 
-  const res = sectionOrder.current.map(section => {
-    let isVisible = sectionVisibility.current[section] !== false;
+  const res = sectionOrder.map(section => {
+    let isVisible = sectionVisibility[section] !== false;
     if (sectionType === section && (!isVisible || canToggle)) {
       isVisible = !isVisible;
     }
