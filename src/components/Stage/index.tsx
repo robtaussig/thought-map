@@ -31,7 +31,9 @@ const sortThoughtsWithIndex = (thoughts: Thought[]): Thought[] => {
       }
       return 1;
     });
-  const thoughtsWithoutIndexes = thoughts.filter(({ stageIndex }) => stageIndex === 0);
+  const thoughtsWithoutIndexes = thoughts
+    .filter(({ stageIndex }) => stageIndex === 0)
+    .sort((a, b) => a.updated - b.updated);
 
   thoughtsWithIndexes.forEach(thought => {
     thoughtsWithoutIndexes.splice(thought.stageIndex - 1, 0, thought);

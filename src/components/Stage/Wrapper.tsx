@@ -9,6 +9,7 @@ import produce from 'immer';
 import { useLatestThought } from '../../hooks/useLatestThought';
 import Item from './Item';
 import { StageContext } from './context';
+import { ArrowDownward, ArrowUpward } from '@material-ui/icons';
 
 const useStyles = makeStyles((_theme: any) => ({
   root: {
@@ -23,11 +24,21 @@ const useStyles = makeStyles((_theme: any) => ({
     flexDirection: 'column',
     overflow: 'auto',
   },
-  itemHeader: {
+  header: {
     fontWeight: 600,
     fontSize: 20,
     margin: '5px 0',
     textAlign: 'center',
+  },
+  categoryHeader: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative'
+  },
+  headerButton: {
+    position: 'absolute',
+    right: 0,
   },
 }));
 
@@ -101,7 +112,37 @@ export const Wrapper: FC<WrapperProps> = ({
       navigator.vibrate(100);
     }
   };
+
+  const handlePromoteAll = () => {
+    backlogThoughts.forEach((thought, idx) => {
+      thoughtActions.editThought(db, {
+        ...thought,
+        stagedOn: format(new Date(), 'yyyy-MM-dd'),
+        stageIndex: activeThoughts.length + idx,
+      });
+    });
+
+    setState(({ activeThoughts, backlogThoughts }) => ({
+      activeThoughts: activeThoughts.concat(backlogThoughts),
+      backlogThoughts: [],
+    }));
+  };
   
+  const handleDemoteAll = () => {
+    activeThoughts.forEach((thought, idx) => {
+      thoughtActions.editThought(db, {
+        ...thought,
+        stagedOn: format(startOfYesterday(), 'yyyy-MM-dd'),
+        stageIndex: backlogThoughts.length + idx,
+      });
+    });
+
+    setState(({ backlogThoughts, activeThoughts }) => ({
+      backlogThoughts: backlogThoughts.concat(activeThoughts),
+      activeThoughts: [],
+    }));
+  };
+
   useEffect(() => {
     if (
       latestThought?.stagedOn &&
@@ -142,7 +183,12 @@ export const Wrapper: FC<WrapperProps> = ({
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       <StageContext.Provider value={onRemoveThought}>
         <div className={classes.root}>
-          <h2 className={classes.itemHeader}>Active</h2>
+          <div className={classes.categoryHeader}>
+            <h2 className={classes.header}>
+              Active
+            </h2>
+            <button className={classes.headerButton} onClick={handleDemoteAll}><ArrowDownward/></button>
+          </div>
           <Droppable droppableId="active">
             {(provided, snapshot) => (
               <div
@@ -162,7 +208,12 @@ export const Wrapper: FC<WrapperProps> = ({
               </div>
             )}
           </Droppable>
-          <h2 className={classes.itemHeader}>Backlog</h2>
+          <div className={classes.categoryHeader}>
+            <h2 className={classes.header}>
+              Backlog
+            </h2>
+            <button className={classes.headerButton} onClick={handlePromoteAll}><ArrowUpward/></button>
+          </div>
           <Droppable droppableId="backlog">
             {(provided, snapshot) => (
               <div
