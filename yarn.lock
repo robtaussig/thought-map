@@ -10324,6 +10324,11 @@ react-use-autosuggest@1.0.2:
   resolved "https://registry.yarnpkg.com/react-use-autosuggest/-/react-use-autosuggest-1.0.2.tgz#6d5d32cf3f69d631194f028018c52bfb879ba67d"
   integrity sha512-yVZU+hqc7q9exq+lDo7uHfCxtLDNuLBO03rQc33AdyMnGzjOiJHSqE+DZPRh5nmRijKN6JkglpFSBgwy2zcPvg==
 
+react-use-loading-overlay@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/react-use-loading-overlay/-/react-use-loading-overlay-0.2.2.tgz#0a5eecefbdba8fabe38376ba340a9e6b30ae03e0"
+  integrity sha512-hOKDw4kMzpV6Ea7XG6KQUzdqPuHxv6wKW8Le0xAeQPS6Z8Rr/ZfRWf+oG84JmH233n1w2cFCP8Vtuycqg/OCBQ==
+
 react-window@^1.8.6:
   version "1.8.6"
   resolved "https://registry.yarnpkg.com/react-window/-/react-window-1.8.6.tgz#d011950ac643a994118632665aad0c6382e2a112"

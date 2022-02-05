@@ -8,7 +8,7 @@ import { Pictures } from '../../../reducers/pictures';
 import { Picture } from '../../../store/rxdb/schemas/picture';
 import { pictures as pictureActions } from '../../../actions';
 import { useLoadedDB } from '../../../hooks/useDB';
-import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import useLoadingOverlay from 'react-use-loading-overlay';
 
 interface ManagePhotosProps {
   classes: any;
@@ -86,7 +86,7 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
   const [side, setSide] = useState<Side>(Side.TOP);
 
   const rootRef = useRef(null);
-  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
+  const { setLoading, stopLoading } = useLoadingOverlay(rootRef);
   const { db } = useLoadedDB();
   const handleClickClose = useCallback(() => {
     setSide(Side.TOP);

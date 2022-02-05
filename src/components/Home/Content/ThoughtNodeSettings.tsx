@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { connectionSelector } from '../../../reducers/connections';
 import { format } from 'date-fns';
 import useThoughtMap from '../../../hooks/useThoughtMap';
-import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import useLoadingOverlay from 'react-use-loading-overlay';
 
 interface ThoughtNodeSettingsProps {
   classes: any,
@@ -78,7 +78,7 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
   const homeUrl = useHomeUrl();
   const connections = useSelector(connectionSelector);
   const thoughtMap = useThoughtMap(thought.id);
-  const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
+  const { setLoading, stopLoading, updateText } = useLoadingOverlay(rootRef);
 
   const handleClickBump = () => {
     onClose();

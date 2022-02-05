@@ -5,7 +5,7 @@ import CustomObjects from './CustomObjects';
 import AppConfiguration from './AppConfiguration';
 import Theme from './theme';
 import Data from './Data';
-import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import useLoadingOverlay from 'react-use-loading-overlay';
 import { useSelector } from 'react-redux';
 import { pictureSelector } from '../../../reducers/pictures';
 import { settingSelector } from '../../../reducers/settings';
@@ -86,7 +86,7 @@ const clearCaches = async (): Promise<boolean[]> => {
 
 export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [setLoading] = useLoadingOverlay(rootRef);
+  const { setLoading } = useLoadingOverlay(rootRef);
   const pictures = useSelector(pictureSelector);
   const settings = useSelector(settingSelector);
   const customTheme = useSelector(customThemeSelector);

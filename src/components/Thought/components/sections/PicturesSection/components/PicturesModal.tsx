@@ -3,7 +3,7 @@ import { Thought } from '~store/rxdb/schemas/types';
 import { withStyles } from '@material-ui/core/styles';
 import { pictures as pictureActions } from '../../../../../../actions/';
 import { useLoadedDB } from '../../../../../../hooks/useDB';
-import { useLoadingOverlay } from '../../../../../../hooks/useLoadingOverlay';
+import useLoadingOverlay from 'react-use-loading-overlay';
 import TempImages from './TempImages';
 import Images from './Images';
 import { getBase64ImageFromUrl } from './util';
@@ -28,7 +28,7 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
   const { db } = useLoadedDB();
   const pictures = useSelector(pictureSelector);
   const [tempImages, setTempImages] = useState<any[]>([]);
-  const [setLoading, stopLoading] = useLoadingOverlay(rootRef);
+  const { setLoading, stopLoading } = useLoadingOverlay(rootRef);
   const relatedPictures = useMemo(() =>
     Object.values(pictures)
       .filter(picture => picture.thoughtId === thought.id)

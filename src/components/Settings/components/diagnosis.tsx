@@ -19,7 +19,7 @@ import Picture from '../../../models/pictures';
 import Setting from '../../../models/settings';
 import Status from '../../../models/statuses';
 import { RxDatabase, RxDocument } from 'rxdb';
-import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import useLoadingOverlay from 'react-use-loading-overlay';
 
 const modelsByTable: {
   [tableName: string]: {
@@ -119,7 +119,7 @@ export const Diagnosis: FC<DiagnosisProps> = ({ diagnosisChunks, onFix }) => {
   const { db } = useLoadedDB();
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [setLoading, stopLoading, updateText] = useLoadingOverlay(containerRef);
+  const { setLoading, stopLoading, updateText } = useLoadingOverlay(containerRef);
   const classes = useStyles();
   const _diagnosis = useMemo(() => {
     if (Object.keys(diagnosisChunks).length === 0) {

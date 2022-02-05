@@ -6,7 +6,7 @@ import { connectionSelector } from '../../../reducers/connections';
 import { backupSelector } from '../../../reducers/backups';
 import { processItemsToAdd } from './util';
 import { useBackupIdFromHistory } from '../util';
-import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import useLoadingOverlay from 'react-use-loading-overlay';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { backups as backupActions } from '../../../actions';
 import { Item } from '../types';
@@ -19,7 +19,7 @@ export const ProcessMerge: FC = () => {
   const classes = useStyles({});
   const { db } = useLoadedDB();
   const rootRef = useRef<HTMLDivElement>(null);
-  const [loading, stopLoading] = useLoadingOverlay(rootRef);
+  const { setLoading, stopLoading } = useLoadingOverlay(rootRef);
   const [filteredItemsToAdd, setFilteredItemsToAdd] = useState<Item[]>(null);
   const { itemsToAdd, deletionsToAdd, itemsToRemove } = useSelector(mergeResultsSelector);
   const thoughts = useSelector(thoughtSelector);
@@ -29,7 +29,7 @@ export const ProcessMerge: FC = () => {
   const navigate = useNavigate();
   const version = useSearchParam('v');
   const handleClickMerge = async () => {
-    loading('Merging data...');
+    setLoading('Merging data...');
     (window as any).blockDBSubscriptions = true;
     await Promise.all(
       filteredItemsToAdd.map(({ collectionName, item }) => {
@@ -64,7 +64,7 @@ export const ProcessMerge: FC = () => {
 
   useEffect(() => {
     if (itemsToAdd.length > 0) {
-      loading('Processing results...');
+      setLoading('Processing results...');
       const filtered = processItemsToAdd(itemsToAdd, thoughts, connections);
       setFilteredItemsToAdd(filtered);
       stopLoading();

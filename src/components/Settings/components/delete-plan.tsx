@@ -3,7 +3,7 @@ import CheckBox from '../../General/CheckBox';
 import Input from '../../General/Input';
 import { openConfirmation } from '../../../lib/util';
 import { useLoadedDB } from '../../../hooks/useDB';
-import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import useLoadingOverlay from 'react-use-loading-overlay';
 import {
   connections as connectionActions,
   plans as planActions,
@@ -31,7 +31,7 @@ export const DeletePlan: FC<DeletePlanProps> = ({
   connections,
 }) => {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [setLoading, _stopLoading, updateLoading] = useLoadingOverlay(rootRef);
+  const { setLoading, updateText } = useLoadingOverlay(rootRef);
   const [withThoughts, setWithThoughts] = useState<boolean>(false);
   const [inputtedPlanName, setInputtedPlanName] = useState<string>('');
   const { db } = useLoadedDB();
@@ -68,19 +68,19 @@ export const DeletePlan: FC<DeletePlanProps> = ({
           connectionActions.deleteConnection(db, connectionId)
         )
       );
-      updateLoading('Deleting thoughts');
+      updateText('Deleting thoughts');
       await Promise.all(
         thoughtsToDelete.map((thought) =>
           thoughtActions.deleteThought(db, thought.id).catch(console.error)
         )
       );
-      updateLoading('Recategorizing thoughts');
+      updateText('Recategorizing thoughts');
       await Promise.all(
         thoughtsToEdit.map((thought) => thoughtActions.editThought(db, thought))
       );
-      updateLoading('Deleting plan');
+      updateText('Deleting plan');
       await planActions.deletePlan(db, plan.id);
-      updateLoading('Plan successfully deleted');
+      updateText('Plan successfully deleted');
 
       setTimeout(() => {
         afterDelete();

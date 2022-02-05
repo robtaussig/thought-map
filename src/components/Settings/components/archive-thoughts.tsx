@@ -3,7 +3,7 @@ import { Thought } from 'store/rxdb/schemas/thought';
 import { thoughts as thoughtActions } from '../../../actions';
 import cn from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
-import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import useLoadingOverlay from 'react-use-loading-overlay';
 import { Plan } from '~store/rxdb/schemas/plan';
 
 export interface ArchiveThoughtsProps {
@@ -19,28 +19,28 @@ export const ArchiveThoughts: FC<ArchiveThoughtsProps> = ({
 }) => {
   const { db } = useLoadedDB();
   const rootRef = useRef<HTMLDivElement>(null);
-  const [setIsLoading, stopIsLoading] = useLoadingOverlay(rootRef);
+  const { setLoading, stopLoading } = useLoadingOverlay(rootRef);
 
   const handleClickArchiveNew = async () => {
-    setIsLoading('Archiving thoughts...');
+    setLoading('Archiving thoughts...');
     await Promise.all(thoughts
       .filter(({ status, planId }) => planId === plan.id && status === 'new')
       .map(thought => thoughtActions.editThought(db, {
         ...thought,
         archived: true,
       })));
-    stopIsLoading();
+    stopLoading();
   };
 
   const handleClickArchiveCompleted = async () => {
-    setIsLoading('Archiving thoughts...');
+    setLoading('Archiving thoughts...');
     await Promise.all(thoughts
       .filter(({ status, planId }) => planId === plan.id && status === 'completed')
       .map(thought => thoughtActions.editThought(db, {
         ...thought,
         archived: true,
       })));
-    stopIsLoading();
+    stopLoading();
   };
 
   return (

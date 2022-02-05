@@ -2,7 +2,7 @@ import React, { FC, useRef } from 'react';
 import { useStyles } from './styles';
 import { useDispatch } from 'react-redux';
 import { Backup } from '../../../store/rxdb/schemas/backup';
-import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
+import useLoadingOverlay from 'react-use-loading-overlay';
 import useCrypto from '../../../hooks/useCrypto';
 import { useLoadedDB } from '../../../hooks/useDB';
 import { useNavigate } from 'react-router-dom';
@@ -31,11 +31,11 @@ export const UpdateAvailable: FC<UpdateAvailableProps> = ({ activeBackup, latest
   const rootRef = useRef<HTMLDivElement>(null);
   const { db } = useLoadedDB();
   const { decrypt } = useCrypto();
-  const [loading, stopLoading, updateText] = useLoadingOverlay(rootRef);
+  const { setLoading, stopLoading, updateText } = useLoadingOverlay(rootRef);
 
   const handleClickMergeButton = async () => {
     const { backupId, password, privateKey } = activeBackup;
-    loading('Fetching backup...');
+    setLoading('Fetching backup...');
 
     try {
       const response = await fetchBackup(backupId, password);
