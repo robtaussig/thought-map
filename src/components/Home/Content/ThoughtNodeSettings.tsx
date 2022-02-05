@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useRef } from 'react';
 import { StyleRules, withStyles } from '@material-ui/styles';
 import { Thought } from '../../../store/rxdb/schemas/thought';
 import classNames from 'classnames';
@@ -10,6 +10,8 @@ import { openConfirmation, useHomeUrl } from '../../../lib/util';
 import { useSelector } from 'react-redux';
 import { connectionSelector } from '../../../reducers/connections';
 import { format } from 'date-fns';
+import useThoughtMap from '../../../hooks/useThoughtMap';
+import { useLoadingOverlay } from '../../../hooks/useLoadingOverlay';
 
 interface ThoughtNodeSettingsProps {
   classes: any,
@@ -72,8 +74,11 @@ const STAGE_TOOLTIP_TEXT = 'Staging a thought flags it as being relevant on the 
 export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, thought, onClose }) => {
   const { db } = useLoadedDB();
   const navigate = useNavigate();
+  const rootRef = useRef<HTMLDivElement>();
   const homeUrl = useHomeUrl();
   const connections = useSelector(connectionSelector);
+  const thoughtMap = useThoughtMap(thought.id);
+  const [setLoading, stopLoading, updateText] = useLoadingOverlay(rootRef);
 
   const handleClickBump = () => {
     onClose();
@@ -90,11 +95,39 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
     });
   };
 
-  const handleClickDelete = () => {
-    openConfirmation('Are you sure you want to delete this thought?', () => {
-      thoughtActions.deleteThought(db, thought.id);
-      onClose();
-    });
+  const handleClickDelete = (withChildren: boolean) => () => {
+    if (withChildren) {
+      const deleteThoughtsOneByOne = async (thoughtIds: string[]) => {
+        const failed: [string, Error][] = [];
+        setLoading('Deleting thoughts: 0%');
+        for (const thoughtId of thoughtIds) {
+          updateText(`Deleting ${thoughtId} - ${thoughtIds.indexOf(thoughtId) + 1} of ${thoughtIds.length}`);
+          try {
+            await thoughtActions.deleteThought(db, thoughtId);
+          } catch (e) {
+            failed.push([thoughtId, e]);
+          }
+        }
+
+        stopLoading();
+
+        return failed;
+      };
+
+      openConfirmation('Are you sure you want to delete this thought and all child thoughts?', async () => {
+        const errored = await deleteThoughtsOneByOne(thoughtMap.descendants);
+        if (errored.length === 0) {
+          onClose();
+        } else {
+          alert(`The following errors occured while deleting ${errored.length} thoughts: ${errored.map(([_, error]) => error.message).join(', ')}`);
+        }
+      });
+    } else {
+      openConfirmation('Are you sure you want to delete this thought?', () => {
+        thoughtActions.deleteThought(db, thought.id);
+        onClose();
+      });
+    }
   };
 
   const handleClickViewConnections = () => {
@@ -121,7 +154,7 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
   }, [connections, thought]);
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} ref={rootRef}>
       <h1 className={classes.title}>{thought.title}</h1>
       <div className={classes.buttonWrapper}>
         <button className={classes.button} onClick={handleClickBump}>Bump</button>
@@ -145,8 +178,11 @@ export const ThoughtNodeSettings: FC<ThoughtNodeSettingsProps> = ({ classes, tho
         <button className={classes.button} onClick={handleClickViewConnections}>View Connections</button>
       </div>}
       <div className={classes.buttonWrapper}>
-        <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete}>Delete</button>
+        <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete(false)}>Delete</button>
       </div>
+      {thoughtMap.descendants.length > 1 && (<div className={classes.buttonWrapper}>
+        <button className={classNames(classes.button, 'delete')} onClick={handleClickDelete(true)}>Delete With Children</button>
+      </div>)}
     </div>
   );
 };

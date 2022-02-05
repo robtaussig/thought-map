@@ -89,6 +89,7 @@ const textNodeInlineStyle: CSSProperties = {
   textShadow: '1px 1px 4px #000000',
   color: 'white',
   fontWeight: 600,
+  textAlign: 'center',
 };
 
 const loadingOverlayInlineStyle: CSSProperties = {
