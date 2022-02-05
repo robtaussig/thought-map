@@ -181,48 +181,37 @@ export const Diagnosis: FC<DiagnosisProps> = ({ diagnosisChunks, onFix }) => {
     for (const [key, { items }] of allQueries) {
       updateText(`${key} - 0%`);
       let count = 0;
-      const chunks = items.reduce((chunksOfTen, item) => {
-        const lastChunk = chunksOfTen[chunksOfTen.length - 1];
-        lastChunk.push(item);
-        if (lastChunk.length === 10) {
-          chunksOfTen.push([]);
+      for (const { item, table, solution } of items) {
+        switch (solution) {
+          case SolutionTypes.DELETE:
+            await modelsByTable[table].delete(db, item.id);
+            break;
+          case SolutionTypes.NULL_OUT_PLAN_ID:
+            await modelsByTable[table].update(db, {
+              ...item,
+              planId: '',
+            });
+            break;
+          case SolutionTypes.CREATE_STATUS:
+            await modelsByTable.status.add(db, {
+              text: 'new',
+              thoughtId: item.id,
+              created: item.created,
+              updated: item.created,
+            }).then(() => {
+              if (item.status !== 'new') {
+                return modelsByTable.status.add(db, {
+                  text: item.status,
+                  thoughtId: item.id,
+                  created: item.updated,
+                  updated: item.updated,
+                });
+              }
+            });
+            break;
         }
-        return chunksOfTen;
-      }, [[]]);
-
-      for (const chunk of chunks) {
-        await Promise.all(chunk.map(({ item, table, solution }) => {
-          switch (solution) {
-            case SolutionTypes.DELETE:
-              return modelsByTable[table].delete(db, item.id);
-
-            case SolutionTypes.NULL_OUT_PLAN_ID:
-              return modelsByTable[table].update(db, {
-                ...item,
-                planId: '',
-              });
-
-            case SolutionTypes.CREATE_STATUS:
-              return modelsByTable.status.add(db, {
-                text: 'new',
-                thoughtId: item.id,
-                created: item.created,
-                updated: item.created,
-              }).then(() => {
-                if (item.status !== 'new') {
-                  return modelsByTable.status.add(db, {
-                    text: item.status,
-                    thoughtId: item.id,
-                    created: item.updated,
-                    updated: item.updated,
-                  });
-                }
-              });
-              
-          }
-        }));
         count++;
-        updateText(`${key} - ${Math.floor((count * 100)/ chunks.length)}%`);
+        updateText(`${key} - ${Math.floor((count * 100)/ items.length)}%`);
       }
     }
       
