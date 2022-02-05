@@ -187,7 +187,7 @@ export const Wrapper: FC<WrapperProps> = ({
             <h2 className={classes.header}>
               Active
             </h2>
-            <button className={classes.headerButton} onClick={handleDemoteAll}><ArrowDownward/></button>
+            <button className={classes.headerButton} disabled={state.activeThoughts.length === 0} onClick={handleDemoteAll}><ArrowDownward/></button>
           </div>
           <Droppable droppableId="active">
             {(provided, snapshot) => (
@@ -212,7 +212,7 @@ export const Wrapper: FC<WrapperProps> = ({
             <h2 className={classes.header}>
               Backlog
             </h2>
-            <button className={classes.headerButton} onClick={handlePromoteAll}><ArrowUpward/></button>
+            <button className={classes.headerButton} disabled={state.backlogThoughts.length === 0} onClick={handlePromoteAll}><ArrowUpward/></button>
           </div>
           <Droppable droppableId="backlog">
             {(provided, snapshot) => (
