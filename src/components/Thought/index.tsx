@@ -54,7 +54,7 @@ export const PRIORITY_OPTIONS: PriorityOption[] = [
 
 const SECTION_DELIMITER_REGEX = /^_/;
 
-export const DEFAULT_SECTIONS = 'type-status-connections-priority-description-datetime-notes-recurring-tag-pictures';
+export const DEFAULT_SECTIONS = 'type-status-connections-priority-description-datetime-notes-recurring-tags-pictures';
 
 export const Thought: FC<ThoughtProps> = ({ statusOptions, typeOptions, tagOptions }) => {
   const { db } = useLoadedDB();
@@ -144,14 +144,22 @@ export const Thought: FC<ThoughtProps> = ({ statusOptions, typeOptions, tagOptio
     });
   }, [thought]);
 
-  const sectionOrder = useMemo(() => {
+  const thoughtSectionsParsed = useMemo(() => {
     return thoughtSections.split('-').map(section => {
-      return section.replace(SECTION_DELIMITER_REGEX, '');
+      if (section === 'tag') return 'tags';
+      if (section === '_tag') return '_tags';
+      return section;
     });
   }, [thoughtSections]);
 
+  const sectionOrder = useMemo(() => {
+    return thoughtSectionsParsed.map(section => {
+      return section.replace(SECTION_DELIMITER_REGEX, '');
+    });
+  }, [thoughtSectionsParsed]);
+
   const sectionVisibility = useMemo(() => {
-    return thoughtSections.split('-').reduce((visibility, section) => {
+    return thoughtSectionsParsed.reduce((visibility, section) => {
 
       if (section.startsWith('_')) {
         visibility[section.replace(SECTION_DELIMITER_REGEX, '')] = false;
@@ -160,7 +168,7 @@ export const Thought: FC<ThoughtProps> = ({ statusOptions, typeOptions, tagOptio
       }
       return visibility;
     }, {} as SectionVisibility);
-  }, [thoughtSections]);
+  }, [thoughtSectionsParsed]);
 
   useEffect(() => {
     setDisplaySettings(false);

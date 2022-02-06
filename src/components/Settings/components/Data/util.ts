@@ -150,7 +150,6 @@ export const runDiagnosis = async (db: RxDatabase) => {
   const orphanedChildObjectSources: OrphanedChildSource[] = [
     { table: 'note', items: notes },
     { table: 'tag', items: tags },
-    { table: 'tag', items: tags },
     { table: 'picture', items: pictures },
     { table: 'status', items: statuses },
   ];
