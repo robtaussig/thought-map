@@ -1,8 +1,11 @@
 import React, { FC } from 'react';
-import ThoughtSection from './ThoughtSection';
+import ThoughtSection from '../ThoughtSection';
+import Add from '@material-ui/icons/Add';
 import CalendarToday from '@material-ui/icons/CalendarToday';
-import { Thought } from '../../../../store/rxdb/schemas/thought';
-import { EditTypes, SectionState } from '../../types';
+import { Thought } from '../../../../../store/rxdb/schemas/thought';
+import { EditTypes, SectionState } from '../../../types';
+import { Tag } from '../../../../../store/rxdb/schemas/tag';
+import { generateICS } from './util';
 
 interface DateTimeSectionProps {
   classes: any;
@@ -12,10 +15,17 @@ interface DateTimeSectionProps {
   onToggleVisibility: () => void;
   sectionOrder: string[];
   visible: boolean;
+  tags: Tag[];
 }
 
-export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, sectionOrder, thought, onEdit, sectionState, onToggleVisibility, visible = true }) => {
+
+
+export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, sectionOrder, thought, onEdit, sectionState, onToggleVisibility, tags, visible = true }) => {
   const dateTimeText = `${thought.date},${thought.time}`;
+
+  const handleDownloadICS = (thought: Thought) => {
+    return generateICS(thought, tags);
+  };
 
   return (
     <ThoughtSection
@@ -29,6 +39,9 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, sectionOrde
       visible={visible}
       sectionState={sectionState}
       onToggleVisibility={onToggleVisibility}
+      quickActionButton={thought.date && (
+        <button className={classes.addToCalendaryButton} onClick={() => handleDownloadICS(thought)}><Add/></button>
+      )}
       edit={{
         type: EditTypes.DateTime,
         onEdit,

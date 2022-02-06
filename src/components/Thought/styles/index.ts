@@ -233,6 +233,13 @@ export const useThoughtInformationStyles = makeStyles((theme: any) => ({
       borderRadius: '5px',
     },
   }),
+  addToCalendaryButton: () => ({
+    color: theme.palette.primary[500],
+    '& svg': {
+      background: theme.palette.background[900],
+      borderRadius: '5px',
+    },
+  }),
   itemList: {
     gridArea: 'section-value',
     overflow: 'hidden',
