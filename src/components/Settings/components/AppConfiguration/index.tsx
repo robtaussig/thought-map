@@ -13,7 +13,6 @@ import { backupSelector } from '../../../../reducers/backups';
 import { useStyles } from './style';
 import {
   AUTOSUGGEST_TOOLTIP_TEXT,
-  AUTO_CREATE_CALENDAR_TOOLTIP_TEXT,
   DIRECT_PUSH_TOOLTIP_TEXT,
   DISABLE_TIP_TOOLTIP_TEXT,
   DISPLAY_ARCHIVED_THOUHGTS_TOOLTIP_TEXT,
@@ -47,13 +46,6 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
   const handleChangeUseAutoSuggest = useCallback(e => {
     settingsActions.editSetting(db, {
       field: 'useAutoSuggest',
-      value: e.target.checked,
-    });
-  }, []);
-
-  const handleChangeAutoCreateCalendarEvent = useCallback(e => {
-    settingsActions.editSetting(db, {
-      field: 'autoCreateCalendarEvent',
       value: e.target.checked,
     });
   }, []);
@@ -122,7 +114,6 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
   const useAutoSuggest = Boolean(settings && settings.useAutoSuggest);
   const useLocation = Boolean(settings && settings.useLocation);
   const usePushNotifications = Boolean(settings && settings.usePushNotifications);
-  const autoCreateCalendarEvent = Boolean(settings && settings.autoCreateCalendarEvent);
   const enableBackupOnDemand = Boolean(settings && settings.enableBackupOnDemand);
 
   return (
@@ -160,14 +151,6 @@ export const AppConfiguration: FC<AppConfigurationProps> = ({ settings }) => {
           isChecked={useAutoSuggest}
           onChange={handleChangeUseAutoSuggest}
           tooltip={AUTOSUGGEST_TOOLTIP_TEXT}
-        />
-        <CheckBox
-          classes={classes}
-          value={'Automatically create calendar events'}
-          label={'Automatically create calendar events'}
-          isChecked={autoCreateCalendarEvent}
-          onChange={handleChangeAutoCreateCalendarEvent}
-          tooltip={AUTO_CREATE_CALENDAR_TOOLTIP_TEXT}
         />
         <CheckBox
           classes={classes}

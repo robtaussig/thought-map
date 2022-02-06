@@ -37,22 +37,12 @@ import { ComponentMap, SectionState, SectionVisibility } from './types';
 import {
   generateNextSectionsAfterToggleVisibility,
 } from './util';
-import useGoogleCalendar, {
-  Actions,
-  GoogleCalendarEvent,
-} from '../../hooks/useGoogleCalendar';
-import {
-  generateDescriptionFromThought,
-  generateEndFromThought,
-  generateRemindersFromThought,
-  generateStartFromThought,
-} from '../ThoughtSettings/components/Calendar/lib/util';
+
+
 import { Bookmark } from '@material-ui/icons';
 import classNames from 'classnames';
 import { format } from 'date-fns';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
-
-const DASH_REGEX = /-/g;
 
 export interface ThoughtInformationProps {
   thought: Thought;
@@ -71,7 +61,6 @@ export interface ThoughtInformationProps {
   sectionVisibility: SectionVisibility;
   cancelEditAllSections: () => void;
   editAllSections: boolean;
-  autoCreateCalendarEvent: boolean;
 }
 
 const ThoughtInformation: FC<ThoughtInformationProps> = ({
@@ -91,7 +80,6 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
   sectionVisibility,
   cancelEditAllSections,
   editAllSections,
-  autoCreateCalendarEvent,
 }) => {
   const classes = useThoughtInformationStyles();
   const [localSectionOrder, setLocalSectionOrder] = useState(sectionOrder);
@@ -109,10 +97,6 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
 
     return [getTime(thought.created), getTime(thought.updated)];
   }, [thought, statuses]);
-
-  const [signedIn, actions]: [boolean, Actions, any] = useGoogleCalendar(
-    autoCreateCalendarEvent
-  );
 
   const handleEditThought = (field: string) => (value: any) => {
     onUpdate({
@@ -136,34 +120,7 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
       time: time || '',
     };
 
-    if (signedIn && autoCreateCalendarEvent && !thought.calendarLink) {
-      const gogleCalendarEvent: GoogleCalendarEvent = {
-        kind: 'calendar#event',
-        id: nextThought.id.replace(DASH_REGEX, ''),
-        status: 'confirmed',
-        summary: nextThought.title,
-        description: generateDescriptionFromThought(nextThought),
-        start: generateStartFromThought(nextThought),
-        end: generateEndFromThought(nextThought),
-        reminders: generateRemindersFromThought(),
-      };
-
-      const event: any = await Promise.race([
-        new Promise((resolve) => setTimeout(() => resolve(null), 5000)),
-        new Promise((resolve) =>
-          actions
-            .createEvent(gogleCalendarEvent)
-            .then(resolve)
-            .catch(() => resolve(null))
-        ),
-      ]);
-      onUpdate({
-        ...nextThought,
-        calendarLink: event?.result?.htmlLink ?? '',
-      });
-    } else {
-      onUpdate(nextThought);
-    }
+    onUpdate(nextThought);
   };
 
   const handleEditNote = (idx: number, value: string) => {

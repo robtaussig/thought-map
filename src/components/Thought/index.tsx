@@ -19,7 +19,6 @@ import { planSelector } from '../../reducers/plans';
 import { statusesByThoughtSelector } from '../../reducers/statusesByThought';
 import { statusSelector } from '../../reducers/statuses';
 import { pictureSelector } from '../../reducers/pictures';
-import { settingSelector } from '../../reducers/settings';
 import { useDispatch, useSelector } from 'react-redux';
 
 export interface PriorityOption {
@@ -73,8 +72,6 @@ export const Thought: FC<ThoughtProps> = ({ statusOptions, typeOptions, tagOptio
   const statusesByThought = useSelector(statusesByThoughtSelector);
   const statuses = useSelector(statusSelector);
   const pictures = useSelector(pictureSelector);
-  const settings = useSelector(settingSelector);
-  const autoCreateCalendarEvent = Boolean(settings && settings.autoCreateCalendarEvent);
   const setDisplaySettings = (display: boolean) => dispatch(toggle(display));
 
   const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
@@ -207,7 +204,6 @@ export const Thought: FC<ThoughtProps> = ({ statusOptions, typeOptions, tagOptio
           sectionVisibility={sectionVisibility}
           cancelEditAllSections={handleCancelEditAllSections}
           editAllSections={editAllSections}
-          autoCreateCalendarEvent={autoCreateCalendarEvent}
         />
       }
       <ThoughtSettings

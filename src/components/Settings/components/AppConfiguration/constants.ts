@@ -13,10 +13,6 @@ export const DISABLE_REPORT_BUGS_TOOLTIP_TEXT =
   `Agree to automatically submit bug reports on caught errors that will help 
   the developers patch any related issues on future releases.`;
 
-export const AUTO_CREATE_CALENDAR_TOOLTIP_TEXT =
-  `If enabled, calendar events will be created automatically whenever a 
-  thought's date/time is modified`;
-
 export const PUSH_NOTIFICATIONS_TOOLTIP_TEXT =
   `In order to use reminders and other related features, push notifications 
   must be enabled`;

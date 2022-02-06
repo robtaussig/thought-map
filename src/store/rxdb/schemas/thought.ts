@@ -7,7 +7,6 @@ export interface Thought {
   date?: string;
   time?: string;
   type?: string;
-  calendarLink?: string;
   status?: string;
   sections: string;
   priority?: number;
@@ -26,7 +25,7 @@ export interface Thought {
 
 export default ['thought', {
   'title': 'Thought schema',
-  'version': 9,
+  'version': 10,
   'description': 'A Thought',
   'type': 'object',
   'primaryKey': 'id',
@@ -51,9 +50,6 @@ export default ['thought', {
       'type': 'string',
     },
     'type': {
-      'type': 'string',
-    },
-    'calendarLink': {
       'type': 'string',
     },
     'goalPoints': {
@@ -109,6 +105,8 @@ export default ['thought', {
       return oldThought;
     },
     3: (oldThought: RxDocument<Thought>) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
       oldThought.calendarLink = '';
       return oldThought;
     },
@@ -136,5 +134,11 @@ export default ['thought', {
       oldThought.stageIndex = 0;
       return oldThought;
     },
+    10: (oldThought: RxDocument<Thought>) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      delete oldThought.calendarLink;
+      return oldThought;
+    }
   },
 }];

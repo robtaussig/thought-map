@@ -2,7 +2,6 @@ import React, { ChangeEventHandler, FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import useModal from '../../hooks/useModal';
 import Template from './components/template';
-import AddToCalendar from './components/Calendar';
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Tag } from 'store/rxdb/schemas/tag';
 import { Note } from 'store/rxdb/schemas/note';
@@ -38,10 +37,6 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({
     openModal(<Template classes={classes} onClose={closeModal} thought={thought} tags={tags} notes={notes}/>, 'Template');
   };
 
-  const handleClickAddToCalendar = () => {
-    openModal(<AddToCalendar onClose={closeModal} thoughtId={thought.id} notes={notes} tags={tags}/>);
-  };
-
   const handleClickApplySectionState = () => {
     onApplySectionState();
   };
@@ -61,7 +56,6 @@ export const ThoughtSettings: FC<ThoughtSettingsProps> = ({
     }}>
       <div className={classes.settings}>
         <button onClick={handleClickUseAsTemplate}>Create Template</button>
-        <button onClick={handleClickAddToCalendar}>Manage Calendar</button>
         <button onClick={handleClickEditSections}>Edit Sections</button>
         <div className={classes.applySectionState}>
           <button className={classes.sectionStateButton} onClick={handleClickApplySectionState}>Apply SectionState</button>
