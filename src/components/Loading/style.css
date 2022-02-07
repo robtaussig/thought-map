@@ -23,9 +23,9 @@
   animation: spin 1.5s linear infinite;
 }
 
-.outer,
-.middle,
-.inner {
+.loader .outer,
+.loader .middle,
+.loader .inner {
   border: 3px solid transparent;
   border-top-color: #3cefff;
   border-right-color: #3cefff;
