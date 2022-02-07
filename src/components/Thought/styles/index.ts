@@ -124,6 +124,7 @@ export const useThoughtInformationStyles = makeStyles((theme: any) => ({
     flexDirection: 'column',
   },
   thoughtSection: () => ({
+    position: 'relative',
     display: 'grid',
     gridTemplateAreas: `". . action-buttons"
                         "section-icon section-field quick-action"
@@ -235,10 +236,14 @@ export const useThoughtInformationStyles = makeStyles((theme: any) => ({
   }),
   addToCalendaryButton: () => ({
     color: theme.palette.primary[500],
-    '& svg': {
-      background: theme.palette.background[900],
-      borderRadius: '5px',
-    },
+    background: theme.palette.background[600],
+    borderRadius: '5px',
+    padding: '5px 10px',
+    textTransform: 'uppercase',
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+    fontWeight: 600,
   }),
   itemList: {
     gridArea: 'section-value',

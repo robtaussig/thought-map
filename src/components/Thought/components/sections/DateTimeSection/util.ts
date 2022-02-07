@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { Note, Tag, Thought } from '~store/rxdb/schemas/types';
+import { saveAs } from 'file-saver';
 
 type Associations = {
   tags?: Tag[];
@@ -235,7 +236,8 @@ export const generateICS = (thought: Thought, tags: Tag[], notes: Note[]) => {
     });
 
   const SEPARATOR = (navigator.appVersion.indexOf('Win') !== -1) ? '\r\n' : '\n';
-  window.open('data:text/calendar;charset=utf8,' + generated.join(SEPARATOR));
+  const data = 'data:text/calendar;charset=utf8,' + generated.join(SEPARATOR);
+  saveAs(data, `${thought.id.slice(0, 6)}_add_to_calendar.ics`);
 };
 
 //Parse recurring

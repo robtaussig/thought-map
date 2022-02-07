@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import ThoughtSection from '../ThoughtSection';
-import Add from '@material-ui/icons/Add';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { Thought } from '../../../../../store/rxdb/schemas/thought';
 import { EditTypes, SectionState } from '../../../types';
@@ -51,7 +50,7 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({
       sectionState={sectionState}
       onToggleVisibility={onToggleVisibility}
       quickActionButton={thought.date && (
-        <button className={classes.addToCalendaryButton} onClick={() => handleDownloadICS(thought)}><Add/></button>
+        <button className={classes.addToCalendaryButton} onClick={() => handleDownloadICS(thought)}>Save to calendar</button>
       )}
       edit={{
         type: EditTypes.DateTime,
