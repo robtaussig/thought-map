@@ -1,9 +1,9 @@
 import { format } from 'date-fns';
-import { Tag } from '../../../../../store/rxdb/schemas/tag';
-import { Thought } from '../../../../../store/rxdb/schemas/thought';
+import { Note, Tag, Thought } from '~store/rxdb/schemas/types';
 
 type Associations = {
   tags?: Tag[];
+  notes?: Note[];
 };
 
 type TextLine = { type: 'text', value: string };
@@ -172,8 +172,25 @@ const lines: Line[] = [
   },
   {
     type: 'generate',
-    transform: (thought) => thought.description, //Format?
-    if: (thought) => Boolean(thought.description),
+    transform: (thought, { notes }) => {
+      let value = 'DESCRIPTION:';
+      if (thought.description) {
+        thought.description.split('\n').forEach(paragraph => {
+          value += paragraph;
+          value += '\\n\\n';
+        });
+      }
+      if (notes?.length > 0) {
+        notes.forEach((note, idx) => {
+          value += note.text;
+          if (idx < notes.length - 1) {
+            value += '\\n\\n';
+          }
+        });
+      }
+      return value;
+    },
+    if: (thought, { notes }) => Boolean(thought.description || notes?.length > 0),
   },
   {
     type: 'mapping',
@@ -197,8 +214,8 @@ const lines: Line[] = [
   },
 ];
 
-export const generateICS = (thought: Thought, tags: Tag[]) => {
-  const associations = { tags };
+export const generateICS = (thought: Thought, tags: Tag[], notes: Note[]) => {
+  const associations = { tags, notes };
   const generated = lines
     .filter(line => {
       if (line.if) return line.if(thought, associations);

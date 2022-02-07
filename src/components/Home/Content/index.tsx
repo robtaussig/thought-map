@@ -8,7 +8,6 @@ import { useLoadedDB } from '../../../hooks/useDB';
 import useModal from '../../../hooks/useModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { settings as settingsActions } from '../../../actions';
-import { thoughtSelector } from '../../../reducers/thoughts';
 import { settingSelector } from '../../../reducers/settings';
 import { connectionSelector } from '../../../reducers/connections';
 import { ButtonPositions, emphasizeButton } from '../../../reducers/tutorial';
@@ -20,7 +19,6 @@ import ThoughtNodes from './ThoughtNodes';
 import PriorityTutorial from '../../Tutorials/PriorityTutorial';
 import LongPressTutorial from '../../Tutorials/LongPressTutorial';
 import BlankThoughtNode from './BlankThoughtNode';
-import { useTypedSelector } from '../../../reducers';
 import { intoMap } from '../../../lib/util';
 
 interface ContentProps {
@@ -39,19 +37,15 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
   const [openModal] = useModal();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
-  const stateThoughts = useTypedSelector(thoughtSelector.selectAll);
   const stateConnections = useSelector(connectionSelector);
   const plans = useSelector(planSelector);
   const settings = useSelector(settingSelector);
   const sortFilterSettings = useSelector(sortFilterSettingsSelector);
-
-  useEffect(() => {
-    thoughtMap.current
-      .updateThoughts(stateThoughts)
-      .updateConnections(Object.values(stateConnections));
-  }, [stateThoughts, stateConnections]);
   
   const connectionStatusByThought = useMemo(() => {
+    thoughtMap.current
+      .updateThoughts(thoughts)
+      .updateConnections(Object.values(stateConnections));
     const normalizedThoughts = intoMap(thoughts);
     return Object.values(stateConnections).reduce((next, { from, to }) => {
       const fromThought = normalizedThoughts[from];
@@ -63,7 +57,7 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
       }
       return next;
     }, {} as ThoughtConnections);
-  }, [stateConnections, thoughts,]);
+  }, [stateConnections, thoughts]);
 
   useEffect(() => {
     const runSearch = async () => {

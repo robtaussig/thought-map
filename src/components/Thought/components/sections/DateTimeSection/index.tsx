@@ -4,7 +4,7 @@ import Add from '@material-ui/icons/Add';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import { Thought } from '../../../../../store/rxdb/schemas/thought';
 import { EditTypes, SectionState } from '../../../types';
-import { Tag } from '../../../../../store/rxdb/schemas/tag';
+import { Note, Tag } from '../../../../../store/rxdb/schemas/types';
 import { generateICS } from './util';
 
 interface DateTimeSectionProps {
@@ -16,15 +16,26 @@ interface DateTimeSectionProps {
   sectionOrder: string[];
   visible: boolean;
   tags: Tag[];
+  notes: Note[];
 }
 
 
 
-export const DateTimeSection: FC<DateTimeSectionProps> = ({ classes, sectionOrder, thought, onEdit, sectionState, onToggleVisibility, tags, visible = true }) => {
+export const DateTimeSection: FC<DateTimeSectionProps> = ({
+  classes,
+  sectionOrder,
+  thought,
+  onEdit,
+  sectionState,
+  onToggleVisibility,
+  tags,
+  notes,
+  visible = true,
+}) => {
   const dateTimeText = `${thought.date},${thought.time}`;
 
   const handleDownloadICS = (thought: Thought) => {
-    return generateICS(thought, tags);
+    return generateICS(thought, tags, notes);
   };
 
   return (

@@ -316,6 +316,7 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
         classes={classes}
         thought={thought}
         tags={tags}
+        notes={notes}
         visible={sectionVisibility['datetime']}
         onEdit={handleEditDateTime}
         sectionState={deriveSectionState('datetime')}        
