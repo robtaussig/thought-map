@@ -234,15 +234,22 @@ export const useThoughtInformationStyles = makeStyles((theme: any) => ({
       borderRadius: '5px',
     },
   }),
-  addToCalendaryButton: () => ({
+  calendarButtons: () => ({
+    position: 'absolute',
+    bottom: 4,
+    right: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    '& *:not(:last-child)': {
+      marginBottom: 4,
+    }
+  }),
+  addToCalendarButton: () => ({
     color: theme.palette.primary[500],
     background: theme.palette.background[600],
     borderRadius: '5px',
     padding: '5px 10px',
     textTransform: 'uppercase',
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
     fontWeight: 600,
   }),
   itemList: {

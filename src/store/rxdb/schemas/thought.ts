@@ -17,6 +17,7 @@ export interface Thought {
   description?: string;
   goalPoints?: number;
   hideFromHomeScreen?: boolean;
+  lastIcsCalendarSequence?: number;
   index?: number;
   created?: number;
   updated?: number;
@@ -25,7 +26,7 @@ export interface Thought {
 
 export default ['thought', {
   'title': 'Thought schema',
-  'version': 10,
+  'version': 11,
   'description': 'A Thought',
   'type': 'object',
   'primaryKey': 'id',
@@ -78,6 +79,10 @@ export default ['thought', {
     },
     'index': {
       'type': 'number',
+    },
+    'lastIcsCalendarSequence': {
+      'type': 'number',
+      'default': -1,
     },
     'stageIndex': {
       'type': 'number',
@@ -139,6 +144,10 @@ export default ['thought', {
       //@ts-ignore
       delete oldThought.calendarLink;
       return oldThought;
-    }
+    },
+    11: (oldThought: RxDocument<Thought>) => {
+      oldThought.lastIcsCalendarSequence = -1;
+      return oldThought;
+    },
   },
 }];

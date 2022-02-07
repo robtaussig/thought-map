@@ -5,6 +5,8 @@ import { Thought } from '../../../../../store/rxdb/schemas/thought';
 import { EditTypes, SectionState } from '../../../types';
 import { Note, Tag } from '../../../../../store/rxdb/schemas/types';
 import { generateICS } from './util';
+import { thoughts as thoughtActions } from '../../../../../actions';
+import { useLoadedDB } from '../../../../../hooks/useDB';
 
 interface DateTimeSectionProps {
   classes: any;
@@ -32,9 +34,17 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({
   visible = true,
 }) => {
   const dateTimeText = `${thought.date},${thought.time}`;
+  const { db } = useLoadedDB();
+  const handleDownloadICS = async () => {
+    await generateICS({ thought, tags, notes });
+    thoughtActions.editThought(db, {
+      ...thought,
+      lastIcsCalendarSequence: thought.lastIcsCalendarSequence + 1,
+    });
+  };
 
-  const handleDownloadICS = (thought: Thought) => {
-    return generateICS(thought, tags, notes);
+  const handleCancelICS = () => {
+    return generateICS({ thought, tags, notes, isCancel: true });
   };
 
   return (
@@ -50,7 +60,12 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({
       sectionState={sectionState}
       onToggleVisibility={onToggleVisibility}
       quickActionButton={thought.date && (
-        <button className={classes.addToCalendaryButton} onClick={() => handleDownloadICS(thought)}>Save to calendar</button>
+        <div className={classes.calendarButtons}>
+          <button className={classes.addToCalendarButton} onClick={handleDownloadICS}>
+            {thought.lastIcsCalendarSequence === -1 ? 'Save to calendar' : 'Update'}
+          </button>
+          {thought.lastIcsCalendarSequence >= 0 && (<button className={classes.addToCalendarButton} onClick={handleCancelICS}>Cancel</button>)}
+        </div>
       )}
       edit={{
         type: EditTypes.DateTime,

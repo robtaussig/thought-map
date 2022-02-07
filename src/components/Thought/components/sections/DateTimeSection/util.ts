@@ -28,7 +28,12 @@ const generateDescription = (thought: Thought, { notes }: Associations) => {
   return value;
 };
 
-export const generateICS = (thought: Thought, tags: Tag[], notes: Note[]) => {
+export const generateICS = ({
+  thought,
+  tags,
+  notes,
+  isCancel =  false,
+}: { thought: Thought; tags: Tag[]; notes: Note[]; isCancel?: boolean; }) => {
   const [year, month, date] = thought.date.split('-').map(Number);
   const [hours, minutes] = thought?.time.split(':').map(Number) ?? [0, 0];
   const event: EventAttributes = {
@@ -36,18 +41,18 @@ export const generateICS = (thought: Thought, tags: Tag[], notes: Note[]) => {
     duration: { hours: thought.time ? 1 : 24, minutes: 0 },
     title: thought.title,
     uid: thought.id,
-    method: 'PUBLISH',
+    method: isCancel ? 'CANCEL' : 'PUBLISH',
     description: generateDescription(thought, { notes }),
     // location: 'Folsom Field, University of Colorado (finish line)',
     url: `https://${location.host}/thought/${thought.id}`,
     // geo: { lat: 40.0095, lon: 105.2669 },
     categories: tags.map(({ text }) => text),
-    status: 'CONFIRMED',
+    status: isCancel ? 'CANCELLED' : 'CONFIRMED',
     busyStatus: 'BUSY',
     alarms: thought.type === 'reminder' ? [
       { action: 'display', trigger: { hours: 1, before: true } }
     ] : undefined,
-    sequence: 0,
+    sequence: thought.lastIcsCalendarSequence + 1,
     productId: 'robtaussig//ThoughtMap//EN'
     // created: ics.convertTimestampToArray(+new Date()),
     // recurrenceRule: 'FREQ=YEARLY;BYMONTH=1;BYMONTHDAY=1',
