@@ -73,7 +73,6 @@ export const Plans: FC<PlansProps> = ({
     return planIds
       .reduce<{ plan: PlanType; statusCount: StatusCount }[]>((acc, planId) => {
         if (planMap[planId]) {
-          console.log(planMap[planId].archived);
           acc.push({
             plan: planMap[planId],
             statusCount: statusCounts[planId],

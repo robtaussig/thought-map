@@ -215,8 +215,8 @@ const UnmemoizedThoughtNode: FC<ThoughtNodeProps> = ({
 
   return (
     <div className={classes.expandedThoughtNode}>
-      {thought.stagedOn && (
-        <Bookmark className={classes.stagedIcon}/>
+      {thought.status !== 'completed' && thought.stagedOn && (
+        <Bookmark style={{ marginLeft: left * 15, }} className={classes.stagedIcon}/>
       )}
       {_mainThoughtNode}
       {isCreatingNextThought && (
