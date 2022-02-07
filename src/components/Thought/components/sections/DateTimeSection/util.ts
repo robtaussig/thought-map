@@ -64,7 +64,7 @@ export const generateICS = ({
         return reject(error);
       }
       const data = 'data:text/calendar;charset=utf8,' + value;
-      saveAs(data, `${thought.id.slice(0, 6)}_add_to_calendar.ics`);
+      saveAs(data, `${thought.id.slice(0, 6)}_${thought.lastIcsCalendarSequence + 1}_add_to_calendar.ics`);
       return resolve(data);
     });
   });
