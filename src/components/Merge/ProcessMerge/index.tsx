@@ -14,6 +14,7 @@ import { useStyles } from './styles';
 import { useSearchParam } from '../../../lib/util';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
+import { useTypedSelector } from '../../../reducers';
 
 export const ProcessMerge: FC = () => {
   const classes = useStyles({});
@@ -22,7 +23,7 @@ export const ProcessMerge: FC = () => {
   const { setLoading, stopLoading } = useLoadingOverlay(rootRef);
   const [filteredItemsToAdd, setFilteredItemsToAdd] = useState<Item[]>(null);
   const { itemsToAdd, deletionsToAdd, itemsToRemove } = useSelector(mergeResultsSelector);
-  const thoughts = useSelector(thoughtSelector);
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   const connections = useSelector(connectionSelector);
   const backups = useSelector(backupSelector);
   const backupId = useBackupIdFromHistory();

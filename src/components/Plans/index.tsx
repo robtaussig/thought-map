@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { useTypedSelector } from '../../reducers';
 import Plan, { StatusCount } from './Plan';
 import { Plan as PlanType } from '../../store/rxdb/schemas/plan';
+import { thoughtSelector } from '../../reducers/thoughts';
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -48,7 +49,7 @@ export const Plans: FC<PlansProps> = ({
 }) => {
   const classes = useStyles();
   const plans = useTypedSelector(state => state.plans);
-  const thoughts = useTypedSelector(state => state.thoughts);
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   
   const plansSortedByLatestThought = useMemo(() => {
     const statusCounts: { [planId: string]: StatusCount } = {};

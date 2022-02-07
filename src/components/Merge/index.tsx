@@ -20,6 +20,7 @@ import UpToDate from './UpToDate';
 import CurrentRemovable from './CurrentRemovable';
 import { CurrentItem, Item } from './types';
 import { useBackupIdFromHistory } from './util';
+import { useTypedSelector } from '../../reducers';
 
 export const Merge: FC = () => {
   const classes = useStyles({});
@@ -33,7 +34,7 @@ export const Merge: FC = () => {
   const itemsToAddWithoutStatuses = useMemo(() => itemsToAdd
     .filter(({ collectionName }) => collectionName !== 'status'), [itemsToAdd]);
 
-  const thoughts = useSelector(thoughtSelector);
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   const plans = useSelector(planSelector);
   const [currentItem, setCurrentItem] = useState<CurrentItem>({
     compareIndex: 0,

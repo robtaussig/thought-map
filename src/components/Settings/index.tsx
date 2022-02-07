@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { planSelector } from '../../reducers/plans';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { connectionSelector } from '../../reducers/connections';
+import { useTypedSelector } from '../../reducers';
 
 interface SettingsProps {
   classes: any;
@@ -31,7 +32,7 @@ export const Settings: FC<SettingsProps> = ({ classes, typeOptions, setLastNotif
   const type = useSearchParam('type');
 
   const plans = useSelector(planSelector);
-  const thoughts = useSelector(thoughtSelector);
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   const connections = useSelector(connectionSelector);
 
   const plan = useMemo(() => plans.find(({ id }) => id === planId), [plans, planId]);

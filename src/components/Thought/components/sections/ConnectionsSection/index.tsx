@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { ConnectionSummary } from '../../../';
 import ConnectionsModal from './components/ConnectionsModal';
 import { SectionState } from '../../../types';
-import { useSelector } from 'react-redux';
 import { thoughtSelector } from '../../../../../reducers/thoughts';
+import { useTypedSelector } from '../../../../../reducers';
 
 interface ConnectionsSectionProps {
   classes: any;
@@ -31,7 +31,7 @@ export const ConnectionsSection: FC<ConnectionsSectionProps> = ({
   visible = true,
 }) => {
   const [openModal, closeModal] = useModal();
-  const thoughts = useSelector(thoughtSelector);
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   const thoughtTitles = thoughts.map(({ title }) => title);
   const navigate = useNavigate();
   const handleEdit = () => {

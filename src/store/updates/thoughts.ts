@@ -35,7 +35,7 @@ export const handleThoughtChange =
           break;
 
         case 'UPDATE':
-          dispatch(update(thought));
+          dispatch(update({ id: thought.id, changes: thought }));
           searcherWorker.invalidate(thought.id).then(() => {
             searcherWorker.buildTree([thought], null, null);
           });

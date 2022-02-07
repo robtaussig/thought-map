@@ -66,11 +66,13 @@ export const PlanSelectActions: FC<PlanSelectActionsProps> = ({ classes, planId,
   const navigate = useNavigate();
   const [currentReviewPeriod, setCurrentReviewPeriopd] = useState<ReviewPeriods>(ReviewPeriods.Week);
   const plans = useSelector(planSelector);
-  const stateThoughts = useSelector(thoughtSelector);
+  const stateThoughts = useSelector(thoughtSelector.selectAll);
   const statusesByThought = useSelector(statusesByThoughtSelector);
   const statuses = useSelector(statusSelector);
   const plan = plans.find(({ id }) => id === planId);
-  const thoughts = stateThoughts.filter(thought => typeof planId === 'boolean' || thought.planId === planId);
+  const thoughts = typeof planId === 'boolean' ?
+    stateThoughts :
+    stateThoughts.filter(thought => thought.planId === planId);
 
   const handleClickTimeline = () => {
     onClose();

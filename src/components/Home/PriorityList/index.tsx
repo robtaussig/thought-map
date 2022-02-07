@@ -4,9 +4,10 @@ import { styles } from './styles';
 import useModal from '../../../hooks/useModal';
 import PriorityListModal from './components/PriorityListModal';
 import { thoughtSelector } from '../../../reducers/thoughts';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toggle } from '../../../reducers/displayPriorities';
 import { useIdFromUrl } from '../../../lib/util';
+import { useTypedSelector } from '../../../reducers';
 
 interface PriorityListProps {
   classes: any;
@@ -16,7 +17,7 @@ export const PriorityList: FC<PriorityListProps> = ({ classes }) => {
   const dispatch = useDispatch();
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const hasInitialized = useRef<boolean>(false);
-  const thoughts = useSelector(thoughtSelector);
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   const planId = useIdFromUrl('plan');
   const thoughtsToUse = useMemo(() => planId ? thoughts.filter(t => t.planId === planId) : thoughts, [thoughts, planId]);
 

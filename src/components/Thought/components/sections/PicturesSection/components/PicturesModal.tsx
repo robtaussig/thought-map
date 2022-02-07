@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { Thought } from '~store/rxdb/schemas/types';
+import { Thought } from '../../../../../../store/rxdb/schemas/types';
 import { withStyles } from '@material-ui/core/styles';
 import { pictures as pictureActions } from '../../../../../../actions/';
 import { useLoadedDB } from '../../../../../../hooks/useDB';

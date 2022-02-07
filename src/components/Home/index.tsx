@@ -6,6 +6,7 @@ import { useIdFromUrl, useSearchParam } from '../../lib/util';
 import { planSelector } from '../../reducers/plans';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { useSelector } from 'react-redux';
+import { useTypedSelector } from '../../reducers';
 
 interface HomeProps {
   statusOptions: string[];
@@ -15,7 +16,7 @@ interface HomeProps {
 export const Home: FC<HomeProps> = ({ statusOptions, typeOptions }) => {
   const plans = useSelector(planSelector);
   const classes = useStyles();
-  const thoughts = useSelector(thoughtSelector);
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   const planId = useIdFromUrl('plan');
   const from = useSearchParam('from');
   const plan = plans.find(plan => plan.id === planId);

@@ -11,6 +11,7 @@ import { thoughtSelector } from '../../reducers/thoughts';
 import { statusesByThoughtSelector } from '../../reducers/statusesByThought';
 import { statusSelector } from '../../reducers/statuses';
 import useThoughtMap from '../../hooks/useThoughtMap';
+import { useTypedSelector } from '../../reducers';
 
 interface HistoryProps {
   classes: any;
@@ -24,10 +25,10 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
-  const thoughts = useSelector(thoughtSelector);
   const stateStatusesByThought = useSelector(statusesByThoughtSelector);
   const statuses = useSelector(statusSelector);
-  const thoughtId = useIdFromUrl('thought');
+  const thoughtId = useIdFromUrl('thought') as string;
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   const { descendants } = useThoughtMap(thoughtId as string);
   const statusUpdates = useMemo(() => {
     return descendants.reduce((next, relatedThoughtId) => {
@@ -55,7 +56,7 @@ export const History: FC<HistoryProps> = ({ classes, statusOptions }) => {
         if (a.created > b.created) return 1;
         return -1;
       });
-  }, [stateStatusesByThought, statuses, descendants]);
+  }, [thoughts, stateStatusesByThought, statuses, descendants]);
 
   const groupedByThought: Group[] = useMemo(() => {
     return statusUpdates.reduce((next, statusUpdate, statusUpdateIndex) => {

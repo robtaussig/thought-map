@@ -1,6 +1,6 @@
 import React, { FC, FormEvent, useState } from 'react';
 import { StyleRules, withStyles } from '@material-ui/styles';
-import { Picture } from '~store/rxdb/schemas/types';
+import { Picture } from '../../../../../../store/rxdb/schemas/types';
 import Input from '../../../../../General/Input';
 import { pictures as pictureActions } from '../../../../../../actions';
 import { useLoadedDB } from '../../../../../../hooks/useDB';

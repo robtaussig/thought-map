@@ -20,7 +20,7 @@ interface TimelineProps {
 export const Timeline: FC<TimelineProps> = ({ allPlans }) => {
   const classes = useStyles({});
   const plans = useSelector(planSelector);
-  const thoughts = useSelector(thoughtSelector);
+  const thoughts = useSelector(thoughtSelector.selectAll);
   const statuses = useSelector(statusSelector);
   const planId = useIdFromUrl('plan');
   const header = allPlans ?

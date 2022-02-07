@@ -42,51 +42,53 @@ const stage = createSlice({
       }
     });
     builder.addCase(updateThought, (state, action) => {
-      const isCurrent = state.current.includes(action.payload.id);
-      const isBacklog = state.backlog.includes(action.payload.id);
+      const isCurrent = state.current.includes(action.payload.changes.id);
+      const isBacklog = state.backlog.includes(action.payload.changes.id);
 
-      if (action.payload.status !== 'completed' && action.payload.stagedOn) {
+      if (action.payload.changes.status !== 'completed' && action.payload.changes.stagedOn) {
         const today = format(new Date(), 'yyyy-MM-dd');
-        if (action.payload.stagedOn === today) {
+        if (action.payload.changes.stagedOn === today) {
           if (!isCurrent) {
-            state.current.push(action.payload.id);
+            state.current.push(action.payload.changes.id);
           }
           if (isBacklog) {
-            state.backlog = state.backlog.filter(prev => prev !== action.payload.id);
+            state.backlog = state.backlog.filter(prev => prev !== action.payload.changes.id);
           }
         } else {
           if (!isBacklog) {
-            state.backlog.push(action.payload.id);
+            state.backlog.push(action.payload.changes.id);
           }
           if (isCurrent) {
-            state.current = state.current.filter(prev => prev !== action.payload.id);
+            state.current = state.current.filter(prev => prev !== action.payload.changes.id);
           }
         }
       } else {
-        if (isCurrent) state.current = state.current.filter(prev => prev !== action.payload.id);
-        if (isBacklog) state.backlog = state.backlog.filter(prev => prev !== action.payload.id);
+        if (isCurrent) state.current = state.current.filter(prev => prev !== action.payload.changes.id);
+        if (isBacklog) state.backlog = state.backlog.filter(prev => prev !== action.payload.changes.id);
       }
     });
     builder.addCase(setThoughts, (state, action) => {
       state.current = [];
       state.backlog = [];
       const today = format(new Date(), 'yyyy-MM-dd');
-      
-      action.payload.forEach(thought => {
-        if (thought.status !== 'completed' && thought.stagedOn) {
-          if (thought.stagedOn === today) {
-            state.current.push(thought.id);
-          } else {
-            state.backlog.push(thought.id);
+      if (Array.isArray(action.payload)) {
+        action.payload.forEach(thought => {
+          if (thought.status !== 'completed' && thought.stagedOn) {
+            if (thought.stagedOn === today) {
+              state.current.push(thought.id);
+            } else {
+              state.backlog.push(thought.id);
+            }
           }
-        }
-      });
+        });
+      }
+      
     });
     builder.addCase(removeThought, (state, action) => {
-      const isCurrent = state.current.includes(action.payload);
-      const isBacklog = state.backlog.includes(action.payload);
-      if (isCurrent) state.current = state.current.filter(prev => prev !== action.payload);
-      if (isBacklog) state.backlog = state.backlog.filter(prev => prev !== action.payload);
+      const isCurrent = state.current.includes(String(action.payload));
+      const isBacklog = state.backlog.includes(String(action.payload));
+      if (isCurrent) state.current = state.current.filter(prev => prev !== String(action.payload));
+      if (isBacklog) state.backlog = state.backlog.filter(prev => prev !== String(action.payload));
     });
   },
 });

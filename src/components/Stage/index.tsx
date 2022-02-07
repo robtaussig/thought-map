@@ -2,10 +2,10 @@ import React, { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { stageSelector } from '../../reducers/stage';
 import { thoughtSelector } from '../../reducers/thoughts';
-import { intoMap } from '../../lib/util';
 import Wrapper from './Wrapper';
 import { Thought } from '../../store/rxdb/schemas/types';
 import { makeStyles } from '@material-ui/core';
+import { useTypedSelector } from '../../reducers';
 
 interface StageProps {
 
@@ -44,19 +44,18 @@ const sortThoughtsWithIndex = (thoughts: Thought[]): Thought[] => {
 
 export const Stage: FC<StageProps> = () => {
   const stage = useSelector(stageSelector);
-  const thoughts = useSelector(thoughtSelector);
+  const normalizedThoughts = useTypedSelector(thoughtSelector.selectEntities);
   const classes = useStyles();
   const [activeThoughts, backlogThoughts] = useMemo(() => {
-    if (thoughts?.length > 0) {
-      const thoughtsById = intoMap(thoughts);
+    if (Object.keys(normalizedThoughts)?.length > 0) {
       return [
-        sortThoughtsWithIndex(stage.current.map(id => thoughtsById[id])),
-        sortThoughtsWithIndex(stage.backlog.map(id => thoughtsById[id])),
+        sortThoughtsWithIndex(stage.current.map(id => normalizedThoughts[id])),
+        sortThoughtsWithIndex(stage.backlog.map(id => normalizedThoughts[id])),
       ];
     } else {
       return [];
     }
-  }, [stage, thoughts]);
+  }, [stage, normalizedThoughts]);
 
   if (!activeThoughts || !backlogThoughts) {
     return <div style={{ height: '100%' }}/>;

@@ -1,7 +1,7 @@
 import React, { FC, MutableRefObject, memo, useMemo } from 'react';
 import ThoughtNode from './ThoughtNode';
-import { Plan } from '~store/rxdb/schemas/plan';
-import { Thought } from '~store/rxdb/schemas/thought';
+import { Plan } from '../../../store/rxdb/schemas/plan';
+import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Graph } from './lib/graph';
 import { ThoughtConnections } from './types';
 import { SortFilterSettings } from '../../../reducers/sortFilterSettings';

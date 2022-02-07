@@ -4,7 +4,7 @@ import { thoughts as thoughtActions } from '../../../actions';
 import cn from 'classnames';
 import { useLoadedDB } from '../../../hooks/useDB';
 import useLoadingOverlay from 'react-use-loading-overlay';
-import { Plan } from '~store/rxdb/schemas/plan';
+import { Plan } from '../../../store/rxdb/schemas/plan';
 
 export interface ArchiveThoughtsProps {
   classes: any;

@@ -12,6 +12,7 @@ import { thoughtSelector } from '../../reducers/thoughts';
 import { planSelector } from '../../reducers/plans';
 import useModal from '../../hooks/useModal';
 import CreateBulkThought from './Bulk';
+import { useTypedSelector } from '../../reducers';
 
 export interface CreatedThought {
   title: string;
@@ -46,7 +47,7 @@ interface CreateThoughtProps {
 export const CreateThought: FC<CreateThoughtProps> = ({ typeOptions, onClose, andStage }) => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const thoughts = useSelector(thoughtSelector);
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   const plans = useSelector(planSelector);
   const [ready, setReady] = useState<boolean>(false);
   const { db } = useLoadedDB();

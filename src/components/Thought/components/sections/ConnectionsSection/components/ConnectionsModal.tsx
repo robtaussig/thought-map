@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { thoughtSelector } from '../../../../../../reducers/thoughts';
 import { planSelector } from '../../../../../../reducers/plans';
 import { connectionSelector } from '../../../../../../reducers/connections';
+import { useTypedSelector } from '../../../../../../reducers';
 
 interface ConnectionsModalProps {
   classes: any,
@@ -106,11 +107,12 @@ const styles = (theme: any): StyleRules => ({
 });
 
 export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, thoughtId, autoFocus }) => {
-  const thoughts = useSelector(thoughtSelector);
+  const normalizedThoughts = useTypedSelector(thoughtSelector.selectEntities);
+  const thoughts = useTypedSelector(thoughtSelector.selectAll);
   const plans = useSelector(planSelector);
   const stateConnections = useSelector(connectionSelector);
 
-  const thought = thoughts.find(({ id }) => id === thoughtId);
+  const thought = normalizedThoughts[thoughtId];
   const plan: Plan = plans.find(({ id }) => thought.planId === id);
   const connections: ConnectionSummary[] = useMemo(() =>
     Object.values(stateConnections)
@@ -118,14 +120,14 @@ export const ConnectionsModal: FC<ConnectionsModalProps> = ({ classes, onClose, 
         return to === thoughtId || from === thoughtId;
       })
       .map(({ id, to, from }) => {
-        const otherThought = thoughts.find(({ id: otherThoughtId }) => otherThoughtId !== thoughtId && (otherThoughtId === to || otherThoughtId === from));
+        const otherThought = normalizedThoughts[to === thoughtId ? from : to];
         return {
           isParent: otherThought.id === to,
           otherThought,
           connectionId: id,
         };
       })
-  , [thoughtId, stateConnections, thoughts]);
+  , [thoughtId, stateConnections, normalizedThoughts]);
 
   const availableThoughts = useMemo(() => {
     const otherThoughtIds =

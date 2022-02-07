@@ -8,7 +8,7 @@ import ThoughtSettings from '../ThoughtSettings';
 import { plans as planActions, thoughts as thoughtActions } from '../../actions';
 import { useIdFromUrl } from '../../lib/util';
 import { Picture } from '../../store/rxdb/schemas/picture';
-import { Thought as ThoughtType } from '~store/rxdb/schemas/types';
+import { Thought as ThoughtType } from '../../store/rxdb/schemas/types';
 import { SectionVisibility } from './types';
 import { thoughtSelector } from '../../reducers/thoughts';
 import { tagSelector } from '../../reducers/tags';
@@ -20,6 +20,7 @@ import { statusesByThoughtSelector } from '../../reducers/statusesByThought';
 import { statusSelector } from '../../reducers/statuses';
 import { pictureSelector } from '../../reducers/pictures';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTypedSelector } from '../../reducers';
 
 export interface PriorityOption {
   value: number;
@@ -63,8 +64,8 @@ export const Thought: FC<ThoughtProps> = ({ statusOptions, typeOptions, tagOptio
   const displayThoughtSettings = useSelector(displayThoughtSettingsSelector);
   const [editAllSections, setEditAllSections] = useState<boolean>(false);
   const [threeSecondsElapsed, setThreeSecondsElapsed] = useState<boolean>(false);
-  const thoughtId = useIdFromUrl('thought');
-  const thoughts = useSelector(thoughtSelector);
+  const thoughtId = useIdFromUrl('thought') as string;
+  const normalizedThoughts = useTypedSelector(thoughtSelector.selectEntities);
   const tags = useSelector(tagSelector);
   const notes = useSelector(noteSelector);
   const connections = useSelector(connectionSelector);
@@ -74,7 +75,7 @@ export const Thought: FC<ThoughtProps> = ({ statusOptions, typeOptions, tagOptio
   const pictures = useSelector(pictureSelector);
   const setDisplaySettings = (display: boolean) => dispatch(toggle(display));
 
-  const thought = useMemo(() => thoughts.find(thought => thought.id === thoughtId), [thoughtId, thoughts]);
+  const thought = normalizedThoughts[thoughtId];
   const relatedTags = useMemo(() => Object.values(tags).filter(tag => tag.thoughtId === thoughtId), [thoughtId, tags]);
   const relatedNotes = useMemo(() => Object.values(notes).filter(note => note.thoughtId === thoughtId), [thoughtId, notes]);
   const relatedConnections: ConnectionSummary[] = useMemo(() =>
@@ -83,14 +84,14 @@ export const Thought: FC<ThoughtProps> = ({ statusOptions, typeOptions, tagOptio
         return to === thoughtId || from === thoughtId;
       })
       .map(({ id, to, from }) => {
-        const otherThought = thoughts.find(({ id: otherThoughtId }) => otherThoughtId !== thoughtId && (otherThoughtId === to || otherThoughtId === from));
+        const otherThought = normalizedThoughts[to === thoughtId ? from : to];
         return {
           isParent: otherThought.id === to,
           otherThought,
           connectionId: id,
         };
       })
-  , [thoughtId, connections, thoughts]);
+  , [thoughtId, connections, normalizedThoughts]);
 
   const plan = useMemo(() => {
     return plans.find(({ id }) => thought && id === thought.planId);

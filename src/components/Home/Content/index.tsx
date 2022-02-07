@@ -1,7 +1,7 @@
 import './style.scss';
 import React, { FC, Fragment, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { Plan } from '~store/rxdb/schemas/plan';
-import { Thought } from '~store/rxdb/schemas/thought';
+import { Plan } from '../../../store/rxdb/schemas/plan';
+import { Thought } from '../../../store/rxdb/schemas/thought';
 import { Graph } from './lib/graph';
 import { ThoughtConnections } from './types';
 import { useLoadedDB } from '../../../hooks/useDB';
@@ -20,6 +20,8 @@ import ThoughtNodes from './ThoughtNodes';
 import PriorityTutorial from '../../Tutorials/PriorityTutorial';
 import LongPressTutorial from '../../Tutorials/LongPressTutorial';
 import BlankThoughtNode from './BlankThoughtNode';
+import { useTypedSelector } from '../../../reducers';
+import { intoMap } from '../../../lib/util';
 
 interface ContentProps {
   classes: any;
@@ -37,27 +39,31 @@ export const Content: FC<ContentProps> = ({ classes, thoughts, plan, statusOptio
   const [openModal] = useModal();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [matchingThoughts, setMatchingThoughts] = useState<string[]>(null);
-  const stateThoughts = useSelector(thoughtSelector);
+  const stateThoughts = useTypedSelector(thoughtSelector.selectAll);
   const stateConnections = useSelector(connectionSelector);
   const plans = useSelector(planSelector);
   const settings = useSelector(settingSelector);
   const sortFilterSettings = useSelector(sortFilterSettingsSelector);
-  
-  const connectionStatusByThought = useMemo(() => {
+
+  useEffect(() => {
     thoughtMap.current
       .updateThoughts(stateThoughts)
       .updateConnections(Object.values(stateConnections));
-
+  }, [stateThoughts, stateConnections]);
+  
+  const connectionStatusByThought = useMemo(() => {
+    const normalizedThoughts = intoMap(thoughts);
     return Object.values(stateConnections).reduce((next, { from, to }) => {
-      if (thoughts.find(({ id }) => from === id) && thoughts.find(({ id }) => to === id)) {
+      const fromThought = normalizedThoughts[from];
+      const toThought = normalizedThoughts[to];
+      if (fromThought && toThought) {
         next[from] = next[from] || [0, 0];
-        const otherThought = thoughts.find(otherThought => otherThought.id === to);
         next[from][1]++;
-        if (otherThought.status === 'completed') next[from][0]++;
+        if (toThought.status === 'completed') next[from][0]++;
       }
       return next;
     }, {} as ThoughtConnections);
-  }, [stateConnections, thoughts, stateThoughts]);
+  }, [stateConnections, thoughts,]);
 
   useEffect(() => {
     const runSearch = async () => {

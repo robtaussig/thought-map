@@ -40,7 +40,7 @@ export const useThoughtMap = (thoughtId: string) => {
     descendants: [],
   });
 
-  const thoughts = useSelector(thoughtSelector);
+  const thoughts = useSelector(thoughtSelector.selectAll);
   const connections = useSelector(connectionSelector);
 
   useEffect(() => {
