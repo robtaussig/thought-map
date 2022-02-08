@@ -32,7 +32,7 @@ export const TagsSection: FC<TagsSectionProps> = ({ classes, sectionOrder, tags,
       onToggleVisibility={onToggleVisibility}
       edit={{
         type: EditTypes.Select,
-        options: tagOptions,
+        options: ['', ...tagOptions],
         onCreate,
         onDelete,
       }}
