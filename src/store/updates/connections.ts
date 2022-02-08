@@ -2,7 +2,7 @@ import { Connection } from '../../store/rxdb/schemas/connection';
 import { insert, remove, update } from '../../reducers/connections';
 import { Notification, RxChangeEvent } from '../../types';
 import { getInstance } from '../../hooks/useThoughtMap';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 const updateThoughtMap = async (from: string, to: string) => {
   const thoughtMap = await getInstance();

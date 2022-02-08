@@ -3,7 +3,7 @@ import { insert, remove, update } from '../../reducers/thoughts';
 import { Notification, RxChangeEvent } from '../../types';
 import { getInstance } from '../../hooks/useThoughtMap';
 import { searcherWorker } from '../init';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 const updateThoughtMap = async (thoughtId: string) => {
   const thoughtMap = await getInstance();

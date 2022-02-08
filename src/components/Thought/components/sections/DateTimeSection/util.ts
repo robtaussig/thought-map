@@ -1,4 +1,4 @@
-import { Note, Tag, Thought } from '~store/rxdb/schemas/types';
+import { Note, Tag, Thought } from '../../../../../store/rxdb/schemas/types';
 import { saveAs } from 'file-saver';
 import { EventAttributes, createEvent } from 'ics';
 
@@ -32,8 +32,17 @@ export const generateICS = ({
   thought,
   tags,
   notes,
+  location: eventLocation,
+  participants,
   isCancel =  false,
-}: { thought: Thought; tags: Tag[]; notes: Note[]; isCancel?: boolean; }) => {
+}: {
+  thought: Thought;
+  tags: Tag[];
+  notes: Note[];
+  location?: string;
+  participants?: { name: string; email: string; }[];
+  isCancel?: boolean;
+}) => {
   const [year, month, date] = thought.date.split('-').map(Number);
   const [hours, minutes] = thought?.time.split(':').map(Number) ?? [0, 0];
   const event: EventAttributes = {
@@ -43,7 +52,7 @@ export const generateICS = ({
     uid: thought.id,
     method: isCancel ? 'CANCEL' : 'PUBLISH',
     description: generateDescription(thought, { notes }),
-    // location: 'Folsom Field, University of Colorado (finish line)',
+    location: eventLocation,
     url: `https://${location.host}/thought/${thought.id}`,
     // geo: { lat: 40.0095, lon: 105.2669 },
     categories: tags.map(({ text }) => text),
@@ -53,7 +62,10 @@ export const generateICS = ({
       { action: 'display', trigger: { hours: 1, before: true } }
     ] : undefined,
     sequence: thought.lastIcsCalendarSequence + 1,
-    productId: 'robtaussig//ThoughtMap//EN'
+    productId: 'robtaussig//ThoughtMap//EN',
+    attendees: participants.map(({ name, email }) => ({
+      name, email, role: 'OPT-PARTICIPANT',
+    }))
     // created: ics.convertTimestampToArray(+new Date()),
     // recurrenceRule: 'FREQ=YEARLY;BYMONTH=1;BYMONTHDAY=1',
     // organizer: { name: 'Admin', email: 'Race@BolderBOULDER.com' },

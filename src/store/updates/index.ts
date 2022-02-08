@@ -24,7 +24,7 @@ import {
   thoughts as thoughtActions,
 } from '../../actions';
 import { addHours, format } from 'date-fns';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 const matchStatusLocationIfEnabled = (db: RxDatabase) => async (status: StatusType): Promise<void> => {
   const [useLocation] = await settingActions.findSetting(db, 'field', 'useLocation');

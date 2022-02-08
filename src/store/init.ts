@@ -31,7 +31,7 @@ import {
 } from '../actions';
 import { Searchable } from '../components/Home/ThoughtSearch';
 import { wrap } from 'comlink';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../store';
 
 export const searcherWorker = wrap<Searchable>(
   new Worker('../workers/search.worker.ts')

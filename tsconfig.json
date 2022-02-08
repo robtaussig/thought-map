@@ -7,9 +7,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "jsx": "react",
-    "paths": {
-      "~*": ["./*"]
-    },
     "typeRoots": ["node_modules/@types"]
   },
   "include": ["src/**/*"],

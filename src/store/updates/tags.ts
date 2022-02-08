@@ -2,7 +2,7 @@ import { Tag } from '../../store/rxdb/schemas/tag';
 import { insert, remove, update } from '../../reducers/tags';
 import { Notification, RxChangeEvent } from '../../types';
 import { searcherWorker } from '../init';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 export const handleTagChange = (
   dispatch: AppDispatch,

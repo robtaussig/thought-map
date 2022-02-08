@@ -1,7 +1,7 @@
 import { BulkList } from '../../store/rxdb/schemas/bulkList';
 import { insert, remove, update } from '../../reducers/bulkLists';
 import { Notification, RxChangeEvent } from '../../types';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 export const handleBulkListChange = (
   dispatch: AppDispatch,

@@ -2,7 +2,7 @@ import { Note } from '../../store/rxdb/schemas/note';
 import { insert, remove, update } from '../../reducers/notes';
 import { Notification, RxChangeEvent } from '../../types';
 import { searcherWorker } from '../init';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 export const handleNoteChange = (
   dispatch: AppDispatch,

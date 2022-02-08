@@ -148,8 +148,9 @@ export const useThoughtInformationStyles = makeStyles((theme: any) => ({
       backgroundColor: theme.palette.primary[200],
     },
     '&.description': {
-      '& > h3': {
-        whiteSpace: 'unset',
+      '& > p': {
+        whiteSpace: 'pre',
+        fontSize: 14,
       },
     },
   }),
@@ -251,6 +252,10 @@ export const useThoughtInformationStyles = makeStyles((theme: any) => ({
     padding: '5px 10px',
     textTransform: 'uppercase',
     fontWeight: 600,
+    '&.cancel': {
+      background: theme.palette.negative[500],
+      color: theme.palette.background[200]
+    },
   }),
   itemList: {
     gridArea: 'section-value',

@@ -1,7 +1,7 @@
 import { Plan } from '../../store/rxdb/schemas/plan';
 import { insert, remove, update } from '../../reducers/plans';
 import { Notification, RxChangeEvent } from '../../types';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 export const handlePlanChange = (
   dispatch: AppDispatch,

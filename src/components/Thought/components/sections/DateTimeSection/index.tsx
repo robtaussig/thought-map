@@ -7,6 +7,9 @@ import { Note, Tag } from '../../../../../store/rxdb/schemas/types';
 import { generateICS } from './util';
 import { thoughts as thoughtActions } from '../../../../../actions';
 import { useLoadedDB } from '../../../../../hooks/useDB';
+import useModal from '../../../../../hooks/useModal';
+import EditInvite from './EditInvite';
+import classNames from 'classnames';
 
 interface DateTimeSectionProps {
   classes: any;
@@ -35,12 +38,25 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({
 }) => {
   const dateTimeText = `${thought.date},${thought.time}`;
   const { db } = useLoadedDB();
-  const handleDownloadICS = async () => {
-    await generateICS({ thought, tags, notes });
-    thoughtActions.editThought(db, {
-      ...thought,
-      lastIcsCalendarSequence: thought.lastIcsCalendarSequence + 1,
-    });
+  const [openModal, closeModal] = useModal();
+  const handleDownloadICS = () => {
+    openModal(
+      <EditInvite
+        thought={thought}
+        onEdit={async (newThought: Thought, location: string, participants: { name: string; email: string}[]) => {
+          await generateICS({ thought: newThought, tags, notes, location, participants });
+          thoughtActions.editThought(db, {
+            ...newThought,
+            lastIcsCalendarSequence: thought.lastIcsCalendarSequence + 1,
+          });
+        }}
+        onClose={closeModal}
+      />
+      , 'Edit calendar event', {
+        style: {},
+        className: '',
+      });
+    
   };
 
   const handleCancelICS = () => {
@@ -64,7 +80,9 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({
           <button className={classes.addToCalendarButton} onClick={handleDownloadICS}>
             {thought.lastIcsCalendarSequence === -1 ? 'Save to calendar' : 'Update'}
           </button>
-          {thought.lastIcsCalendarSequence >= 0 && (<button className={classes.addToCalendarButton} onClick={handleCancelICS}>Cancel</button>)}
+          {thought.lastIcsCalendarSequence >= 0 && (
+            <button className={classNames(classes.addToCalendarButton, 'cancel')} onClick={handleCancelICS}>Cancel</button>
+          )}
         </div>
       )}
       edit={{

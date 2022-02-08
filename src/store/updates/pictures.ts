@@ -1,7 +1,7 @@
 import { Picture } from '../../store/rxdb/schemas/picture';
 import { insert, remove, update } from '../../reducers/pictures';
 import { Notification, RxChangeEvent } from '../../types';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 export const handlePictureChange =
   (

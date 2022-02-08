@@ -286,9 +286,14 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
     };
 
     if (typeof value === 'string') {
-      const displayValue =
-        edit.type === EditTypes.DateTime ? value.split(',').join(' ') : value;
-      return <h3 className={classes.sectionValue}>{linkify(displayValue)}</h3>;
+      if (edit.type === EditTypes.DateTime) {
+        return (
+          <h3 className={classes.sectionValue}>{value.split(',').join(' ')}</h3>
+        );
+      }
+      return (
+        <p className={classes.sectionValue}>{linkify(value)}</p>
+      );
     } else {
       return (
         <ul className={classes.itemList}>
@@ -461,7 +466,7 @@ export const ThoughtSection: FC<ThoughtSectionProps> = ({
   );
 };
 
-const getStyle = ({ draggableStyle }: any) => {
+const getStyle = ({ draggableStyle, isDragging }: any) => {
   const grid = 8;
   const result = {
     userSelect: 'none',
@@ -469,6 +474,10 @@ const getStyle = ({ draggableStyle }: any) => {
     margin: `0 0 ${grid}px 0`,
     ...draggableStyle
   };
+
+  if (isDragging) {
+    result.outline = '4px solid #00b17c';
+  }
 
   return result;
 };

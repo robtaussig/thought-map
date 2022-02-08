@@ -1,7 +1,7 @@
 import { Template } from '../../store/rxdb/schemas/template';
 import { insert, remove, update } from '../../reducers/templates';
 import { Notification, RxChangeEvent } from '../../types';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 export const handleTemplateChange = (
   dispatch: AppDispatch,

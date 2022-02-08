@@ -1,7 +1,7 @@
 import { Backup } from '../../store/rxdb/schemas/backup';
 import { insert, remove, update } from '../../reducers/backups';
 import { Notification, RxChangeEvent } from '../../types';
-import { AppDispatch } from '~store';
+import { AppDispatch } from '../../store';
 
 export const handleBackupChange = (
   dispatch: AppDispatch,
