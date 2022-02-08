@@ -11,7 +11,7 @@ import useModal from '../../../../../hooks/useModal';
 import EditInvite from './EditInvite';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { participantSelector } from '~reducers/participants';
+import { participantSelector } from '../../../../../reducers/participants';
 
 interface DateTimeSectionProps {
   classes: any;
