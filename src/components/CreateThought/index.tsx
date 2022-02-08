@@ -91,6 +91,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ typeOptions, onClose, an
     onClose();
     openModal(
       <CreateBulkThought
+        initial={createdThought}
         onReopenSingle={() => {
           openModal(
             <CreateThought

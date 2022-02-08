@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import TextArea from '../General/TextArea';
-import { DEFAULT_STATE } from './';
+import { CreatedThought, DEFAULT_STATE } from './';
 import { useLoadedDB } from '../../hooks/useDB';
 import { createWholeThought } from '../../actions/complex';
 import { useIdFromUrl } from '../../lib/util';
@@ -12,6 +12,7 @@ import { bulkLists as bulkListsActions, connections as connectionsActions } from
 import { bulkCreateThoughtsAndConnections } from '../../reducers/actions';
 
 interface CreateBulkThoughtProps {
+  initial: CreatedThought;
   onClose: () => void;
   onReopenSingle: () => void;
 }
@@ -20,9 +21,9 @@ const depthRegex = /^-+/;
 const getNumDashes = (title: string) => depthRegex.exec(title)?.[0].length ?? 0;
 const stripLeadingDashes = (title: string) => title.replace(depthRegex,'');
 
-export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ onClose, onReopenSingle }) => {
+export const CreateBulkThought: FC<CreateBulkThoughtProps> = ({ initial, onClose, onReopenSingle }) => {
   const classes = useBulkStyles({});
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>(initial.title);
   const [savedListName, setSavedListName] = useState<string>(null);
   const plans = useSelector(planSelector);
   const bulkLists = useSelector(bulkListSelector);
