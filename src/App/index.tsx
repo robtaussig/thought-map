@@ -28,6 +28,7 @@ import Thought from '../components/Thought';
 import { checkVersionAndOpenModalIfUpdate } from './util';
 import AppNav from './AppNav';
 import Plans from '../components/Plans';
+import ErrorBoundary from './ErrorBoundary';
 
 const App = () => {
   const [DBProvider, dbContext, dbReadyState] = useDB();
@@ -74,34 +75,36 @@ const App = () => {
   if (!dbReadyState) return null;
 
   return (
-    <DBProvider value={dbContext}>
-      <ModalProvider getContext={getModalContext}>
-        <Div100vh id={'app'} ref={rootRef} className={classes.root}>
-          <Notifications lastNotification={lastNotification} />
-          <Routes>
-            <Route path={'/privacy'} element={<PrivacyPolicy/>}/>
-            <Route path={'/'} element={<Home statusOptions={statusOptions} typeOptions={typeOptions}/>}/>
-            <Route path={'/settings'} element={<Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>} />
-            <Route path={'/thought/:id/connections'} element={<Connections statusOptions={statusOptions}/>} />
-            <Route path={'/thought/:id/history'} element={<History statusOptions={statusOptions}/>} />
-            <Route path={'/plan/:id/timeline'} element={<Timeline/>} />
-            <Route path={'/plan/:id/thought/:id/history'} element={<History statusOptions={statusOptions}/>} />
-            <Route path={'/thought/:id'} element={<Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>} />
-            <Route path={'/plan/:id/thought/:thoughtId/connections'} element={<Connections statusOptions={statusOptions}/>} />
-            <Route path={'/plan/:id/thought/:thoughtId'} element={<Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>} />
-            <Route path={'/plan/:id/settings'} element={<Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>} />
-            <Route path={'/plan/:id'} element={<Home statusOptions={statusOptions} typeOptions={typeOptions}/>} />
-            <Route path={'/stage'} element={<Stage/>} />
-            <Route path={'/backups'} element={<Backups/>} />
-            <Route path={'/merge/:backupId'} element={<Merge/>} />
-            <Route path={'/process-merge/:backupId'} element={<ProcessMerge/>} />
-            <Route path={'/timeline'} element={<Timeline allPlans={true}/>} />
-            <Route path={'/plans'} element={<Plans/>} />
-          </Routes>
-          <AppNav className={classes.nav}/>
-        </Div100vh>
-      </ModalProvider>
-    </DBProvider>
+    <ErrorBoundary>
+      <DBProvider value={dbContext}>
+        <ModalProvider getContext={getModalContext}>
+          <Div100vh id={'app'} ref={rootRef} className={classes.root}>
+            <Notifications lastNotification={lastNotification} />
+            <Routes>
+              <Route path={'/privacy'} element={<PrivacyPolicy/>}/>
+              <Route path={'/'} element={<Home statusOptions={statusOptions} typeOptions={typeOptions}/>}/>
+              <Route path={'/settings'} element={<Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>} />
+              <Route path={'/thought/:id/connections'} element={<Connections statusOptions={statusOptions}/>} />
+              <Route path={'/thought/:id/history'} element={<History statusOptions={statusOptions}/>} />
+              <Route path={'/plan/:id/timeline'} element={<Timeline/>} />
+              <Route path={'/plan/:id/thought/:id/history'} element={<History statusOptions={statusOptions}/>} />
+              <Route path={'/thought/:id'} element={<Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>} />
+              <Route path={'/plan/:id/thought/:thoughtId/connections'} element={<Connections statusOptions={statusOptions}/>} />
+              <Route path={'/plan/:id/thought/:thoughtId'} element={<Thought statusOptions={statusOptions} typeOptions={typeOptions} tagOptions={tagOptions}/>} />
+              <Route path={'/plan/:id/settings'} element={<Settings typeOptions={typeOptions} setLastNotification={setLastNotification}/>} />
+              <Route path={'/plan/:id'} element={<Home statusOptions={statusOptions} typeOptions={typeOptions}/>} />
+              <Route path={'/stage'} element={<Stage/>} />
+              <Route path={'/backups'} element={<Backups/>} />
+              <Route path={'/merge/:backupId'} element={<Merge/>} />
+              <Route path={'/process-merge/:backupId'} element={<ProcessMerge/>} />
+              <Route path={'/timeline'} element={<Timeline allPlans={true}/>} />
+              <Route path={'/plans'} element={<Plans/>} />
+            </Routes>
+            <AppNav className={classes.nav}/>
+          </Div100vh>
+        </ModalProvider>
+      </DBProvider>
+    </ErrorBoundary>
   );
 };
 
