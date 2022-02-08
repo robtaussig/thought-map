@@ -10,6 +10,8 @@ import { useLoadedDB } from '../../../../../hooks/useDB';
 import useModal from '../../../../../hooks/useModal';
 import EditInvite from './EditInvite';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
+import { participantSelector } from '~reducers/participants';
 
 interface DateTimeSectionProps {
   classes: any;
@@ -39,6 +41,7 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({
   const dateTimeText = `${thought.date},${thought.time}`;
   const { db } = useLoadedDB();
   const [openModal, closeModal] = useModal();
+  const allParticipants = useSelector(participantSelector.selectAll);
   const handleDownloadICS = () => {
     openModal(
       <EditInvite
@@ -60,7 +63,7 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({
   };
 
   const handleCancelICS = () => {
-    return generateICS({ thought, tags, notes, isCancel: true });
+    return generateICS({ thought, tags, notes, participants: allParticipants.filter(({ thoughtId }) => thoughtId === thought.id), isCancel: true });
   };
 
   return (
