@@ -107,31 +107,35 @@ export const ManagePhotos: FC<ManagePhotosProps> = ({ classes, pictures }) => {
 
   const handleClickUploadLocalImages = useCallback(() => {
     const uploadImage = async (image: Picture): Promise<Picture> => {
-      const res = await fetch('https://api.imgur.com/3/image', {
-        headers: {
-          'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          image: image.localUrl.replace(BASE64_REGEX, ''),
-        }),
-      });
-      const rjson = await res.json();
-      const newImage = {
-        ...image,
-        imgurUrl: rjson.data.link,
-      };
-      delete newImage.localUrl;
-      return pictureActions.editPicture(db, newImage);
+      const pictureWithLocalUrl = await pictureActions.getPicture(db, image.id);
+      if (pictureWithLocalUrl.localUrl) {
+        const res = await fetch('https://api.imgur.com/3/image', {
+          headers: {
+            'Authorization': `Client-ID ${IMGUR_CLIENT_ID}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            image: pictureWithLocalUrl.localUrl.replace(BASE64_REGEX, ''),
+          }),
+        });
+        const rjson = await res.json();
+        const newImage = {
+          ...pictureWithLocalUrl,
+          imgurUrl: rjson.data.link,
+        };
+        delete newImage.localUrl;
+        return pictureActions.editPicture(db, newImage);
+      }
+      
     };
 
     const onConfirm = async () => {
       setLoading('Uploading images...');
       await Promise.all(
         Object.values(pictures)
-          .filter(picture => picture.localUrl)
+          .filter(picture => !picture.imgurUrl)
           .map(uploadImage)
       );
       stopLoading();

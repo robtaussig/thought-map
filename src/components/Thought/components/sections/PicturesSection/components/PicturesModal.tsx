@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { Thought } from '../../../../../../store/rxdb/schemas/types';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { Picture, Thought } from '../../../../../../store/rxdb/schemas/types';
 import { withStyles } from '@material-ui/core/styles';
 import { pictures as pictureActions } from '../../../../../../actions/';
 import { useLoadedDB } from '../../../../../../hooks/useDB';
@@ -27,13 +27,28 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
   const uploadPictureRef = useRef<HTMLInputElement>(null);
   const { db } = useLoadedDB();
   const pictures = useSelector(pictureSelector);
+  const [relatedPictures, setRelatedPictures] = useState<Picture[]>([]);
   const [tempImages, setTempImages] = useState<any[]>([]);
   const { setLoading, stopLoading } = useLoadingOverlay(rootRef);
-  const relatedPictures = useMemo(() =>
-    Object.values(pictures)
-      .filter(picture => picture.thoughtId === thought.id)
-      .sort((a, b) => a.created - b.created)
-  ,[pictures, thought]);
+  
+  useEffect(() => {
+    const thoughtPictures = Object.values(pictures).filter(p => p.thoughtId === thought.id);
+    const getLocalUrls = async (images: Picture[]) => {
+      const result: Picture[] = [];
+      for (const image of images) {
+        if (image.imgurUrl) {
+          result.push(image);
+        } else {
+          const withLocal = await pictureActions.getPicture(db, image.id);
+          result.push(withLocal);
+        }
+      }
+
+      setRelatedPictures(result);
+    };
+
+    getLocalUrls(thoughtPictures);
+  }, [pictures, thought.id]);
 
   useEffect(() => {
     const handleChange: EventListener = e => {
@@ -42,7 +57,7 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
   
     uploadPictureRef.current.addEventListener('change', handleChange);
 
-    return () => uploadPictureRef.current.removeEventListener('change', handleChange);
+    return () => uploadPictureRef.current?.removeEventListener('change', handleChange);
   }, []);
 
   const uploadImageLocally = (idx: number) => async () => {
