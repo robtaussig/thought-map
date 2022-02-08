@@ -32,7 +32,6 @@ export const generateICS = ({
   thought,
   tags,
   notes,
-  location: eventLocation,
   participants,
   isCancel =  false,
 }: {
@@ -52,7 +51,7 @@ export const generateICS = ({
     uid: thought.id,
     method: isCancel ? 'CANCEL' : 'PUBLISH',
     description: generateDescription(thought, { notes }),
-    location: eventLocation,
+    location: thought.location,
     url: `https://${location.host}/thought/${thought.id}`,
     // geo: { lat: 40.0095, lon: 105.2669 },
     categories: tags.map(({ text }) => text),

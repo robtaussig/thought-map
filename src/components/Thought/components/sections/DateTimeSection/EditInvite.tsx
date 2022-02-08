@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme: any) => ({
 export interface EditInviteProps {
   className?: string;
   thought: Thought;
-  onEdit: (thought: Thought, location: string, participants: { name: string; email: string; }[]) => void;
+  onEdit: (thought: Thought, participants: { name: string; email: string; }[]) => void;
   onClose: () => void;
 }
 
@@ -70,30 +70,18 @@ export const EditInvite: FC<EditInviteProps> = ({
   onClose,
 }) => {
   const classes = useStyles();
-  // const [editedThought, setEditedThought] = useState(thought);
-  const [location, setLocation] = useState('');
   const [participants, setParticipants] = useState([{ name: '', email: '' }]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    onEdit(thought, location, participants.filter(p => p.name && p.email));
+    onEdit(thought, participants.filter(p => p.name && p.email));
     onClose();
   };
 
   return (
     <form className={cn(classes.root, className)} onSubmit={handleSubmit}>
       <h2 className={classes.header}>Add Event to Calendar</h2>
-      <Input
-        classes={classes}
-        label={'Location'}
-        value={location}
-        onChange={e => {
-          const inputValue = e.target.value;
-          setLocation(inputValue);
-        }}
-        type={'text'}
-      />
       <h3 className={classes.participantsHeader}>Participants</h3>
       <ul className={classes.participantList}>
         {participants.map(({ name, email }, idx) => (

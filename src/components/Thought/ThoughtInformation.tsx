@@ -43,6 +43,7 @@ import { Bookmark } from '@material-ui/icons';
 import classNames from 'classnames';
 import { format } from 'date-fns';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
+import LocationSection from './components/sections/LocationSection';
 
 export interface ThoughtInformationProps {
   thought: Thought;
@@ -388,6 +389,18 @@ const ThoughtInformation: FC<ThoughtInformationProps> = ({
         onToggleVisibility={handleToggleVisibility('pictures')}
       />
     ),
+    location: (
+      <LocationSection
+        key={'location'}
+        sectionOrder={visibleSectionOrder}
+        classes={classes}
+        thought={thought}
+        visible={sectionVisibility['location']}
+        onEdit={handleEditThought('location')}
+        sectionState={deriveSectionState('location')}        
+        onToggleVisibility={handleToggleVisibility('location')}
+      />
+    )
   };
 
   return (

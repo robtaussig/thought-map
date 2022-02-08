@@ -11,6 +11,7 @@ export interface Thought {
   sections: string;
   priority?: number;
   archived?: boolean;
+  location?: string;
   recurring?: number;
   stagedOn?: string;
   stageIndex?: number;
@@ -26,7 +27,7 @@ export interface Thought {
 
 export default ['thought', {
   'title': 'Thought schema',
-  'version': 11,
+  'version': 13,
   'description': 'A Thought',
   'type': 'object',
   'primaryKey': 'id',
@@ -48,6 +49,9 @@ export default ['thought', {
       'type': 'string',
     },
     'sections': {
+      'type': 'string',
+    },
+    'location': {
       'type': 'string',
     },
     'type': {
@@ -147,6 +151,16 @@ export default ['thought', {
     },
     11: (oldThought: RxDocument<Thought>) => {
       oldThought.lastIcsCalendarSequence = -1;
+      return oldThought;
+    },
+    12: (oldThought: RxDocument<Thought>) => {
+      oldThought.location = '';
+      return oldThought;
+    },
+    13: (oldThought: RxDocument<Thought>) => {
+      if (oldThought.sections) {
+        oldThought.sections += '-location';
+      }
       return oldThought;
     },
   },

@@ -17,7 +17,7 @@ export interface Plan {
 
 export default ['plan', {
   'title': 'Plan schema',
-  'version': 5,
+  'version': 6,
   'description': 'A Plan',
   'type': 'object',
   'primaryKey': 'id',
@@ -74,6 +74,12 @@ export default ['plan', {
     },
     5: (oldPlan: RxDocument<Plan>) => {
       oldPlan.groupThoughts = true;
+      return oldPlan;
+    },
+    6: (oldPlan: RxDocument<Plan>) => {
+      if (oldPlan.defaultSections) {
+        oldPlan.defaultSections += '-location';
+      }
       return oldPlan;
     },
   },
