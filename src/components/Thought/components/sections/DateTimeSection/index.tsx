@@ -43,7 +43,7 @@ export const DateTimeSection: FC<DateTimeSectionProps> = ({
     openModal(
       <EditInvite
         thought={thought}
-        onEdit={async (newThought: Thought, participants: { name: string; email: string}[]) => {
+        onEdit={async (newThought: Thought, participants: { id: string; name: string; email: string }[]) => {
           await generateICS({ thought: newThought, tags, notes, participants });
           thoughtActions.editThought(db, {
             ...newThought,

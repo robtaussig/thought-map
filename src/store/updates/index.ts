@@ -25,6 +25,7 @@ import {
 } from '../../actions';
 import { addHours, format } from 'date-fns';
 import { AppDispatch } from '../../store';
+import { handleParticipantChange } from './participants';
 
 const matchStatusLocationIfEnabled = (db: RxDatabase) => async (status: StatusType): Promise<void> => {
   const [useLocation] = await settingActions.findSetting(db, 'field', 'useLocation');
@@ -105,6 +106,8 @@ export const subscribeToChanges = (
     db.custom_object.$.subscribe(handleCustomObjectChange(dispatch, setLastNotification)),
     // @ts-ignore
     db.bulk_list.$.subscribe(handleBulkListChange(dispatch, setLastNotification)),
+    // @ts-ignore
+    db.participant.$.subscribe(handleParticipantChange(dispatch, setLastNotification)),
     //@ts-ignore
     db.status.$.subscribe(handleStatusChange(
       dispatch,

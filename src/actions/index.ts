@@ -2,6 +2,7 @@ import Thoughts from '../models/thoughts';
 import Connections from '../models/connections';
 import Plans from '../models/plans';
 import Notes from '../models/notes';
+import Participants from '../models/participants';
 import Tags from '../models/tags';
 import Templates from '../models/templates';
 import Pictures from '../models/pictures';
@@ -115,4 +116,12 @@ export const bulkLists = {
   createBulkList: BulkLists.add,
   deleteBulkList: BulkLists.delete,
   editBulkList: BulkLists.update,
+};
+
+export const participants = {
+  getParticipants: Participants.fetchAll,
+  getParticipant: Participants.fetch,
+  createParticipant: Participants.add,
+  deleteParticipant: Participants.delete,
+  editParticipant: Participants.update,
 };

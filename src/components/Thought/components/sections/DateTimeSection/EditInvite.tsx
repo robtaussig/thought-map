@@ -1,9 +1,13 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo, useMemo, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import cn from 'classnames';
 import { Thought } from '../../../../../store/rxdb/schemas/thought';
 import Input from '../../../../General/Input';
 import { Add, Remove } from '@material-ui/icons';
+import { useSelector } from 'react-redux';
+import { participantSelector } from '../../../../../reducers/participants';
+import { useLoadedDB } from '../../../../../hooks/useDB';
+import { participants as participantsActions } from '../../../../../actions';
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -13,6 +17,7 @@ const useStyles = makeStyles((theme: any) => ({
   inputLabel: {
     display: 'flex',
     flexDirection: 'column-reverse',
+    flex: 1,
     '& :invalid:not(:focus)': {
       background: '#ff1f1f36',
     }
@@ -33,9 +38,7 @@ const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     position: 'relative',
     marginBottom: 8,
-    '& > label': {
-      flex: 1,
-    }
+    flexDirection: 'column'
   },
   addParticipant: {
     position: 'absolute',
@@ -70,12 +73,39 @@ export const EditInvite: FC<EditInviteProps> = ({
   onClose,
 }) => {
   const classes = useStyles();
-  const [participants, setParticipants] = useState([{ name: '', email: '' }]);
+  const { db } = useLoadedDB();
+  const allParticipants = useSelector(participantSelector.selectAll);
+  const thoughtParticipants = useMemo(() =>
+    allParticipants.filter(({ thoughtId }) => thoughtId === thought.id), [thought, allParticipants]);
+  const [participants, setParticipants] = useState(thoughtParticipants.map(({ id, name, email }) => ({ id, name, email })).concat({ name: '', email: '', id: null }));
 
-  const handleSubmit = (e: any) => {
+  const reconcileParticipants = async (newParticipants: { id: string | null; name: string; email: string }[]) => {
+    const participantsToRemove = thoughtParticipants.filter(p => !newParticipants.some(({ id }) => id === p.id));
+    const participantsToCreate = newParticipants.filter(p => p.id === null && !thoughtParticipants.some(({ email }) => email === p.email));
+    const participantsToUpdate = newParticipants.filter(p => {
+      if (p.id === null) return false;
+      const np = thoughtParticipants.find(({ id }) => id === p.id);
+      return np.name !== p.name || np.email !== p.email;
+    }).map(p => {
+      const oldP = thoughtParticipants.find(op => op.id === p.id);
+      return {
+        ...oldP,
+        ...p
+      };
+    });
+
+    return Promise.all([
+      ...participantsToRemove.map(p => participantsActions.deleteParticipant(db, p.id)),
+      ...participantsToCreate.map(p => participantsActions.createParticipant(db, { ...p, thoughtId: thought.id })),
+      ...participantsToUpdate.map(p => participantsActions.editParticipant(db, p)),
+    ]);
+  };
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-
-    onEdit(thought, participants.filter(p => p.name && p.email));
+    const newParticipants = participants.filter(p => p.name && p.email);
+    onEdit(thought, newParticipants);
+    await reconcileParticipants(newParticipants);
     onClose();
   };
 
@@ -89,6 +119,7 @@ export const EditInvite: FC<EditInviteProps> = ({
             <Input
               classes={classes}
               value={name}
+              id={'name'}
               placeholder={'Name'}
               autoFocus={idx > 0}
               onChange={e => {
@@ -106,6 +137,7 @@ export const EditInvite: FC<EditInviteProps> = ({
             <Input
               classes={classes}
               value={email}
+              id={'email'}
               placeholder={'Email'}
               onChange={e => {
                 const inputValue = e.target.value;
@@ -120,7 +152,7 @@ export const EditInvite: FC<EditInviteProps> = ({
               type={'email'}
             />
             {idx === participants.length - 1 ? (
-              <button type={'button'} className={classes.addParticipant} onClick={() => setParticipants(prev => prev.concat({ name: '', email: '' }))}><Add/></button>
+              <button type={'button'} className={classes.addParticipant} onClick={() => setParticipants(prev => prev.concat({ name: '', email: '', id: null }))}><Add/></button>
             ) : (
               <button type={'button'} className={classes.addParticipant} onClick={() => setParticipants(prev => {
                 const next = [...prev];

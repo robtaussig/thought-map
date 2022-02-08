@@ -12,6 +12,7 @@ import backup from './backup';
 import customObject from './customObject';
 import deletion from './deletion';
 import bulkList from './bulkList';
+import participant from './participant';
 
 type SchemaTuple = [string, RxJsonSchema<any>, RxCollectionCreator?];
 
@@ -29,7 +30,9 @@ export default [
   customObject,
   deletion,
   bulkList,
+  participant,
 ] as [
+  SchemaTuple,
   SchemaTuple,
   SchemaTuple,
   SchemaTuple,

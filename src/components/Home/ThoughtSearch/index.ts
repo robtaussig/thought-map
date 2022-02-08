@@ -1,6 +1,7 @@
 import { Thought } from 'store/rxdb/schemas/thought';
 import { Note } from 'store/rxdb/schemas/note';
 import { Tag } from 'store/rxdb/schemas/tag';
+import { Participant } from 'store/rxdb/schemas/participant';
 
 export interface Notes {
   [noteId: string]: Note;
@@ -23,7 +24,7 @@ export class Searchable {
   private root: Node = {};
   private visited: { [id: string]: boolean } = {};
 
-  public buildTree = (thoughts: Thought[], notes?: Notes, tags?: Tags): void => {
+  public buildTree = (thoughts: Thought[], notes?: Notes, tags?: Tags, participants?: Participant[]): void => {
     if (thoughts) {
       thoughts.forEach(({ id, date, description, status, time, title, type }) => {
         if (!this.visited[id]) {
@@ -47,6 +48,15 @@ export class Searchable {
         if (!this.visited[id]) {
           this.visited[id] = true;
           this.processValues(thoughtId, [text]);
+        }
+      });
+    }
+
+    if (participants) {
+      participants.forEach(({ id, thoughtId, name, email }) => {
+        if (!this.visited[id]) {
+          this.visited[id] = true;
+          this.processValues(thoughtId, [name, email]);
         }
       });
     }

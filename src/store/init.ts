@@ -2,6 +2,7 @@ import { Settings as SettingsType, setSettings } from '../reducers/settings';
 import { Thoughts as ThoughtsType, setThoughts } from '../reducers/thoughts';
 import { Connections as ConnectionsType, setConnections } from '../reducers/connections';
 import { Notes as NotesType, setNotes } from '../reducers/notes';
+import { setParticipants } from '../reducers/participants';
 import { Tags as TagsType, setTags } from '../reducers/tags';
 import { Backups as BackupsType, setBackups } from '../reducers/backups';
 import { Plans as PlansType, setPlans } from '../reducers/plans';
@@ -21,6 +22,7 @@ import {
   connections as connectionActions,
   customObjects as customObjectActions,
   notes as noteActions,
+  participants as participantActions,
   pictures as pictureActions,
   plans as planActions,
   settings as settingActions,
@@ -32,6 +34,7 @@ import {
 import { Searchable } from '../components/Home/ThoughtSearch';
 import { wrap } from 'comlink';
 import { AppDispatch } from '../store';
+import { Participant } from './rxdb/schemas/participant';
 
 export const searcherWorker = wrap<Searchable>(
   new Worker('../workers/search.worker.ts')
@@ -51,6 +54,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: AppDispatc
   const setStatusesByThoughtAction = (statusesByThought: StatusesByThoughtType) => dispatch(setStatusesByThought(statusesByThought));
   const setCustomObjectsAction = (customObjects: CustomObject[]) => dispatch(setCustomObjects(customObjects));
   const setBulkListsAction = (bulkLists: BulkList[]) => dispatch(setBulkLists(bulkLists));
+  const setParticipantsAction = (participants: Participant[]) => dispatch(setParticipants(participants));
 
   //Need to split by groups of 10, due to bug with TypeScript: https://github.com/Microsoft/TypeScript/issues/22469
   const [allThoughts, allConnections, allPlans, allNotes, allTags, templates, allPictures, settings, allStatuses, bulkLists] = await Promise.all([
@@ -64,6 +68,10 @@ export const initializeApplication = async (db: RxDatabase, dispatch: AppDispatc
     settingActions.getSettings(db),
     statusActions.getStatuses(db),
     bulkListActions.getBulkLists(db),
+    bulkListActions.getBulkLists(db),
+  ]);
+  const [allParticipants] = await Promise.all([
+    participantActions.getParticipants(db),
   ]);
 
   const settingsMap = settings.reduce((next, { field, value }) => {
@@ -83,12 +91,14 @@ export const initializeApplication = async (db: RxDatabase, dispatch: AppDispatc
     tags,
     pictures,
     statuses,
+    participants,
   ] = [
     allConnections.filter(({ from, to }) => unarchivedThoughtIds.has(from) && unarchivedThoughtIds.has(to)),
     allNotes.filter(({ thoughtId }) => unarchivedThoughtIds.has(thoughtId)),
     allTags.filter(({ thoughtId }) => unarchivedThoughtIds.has(thoughtId)),
     allPictures.filter(({ thoughtId }) => unarchivedThoughtIds.has(thoughtId)),
     allStatuses.filter(({ thoughtId }) => unarchivedThoughtIds.has(thoughtId)),
+    allParticipants.filter(({ thoughtId }) => unarchivedThoughtIds.has(thoughtId)),
   ];
 
   const [backups, customObjects] = await Promise.all([
@@ -120,8 +130,9 @@ export const initializeApplication = async (db: RxDatabase, dispatch: AppDispatc
   setBackupsAction(backups);
   setCustomObjectsAction(customObjects);
   setBulkListsAction(bulkLists);
+  setParticipantsAction(participants);
 
-  searcherWorker.buildTree(thoughts, notesById, tagsById);
+  searcherWorker.buildTree(thoughts, notesById, tagsById, participants);
 
   return backups;
 };

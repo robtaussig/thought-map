@@ -22,6 +22,7 @@ import customObjects from './customObjects';
 import typeOptions from './typeOptions';
 import tagOptions from './tagOptions';
 import statusOptions from './statusOptions';
+import participants from './participants';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({
@@ -48,6 +49,7 @@ const rootReducer = combineReducers({
   tagOptions,
   statusOptions,
   bulkLists,
+  participants,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
