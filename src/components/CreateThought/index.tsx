@@ -1,4 +1,4 @@
-import React, { FC, FormEventHandler, Fragment, memo, useState } from 'react';
+import React, { FC, FormEventHandler, Fragment, memo, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CloseModal } from '../../hooks/useModal/types';
 import { useLoadedDB } from '../../hooks/useDB';
@@ -13,6 +13,7 @@ import { planSelector } from '../../reducers/plans';
 import useModal from '../../hooks/useModal';
 import CreateBulkThought from './Bulk';
 import { useTypedSelector } from '../../reducers';
+import { sortPlansByLatestThought } from '../Plans/util';
 
 export interface CreatedThought {
   title: string;
@@ -82,6 +83,9 @@ export const CreateThought: FC<CreateThoughtProps> = ({ typeOptions, onClose, an
     }
   };
 
+  const sortedPlans = useMemo(() =>
+    sortPlansByLatestThought(plans, thoughts).map(({ plan }) => plan), [plans, thoughts]);
+
   const handleClickBulk = (e: any) => {
     e.preventDefault();
     onClose();
@@ -112,7 +116,7 @@ export const CreateThought: FC<CreateThoughtProps> = ({ typeOptions, onClose, an
           onReady={setReady}
           thoughtTitles={thoughtTitles}
           planId={planId}
-          plans={plans}
+          plans={sortedPlans}
           selectedPlan={selectedPlan}
           setSelectedPlan={setSelectedPlan}
         />

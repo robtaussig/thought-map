@@ -2,9 +2,9 @@ import React, { FC, memo, useMemo } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import cn from 'classnames';
 import { useTypedSelector } from '../../reducers';
-import Plan, { StatusCount } from './Plan';
-import { Plan as PlanType } from '../../store/rxdb/schemas/plan';
+import Plan from './Plan';
 import { thoughtSelector } from '../../reducers/thoughts';
+import { sortPlansByLatestThought } from './util';
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -51,37 +51,7 @@ export const Plans: FC<PlansProps> = ({
   const plans = useTypedSelector(state => state.plans);
   const thoughts = useTypedSelector(thoughtSelector.selectAll);
   
-  const plansSortedByLatestThought = useMemo(() => {
-    const statusCounts: { [planId: string]: StatusCount } = {};
-    const planIds: string[] = [];
-    thoughts.forEach(({ planId, status }) => {
-      if (!statusCounts[planId]) {
-        planIds.push(planId);
-        statusCounts[planId] = { unstarted: 0, started: 0, completed: 0 };
-      }
-      if (status === 'new') {
-        statusCounts[planId].unstarted++;
-      } else if (status === 'completed') {
-        statusCounts[planId].completed++;
-      } else if (status === 'in progress') {
-        statusCounts[planId].started++;
-      }
-    });
-    const planMap = plans.reduce<{ [planId: string]: PlanType }>((acc, plan) => {
-      acc[plan.id] = plan;
-      return acc;
-    }, {});
-    return planIds
-      .reduce<{ plan: PlanType; statusCount: StatusCount }[]>((acc, planId) => {
-        if (planMap[planId]) {
-          acc.push({
-            plan: planMap[planId],
-            statusCount: statusCounts[planId],
-          });
-        }
-        return acc;
-      }, []);
-  }, [thoughts, plans]);
+  const plansSortedByLatestThought = useMemo(() => sortPlansByLatestThought(plans, thoughts), [thoughts, plans]);
 
   return (
     <div className={cn(classes.root, className)}>
