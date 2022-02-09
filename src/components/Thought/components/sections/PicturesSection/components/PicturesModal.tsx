@@ -1,16 +1,15 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Picture, Thought } from '../../../../../../store/rxdb/schemas/types';
+import { Thought } from '../../../../../../store/rxdb/schemas/types';
 import { withStyles } from '@material-ui/core/styles';
 import { pictures as pictureActions } from '../../../../../../actions/';
 import { useLoadedDB } from '../../../../../../hooks/useDB';
 import useLoadingOverlay from 'react-use-loading-overlay';
 import TempImages from './TempImages';
 import Images from './Images';
-import { convertBlobToDataUrl, getBase64ImageFromUrl } from './util';
+import { getBase64ImageFromUrl } from './util';
 import { openConfirmation } from '../../../../../../lib/util';
 import { styles } from './styles';
-import { useSelector } from 'react-redux';
-import { pictureSelector } from '../../../../../../reducers/pictures';
+import { useLazyPictures } from '../../../../../../hooks/useLazyPictures';
 
 interface PictureProps {
   classes: any;
@@ -26,38 +25,10 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
   const loaded = useRef<boolean>(false);
   const uploadPictureRef = useRef<HTMLInputElement>(null);
   const { db } = useLoadedDB();
-  const pictures = useSelector(pictureSelector);
-  const [relatedPictures, setRelatedPictures] = useState<Picture[]>([]);
   const [tempImages, setTempImages] = useState<any[]>([]);
   const { setLoading, stopLoading } = useLoadingOverlay(rootRef);
+  const loadedPictures = useLazyPictures(thought.id);
   
-  useEffect(() => {
-    const thoughtPictures = Object.values(pictures).filter(p => p.thoughtId === thought.id);
-    const getLocalUrls = async (images: Picture[]) => {
-      const result: Picture[] = [];
-      for (const image of images) {
-        if (image.imgurUrl) {
-          result.push(image);
-        } else {
-          const img = await pictureActions.getAttachment(db, image.id);
-          if (img) {
-            const localUrl = await convertBlobToDataUrl(img) as string;
-            if (localUrl) {
-              result.push({
-                ...image,
-                localUrl,
-              });
-            }
-          }
-        }
-      }
-
-      setRelatedPictures(result);
-    };
-
-    getLocalUrls(thoughtPictures);
-  }, [pictures, thought.id]);
-
   useEffect(() => {
     const handleChange: EventListener = e => {
       setTempImages(prev => prev.concat(...Array.from((e.target as any).files).map<any>(URL.createObjectURL)));
@@ -143,7 +114,7 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
         />
         <Images
           classes={classes}
-          relatedPictures={relatedPictures}
+          relatedPictures={loadedPictures}
           loaded={loaded.current}
           deleteImage={deleteImage}
         />
