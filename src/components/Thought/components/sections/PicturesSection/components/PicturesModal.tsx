@@ -39,8 +39,11 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
         if (image.imgurUrl) {
           result.push(image);
         } else {
-          const withLocal = await pictureActions.getAttachment(db, image.id, image.localUrl);
-          result.push(withLocal);
+          const localUrl = await pictureActions.getAttachment(db, image.id, image.localUrl);
+          result.push({
+            ...image,
+            localUrl,
+          });
         }
       }
 
@@ -69,13 +72,13 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
         thoughtId: thought.id,
       });
 
-      const attachment = await pictureActions.createAttachment(db, {
+      const localUrl = await pictureActions.createAttachment(db, {
         id: picture.id, data: base64
       });
 
       await pictureActions.createPicture(db, {
         ...picture,
-        localUrl: attachment.id,
+        localUrl: localUrl,
       });
 
       setTempImages(prev => prev.filter(prevImage => prevImage !== tempImages[idx]));

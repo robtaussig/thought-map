@@ -47,8 +47,11 @@ export const PicturesSection: FC<PicturesSectionProps> = ({ classes, sectionOrde
         if (image.imgurUrl) {
           result.push(image);
         } else {
-          const withLocal = await pictureActions.getAttachment(db, image.id, image.localUrl);
-          result.push(withLocal);
+          const localUrl = await pictureActions.getAttachment(db, image.id, image.localUrl);
+          result.push({
+            ...image,
+            localUrl,
+          });
         }
       }
 
