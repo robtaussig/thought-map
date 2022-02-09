@@ -62,14 +62,18 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
 
   const uploadImageLocally = (idx: number) => async () => {
     setLoading('Uploading Locally...');
-    const base64: any = await getBase64ImageFromUrl(tempImages[idx]);
+    try {
+      const base64: any = await getBase64ImageFromUrl(tempImages[idx]);
 
-    await pictureActions.createPicture(db, {
-      localUrl: base64,
-      thoughtId: thought.id,
-    });
+      await pictureActions.createPicture(db, {
+        localUrl: base64,
+        thoughtId: thought.id,
+      });
+      setTempImages(prev => prev.filter(prevImage => prevImage !== tempImages[idx]));
+    } catch (e) {
+      alert(e && e.message ? e.message : e);
+    }
     stopLoading();
-    setTempImages(prev => prev.filter(prevImage => prevImage !== tempImages[idx]));
   };
 
   const uploadImageToImgur = (idx: number) => async () => {
