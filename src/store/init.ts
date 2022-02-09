@@ -109,7 +109,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: AppDispatc
   const statusesById = intoMap(statuses);
   const notesById = intoMap(notes);
   const tagsById = intoMap(tags);
-  const picturesWithoutLocalUrlById = intoMap(pictures.map(({ localUrl, ...rest }) => rest));
+  const picturesById = intoMap(pictures);
   const connectionsById = intoMap(connections);
   const statusesByThought = statuses.reduce((next, { id, thoughtId }) => {
     next[thoughtId] = next[thoughtId] || [];
@@ -123,7 +123,7 @@ export const initializeApplication = async (db: RxDatabase, dispatch: AppDispatc
   setNotesAction(notesById);
   setTagsAction(tagsById);
   setTemplatesAction(templates);
-  setPicturesAction(picturesWithoutLocalUrlById);
+  setPicturesAction(picturesById);
   setSettingsAction(settingsMap);
   setStatusesAction(statusesById);
   setStatusesByThoughtAction(statusesByThought);

@@ -67,6 +67,8 @@ export const pictures = {
   createPicture: Pictures.add,
   deletePicture: Pictures.delete,
   editPicture: Pictures.update,
+  createAttachment: Pictures.addAttachment,
+  getAttachment: Pictures.fetchAttachment,
 };
 
 export const settings = {

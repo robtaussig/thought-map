@@ -79,4 +79,31 @@ export default class Base {
       return query.remove();
     }));
   };
+
+  static addAttachment = async (
+    db: RxDatabase,
+    { id, data }: { id: string; data: string },
+    tableName: string
+  ): Promise<string> => {
+    const document = await Base.fetch(db, id, tableName);
+    const uuid = uuidv4();
+    const attachment = await document.putAttachment(
+      {
+          id: uuid,     // (string) name of the attachment like 'cat.jpg'
+          data,   // (string|Blob|Buffer) data of the attachment
+          type: 'image/jpeg'   // (string) type of the attachment-data like 'image/jpeg'
+      },
+    );
+    console.log(attachment);
+    return attachment.id;
+  };
+
+  static fetchAttachment = async (db: RxDatabase, id: string, localUrl: string, tableName: string): Promise<any> => {
+    const document = await Base.fetch(db, id, tableName);
+    const attachment = await document.getAttachment(localUrl);
+    console.log(attachment);
+
+    return attachment;
+  };
+
 }

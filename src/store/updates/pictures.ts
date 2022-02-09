@@ -11,13 +11,12 @@ export const handlePictureChange =
   ) =>
     ({ documentData, operation, documentId }: RxChangeEvent) => {
       if ((window as any).blockDBSubscriptions === true) return;
-      const { localUrl, ...picture }: Picture = documentData ?? {};
       let notification;
 
       switch (operation) {
         case 'INSERT':
-          dispatch(insert(picture));
-          matchPictureLocationIfEnabled(picture);
+          dispatch(insert(documentData));
+          matchPictureLocationIfEnabled(documentData);
           notification = { message: 'Picture created' };
           break;
 
@@ -27,7 +26,7 @@ export const handlePictureChange =
           break;
 
         case 'UPDATE':
-          dispatch(update(picture));
+          dispatch(update(documentData));
           notification = { message: 'Picture updated' };
           break;
 
