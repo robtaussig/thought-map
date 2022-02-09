@@ -9,7 +9,7 @@ import { convertBlobToDataUrl } from '../components/Thought/components/sections/
 export const useLazyPictures = (thoughtId: string) => {
   const statePictures = useSelector(pictureSelector);
   const { db } = useLoadedDB();
-  const [retrieved, setRetrieved] = useState<Picture[]>();
+  const [retrieved, setRetrieved] = useState<Picture[]>([]);
 
   useEffect(() => {
     const thoughtPictures = Object.values(statePictures).filter(p => p.thoughtId === thoughtId);
