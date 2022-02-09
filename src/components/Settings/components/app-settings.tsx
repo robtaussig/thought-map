@@ -1,13 +1,11 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import ManagePhotos from './manage-photos';
 import CustomObjects from './CustomObjects';
 import AppConfiguration from './AppConfiguration';
 import Theme from './theme';
 import Data from './Data';
 import useLoadingOverlay from 'react-use-loading-overlay';
 import { useSelector } from 'react-redux';
-import { pictureSelector } from '../../../reducers/pictures';
 import { settingSelector } from '../../../reducers/settings';
 import {
   CustomTheme,
@@ -87,7 +85,6 @@ const clearCaches = async (): Promise<boolean[]> => {
 export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const { setLoading } = useLoadingOverlay(rootRef);
-  const pictures = useSelector(pictureSelector);
   const settings = useSelector(settingSelector);
   const customTheme = useSelector(customThemeSelector);
   const classes = useStyles(customTheme);
@@ -117,7 +114,6 @@ export const AppSettings: FC<AppSettingsProps> = ({ setLastNotification }) => {
       <AppConfiguration settings={settings} />
       <Data setLoading={setLoading} />
       <Theme />
-      <ManagePhotos pictures={pictures} />
       <CustomObjects />
       <a className={classes.privacy} href={'/privacy'}>Privacy Policy</a>
       <button className={classes.updateButton} onClick={handleCheckUpdates}>Check for Update (Current: {(window as any).APP_VERSION})</button>

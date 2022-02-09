@@ -1,7 +1,9 @@
-export async function getBase64ImageFromUrl(imageUrl: string): Promise<string | ArrayBuffer> {
+export async function getBase64ImageFromUrl(imageUrl: string) {
   const res = await fetch(imageUrl);
-  const blob = await res.blob();
+  return res.blob();
+}
 
+export const convertBlobToDataUrl = (blob: Blob): Promise<string | ArrayBuffer> => {
   return new Promise((resolve, reject) => {
     const reader  = new FileReader();
     reader.addEventListener('load', function () {
@@ -13,4 +15,4 @@ export async function getBase64ImageFromUrl(imageUrl: string): Promise<string | 
     };
     reader.readAsDataURL(blob);
   });
-}
+};

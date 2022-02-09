@@ -8,6 +8,7 @@ import { Thought } from '../../../../../store/rxdb/schemas/types';
 import { pictures as pictureActions } from '../../../../../actions';
 import { EditTypes, SectionState } from '../../../types';
 import { useLoadedDB } from '../../../../../hooks/useDB';
+import { convertBlobToDataUrl } from './components/util';
 
 interface PicturesSectionProps {
   classes: any;
@@ -47,11 +48,16 @@ export const PicturesSection: FC<PicturesSectionProps> = ({ classes, sectionOrde
         if (image.imgurUrl) {
           result.push(image);
         } else {
-          const localUrl = await pictureActions.getAttachment(db, image.id, image.localUrl);
-          result.push({
-            ...image,
-            localUrl,
-          });
+          const img = await pictureActions.getAttachment(db, image.id);
+          if (img) {
+            const localUrl = await convertBlobToDataUrl(img) as string;
+            if (localUrl) {
+              result.push({
+                ...image,
+                localUrl,
+              });
+            }
+          }
         }
       }
 

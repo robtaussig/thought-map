@@ -6,7 +6,7 @@ import { useLoadedDB } from '../../../../../../hooks/useDB';
 import useLoadingOverlay from 'react-use-loading-overlay';
 import TempImages from './TempImages';
 import Images from './Images';
-import { getBase64ImageFromUrl } from './util';
+import { convertBlobToDataUrl, getBase64ImageFromUrl } from './util';
 import { openConfirmation } from '../../../../../../lib/util';
 import { styles } from './styles';
 import { useSelector } from 'react-redux';
@@ -39,11 +39,16 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
         if (image.imgurUrl) {
           result.push(image);
         } else {
-          const localUrl = await pictureActions.getAttachment(db, image.id, image.localUrl);
-          result.push({
-            ...image,
-            localUrl,
-          });
+          const img = await pictureActions.getAttachment(db, image.id);
+          if (img) {
+            const localUrl = await convertBlobToDataUrl(img) as string;
+            if (localUrl) {
+              result.push({
+                ...image,
+                localUrl,
+              });
+            }
+          }
         }
       }
 
@@ -67,18 +72,11 @@ export const Pictures: FC<PictureProps> = ({ classes, thought }) => {
     setLoading('Uploading Locally...');
     try {
       const base64: any = await getBase64ImageFromUrl(tempImages[idx]);
-
       const picture = await pictureActions.createPicture(db, {
         thoughtId: thought.id,
       });
-
-      const localUrl = await pictureActions.createAttachment(db, {
+      await pictureActions.createAttachment(db, {
         id: picture.id, data: base64
-      });
-
-      await pictureActions.createPicture(db, {
-        ...picture,
-        localUrl: localUrl,
       });
 
       setTempImages(prev => prev.filter(prevImage => prevImage !== tempImages[idx]));

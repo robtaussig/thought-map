@@ -11,5 +11,5 @@ export default class Pictures extends Base {
   static update = (db: RxDatabase, object: Picture): Promise<Picture> => Base.update(db, object, TABLE_NAME);
   static delete = (db: RxDatabase, id: string): Promise<any> => Base.delete(db, id, TABLE_NAME);
   static addAttachment = (db: RxDatabase, { id, data }: { id: string; data: string }): Promise<any> => Base.addAttachment(db, { id, data }, TABLE_NAME);
-  static fetchAttachment = (db: RxDatabase, id: string, localUrl: string): Promise<any> => Base.fetchAttachment(db, id, localUrl, TABLE_NAME);
+  static fetchAttachment = (db: RxDatabase, id: string): Promise<any> => Base.fetchAttachment(db, id, TABLE_NAME);
 }

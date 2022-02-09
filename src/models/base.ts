@@ -88,20 +88,19 @@ export default class Base {
     const query = db[tableName].find().where('id').eq(id);
     const result: RxDocument<any> = await query.exec();
     const uuid = uuidv4();
-    const attachment = await result.putAttachment(
+    const attachment = await result[0].putAttachment(
       {
-          id: uuid,     // (string) name of the attachment like 'cat.jpg'
-          data,   // (string|Blob|Buffer) data of the attachment
-          type: 'image/jpeg'   // (string) type of the attachment-data like 'image/jpeg'
+        id: uuid,     // (string) name of the attachment like 'cat.jpg'
+        data,   // (string|Blob|Buffer) data of the attachment
       },
     );
     return attachment.id;
   };
 
-  static fetchAttachment = async (db: RxDatabase, id: string, localUrl: string, tableName: string): Promise<any> => {
+  static fetchAttachment = async (db: RxDatabase, id: string, tableName: string): Promise<any> => {
     const query = db[tableName].find().where('id').eq(id);
     const result: RxDocument<any> = await query.exec();
-    const attachment = await result.getAttachment(localUrl);
-    return attachment.getStringData();
+    const attachments = await result[0].allAttachments();
+    return attachments[0]?.getData();
   };
 }
